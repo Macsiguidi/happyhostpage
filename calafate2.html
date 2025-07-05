@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calafate 2</title>
+
+  <!-- Icono y fuente -->
+  <link rel="icon" href="logos/happy host.png">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Tu CSS completo, con overrides incluidos al final -->
+  <link rel="stylesheet" href="unidades.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="barra-menu">
+      <div class="logo">
+        <img src="logos/happy host.png" alt="Logo Happy Host" href="index.html">
+      </div>
+
+      <h1 class="titulo-header">CALAFATE 2</h1>
+
+      <div class="volver">
+        <a href="alojamientos.html" class="boton-volver">← Volver a alojamientos</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="fondo-blur">
+  <section class="detalle-alojamiento">
+    <div class="imagen-principal">
+      <img src="unidades/casa2/casa2_img6.jpg" alt="Foto principal Calafate 2">
+      <div class="miniaturas-container">
+        <button class="flecha izq">&#10094;</button>
+        <div class="miniaturas" id="miniaturas-scroll">
+          <img src="unidades/casa2/casa2_img1.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img2.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img3.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img4.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img5.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img6.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img7.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img8.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img9.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img10.jpg" alt="calafate2">
+          <img src="unidades/casa2/casa2_img11.jpg" alt="calafate2">
+        </div>
+        <button class="flecha der">&#10095;</button>
+      </div>
+      
+       <div class="info servicios">
+        <h3>Servicios</h3>
+        <div class="iconos-servicios">
+          <div><img src="iconos/4 personas.png" alt="WiFi"><span>4 pax</span></div>
+          <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
+          <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
+          <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
+          <div><img src="iconos/sabanas y toallas.png" alt="Sábanas"><span>Blancos</span></div>
+          <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
+          <div><img src="iconos/parrilla.png" alt="Parrilla"><span>Parrilla</span></div>
+        </div>
+      </div>
+      
+    </div>
+<div class="motor-reservas-fijo">
+     <div class="reserva">
+      <!-- Fechas en la misma línea -->
+      <div class="dates">
+        <div class="date-field" id="df-start">
+          <input
+            type="text"
+            id="start"
+            placeholder="Check in"
+            readonly
+          >
+        </div>
+        <div class="date-field" id="df-end">
+          <input
+            type="text"
+            id="end"
+            placeholder="Check out"
+            readonly
+          >
+        </div>
+      </div>
+    
+      <!-- Huéspedes -->
+      <!-- Oculto para que el script siga funcionando -->
+      <input type="hidden" id="guests" value="1" />
+
+       <!-- Control visual para huéspedes -->
+        <div class="huespedes-control">
+           <button id="menos">−</button>
+           <span id="contador">1 huésped</span>
+           <button id="mas">+</button>
+        </div>
+    
+      <!-- Selección de moneda -->
+      <label for="currency" style="display:none;">Moneda</label>
+      <select id="currency" style="display:none;">
+      <option value="USD">USD</option>
+      <option value="ARS">ARS</option>
+      </select>
+    
+      <!-- Botón -->
+      <button id="btnReservar" disabled>Reservar ahora</button>
+    
+      <!-- Resumen debajo -->
+      <div id="resultado"></div>
+  
+    </div>
+  </div>
+  </section>
+
+   <section class="contenido-info">
+   <div class="info descripcion">
+      <h3>Descripción</h3>
+      <p><strong>Casas Calafate</strong> te invita a disfrutar de una experiencia única en Villa La Angostura. Nuestras acogedoras y modernas casas ofrecen todo lo que necesitas para una estadia inolvidable:</p>
+
+        <p><strong>Habitacion confortable:</strong> En la planta alta, encontrarás una habitación doble adaptable a tus preferencias (cama matrimonial o dos camas separadas), mientras que en la planta baja, un sillón cama ofrece espacio adicional para dos personas, ideal para familias o amigos.</p>
+        <p><strong>Equipamiento completo:</strong> Cocina totalmente equipada para que te sientas como en casa, baño completo, y todas las comodidades modernas que esperas, incluyendo internet  WIFI y Smart TV con acceso a Netflix y Amazon Prime (sin TV por cable).</p>
+        <p><strong>Calefacción:</strong> Disfruta de la calefacción por losa radiante en todos los ambientes, para un ambiente cálido y acogedor durante todo el año.</p>
+        <p><strong>Espacios para relajarte:</strong> Espacio verde privado y parrilla para que puedas disfrutar de asados al aire libre con vistas espectaculares.</p>
+        <p><strong>Seguridad y comodidad:</strong> La propiedad está equipada con alarma y cuenta con estacionamiento descubierto para tu tranquilidad.</p>
+        <p>Ubicadas a tan solo 500 metros de la Avenida Principal, nuestras casas te ofrecen la combinación perfecta de tranquilidad y acceso fácil a los mejores lugares de Villa La Angostura.</p>
+        
+        <strong>Check in / Check out AUTÓNOMO</strong></p>
+    </div>
+
+    <div class="info mapa">
+      <h3>Ubicación</h3>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.7576939531978!2d-71.6442629!3d-40.767353799999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9610bf72a7017f6f%3A0x9ef3462a406290df!2sHappy%20Host%20Patagonia%20-%20Casas%20Calafate%20VLA!5e0!3m2!1ses!2sar!4v1745444579700!5m2!1ses!2sar" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="redes-contacto">
+        <a href="https://wa.me/5492944700773" target="_blank">
+          <img src="logos/whatsapp.png" alt="WhatsApp">
+        </a>
+        <a href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+          <img src="logos/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw">
+          <img src="logos/twitter.png" alt="Correo">
+        </a>
+      </div>   
+    </div>
+  </section>
+  </div>
+
+
+  <script>
+
+    const scrollContainer = document.getElementById('miniaturas-scroll');
+    const flechaIzq = document.querySelector('.flecha.izq');
+    const flechaDer = document.querySelector('.flecha.der');
+  
+    flechaIzq.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: -150, behavior: 'smooth' });
+    });
+  
+    flechaDer.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: 150, behavior: 'smooth' });
+    });
+
+
+   document.addEventListener("DOMContentLoaded", function () {
+   const principal = document.querySelector('.imagen-principal > img');
+   const miniaturas = document.querySelectorAll('#miniaturas-scroll img');
+
+    miniaturas.forEach(mini => {
+    mini.addEventListener('click', () => {
+      principal.src = mini.src; // Cambia la imagen principal
+       });
+     });
+    });
+  document.addEventListener("DOMContentLoaded", function () {
+  const principal = document.querySelector('.imagen-principal > img');
+  const miniaturas = document.querySelectorAll('#miniaturas-scroll img');
+
+  miniaturas.forEach(mini => {
+    mini.addEventListener('click', () => {
+      principal.src = mini.src;
+
+      // Quitar la clase activa a todas las miniaturas
+      miniaturas.forEach(m => m.classList.remove('activa'));
+
+      // Agregar clase activa a la que se clickeó
+      mini.classList.add('activa');
+      });
+     });
+    });
+  </script>
+
+  <script>
+    const HOUSE_ID     = 601707;  // Calafate 2
+    const ROOM_ID      = 668498;
+
+   const params = new URLSearchParams(window.location.search);
+const checkin   = params.get("checkin");
+const checkout  = params.get("checkout");
+const huespedes = params.get("huespedes");
+
+localStorage.removeItem("checkin");
+localStorage.removeItem("checkout");
+localStorage.removeItem("huespedes");
+
+const startInput  = document.getElementById('start');
+const endInput    = document.getElementById('end');
+const guestsInput = document.getElementById('guests');
+const currSelect  = document.getElementById('currency');
+const resDiv      = document.getElementById('resultado');
+const reservarBtn = document.getElementById('btnReservar');
+
+if (checkin)   startInput.value  = checkin;
+if (checkout)  endInput.value    = checkout;
+if (huespedes) guestsInput.value = huespedes;
+
+const hoy = new Date();
+hoy.setHours(0, 0, 0, 0);
+
+const startPicker = flatpickr(startInput, {
+  altInput: true,
+  altFormat: 'd/m/Y',
+  dateFormat: 'Y-m-d',
+  defaultDate: checkin || null,
+  minDate: hoy,
+  disableMobile: true,  // 👈 agregá esto
+  onChange: () => handleCurrencyRules(startInput.value)
+});
+
+const endPicker = flatpickr(endInput, {
+  altInput: true,
+  altFormat: 'd/m/Y',
+  dateFormat: 'Y-m-d',
+  defaultDate: checkout || null,
+  minDate: hoy,
+  disableMobile: true,  // 👈 agregá esto
+  onChange: calculate
+});
+
+startPicker.config.onChange.push((selectedDates) => {
+  if (selectedDates[0]) {
+    endPicker.setDate(null);
+    endPicker.jumpToDate(selectedDates[0]);
+    endPicker.open();
+  }
+});
+
+let fechasOcupadas = [];
+
+async function loadDisabledDates(picker) {
+  try {
+    const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/calafate2');
+    if (!resp.ok) throw new Error(await resp.text());
+    const rangos = await resp.json();
+    fechasOcupadas = rangos;
+
+    picker.set('disable', [
+      ...rangos.map(r => ({ from: r.from, to: r.to })),
+      date => date < hoy // Bloquea fechas pasadas
+    ]);
+  } catch (e) {
+    console.error('No se pudieron cargar fechas ocupadas:', e.message);
+  }
+}
+
+startPicker.config.onReady.push(()        => loadDisabledDates(startPicker));
+startPicker.config.onMonthChange.push(() => loadDisabledDates(startPicker));
+endPicker.config.onReady.push(()          => loadDisabledDates(endPicker));
+endPicker.config.onMonthChange.push(()    => loadDisabledDates(endPicker));
+startPicker.config.onOpen.push(()         => loadDisabledDates(startPicker));
+endPicker.config.onOpen.push(()           => loadDisabledDates(endPicker));
+
+guestsInput.addEventListener('input', calculate);
+currSelect.addEventListener('change', calculate);
+
+function handleCurrencyRules(fechaCheckin) {
+  const fecha  = new Date(fechaCheckin);
+  const limite = new Date('2025-09-30');
+
+  if (!fechaCheckin) {
+    currSelect.style.display = 'block';
+    currSelect.disabled = false;
+    return;
+  }
+
+  if (fecha <= limite) {
+    currSelect.value = 'ARS';
+    currSelect.style.display = 'none';
+    currSelect.disabled = true;
+  } else {
+    currSelect.value = 'USD';
+    currSelect.style.display = 'none';
+    currSelect.disabled = true;
+  }
+
+  calculate();
+}
+
+function hayCruceConFechasOcupadas(checkin, checkout) {
+  const ci = new Date(checkin);
+  const co = new Date(checkout);
+  ci.setHours(0, 0, 0, 0);
+  co.setHours(0, 0, 0, 0);
+
+  return fechasOcupadas.some(({ from, to }) => {
+    const inicio = new Date(from);
+    const fin    = new Date(to);
+    inicio.setHours(0, 0, 0, 0);
+    fin.setHours(0, 0, 0, 0);
+    return (
+      (ci > inicio && ci < fin) ||
+      (co > inicio && co < fin) ||
+      (ci <= inicio && co >= fin)
+    );
+  });
+}
+
+async function calculate() {
+  const startValue = startInput.value;
+  const endValue   = endInput.value;
+  const guests     = +guestsInput.value;
+  const moneda     = currSelect.value;
+
+  if (!startValue || !endValue) {
+    resDiv.textContent = 'Seleccioná ambas fechas.';
+    reservarBtn.disabled = true;
+    return;
+  }
+
+  const sd = new Date(startValue), ed = new Date(endValue);
+  if (ed <= sd) {
+    resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.';
+    reservarBtn.disabled = true;
+    return;
+  }
+
+  const MAX_GUESTS = 4, FREE_GUESTS = 3;
+  if (guests > MAX_GUESTS) {
+    resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`;
+    reservarBtn.disabled = true;
+    return;
+  }
+
+  if (hayCruceConFechasOcupadas(sd, ed)) {
+    resDiv.textContent = 'El rango incluye fechas ya ocupadas.';
+    reservarBtn.disabled = true;
+    return;
+  }
+
+  const noches = Math.round((ed - sd) / (1000 * 60 * 60 * 24));
+  resDiv.textContent = 'Cargando…';
+  reservarBtn.disabled = true;
+
+  try {
+    const url = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(await resp.text());
+    const { dias = [], extras = [] } = await resp.json();
+
+    if (dias.length === 0) {
+      resDiv.textContent = 'No hay precios para estas fechas.';
+      return;
+    }
+
+    const minStay = dias
+      .map(d => Math.min(...d.prices.map(p => p.min_stay)))
+      .reduce((a, b) => Math.min(a, b), Infinity);
+
+    if (noches < minStay) {
+      resDiv.textContent = `La estadía mínima es de ${minStay} noches.`;
+      return;
+    }
+
+    let baseUSD = 0;
+    for (let i = 0; i < noches; i++) {
+      const d = dias[i];
+      const p = d.prices.find(x =>
+        noches >= x.min_stay && noches <= x.max_stay
+      ) || d.prices.reduce((a, b) => a.min_stay < b.min_stay ? a : b);
+      baseUSD += p.price_per_day;
+    }
+
+    const extraUnit = extras[0]?.price_per_day || 12;
+    const extraQty  = Math.max(0, guests - FREE_GUESTS);
+    const extraUSD  = extraQty * extraUnit * noches;
+    const totalUSD  = baseUSD + extraUSD;
+
+    const fechaCheckin = new Date(startValue);
+    let factorARS = 1400;
+    if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
+      factorARS = 1250;
+    } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-09-30')) {
+      factorARS = 1320;
+    }
+
+    const total = moneda === 'USD' ? totalUSD : totalUSD * factorARS;
+    const extra = moneda === 'USD' ? extraUSD : extraUSD * factorARS;
+
+    let html = `<ul class="booking-summary">
+      <li>Noches: ${noches}</li>
+      <li>Huéspedes: ${guests}</li>` +
+      (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
+      `<li><strong>Total:</strong> ${total.toLocaleString()} ${moneda}</li>
+    </ul>`;
+    resDiv.innerHTML = html;
+
+    reservarBtn.disabled = false;
+    reservarBtn.onclick = () => {
+      const qs = new URLSearchParams({
+        propertyId:     HOUSE_ID,
+        roomTypeId:     ROOM_ID,
+        checkInDate:    startValue,
+        checkOutDate:   endValue,
+        numberOfGuests: guests,
+        totalPrice:     total,
+        currency:       moneda
+      }).toString();
+      window.location.href = `formulario.html?${qs}`;
+    };
+  } catch (e) {
+    console.error(e);
+    resDiv.textContent = 'Error al obtener datos: ' + e.message;
+  }
+}
+
+const menosBtn = document.getElementById('menos');
+const masBtn   = document.getElementById('mas');
+const contador = document.getElementById('contador');
+let cantidad   = parseInt(huespedes) || 1;
+
+function actualizarContador() {
+  contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
+  guestsInput.value = cantidad;
+  calculate();
+}
+
+menosBtn.addEventListener('click', () => {
+  if (cantidad > 1) {
+    cantidad--;
+    actualizarContador();
+  }
+});
+
+masBtn.addEventListener('click', () => {
+  if (cantidad < 6) {
+    cantidad++;
+    actualizarContador();
+  }
+});
+
+// Inicializar contador visual
+actualizarContador();
+
+
+if (startInput.value) {
+  handleCurrencyRules(startInput.value);
+} else {
+  calculate();
+}
+
+
+  </script>
+  
+  
+</body>
+</html>

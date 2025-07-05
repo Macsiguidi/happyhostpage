@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Host - Viajeros</title>
+  <link rel="icon" type="image/png" href="logos/happy host.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="viajero.css" />
+</head>
+<body>
+ <section class="hero">
+  <div class="video-contenedor">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video16.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+    <div class="filtro-oscuro"></div>
+  </div>
+
+  <header class="header">
+    <div class="contenedor-header">
+      <div class="logo">
+        <img src="logos/happy host.png" alt="Happy Host Logo" />
+      </div>
+      <nav class="menu">
+        <ul class="menu-list">
+          <li><a href="alojamientos.html">alojamientos</a></li>
+          <li><a href="https://wa.me/5492944700773">contacto</a></li>
+          <li><a href="#actividades">actividades</a></li>
+          <li><a href="#reseñas">Reseñas</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="propuesta-valor">
+    <h1>Happy Host</h1>
+    <p>Tu refugio ideal en Villa La Angostura. Confort, naturaleza y la calidez patagónica para una estadía inolvidable.</p>
+  </div>
+</section>
+
+  <div class="contenido-hero">
+    <form class="buscador" id="form-busqueda">
+      <input type="text" id="rango-fechas" class="placeholder-fechas" placeholder="Llegada → Salida" readonly>
+    
+      <div class="selector-huespedes">
+        <button type="button" id="menos">−</button>
+        <span id="cantidad">Huéspedes</span>
+        <button type="button" id="mas">+</button>
+        <input type="hidden" id="huespedes" name="huespedes" value="0">
+      </div>
+    
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+
+    <section class="bloque-100happy">
+    <div class="contenedor-100happy">
+      <div class="texto-happy">
+      <h2>Sentite como en casa, rodeado de naturaleza</h2>
+      <p>En <strong>Happy Host</strong> queremos que tu experiencia en Villa La Angostura sea única. Te ofrecemos alojamientos cómodos, cálidos y bien ubicados, para que disfrutes al máximo de la tranquilidad del sur. Nos encanta recibirte, acompañarte y ayudarte a vivir momentos inolvidables.</p>
+    </div>
+    <div class="logo-happy">
+      <img src="logos/happy100.png" alt="100% Happy">
+    </div>
+  </div>
+</section>
+
+<section class="actividades" id="actividades">
+  <h2>Actividades en Villa La Angostura</h2>
+  
+  <div class="video-actividad">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video17.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+    <div class="titulo-video">Disfrutá la nieve</div>
+  </div>
+
+  <div class="video-actividad">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video9.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+    <div class="titulo-video">Senderismo entre bosques mágicos</div>
+  </div>
+
+  <div class="video-actividad">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video15.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+    <div class="titulo-video">Lagos cristalinos para desconectar</div>
+  </div>
+
+  <div class="video-actividad">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video14.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+    <div class="titulo-video">Montañas que inspiran</div>
+  </div>
+
+  <div class="video-actividad">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video12.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+    <div class="titulo-video">Ciclismo en plena naturaleza</div>
+  </div>
+<div class="video-actividad">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video13.mp4" type="video/mp4">
+      Tu navegador no soporta el video.
+    </video>
+    <div class="titulo-video">Running</div>
+  </div>
+</section>
+
+
+
+<section class="comentarios-section" id="reseñas">
+  <div class="contenedor-comentarios">
+    <h2>Reseñas</h2>
+    <div class="carrusel-comentarios">
+
+      <div class="grupo-comentarios active">
+        <div class="comentario">
+          <p>"El alojamiento cumple con todo lo necesario para una excelente estadía, todo muy limpio y ordenado. Además de lo anterior, tanto el check in como el check out fue flexible lo cual se agradece mucho al igual que la disposición de Maximiliano para responder cada consulta."</p>
+          <div class="autor"><strong>Marcelo</strong> – Casas Calafate</div>
+          <span class="plataforma">★ 5.0 - Airbnb</span>
+        </div>
+
+        <div class="comentario">
+          <p>"A casa é ótima e bem localizada. Cozinha bem equipada e com churrasqueira. Cama super confortável. Banheiro limpo e ducha muito boa. Adoramos o espaço."</p>
+          <div class="autor"><strong>Ana Paula</strong> – Casas Calafate</div>
+          <span class="plataforma">★ 5.0 - Airbnb</span>
+        </div>
+
+        <div class="comentario">
+          <p>"Super impecable el lugar, la verdad que superó mis expectativas, relación precio-calidad 10/10. Suma que tiene cochera super cómoda, además está cerca de todo el centro de VLA por lo que cuando volvés de excursiones y paseos la ubicación del lugar es super cómoda para dejar el auto en la cochera y salir a caminar por todo el centro de Villa. El dpto super completo con todo lo necesario para la estadía, linda vista, impecable todo. ¡Lo super recomiendo!"</p>
+          <div class="autor"><strong>Pablo</strong> – Paisajismo</div>
+          <span class="plataforma">★ 5.0 - Google</span>
+        </div>
+
+        <div class="comentario">
+          <p>"Mi estadía en la cabaña fue excelente. El lugar estaba muy limpio, bien equipado y rodeado de naturaleza, lo que hizo que la experiencia fuera tranquila y relajante. La atención del anfitrión fue muy cordial y todo funcionó perfectamente. Sin duda, un lugar al que me encantaría volver."</p>
+          <div class="autor"><strong>Francisca</strong> – La Gurisa</div>
+          <span class="plataforma">★ 5.0 - Google</span>
+        </div>
+
+        <div class="comentario">
+          <p>"This cabin is wonderful. Very clean, spacious and comfortable. We used the kitchen to make a meal and it had what we needed to cook. It is in a very quiet location with a short 5 minute drive to the main part of town. The host was very responsive."</p>
+          <div class="autor"><strong>Misha</strong> – Cruz del Sur 4</div>
+          <span class="plataforma">★ 5.0 - Airbnb</span>
+        </div>
+
+        <div class="comentario">
+          <p>"Это очень просторный, удобный и красивый дом, в котором все продумано и предусмотрено для длительного проживания. Есть свой сад с цветами, не видно других домов и поэтому очень уединенно. Изолированная огромная кухня, очень хорошо оборудованная. Красивая гостиная с большим камином."</p>
+          <div class="autor"><strong>Galina</strong> – La Gurisa</div>
+          <span class="plataforma">★ 5.0 - Airbnb</span>
+        </div>
+
+        <div class="comentario">
+          <p>"Espectacular!!! Todo mejor aún que lo publicado. La casa cómoda, funcional, estética, impecable, con detalles cuidados al máximo como la deco y ropa de cama. ¡Con vistas hermosas! Dan ganas de quedarse a vivir!!! Emplazado en un lugar soñado. Maxi solícito y dispuesto a colaborar en lo que uno pudiera necesitar. Para recomendar y volver. ¡Una estadía inolvidable!"</p>
+          <div class="autor"><strong>Guillermo</strong> – Cruz del Sur</div>
+          <span class="plataforma">★ 5.0 - Google</span>
+        </div>
+
+        <div class="comentario">
+          <p>"¡Todo impecable! Muy destacable la amabilidad de Maxi y Fabio. Frente a cada consulta estuvieron rápidamente disponibles. Entrar a la casa nos hizo muy felices por la limpieza y los regalitos de navidad que nos dejaron. Destacable también la pulcritud y el buen aroma en toda la casa. ¡Muy cálida! Muy buena ubicación."</p>
+          <div class="autor"><strong>Manuela</strong> – Cruz del Sur</div>
+          <span class="plataforma">★ 5.0 - Google</span>
+        </div>
+      </div>
+      <!-- Grupo de comentarios 2 (vacío por ahora) -->
+      <div class="grupo-comentarios">
+        <!-- Acá vas a pegar los próximos 8 comentarios -->
+         <div class="comentario">
+  <p>"¡Todo muy bien! Fuimos de viaje familiar con 2 niños pequeños y la verdad es que la casa era super cómoda y full equipada como para ir en familia. La ubicación es inmejorable, super cerca de playas y del pueblo. Maximiliano nos ayudó con todo lo que necesitamos siempre y super rápido. ¡Volveríamos sin dudas!"</p>
+  <div class="autor">
+    <strong>Trinidad</strong> – Las Nilidas
+  </div>
+  <span class="plataforma">★ 5.0 - Airbnb</span>
+</div>
+
+<div class="comentario">
+  <p>"¡Volveríamos a ir! Muy cómodo, espacioso, con todos los elementos útiles para cocinar y con parrilla impecable. Muy limpio y ordenado. Buena ubicación y con la seguridad de tener alarma. El check in y out super eficiente. ¡Recomendamos!"</p>
+  <div class="autor">
+    <strong>Amparo</strong> – Casas Calafate
+  </div>
+  <span class="plataforma">★ 5.0 - Airbnb</span>
+</div>
+<div class="comentario">
+  <p>"El alojamiento cumplió ampliamente con nuestras expectativas. Maxi es un excelente anfitrión. Estuvo siempre atento y respondió a la brevedad nuestros pedidos. La ubicación es perfecta. Muy tranquilo y seguro."</p>
+  <div class="autor">
+    <strong>Chino</strong> – Cruz del Sur
+  </div>
+  <span class="plataforma">★ 5.0 - Airbnb</span>
+</div>
+<div class="comentario">
+  <p>"¡Nos gustó muchísimo que estaba todo muy bien cuidado y súper limpio, casi como nuevo! La ubicación fue estupenda para ir caminando al centro. Los hosts muy buena onda. Al lado un lugar de comidas que nos salvó varias noches."</p>
+  <div class="autor">
+    <strong>Josefina</strong> – Casas Calafate
+  </div>
+  <span class="plataforma">★ 5.0 - Booking</span>
+</div>
+<div class="comentario">
+  <p>"Hermosa casa, con todas las comodidades y con una vista increíble a las montañas. ¡Te querés quedar a vivir! La atención de Maxi fue excelente."</p>
+  <div class="autor">
+    <strong>Lucía</strong> – Las Nilidas
+  </div>
+  <span class="plataforma">★ 5.0 - Airbnb</span>
+</div>
+<div class="comentario">
+  <p>"We stayed 5 nights in gorgeous Villa La Angostura and we definitely could have stayed longer. The apartment is centrally located and convenient for walking to all the shops and restaurants. It also comes with a parking space which is really nice when the street is full of parked cars. We loved our stay and hope to return again someday."</p>
+  <div class="autor">
+    <strong>Keri</strong> – Paisajismo
+  </div>
+  <span class="plataforma">★ 5.0 - Airbnb</span>
+</div>
+<div class="comentario">
+  <p>"¡Excelente! El departamento super cómodo, limpio y bien calefaccionado para el frío que hizo los días que nos quedamos. Zona tranquila y silenciosa que nos permitió descansar bien. Es amplio y un tamaño perfecto para mí y mi pareja. La vista a las montañas es hermosa. ¡Sin dudas recomiendo!"</p>
+  <div class="autor">
+    <strong>Julieta</strong> – Paisajismo
+  </div>
+  <span class="plataforma">★ 5.0 - Airbnb</span>
+</div>
+<div class="comentario">
+  <p>"We had 3 nights here and it is one of the best Airbnb properties we have stayed at. Everything very clean, fabulous comfortable huge bed. Very quiet location with lovely green views from all the windows. Only a 10–15 minute drive to the centre with all amenities. Highly recommend a stay here if you want a clean, comfortable and peaceful stay close to amenities and the 7 Lake Route."</p>
+  <div class="autor">
+    <strong>Louise</strong> – Cruz del Sur
+  </div>
+  <span class="plataforma">★ 5.0 - Airbnb</span>
+</div>
+
+<!--<div class="grupo-comentarios"></div>-->
+      </div>
+
+    </div> <!-- cierre de carrusel-comentarios -->
+  </div> <!-- cierre de contenedor-comentarios -->
+</section>
+
+<footer class="footer">
+  <div class="footer-contenido filas-footer">
+
+    <!-- Columna 1: Logo -->
+    <div class="footer-columna footer-logo">
+      <img src="logos/happy host.png" alt="Happy Host">
+    </div>
+
+    <!-- Columna 2: Información -->
+    <div class="footer-columna footer-info">
+      <p>Villa La Angostura, Neuquén</p>
+      <p><a href="mailto:happyhostpatagonia@gmail.com">happyhostpatagonia@gmail.com</a></p>
+    </div>
+
+    <!-- Columna 3: Redes sociales -->
+    <div class="footer-columna footer-redes">
+      <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener">
+        <img src="logos/instagram.png" alt="Instagram">
+      </a>
+      <a href="https://twitter.com" target="_blank" rel="noopener">
+        <img src="logos/twitter.png" alt="Twitter">
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Happy Host. Tu alquiler en la Patagonia.</p>
+  </div>
+</footer>
+
+<script src="viajero.js"></script>
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+</body>
+</html>

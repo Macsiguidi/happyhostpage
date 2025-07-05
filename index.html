@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Host</title>
+  <link rel="icon" type="image/png" href="logos/happy host.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <section class="pantalla-inicial">
+    <div class="logo-inicial">
+      <img src="logos/happy host.png" alt="Happy Host Patagonia">
+    </div>
+    <div class="botones-inicio">
+      <a href="viajero.html" class="btn-inicio">SOY VIAJERO</a>
+      <a href="propietarios.html" class="btn-inicio">PROPIETARIOS</a>
+    </div>
+  </section>
+
+  <div id="cartel-reserva" class="cartel-reserva" style="display: none;">
+  ✅ ¡Gracias por tu reserva! En breve nos contactaremos 😊
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  if (localStorage.getItem("reservaExitosa") === "true") {
+    const cartel = document.getElementById("cartel-reserva");
+    cartel.style.display = "block";
+
+    setTimeout(() => {
+      cartel.style.display = "none";
+      localStorage.removeItem("reservaExitosa");  // Limpiamos para que no aparezca siempre
+    }, 5000);
+  }
+});
+
+</script>
+
+</body>
+</html>

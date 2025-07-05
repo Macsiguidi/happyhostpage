@@ -1,0 +1,276 @@
+/* GENERAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f5f5;
+  color: #1D292A;
+}
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  margin: 20px auto;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.header {
+  width: 100%;
+  background-color: rgba(61, 77, 85, 0.7); /* gris translúcido */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.barra-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap; /* por si hay poco espacio */
+}
+
+.logo img {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+}
+
+.titulo-header {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  color: #c7e5db;
+  text-transform: uppercase;
+  text-align: center;
+  flex: 1; 
+}
+
+.volver .boton-volver {
+  text-decoration: none;
+  background-color: #7dafa6;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.volver .boton-volver:hover {
+  background-color: #a2846b;
+}
+
+
+/* FORMULARIO */
+.formulario-reserva {
+  flex: 2;
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.formulario-reserva h2 {
+  margin-bottom: 12px;
+  color: #3D4D55;
+}
+
+.formulario-reserva label {
+  display: block;
+  margin: 8px 0 4px;
+  font-weight: 500;
+}
+
+.formulario-reserva input,
+.formulario-reserva textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #B58863;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.formulario-reserva textarea {
+  resize: vertical;
+}
+
+.terminos {
+  display: flex;
+  align-items: center;  /* Centra verticalmente el checkbox y el texto */
+  gap: 8px;             /* Espacio entre el checkbox y el texto */
+  justify-content: flex-start; /* Todo alineado a la izquierda */
+  margin: 10px 0;       /* Separación arriba y abajo */
+}
+
+.terminos input[type="checkbox"] {
+  margin: 0;            /* Elimina márgenes que puedan desalinear */
+  width: 18px;          /* Tamaño estándar del checkbox */
+  height: 18px;
+}
+
+.terminos label {
+  font-size: 1rem;
+  color: #333;          /* Color de texto (podés ajustar según tu diseño) */
+}
+
+.terminos a {
+  color: #7DAFA6;       /* Color del link, ajustalo si querés */
+  text-decoration: underline;
+}
+
+.terminos a:hover {
+  color: #486b64;       /* Color en hover */
+}
+
+
+
+.aviso-contacto {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  color: #486b64;
+  background: #d7f0e8;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+#botonReservar {
+  width: 100%;
+  padding: 12px;
+  background-color: #7dafa6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#botonReservar:hover {
+  background-color: #5d827b;
+}
+
+/* RESUMEN */
+.resumen-reserva {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.resumen-reserva h2 {
+  margin-bottom: 12px;
+  color: #3D4D55;
+}
+
+.info-reserva img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.info-reserva p {
+  margin: 6px 0;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-contenido {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-contenido h2 {
+  margin-bottom: 10px;
+}
+
+.modal-contenido h3 {
+  margin-top: 10px;
+}
+
+.cerrar {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .barra-menu {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+  }
+
+  .logo img {
+    height: 80px;
+  }
+
+  .titulo-header {
+    font-size: 24px;
+  }
+
+  .volver .boton-volver {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 10px;
+  }
+
+  .formulario-reserva,
+  .resumen-reserva {
+    padding: 16px;
+  }
+
+  .formulario-reserva input,
+  .formulario-reserva textarea {
+    font-size: 0.95rem;
+  }
+
+  #botonReservar {
+    font-size: 1rem;
+  }
+
+  .info-reserva img {
+    max-height: 200px;
+    object-fit: cover;
+  }
+
+  .modal-contenido {
+    padding: 12px;
+  }
+}

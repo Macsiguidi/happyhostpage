@@ -1,0 +1,674 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f5f5;
+}
+
+.header {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  z-index: 9999;
+  background: transparent;
+  padding: 10px 20px;
+}
+
+.contenedor-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.logo {
+  margin-right: 100px; /* SEPARA EL LOGO DEL MENÚ */
+}
+
+.logo img {
+  height: 150px;
+  width: auto;
+  display: block;
+}
+
+.menu-list {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.menu-list li a {
+  text-decoration: none;
+  color: #d7f0e8;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  transition: color 0.3s;
+}
+
+.menu-list li a:hover {
+  color: #B58863;
+}
+
+.hamburguesa {
+  display: none !important;
+}
+
+.hero {
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+}
+
+.video-contenedor {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.video-contenedor video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.filtro-oscuro {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.propuesta-valor {
+  position: relative;
+  z-index: 2;
+  color: white;
+  text-align: center;
+  padding: 0 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+}
+
+/* Vista móvil */
+@media (max-width: 768px) {
+  .contenedor-header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo {
+  margin: 0px;
+}
+
+  .logo img {
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .menu-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .menu-list li a {
+    font-size: 0.9rem;
+  }
+
+  .propuesta-valor h1 {
+    font-size: 2rem;
+  }
+
+  .propuesta-valor p {
+    font-size: 1rem;
+  }
+}
+
+
+
+
+.buscador {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  width: 90%;
+  max-width: 1000px;
+  margin: 30px auto;
+}
+
+.buscador input[type="text"] {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid 	#7dafa6;
+  font-size: 16px;
+  background-color: white;
+  color: #3D4D55;
+  font-weight: 500;
+  width: 280px;
+  text-align: center;
+}
+
+#rango-fechas {
+  width: 380px;
+}
+
+.placeholder-fechas::placeholder {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.selector-huespedes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid 	#7dafa6;
+  font-size: 15px;
+}
+
+.selector-huespedes button {
+  background-color: 	#7dafa6;
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.selector-huespedes button:hover {
+  background-color: #B58863;
+}
+
+.selector-huespedes span {
+  min-width: 60px;
+  text-align: center;
+  font-weight: bold;
+  color: #3D4D55;
+}
+
+.buscador button[type="submit"] {
+  background: transparent;
+  border: 2px solid 	#7dafa6;
+  color: #76998f;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.buscador button[type="submit"]:hover {
+  background: 	#44645f;
+  color: white;
+}
+
+
+/*Calendario*/
+/* 1. Estilo general del calendario */
+.flatpickr-calendar {
+  width: 700px !important;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border: none;
+  padding: 15px;
+}
+
+/* 2. Ocultar días de la semana (lun, mar...) */
+.flatpickr-weekdays {
+  display: none !important;
+}
+
+/* 3. Espaciado y distribución entre días */
+.flatpickr-days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+  justify-content: center;
+  grid-gap: 4px;
+}
+
+/* 4. Día normal */
+.flatpickr-day {
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  line-height: 38px;
+  color: #3D4D55;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+/* 5. Día actual */
+.flatpickr-day.today {
+  border: 1px solid #B58863;
+  background: transparent;
+  color: #3D4D55;
+}
+
+/* 6. Día seleccionado (borde color paleta) */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: none !important;
+  border: 2px solid #B58863 !important;
+  color: #3D4D55 !important;
+}
+
+/* 7. Rango de fechas (fondo clarito) */
+.flatpickr-day.inRange {
+  background: rgba(181, 136, 99, 0.1) !important;
+  color: #3D4D55 !important;
+}
+
+/* 8. Navegación (mes anterior/siguiente) */
+.flatpickr-months .flatpickr-month {
+  font-size: 12px;
+  font-weight: bold;
+  color: #3D4D55;
+  height: auto;
+}
+
+.flatpickr-current-month .flatpickr-prev-month,
+.flatpickr-current-month .flatpickr-next-month {
+  color: #B58863;
+}
+
+/* 9. Soluciona el desbalance visual entre los dos meses */
+.flatpickr-calendar .dayContainer {
+  flex: 1 1 50%;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 50%;
+}
+
+.flatpickr-calendar .dayContainer:last-child {
+  margin-right: 0 !important;
+}
+.flatpickr-calendar .dayContainer:first-child {
+  padding-left: 50px !important;  /* Podés ajustar el valor (10px, 12px, 15px) según lo que veas mejor */
+  padding-bottom: 30px !important;  /* Podés ajustar el valor (10px, 12px, 15px) según lo que veas mejor */
+}
+
+@media (max-width: 768px) {
+  .buscador {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .buscador input[type="text"],
+  #rango-fechas {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1px solid #7dafa6;
+    border-radius: 8px;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .selector-huespedes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid #7dafa6;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .selector-huespedes button {
+    background: #7dafa6;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .selector-huespedes button:hover {
+    background: #5d827b;
+  }
+
+  #cantidad {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .buscador button[type="submit"] {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    background: #7dafa6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .buscador button[type="submit"]:hover {
+    background: #486b64;
+  }
+}
+
+
+
+.bloque-100happy {
+  background-color: #dfdada; /* Color de fondo que venimos usando */
+  padding: 40px 20px;
+}
+
+.contenedor-100happy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px; /* Espacio entre logo y texto */
+  flex-wrap: wrap; /* Por si el espacio es chico que baje bien en móvil */
+}
+
+.logo-happy img {
+  max-width: 200px;
+  height: auto;
+}
+
+.texto-happy {
+  flex: 1;
+  color: #1D292A;
+  font-family: 'Poppins', sans-serif;
+}
+
+.texto-happy h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #4c686a;
+}
+
+.texto-happy p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Vista móvil */
+@media (max-width: 768px) {
+  .contenedor-100happy {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .logo-happy img {
+    max-width: 150px;
+  }
+
+  .texto-happy h2 {
+    font-size: 1.5rem;
+  }
+
+  .texto-happy p {
+    font-size: 1rem;
+  }
+}
+
+/* carrusel comentarios */
+
+.comentarios-section {
+  background-color: #fdf9f6;
+  padding: 120px 20px;
+  font-family: 'Nunito Sans', sans-serif;
+  text-align: center;
+}
+
+.contenedor-comentarios {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 1250px;
+  position: relative;
+  overflow: hidden;
+}
+
+.comentarios-section h2 {
+  font-size: 42px;
+  color: #1D292A;
+  margin-bottom: 60px;
+}
+
+.carrusel-comentarios {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.grupo-comentarios {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+.grupo-comentarios.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.comentario {
+  background-color: #ffffff;
+  color: #3D4D55;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  font-size: 18px;
+  line-height: 1.6;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comentario:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+}
+
+.comentario p {
+  font-size: 17px;
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.comentario .autor {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D292A;
+  margin-bottom: 6px;
+}
+
+.comentario .plataforma {
+  font-size: 15px;
+  font-weight: bold;
+  color: #888;
+}
+
+
+/* Footer */
+
+.footer {
+  background-color: #161616;
+  color: #f5f5f5;
+  padding: 40px 20px 30px;
+  font-family: 'Nunito Sans', sans-serif;
+  text-align: center;
+}
+
+.footer-contenido {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  text-align: center;
+}
+
+.footer-columna {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+}
+
+/* Logo */
+.footer-logo img {
+  width: 200px;
+  height: auto;
+  filter: brightness(0) invert(1); /* para fondo oscuro */
+  margin: 0 auto;
+}
+
+/* Info de contacto */
+.footer-info p {
+  margin: 5px 0;
+  font-size: 18px;
+  color: #cccccc;
+}
+
+.footer-info a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Redes */
+.footer-redes a {
+  margin: 0 10px;
+  display: inline-block;
+}
+
+.footer-redes img {
+  width: 60px;
+  height: 60px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.footer-redes img:hover {
+  transform: scale(1.2);
+}
+
+/* Pie de página */
+.footer-bottom {
+  margin-top: 40px;
+  font-size: 14px;
+  color: #999999;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .footer-contenido {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-redes {
+    margin-top: 20px;
+  }
+}
+
+
+.actividades {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.actividades h2 {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: #070707;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.video-actividad {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.video-actividad video {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+.titulo-video {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(29, 41, 42, 0.6);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+  .actividades {
+    grid-template-columns: 1fr;
+  }
+  
+  .video-actividad video {
+    height: 180px;
+  }
+}

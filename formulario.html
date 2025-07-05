@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmar Reserva - Happy Host</title>
+  <link rel="stylesheet" href="formulario.css">
+  <link rel="icon" type="image/png" href="logo/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="barra-menu">
+          <div class="logo">
+            <img src="logos/happy host.png" alt="Logo Happy Host" href="index.html">
+          </div>
+    
+          <h1 class="titulo-header">Nombre de Alojamiento</h1>
+
+          <div class="volver">
+            <a href="alojamientos.html" class="boton-volver">← Volver a alojamientos</a>
+          </div>
+        </div>
+      </header>
+
+  <div class="container">
+
+    <div class="formulario-reserva">
+      <h2>Datos de contacto</h2>
+      <form id="formularioReserva">
+
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" required>
+
+        <label for="comentarios">Comentarios (opcional)</label>
+        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe aquí si necesitas algo extra..."></textarea>
+
+  <div class="terminos">
+  <input type="checkbox" id="aceptaTerminos" required>
+  <label for="aceptaTerminos">Acepto los <a href="#" id="verTerminos">Términos y Condiciones</a></label>
+</div>
+
+<div class="aviso-contacto">
+  📞 Nos contactaremos por teléfono para coordinar el pago de la seña.
+</div>
+
+
+        <!-- Modal de Términos -->
+<div id="modal-terminos" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar">&times;</span>
+    <h2><strong>Términos y Condiciones de la Reserva</strong></h2>
+
+    <h3>1. Confirmación de la Reserva</h3>
+    <p>La reserva se confirma con una <strong>seña equivalente a 2 noches</strong> mediante <strong>transferencia bancaria en pesos argentinos</strong>.<br>
+    El saldo restante se abona <strong>en efectivo al momento del ingreso</strong>.<br>
+    <strong>No se aceptan pagos con tarjeta de crédito o débito.</strong></p>
+
+    <h3>2. Tarifas en Dólares</h3>
+    <p>Las tarifas en dólares se calculan al <strong>dólar blue del día</strong>.<br>
+    La seña se abona <strong>en pesos argentinos</strong> mediante transferencia.<br>
+    El saldo restante se paga al ingresar, <strong>en efectivo</strong>:
+    <ul>
+      <li>Puede abonarse en <strong>pesos argentinos</strong> o en <strong>dólares estadounidenses</strong>.</li>
+      <li><strong>IMPORTANTE:</strong> Los billetes en dólares deben estar en <strong>perfecto estado</strong> (sin roturas, manchas ni marcas). No se aceptarán billetes deteriorados.</li>
+    </ul>
+    </p>
+
+    <h3>3. Horarios</h3>
+    <p><strong>Check-in:</strong> a partir de las 15:00 hs.<br>
+    <strong>Check-out:</strong> hasta las 10:00 hs.<br>
+    Si querés ingresar antes o salir después de estos horarios, consultanos previamente.</p>
+
+    <h3>4. Información del Alojamiento</h3>
+    <p>Un día antes de tu llegada te enviaremos todos los detalles del alojamiento y la info necesaria para el ingreso.</p>
+
+    <h3>5. Uso de la Propiedad</h3>
+    <p>La propiedad debe mantenerse en buen estado y respetarse la capacidad máxima establecida.<br>
+    Las <strong>parrillas y fogones</strong> deben usarse con extrema precaución para evitar cualquier riesgo de incendio.<br>
+    En caso de rotura de vajilla u otros elementos pequeños, se solicita reponerlos antes del check-out. Recomendamos comprar en:
+    <br>
+    <strong>H2O - Artículos de Cocina y Hogar</strong><br>
+    Dirección: <em>Cerro Inacayal 155, Q8407 Villa La Angostura, Neuquén.</em><br>
+    Si hay daño o rotura de elementos importantes, es obligatorio informar de inmediato para coordinar su reposición.</p>
+
+    <h3>6. Cancelaciones</h3>
+    <p>La seña es <strong>no reembolsable</strong> bajo ninguna circunstancia. En fechas de alta demanda, se pueden aplicar políticas más estrictas.</p>
+  </div>
+</div>
+
+
+        <!-- Inputs ocultos para Property y Room -->
+        <input type="hidden" id="propertyId" name="propertyId">
+        <input type="hidden" id="roomTypeId" name="roomTypeId">
+        <input type="hidden" id="checkInDate" name="checkInDate">
+        <input type="hidden" id="checkOutDate" name="checkOutDate">
+        <input type="hidden" id="numberOfGuests" name="numberOfGuests">
+        <input type="hidden" id="totalPrice" name="totalPrice">
+
+        <button type="submit" id="botonReservar">Confirmar Reserva</button>
+
+      </form>
+    </div>
+
+    <div class="resumen-reserva">
+      <h2>Resumen de la reserva</h2>
+
+      <div class="info-reserva">
+        <img id="imagenPropiedad" src="" alt="Imagen de la propiedad">
+        <h3 id="nombrePropiedad">Nombre Propiedad</h3>
+
+        <p><strong>Fechas:</strong> <span id="fechasReserva"></span></p>
+        <p><strong>Huéspedes:</strong> <span id="huespedesReserva"></span></p>
+        <p><strong>Total:</strong> <span id="precioReserva"></span></p>
+        <p><strong>seña:</strong> <span id="seniaReserva"></span></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="formulario.js"></script>
+
+</body>
+</html>
