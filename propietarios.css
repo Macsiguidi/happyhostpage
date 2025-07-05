@@ -567,6 +567,42 @@
   color: #888;
 }
 
+@media (max-width: 767px) {
+  .comentarios-section {
+    padding: 60px 10px;
+  }
+
+  .contenedor-comentarios {
+    height: auto;  /* Permitimos que el contenedor se ajuste al contenido */
+  }
+
+  .grupo-comentarios {
+    position: static;  /* Quitamos el absolute para que fluya naturalmente */
+    opacity: 1;        /* Siempre visible en mobile, sin fade */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .comentario {
+    min-height: auto;  /* No forzamos altura mínima */
+    font-size: 16px;
+    padding: 20px;
+  }
+
+  .comentario p {
+    font-size: 15px;
+  }
+
+  .comentario .autor {
+    font-size: 14px;
+  }
+
+  .comentario .plataforma {
+    font-size: 13px;
+  }
+}
+
 
 /* Sección de contacto */
 .contacto-section {
@@ -883,3 +919,150 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 767px) {
+  .container-header {
+    padding: 0 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo-container {
+    padding-left: 0;
+    justify-content: center;
+  }
+
+  .logo-hh {
+    height: 100px;
+  }
+
+  .nav-menu {
+    padding-right: 0;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .nav-menu ul {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .nav-menu ul li a {
+    font-size: 14px;
+    color: black;
+  }
+
+  .idioma-banderas {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .idioma-banderas img {
+    width: 20px;
+    height: auto;
+  }
+}
+
+
+
+@media (max-width: 767px) {
+  
+  .propuesta-valor {
+    padding: 20px 10px;
+    text-align: center;
+    margin-top: 200px; /* Ajustá el número según veas necesario */
+  }
+
+  .propuesta-valor h1 {
+    font-size: 20px;
+  }
+
+  .propuesta-valor p {
+    font-size: 14px;
+  }
+
+  .boton-cta {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 767px) {
+  .quienes-somos {
+    padding: 20px 10px;
+    text-align: center;
+  }
+
+  .contenido-quienes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo-quienes img {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .texto-quienes h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .texto-quienes p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 767px) {
+  .porque-elegirnos {
+    padding: 40px 10px;
+  }
+
+  .porque-elegirnos h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .contenedor-beneficios {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .beneficio {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .numero {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .beneficio h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .beneficio p {
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 0 10px;
+  }
+}
+
+
