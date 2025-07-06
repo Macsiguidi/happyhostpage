@@ -29,8 +29,8 @@
       <h1 class="titulo-header">CALAFATE 3</h1>
 
       <div class="volver">
-        <a href="alojamientos.html" class="boton-volver">← Volver a alojamientos</a>
-      </div>
+  <a href="#" id="btnVolver" class="boton-volver">← Volver a alojamientos</a>
+</div>
     </div>
   </header>
 
@@ -198,32 +198,48 @@
     });
   </script>
   
-  <script>
-    const HOUSE_ID = 601708;  // Calafate 3
-    const ROOM_ID  = 668499;  // Calafate 3 Room
+ <script>
+const HOUSE_ID = 601708;
+const ROOM_ID = 668499;
 
-    const params = new URLSearchParams(window.location.search);
-const checkin   = params.get("checkin");
-const checkout  = params.get("checkout");
+const params = new URLSearchParams(window.location.search);
+const checkin = params.get("checkin");
+const checkout = params.get("checkout");
 const huespedes = params.get("huespedes");
 
 localStorage.removeItem("checkin");
 localStorage.removeItem("checkout");
 localStorage.removeItem("huespedes");
 
-const startInput  = document.getElementById('start');
-const endInput    = document.getElementById('end');
+const startInput = document.getElementById('start');
+const endInput = document.getElementById('end');
 const guestsInput = document.getElementById('guests');
-const currSelect  = document.getElementById('currency');
-const resDiv      = document.getElementById('resultado');
+const currSelect = document.getElementById('currency');
+const resDiv = document.getElementById('resultado');
 const reservarBtn = document.getElementById('btnReservar');
+const menosBtn = document.getElementById('menos');
+const masBtn = document.getElementById('mas');
+const contador = document.getElementById('contador');
 
-if (checkin)   startInput.value  = checkin;
-if (checkout)  endInput.value    = checkout;
-if (huespedes) guestsInput.value = huespedes;
-
+let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date();
 hoy.setHours(0, 0, 0, 0);
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (checkin) startInput.value = checkin;
+  if (checkout) endInput.value = checkout;
+  if (huespedes) {
+    guestsInput.value = huespedes;
+    cantidad = parseInt(huespedes);
+  }
+  actualizarContador();
+
+  if (checkin) {
+    setCurrencyAndCalculate(checkin);
+  } else {
+    calculate();
+  }
+});
 
 const startPicker = flatpickr(startInput, {
   altInput: true,
@@ -231,8 +247,12 @@ const startPicker = flatpickr(startInput, {
   dateFormat: 'Y-m-d',
   defaultDate: checkin || null,
   minDate: hoy,
-  disableMobile: true,  // 👈 agregá esto
-  onChange: () => handleCurrencyRules(startInput.value)
+  disableMobile: true,
+  onChange: (selectedDates) => {
+    if (selectedDates[0]) {
+      setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
+    }
+  }
 });
 
 const endPicker = flatpickr(endInput, {
@@ -241,7 +261,7 @@ const endPicker = flatpickr(endInput, {
   dateFormat: 'Y-m-d',
   defaultDate: checkout || null,
   minDate: hoy,
-  disableMobile: true,  // 👈 agregá esto
+  disableMobile: true,
   onChange: calculate
 });
 
@@ -264,41 +284,58 @@ async function loadDisabledDates(picker) {
 
     picker.set('disable', [
       ...rangos.map(r => ({ from: r.from, to: r.to })),
-      date => date < hoy // Bloquea fechas pasadas
+      date => date < hoy
     ]);
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
   }
 }
 
-startPicker.config.onReady.push(()        => loadDisabledDates(startPicker));
-startPicker.config.onMonthChange.push(() => loadDisabledDates(startPicker));
-endPicker.config.onReady.push(()          => loadDisabledDates(endPicker));
-endPicker.config.onMonthChange.push(()    => loadDisabledDates(endPicker));
-startPicker.config.onOpen.push(()         => loadDisabledDates(startPicker));
-endPicker.config.onOpen.push(()           => loadDisabledDates(endPicker));
+[startPicker, endPicker].forEach(picker => {
+  picker.config.onReady.push(() => loadDisabledDates(picker));
+  picker.config.onMonthChange.push(() => loadDisabledDates(picker));
+  picker.config.onOpen.push(() => loadDisabledDates(picker));
+});
+
+function actualizarContador() {
+  contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
+  guestsInput.value = cantidad;
+}
+
+menosBtn.addEventListener('click', () => {
+  if (cantidad > 1) {
+    cantidad--;
+    actualizarContador();
+    calculate();
+  }
+});
+
+masBtn.addEventListener('click', () => {
+  if (cantidad < 6) {
+    cantidad++;
+    actualizarContador();
+    calculate();
+  }
+});
 
 guestsInput.addEventListener('input', calculate);
 currSelect.addEventListener('change', calculate);
 
-function handleCurrencyRules(fechaCheckin) {
-  const fecha  = new Date(fechaCheckin);
+function setCurrencyAndCalculate(fechaCheckin) {
+  const fecha = new Date(fechaCheckin);
   const limite = new Date('2025-09-30');
 
-  if (!fechaCheckin) {
-    currSelect.style.display = 'block';
-    currSelect.disabled = false;
-    return;
-  }
-
-  if (fecha <= limite) {
-    currSelect.value = 'ARS';
+  if (fechaCheckin) {
+    if (fecha <= limite) {
+      currSelect.value = 'ARS';
+    } else {
+      currSelect.value = 'USD';
+    }
     currSelect.style.display = 'none';
     currSelect.disabled = true;
   } else {
-    currSelect.value = 'USD';
-    currSelect.style.display = 'none';
-    currSelect.disabled = true;
+    currSelect.style.display = 'block';
+    currSelect.disabled = false;
   }
 
   calculate();
@@ -312,7 +349,7 @@ function hayCruceConFechasOcupadas(checkin, checkout) {
 
   return fechasOcupadas.some(({ from, to }) => {
     const inicio = new Date(from);
-    const fin    = new Date(to);
+    const fin = new Date(to);
     inicio.setHours(0, 0, 0, 0);
     fin.setHours(0, 0, 0, 0);
     return (
@@ -325,9 +362,9 @@ function hayCruceConFechasOcupadas(checkin, checkout) {
 
 async function calculate() {
   const startValue = startInput.value;
-  const endValue   = endInput.value;
-  const guests     = +guestsInput.value;
-  const moneda     = currSelect.value;
+  const endValue = endInput.value;
+  const guests = +guestsInput.value;
+  const moneda = currSelect.value;
 
   if (!startValue || !endValue) {
     resDiv.textContent = 'Seleccioná ambas fechas.';
@@ -382,16 +419,15 @@ async function calculate() {
     let baseUSD = 0;
     for (let i = 0; i < noches; i++) {
       const d = dias[i];
-      const p = d.prices.find(x =>
-        noches >= x.min_stay && noches <= x.max_stay
-      ) || d.prices.reduce((a, b) => a.min_stay < b.min_stay ? a : b);
+      const p = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
+        || d.prices.reduce((a, b) => a.min_stay < b.min_stay ? a : b);
       baseUSD += p.price_per_day;
     }
 
     const extraUnit = extras[0]?.price_per_day || 12;
-    const extraQty  = Math.max(0, guests - FREE_GUESTS);
-    const extraUSD  = extraQty * extraUnit * noches;
-    const totalUSD  = baseUSD + extraUSD;
+    const extraQty = Math.max(0, guests - FREE_GUESTS);
+    const extraUSD = extraQty * extraUnit * noches;
+    const totalUSD = baseUSD + extraUSD;
 
     const fechaCheckin = new Date(startValue);
     let factorARS = 1400;
@@ -408,20 +444,20 @@ async function calculate() {
       <li>Noches: ${noches}</li>
       <li>Huéspedes: ${guests}</li>` +
       (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total:</strong> ${total.toLocaleString()} ${moneda}</li>
+      `<li><strong>Total:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
     </ul>`;
     resDiv.innerHTML = html;
 
     reservarBtn.disabled = false;
     reservarBtn.onclick = () => {
       const qs = new URLSearchParams({
-        propertyId:     HOUSE_ID,
-        roomTypeId:     ROOM_ID,
-        checkInDate:    startValue,
-        checkOutDate:   endValue,
+        propertyId: HOUSE_ID,
+        roomTypeId: ROOM_ID,
+        checkInDate: startValue,
+        checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice:     total,
-        currency:       moneda
+        totalPrice: total,
+        currency: moneda
       }).toString();
       window.location.href = `formulario.html?${qs}`;
     };
@@ -430,46 +466,10 @@ async function calculate() {
     resDiv.textContent = 'Error al obtener datos: ' + e.message;
   }
 }
-
-const menosBtn = document.getElementById('menos');
-const masBtn   = document.getElementById('mas');
-const contador = document.getElementById('contador');
-let cantidad   = parseInt(huespedes) || 1;
-
-function actualizarContador() {
-  contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
-  guestsInput.value = cantidad;
-  calculate();
-}
-
-menosBtn.addEventListener('click', () => {
-  if (cantidad > 1) {
-    cantidad--;
-    actualizarContador();
-  }
-});
-
-masBtn.addEventListener('click', () => {
-  if (cantidad < 6) {
-    cantidad++;
-    actualizarContador();
-  }
-});
-
-// Inicializar contador visual
-actualizarContador();
+</script>
 
 
-if (startInput.value) {
-  handleCurrencyRules(startInput.value);
-} else {
-  calculate();
-}
-
-
-  </script>
-
-
+<script src="volver.js"></script>
 
 </body>
 </html>

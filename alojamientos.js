@@ -42,12 +42,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ========================================
-// MENÚ HAMBURGUESA
+// GUARDAR PARÁMETROS EN LOCALSTORAGE AL CARGAR
 // ========================================
-document.querySelector('.menu-toggle')?.addEventListener('click', () => {
-  const ul = document.querySelector('.menu-principal ul');
-  ul?.classList.toggle('open');
-  document.body.classList.toggle('menu-abierto');
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const checkin = params.get('checkin');
+  const checkout = params.get('checkout');
+  const huespedes = params.get('huespedes');
+
+  if (checkin) localStorage.setItem('checkin', checkin);
+  if (checkout) localStorage.setItem('checkout', checkout);
+  if (huespedes) localStorage.setItem('huespedes', huespedes);
 });
 
 // ========================================
@@ -78,7 +83,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cards = document.querySelectorAll('.card[data-nombre]');
 
   if (!checkin || !checkout) {
-    // Si no hay fechas, filtro por huéspedes
     cards.forEach(card => {
       const nombre = card.dataset.nombre;
       card.style.display = (huespedes <= capacities[nombre]) ? 'block' : 'none';
@@ -110,19 +114,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ========================================
-// REDIRECCIÓN CON PARÁMETROS
+// FUNCIÓN PARA REDIRIGIR A ALOJAMIENTO CON PARÁMETROS
 // ========================================
 function redirigirConParametros(pagina) {
   const checkin = localStorage.getItem('checkin');
   const checkout = localStorage.getItem('checkout');
   const huespedes = localStorage.getItem('huespedes');
 
-  if (checkin && checkout && huespedes) {
-    const url = `${pagina}?checkin=${checkin}&checkout=${checkout}&huespedes=${huespedes}`;
-    window.location.href = url;
-  } else {
-    window.location.href = pagina;
+  let url = pagina;
+  const params = new URLSearchParams();
+
+  if (checkin) params.append('checkin', checkin);
+  if (checkout) params.append('checkout', checkout);
+  if (huespedes) params.append('huespedes', huespedes);
+
+  if ([...params].length > 0) {
+    url += '?' + params.toString();
   }
+
+  window.location.href = url;
 }
-
-
