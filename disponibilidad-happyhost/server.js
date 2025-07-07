@@ -231,4 +231,58 @@ app.listen(PORT, () =>
 
 
 
+// notificaciones con Pushover
 
+
+app.use(express.json());
+
+// Habilitar CORS para permitir peticiones desde el navegador
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Podés reemplazar * por tu origen exacto si querés más seguro
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+app.post('/notificar-reserva', async (req, res) => {
+  const {
+    nombre,
+    telefono,
+    email,
+    comentarios,
+    checkin,
+    checkout,
+    huespedes,
+    propiedad,
+    total,
+    senia
+  } = req.body;
+
+  const mensaje = `Nueva reserva:
+🏡 Propiedad: ${propiedad}
+👤 Nombre: ${nombre}
+📧 Email: ${email}
+📱 Teléfono: ${telefono}
+💬 Comentarios: ${comentarios || 'Ninguno'}
+📅 Check-in: ${checkin}
+📅 Check-out: ${checkout}
+👥 Huéspedes: ${huespedes}
+💲 Total: ${total}
+💲 Seña: ${senia}`;
+
+  try {
+    await axios.post('https://api.pushover.net/1/messages.json', {
+      token: 'a8nyif562ezb7sc9buqt8aioybkp5n',
+      user: 'uhwyimqvtop7fswmvs4p6i5e69nomg',
+      message: mensaje
+    });
+
+    res.send({ status: 'Notificación enviada' });
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+    res.status(500).send({ status: 'Error', error: error.message });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Servidor corriendo en puerto 3000');
+});

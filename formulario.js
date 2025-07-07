@@ -70,52 +70,63 @@ window.addEventListener('DOMContentLoaded', () => {
   let seniaNoches = (diffDays > 5) ? 2 : 1;
 
   const totalPriceNumber = parseFloat(totalPrice.replace(/[^0-9.-]+/g,""));
+  let montoSenia = 0;
   if (!isNaN(totalPriceNumber) && diffDays > 0) {
     const precioNoche = totalPriceNumber / diffDays;
-    const montoSenia = precioNoche * seniaNoches;
+    montoSenia = precioNoche * seniaNoches;
     document.getElementById('seniaReserva').textContent = `$ ${montoSenia.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
   } else {
     document.getElementById('seniaReserva').textContent = `No disponible`;
   }
-});
 
-// Enviar formulario
-document.getElementById('formularioReserva').addEventListener('submit', async (e) => {
-  e.preventDefault();
+  // SUBMIT
+  document.getElementById('formularioReserva').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-  const form = e.target;
-  const data = {
-    nombre: form.nombre.value,
-    email: form.email.value,
-    telefono: form.telefono.value,
-    comentarios: form.comentarios.value,
-    propertyId: form.propertyId.value,
-    roomTypeId: form.roomTypeId.value,
-    checkInDate: form.checkInDate.value,
-    checkOutDate: form.checkOutDate.value,
-    numberOfGuests: form.numberOfGuests.value,
-    totalPrice: form.totalPrice.value
-  };
-
-  try {
-    const response = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/enviar-reserva', {
+    fetch('https://disponibilidad-happy-host-patagonia.onrender.com/notificar-reserva', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
+      body: JSON.stringify({
+        nombre: document.getElementById('nombre').value,
+        telefono: document.getElementById('telefono').value,
+        email: document.getElementById('email').value,
+        comentarios: document.getElementById('comentarios').value,
+        checkin: checkInDate,
+        checkout: checkOutDate,
+        huespedes: numberOfGuests,
+        propiedad: nombre,
+        total: `$ ${totalPrice}`,
+        senia: `$ ${montoSenia.toFixed(2)}`
+      })
+    })
+    .then(res => res.json())
+.then(data => {
+  console.log('Respuesta del server:', data);
+  Swal.fire({
+    title: '✅ Reserva confirmada',
+    html: 'La notificación fue enviada con éxito.<br>¡Gracias por elegir Happy Host!',
+    imageUrl: 'logos/happy host.png',
+    imageWidth: 100,
+    imageAlt: 'Happy Host',
+    confirmButtonText: '¡Gracias!',
+    confirmButtonColor: '#25D366',
+    timer: 10000, // 10 segundos
+    timerProgressBar: true
+  }).then(() => {
+    window.location.href = 'viajeros.html';
+  });
+})
+.catch(err => {
+  console.error('Error al enviar la notificación:', err);
+  Swal.fire({
+    title: '❌ Error',
+    text: 'Hubo un error al enviar la notificación.',
+    icon: 'error',
+    confirmButtonText: 'OK'
+  });
+});
 
-    const result = await response.json();
-
-    if (result.success) {
-      localStorage.setItem('reservaExitosa', 'true');
-      window.location.href = 'index.html';
-    } else {
-      alert('❌ Hubo un error al enviar la reserva.');
-    }
-  } catch (err) {
-    console.error('Error:', err);
-    alert('❌ No se pudo enviar el formulario.');
-  }
+  });
 });
 
 // MODAL
@@ -137,4 +148,3 @@ window.addEventListener("click", function(e) {
     modal.style.display = "none";
   }
 });
-
