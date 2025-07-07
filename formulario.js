@@ -113,7 +113,7 @@ window.addEventListener('DOMContentLoaded', () => {
     timer: 10000, // 10 segundos
     timerProgressBar: true
   }).then(() => {
-    window.location.href = 'viajeros.html';
+    window.location.href = 'viajero.html';
   });
 })
 .catch(err => {
