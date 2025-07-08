@@ -562,7 +562,7 @@ body {
 
 /* Logo */
 .footer-logo img {
-  width: 200px;
+  width: 150px;
   height: auto;
   filter: brightness(0) invert(1); /* para fondo oscuro */
   margin: 0 auto;
@@ -600,7 +600,7 @@ body {
 /* Pie de página */
 .footer-bottom {
   margin-top: 40px;
-  font-size: 14px;
+  font-size: 20px;
   color: #999999;
   text-align: center;
 }

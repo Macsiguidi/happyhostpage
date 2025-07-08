@@ -6,7 +6,7 @@
   <title>Cruz del Sur 4</title>
 
   <!-- Icono y fuente -->
-  <link rel="icon" href="logos/happy host.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="logos/happyhost.png" sizes="128x128">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -200,6 +200,7 @@
 <script>
 const HOUSE_ID = 601717;
 const ROOM_ID = 668508;
+const SOLO_USD = [601717].includes(HOUSE_ID); // 🚫 Agregá más IDs si querés bloquear pesos
 
 const params = new URLSearchParams(window.location.search);
 const checkin = params.get("checkin");
@@ -324,17 +325,23 @@ function setCurrencyAndCalculate(fechaCheckin) {
   const fecha = new Date(fechaCheckin);
   const limite = new Date('2025-09-30');
 
-  if (fechaCheckin) {
-    if (fecha <= limite) {
-      currSelect.value = 'ARS';
-    } else {
-      currSelect.value = 'USD';
-    }
+  if (SOLO_USD) {
+    currSelect.value = 'USD';
     currSelect.style.display = 'none';
     currSelect.disabled = true;
   } else {
-    currSelect.style.display = 'block';
-    currSelect.disabled = false;
+    if (fechaCheckin) {
+      if (fecha <= limite) {
+        currSelect.value = 'ARS';
+      } else {
+        currSelect.value = 'USD';
+      }
+      currSelect.style.display = 'none';
+      currSelect.disabled = true;
+    } else {
+      currSelect.style.display = 'block';
+      currSelect.disabled = false;
+    }
   }
 
   calculate();
@@ -466,6 +473,7 @@ async function calculate() {
   }
 }
 </script>
+
 
 <script src="volver.js"></script>
 

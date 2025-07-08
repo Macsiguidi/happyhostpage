@@ -6,7 +6,7 @@
   <title>Cruz del Sur 5</title>
 
   <!-- Icono y fuente -->
-  <link rel="icon" href="logos/happy host.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="logos/happyhost.png" sizes="128x128">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -231,12 +231,7 @@ window.addEventListener("DOMContentLoaded", () => {
     cantidad = parseInt(huespedes);
   }
   actualizarContador();
-
-  if (checkin) {
-    setCurrencyAndCalculate(checkin);
-  } else {
-    calculate();
-  }
+  calculate();
 });
 
 const startPicker = flatpickr(startInput, {
@@ -248,7 +243,7 @@ const startPicker = flatpickr(startInput, {
   disableMobile: true,
   onChange: (selectedDates) => {
     if (selectedDates[0]) {
-      setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
+      calculate();
     }
   }
 });
@@ -317,27 +312,11 @@ masBtn.addEventListener('click', () => {
 });
 
 guestsInput.addEventListener('input', calculate);
-currSelect.addEventListener('change', calculate);
 
-function setCurrencyAndCalculate(fechaCheckin) {
-  const fecha = new Date(fechaCheckin);
-  const limite = new Date('2025-09-30');
-
-  if (fechaCheckin) {
-    if (fecha <= limite) {
-      currSelect.value = 'ARS';
-    } else {
-      currSelect.value = 'USD';
-    }
-    currSelect.style.display = 'none';
-    currSelect.disabled = true;
-  } else {
-    currSelect.style.display = 'block';
-    currSelect.disabled = false;
-  }
-
-  calculate();
-}
+// 🔒 Fijamos moneda a USD y ocultamos el selector
+currSelect.value = 'USD';
+currSelect.style.display = 'none';
+currSelect.disabled = true;
 
 function hayCruceConFechasOcupadas(checkin, checkout) {
   const ci = new Date(checkin);
@@ -362,7 +341,7 @@ async function calculate() {
   const startValue = startInput.value;
   const endValue = endInput.value;
   const guests = +guestsInput.value;
-  const moneda = currSelect.value;
+  const moneda = 'USD';
 
   if (!startValue || !endValue) {
     resDiv.textContent = 'Seleccioná ambas fechas.';
@@ -427,22 +406,11 @@ async function calculate() {
     const extraUSD = extraQty * extraUnit * noches;
     const totalUSD = baseUSD + extraUSD;
 
-    const fechaCheckin = new Date(startValue);
-    let factorARS = 1400;
-    if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
-      factorARS = 1250;
-    } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-09-30')) {
-      factorARS = 1320;
-    }
-
-    const total = moneda === 'USD' ? totalUSD : totalUSD * factorARS;
-    const extra = moneda === 'USD' ? extraUSD : extraUSD * factorARS;
-
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
       <li>Huéspedes: ${guests}</li>` +
-      (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
+      (extraQty > 0 ? `<li>Extra huésped: ${extraUSD.toLocaleString()} USD</li>` : '') +
+      `<li><strong>Total:</strong> ${totalUSD.toLocaleString()} USD</strong></li>
     </ul>`;
     resDiv.innerHTML = html;
 
@@ -454,8 +422,8 @@ async function calculate() {
         checkInDate: startValue,
         checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice: total,
-        currency: moneda
+        totalPrice: totalUSD,
+        currency: 'USD'
       }).toString();
       window.location.href = `formulario.html?${qs}`;
     };
@@ -465,6 +433,7 @@ async function calculate() {
   }
 }
 </script>
+
 
 
 <script src="volver.js"></script>

@@ -491,10 +491,11 @@
 
 .contenedor-comentarios {
   max-width: 1400px;
+  height: 1300px; /* altura fija para el carrusel */
   margin: 0 auto;
-  height: 1250px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  padding-bottom: 60px; /* opcional para dejar espacio entre secciones */
 }
 
 .comentarios-section h2 {
@@ -602,6 +603,13 @@
     font-size: 13px;
   }
 }
+
+@media (max-width: 767px) {
+  .grupo-comentarios .comentario:nth-child(n+5) {
+    display: none;
+  }
+}
+
 
 
 /* Sección de contacto */
@@ -776,23 +784,30 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 60px;
+  gap: 40px;
 }
 
+
 .plataforma {
+  width: 150px; /* Tamaño fijo para que todos se vean similares */
+  height: 150px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
+  padding: 10px;
 }
 
 .plataforma img {
-  width: 250px;
-  height: 250px;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
   transition: transform 0.3s ease;
 }
+
+.logo-booking {
+  scale: 1.3; /* Aumenta el tamaño sin distorsionar */
+}
+
 
 .plataforma img:hover {
   transform: scale(1.1);
@@ -804,6 +819,43 @@
   margin: 0;
   font-weight: 600;
 }
+
+@media (max-width: 600px) {
+  .logos-plataformas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    justify-items: center;
+  }
+
+  .plataforma {
+    width: 160px;
+    height: 160px;
+    padding: 5px;
+  }
+
+  .plataforma img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .logo-booking {
+    scale: 1.6;
+  }
+
+  .plataformas-section h2 {
+    font-size: 22px;
+    margin-bottom: 30px;
+  }
+
+  .plataformas-section {
+    padding: 50px 10px;
+  }
+}
+
+
+
 
 
 /* Footer */
@@ -835,7 +887,7 @@
 
 /* Logo */
 .footer-logo img {
-  width: 200px;
+  width: 150px;
   height: auto;
   filter: brightness(0) invert(1); /* para fondo oscuro */
   margin: 0 auto;
@@ -873,7 +925,7 @@
 /* Pie de página */
 .footer-bottom {
   margin-top: 40px;
-  font-size: 14px;
+  font-size: 20px;
   color: #999999;
   text-align: center;
 }
@@ -890,21 +942,6 @@
   }
 }
 
-
-@media (max-width: 768px) {
-  .logos-plataformas {
-    gap: 40px;
-  }
-
-  .plataforma img {
-    width: 60px;
-    height: 60px;
-  }
-
-  .plataformas-section h2 {
-    font-size: 28px;
-  }
-}
 
 
 
@@ -1066,3 +1103,8 @@
 }
 
 
+@media (max-width: 767px) {
+  .grupo-comentarios .comentario:nth-child(n+5) {
+    display: none;
+  }
+}
