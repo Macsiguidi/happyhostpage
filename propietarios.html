@@ -403,17 +403,73 @@
     </div>
 
     <!-- ✍️ Formulario de contacto -->
-    <div class="columna-formulario">
-      <h2>Contactanos</h2>
-      <p>Dejanos tus datos y te respondemos en menos de 24hs.</p>
+    <!-- ✍️ Formulario de contacto propietarios -->
+<div class="columna-formulario">
+  <h2>Contactanos</h2>
+  <p>Dejanos tus datos y te respondemos en menos de 24hs.</p>
 
-      <form class="formulario-contacto" action="https://formspree.io/f/tu-endpoint" method="POST">
-        <input type="text" name="nombre" placeholder="Tu nombre" required>
-        <input type="email" name="email" placeholder="Tu correo electrónico" required>
-        <textarea name="mensaje" rows="5" placeholder="Contanos qué necesitás..." required></textarea>
-        <button type="submit">Enviar mensaje</button>
-      </form>
-    </div>
+  <form class="formulario-contacto" id="form-propietario">
+    <input type="text" name="nombre" placeholder="Tu nombre" required>
+    <input type="email" name="email" placeholder="Tu correo electrónico" required>
+    <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+
+   <div class="fila-fecha-hora">
+  <div class="campo-fecha">
+    <label for="dia">Elegí el día para que te llamemos</label>
+    <input type="date" id="dia" name="dia" required onclick="this.showPicker()">
+  </div>
+
+  <div class="campo-hora">
+    <label for="hora">Elegí el horario (de 9:00 a 18:00)</label>
+    <select id="hora" name="hora" required>
+      <option value="">--Seleccionar--</option>
+      <option value="09:00">09:00</option>
+      <option value="09:30">09:30</option>
+      <option value="10:00">10:00</option>
+      <option value="10:30">10:30</option>
+      <option value="11:00">11:00</option>
+      <option value="11:30">11:30</option>
+      <option value="12:00">12:00</option>
+      <option value="12:30">12:30</option>
+      <option value="13:00">13:00</option>
+      <option value="13:30">13:30</option>
+      <option value="14:00">14:00</option>
+      <option value="14:30">14:30</option>
+      <option value="15:00">15:00</option>
+      <option value="15:30">15:30</option>
+      <option value="16:00">16:00</option>
+      <option value="16:30">16:30</option>
+      <option value="17:00">17:00</option>
+      <option value="17:30">17:30</option>
+      <option value="18:00">18:00</option>
+    </select>
+  </div>
+</div>
+
+
+
+   <div class="bloque-planes">
+  <label for="plan">Seleccioná un plan:</label>
+  <div class="fila-planes">
+    <input type="radio" name="plan" id="basico" value="Básico" hidden>
+    <label for="basico" class="opcion-plan plan-basico">Plan Esencial</label>
+
+    <input type="radio" name="plan" id="intermedio" value="Intermedio" hidden>
+    <label for="intermedio" class="opcion-plan plan-intermedio">Plan Feliz</label>
+
+    <input type="radio" name="plan" id="premium" value="Premium" hidden>
+    <label for="premium" class="opcion-plan plan-premium">Plan 100% Happy</label>
+  </div>
+</div>
+
+
+
+    <textarea name="mensaje" rows="5" placeholder="Contanos qué necesitás..." required></textarea>
+    <button type="submit">Enviar mensaje</button>
+  </form>
+</div>
+
+
 
   </div>
 </section>
@@ -473,5 +529,25 @@
 
 
 <script src="propietarios.js"></script>
+
+<script>
+  const opciones = document.querySelectorAll('.opcion-plan');
+
+  opciones.forEach(opcion => {
+    opcion.addEventListener('click', () => {
+      // Sacar la clase 'selected' de todos
+      opciones.forEach(o => o.classList.remove('selected'));
+
+      // Agregar la clase 'selected' al que se clickeó
+      opcion.classList.add('selected');
+
+      // Seleccionar el input interno
+      const input = opcion.querySelector('input[type="radio"]');
+      input.checked = true;
+    });
+  });
+</script>
+
+
 </body>
 </html>

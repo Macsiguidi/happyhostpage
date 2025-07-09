@@ -711,7 +711,8 @@
 }
 
 .formulario-contacto input,
-.formulario-contacto textarea {
+.formulario-contacto textarea,
+.formulario-contacto select {
   width: 100%;
   padding: 15px;
   font-size: 16px;
@@ -724,12 +725,21 @@
 }
 
 .formulario-contacto input:focus,
-.formulario-contacto textarea:focus {
+.formulario-contacto textarea:focus,
+.formulario-contacto select:focus {
   outline: none;
   border-color: #B58863;
   box-shadow: 0 0 0 2px rgba(181, 136, 99, 0.2);
 }
 
+.formulario-contacto label {
+  font-weight: bold;
+  color: #3D4D55;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+/* Botón */
 .formulario-contacto button {
   background-color: #B58863;
   color: white;
@@ -746,6 +756,133 @@
   background-color: #a27451;
 }
 
+/* Bloque del selector de plan */
+.bloque-planes {
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Título del selector */
+.bloque-planes label[for="plan"] {
+  display: block;
+  font-weight: bold;
+  color: #414b51;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Contenedor de planes en fila */
+.fila-planes {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Cada opción de plan */
+.opcion-plan {
+  flex: 1 1 33%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;           /* 👈 Tamaño de letra editable */
+  min-height: 35px;          /* 👈 Altura editable */
+  background-color: #b0a69d;
+  color: white !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Input oculto */
+.opcion-plan input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Plan seleccionado */
+.opcion-plan.selected {
+  background-color: #6f8759; /* 👈 Cambia el color al seleccionar */
+  color: white;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive: vertical en móviles */
+@media (max-width: 768px) {
+  .fila-planes {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opcion-plan {
+    flex: 1 1 100%;
+  }
+}
+
+
+/* Día y horario en la misma fila */
+.fila-fecha-hora {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.campo-fecha,
+.campo-hora {
+  flex: 1 1 48%;
+  display: flex;
+  flex-direction: column;
+}
+
+.campo-fecha label,
+.campo-hora label {
+  font-weight: bold;
+  color: #3D4D55;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.campo-fecha input,
+.campo-hora select {
+  padding: 10px 14px;
+  font-size: 15px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  font-family: 'Nunito Sans', sans-serif;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* Al hacer foco */
+.campo-fecha input:focus,
+.campo-hora select:focus {
+  outline: none;
+  border-color: #B58863;
+  box-shadow: 0 0 0 2px rgba(181, 136, 99, 0.2);
+}
+
+/* Para que se vea bien en pantallas chicas */
+@media (max-width: 900px) {
+  .fila-fecha-hora {
+    flex-direction: column;
+  }
+
+  .campo-fecha,
+  .campo-hora {
+    width: 100%;
+  }
+}
+
+
+/* Responsive */
 @media (max-width: 900px) {
   .contenedor-formulario-contacto {
     flex-direction: column;
@@ -757,7 +894,11 @@
     width: 100%;
     text-align: center;
   }
+
 }
+
+}
+
 
 
 /* Sección de plataformas */
