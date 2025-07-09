@@ -286,3 +286,51 @@ app.post('/notificar-reserva', async (req, res) => {
 app.listen(3000, () => {
   console.log('Servidor corriendo en puerto 3000');
 });
+
+// servidor para formulario de propietarios
+
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const axios = require("axios");
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Claves de Pushover
+const USER_KEY = "udbr5cvegxckcin59py95xt5wsq8jd";
+const API_TOKEN = "a9pjwizhvmj2gkmo6x27pxvjanw8zz";
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+
+// Ruta para recibir datos del formulario
+app.post("/notificacion", async (req, res) => {
+  const { mensaje } = req.body;
+
+  if (!mensaje) {
+    return res.status(400).json({ error: "Falta el mensaje" });
+  }
+
+  try {
+    await axios.post("https://api.pushover.net/1/messages.json", {
+      token: API_TOKEN,
+      user: USER_KEY,
+      message: mensaje,
+      title: "Nuevo contacto de propietario",
+      sound: "gamelan",
+      priority: 1
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Error al enviar Pushover:", error.message);
+    res.status(500).json({ error: "Error al enviar notificación" });
+  }
+});
+
+// Inicio del servidor
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en puerto ${PORT}`);
+});
