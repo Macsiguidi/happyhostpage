@@ -1249,3 +1249,29 @@
     display: none;
   }
 }
+
+
+#mensaje-flotante {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #25d366;
+  color: white;
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000;
+  font-weight: bold;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#mensaje-flotante.mostrar {
+  opacity: 1;
+}
+
+.oculto {
+  display: none;
+}

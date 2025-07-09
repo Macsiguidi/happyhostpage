@@ -526,6 +526,9 @@
   </div>
 </footer>
 
+<div id="mensaje-flotante" class="oculto">
+  <p id="texto-mensaje"></p>
+</div>
 
 
 <script src="propietarios.js"></script>
@@ -546,7 +549,60 @@
       input.checked = true;
     });
   });
+
+  document.getElementById('form-propietario').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const nombre   = this.nombre.value;
+  const email    = this.email.value;
+  const telefono = this.telefono.value;
+  const dia      = this.dia.value;
+  const hora     = this.hora.value;
+  const plan     = this.plan.value || document.querySelector('input[name="plan"]:checked')?.value;
+  const mensaje  = this.mensaje.value;
+
+  const datos = { nombre, email, telefono, dia, hora, plan, mensaje };
+
+  try {
+   const res = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/enviar-formulario-propietario', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(datos)
+});
+
+
+    const resultado = await res.json();
+    if (resultado.status === 'Notificación enviada') {
+  mostrarMensaje('✅ Gracias por escribirnos, nos vamos a comunicar con vos muy pronto 🙌');
+  this.reset();
+} else {
+  alert('Error al enviar el formulario.');
+  console.error(resultado);
+}
+
+  } catch (err) {
+    console.error('❌ Error al enviar:', err);
+    alert('Ocurrió un error. Intentá de nuevo más tarde.');
+  }
+});
+
+function mostrarMensaje(texto) {
+  const contenedor = document.getElementById('mensaje-flotante');
+  const parrafo = document.getElementById('texto-mensaje');
+
+  parrafo.textContent = texto;
+  contenedor.classList.remove('oculto');
+  contenedor.classList.add('mostrar');
+
+  setTimeout(() => {
+    contenedor.classList.remove('mostrar');
+    setTimeout(() => {
+      contenedor.classList.add('oculto');
+    }, 300);
+  }, 3000);
+}
 </script>
+
 
 </body>
 </html>

@@ -291,34 +291,35 @@ app.listen(3000, () => {
 
 
 app.post('/enviar-formulario-propietario', async (req, res) => {
-  const { nombre, email, telefono, dia, hora, plan, mensaje } = req.body;
+  const {
+    nombre,
+    email,
+    telefono,
+    dia,
+    hora,
+    plan,
+    mensaje
+  } = req.body;
 
-  const contenido = `
-📩 NUEVO FORMULARIO DE PROPIETARIO:
-
+  const contenido = `Nuevo contacto de propietario:
 👤 Nombre: ${nombre}
 📧 Email: ${email}
-📞 Teléfono: ${telefono}
-📅 Día preferido: ${dia}
+📱 Teléfono: ${telefono}
+📅 Día para llamada: ${dia}
 🕒 Hora preferida: ${hora}
 📦 Plan elegido: ${plan}
-📝 Mensaje: ${mensaje}
-  `;
+💬 Mensaje: ${mensaje}`;
 
   try {
     await axios.post('https://api.pushover.net/1/messages.json', {
       token: 'a9pjwizhvmj2gkmo6x27pxvjanw8zz',
       user: 'udbr5cvegxckcin59py95xt5wsq8jd',
-      message: contenido,
-      title: 'Nuevo contacto de propietario',
-      priority: 1
+      message: contenido
     });
 
-    console.log('✅ Notificación enviada a Pushover');
-    res.status(200).json({ success: true });
+    res.send({ status: 'Notificación enviada' });
   } catch (error) {
-    console.error('❌ Error al enviar notificación de propietario:', error.message);
-    res.status(500).json({ success: false, error: 'Error al enviar notificación' });
+    console.error(error.response ? error.response.data : error.message);
+    res.status(500).send({ status: 'Error', error: error.message });
   }
 });
-
