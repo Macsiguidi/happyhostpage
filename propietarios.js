@@ -58,33 +58,37 @@ setInterval(() => {
     }
   });
 
+//envio formulario propietario
 
+   document.getElementById('form-propietario').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-    const formulario = document.getElementById('form-propietario');
+  const nombre   = this.nombre.value;
+  const email    = this.email.value;
+  const telefono = this.telefono.value;
+  const dia      = this.dia.value;
+  const hora     = this.hora.value;
+  const plan     = this.plan.value || document.querySelector('input[name="plan"]:checked')?.value;
+  const mensaje  = this.mensaje.value;
 
-  formulario.addEventListener('submit', async function (e) {
-    e.preventDefault();
+  const datos = { nombre, email, telefono, dia, hora, plan, mensaje };
 
-    const formData = new FormData(formulario);
-    const data = Object.fromEntries(formData.entries());
+  try {
+    const res = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/enviar-formulario-propietario', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos)
+    });
 
-    try {
-      const response = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/enviar-formulario', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-        alert('¡Formulario enviado! Te contactamos pronto 😊');
-        formulario.reset();
-      } else {
-        alert('Error al enviar. Probá de nuevo.');
-      }
-    } catch (error) {
-      console.error('Error al enviar:', error);
-      alert('Error de conexión. Probá más tarde.');
+    const resultado = await res.json();
+    if (resultado.success) {
+      alert('¡Mensaje enviado con éxito!');
+      this.reset();
+    } else {
+      alert('Error al enviar el formulario.');
     }
-  });
+  } catch (err) {
+    console.error('❌ Error al enviar:', err);
+    alert('Ocurrió un error. Intentá de nuevo más tarde.');
+  }
+});

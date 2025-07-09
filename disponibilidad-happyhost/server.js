@@ -289,48 +289,36 @@ app.listen(3000, () => {
 
 // servidor para formulario de propietarios
 
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const axios = require("axios");
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+app.post('/enviar-formulario-propietario', async (req, res) => {
+  const { nombre, email, telefono, dia, hora, plan, mensaje } = req.body;
 
-// Claves de Pushover
-const USER_KEY = "udbr5cvegxckcin59py95xt5wsq8jd";
-const API_TOKEN = "a9pjwizhvmj2gkmo6x27pxvjanw8zz";
+  const contenido = `
+📩 NUEVO FORMULARIO DE PROPIETARIO:
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-
-// Ruta para recibir datos del formulario
-app.post("/notificacion", async (req, res) => {
-  const { mensaje } = req.body;
-
-  if (!mensaje) {
-    return res.status(400).json({ error: "Falta el mensaje" });
-  }
+👤 Nombre: ${nombre}
+📧 Email: ${email}
+📞 Teléfono: ${telefono}
+📅 Día preferido: ${dia}
+🕒 Hora preferida: ${hora}
+📦 Plan elegido: ${plan}
+📝 Mensaje: ${mensaje}
+  `;
 
   try {
-    await axios.post("https://api.pushover.net/1/messages.json", {
-      token: API_TOKEN,
-      user: USER_KEY,
-      message: mensaje,
-      title: "Nuevo contacto de propietario",
-      sound: "gamelan",
+    await axios.post('https://api.pushover.net/1/messages.json', {
+      token: 'a9pjwizhvmj2gkmo6x27pxvjanw8zz',
+      user: 'udbr5cvegxckcin59py95xt5wsq8jd',
+      message: contenido,
+      title: 'Nuevo contacto de propietario',
       priority: 1
     });
 
+    console.log('✅ Notificación enviada a Pushover');
     res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Error al enviar Pushover:", error.message);
-    res.status(500).json({ error: "Error al enviar notificación" });
+    console.error('❌ Error al enviar notificación de propietario:', error.message);
+    res.status(500).json({ success: false, error: 'Error al enviar notificación' });
   }
 });
 
-// Inicio del servidor
-app.listen(PORT, () => {
-  console.log(`Servidor funcionando en puerto ${PORT}`);
-});
