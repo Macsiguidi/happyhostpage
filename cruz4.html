@@ -232,6 +232,9 @@ let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date();
 hoy.setHours(0, 0, 0, 0);
 
+// 🔒 Fecha máxima permitida para Cruz del Sur 4
+const fechaLimite = new Date('2025-12-15');
+
 window.addEventListener("DOMContentLoaded", () => {
   if (checkin) startInput.value = checkin;
   if (checkout) endInput.value = checkout;
@@ -254,6 +257,7 @@ const startPicker = flatpickr(startInput, {
   dateFormat: 'Y-m-d',
   defaultDate: checkin || null,
   minDate: hoy,
+  maxDate: fechaLimite,
   disableMobile: true,
   onChange: (selectedDates) => {
     if (selectedDates[0]) {
@@ -268,6 +272,7 @@ const endPicker = flatpickr(endInput, {
   dateFormat: 'Y-m-d',
   defaultDate: checkout || null,
   minDate: hoy,
+  maxDate: fechaLimite,
   disableMobile: true,
   onChange: calculate
 });
@@ -291,7 +296,7 @@ async function loadDisabledDates(picker) {
 
     picker.set('disable', [
       ...rangos.map(r => ({ from: r.from, to: r.to })),
-      date => date < hoy
+      date => date < hoy || date > fechaLimite
     ]);
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
@@ -480,6 +485,7 @@ async function calculate() {
   }
 }
 </script>
+
 
 
 <script src="volver.js"></script>

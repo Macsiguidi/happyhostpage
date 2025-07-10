@@ -233,6 +233,9 @@ let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date();
 hoy.setHours(0, 0, 0, 0);
 
+// 🔒 Limite de fecha para reservas (modificá solo esta línea según la propiedad)
+const fechaLimite = new Date('2026-04-30');
+
 window.addEventListener("DOMContentLoaded", () => {
   if (checkin) startInput.value = checkin;
   if (checkout) endInput.value = checkout;
@@ -255,6 +258,7 @@ const startPicker = flatpickr(startInput, {
   dateFormat: 'Y-m-d',
   defaultDate: checkin || null,
   minDate: hoy,
+  maxDate: fechaLimite,
   disableMobile: true,
   onChange: (selectedDates) => {
     if (selectedDates[0]) {
@@ -269,6 +273,7 @@ const endPicker = flatpickr(endInput, {
   dateFormat: 'Y-m-d',
   defaultDate: checkout || null,
   minDate: hoy,
+  maxDate: fechaLimite,
   disableMobile: true,
   onChange: calculate
 });
@@ -292,7 +297,7 @@ async function loadDisabledDates(picker) {
 
     picker.set('disable', [
       ...rangos.map(r => ({ from: r.from, to: r.to })),
-      date => date < hoy
+      date => date < hoy || date > fechaLimite
     ]);
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
@@ -452,7 +457,7 @@ async function calculate() {
       <li>Noches: ${noches}</li>
       <li>Huéspedes: ${guests}</li>` +
       (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
+      `<li><strong>Total:</strong> ${total.toLocaleString()} ${moneda}</li>
     </ul>`;
     resDiv.innerHTML = html;
 

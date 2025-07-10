@@ -897,7 +897,7 @@
 
 }
 
-}
+
 
 
 
@@ -916,10 +916,13 @@
 }
 
 .plataformas-section h2 {
+  font-family: 'Poppins', sans-serif;
   font-size: 36px;
   color: #1D292A;
   margin-bottom: 60px;
+  text-align: center;
 }
+
 
 .logos-plataformas {
   display: flex;
