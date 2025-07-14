@@ -231,14 +231,16 @@ app.listen(PORT, () =>
 
 
 
-// notificaciones con Pushover
-
+//reserva pushover
+const express = require('express');
+const axios = require('axios');
+const app = express();
 
 app.use(express.json());
 
-// Habilitar CORS para permitir peticiones desde el navegador
+// Habilitar CORS
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Podés reemplazar * por tu origen exacto si querés más seguro
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
@@ -254,7 +256,8 @@ app.post('/notificar-reserva', async (req, res) => {
     huespedes,
     propiedad,
     total,
-    senia
+    senia,
+    cupon // ahora es el texto tipo ✅ Cupón: HAPPYINVIERNO
   } = req.body;
 
   const mensaje = `Nueva reserva:
@@ -267,7 +270,8 @@ app.post('/notificar-reserva', async (req, res) => {
 📅 Check-out: ${checkout}
 👥 Huéspedes: ${huespedes}
 💲 Total: ${total}
-💲 Seña: ${senia}`;
+💲 Seña: ${senia}
+🎟️ ${cupon || 'Sin cupón'}`; // 👈 mostramos siempre
 
   try {
     await axios.post('https://api.pushover.net/1/messages.json', {
@@ -286,6 +290,7 @@ app.post('/notificar-reserva', async (req, res) => {
 app.listen(3000, () => {
   console.log('Servidor corriendo en puerto 3000');
 });
+
 
 // servidor para formulario de propietarios
 
