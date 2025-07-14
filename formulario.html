@@ -50,6 +50,15 @@
         <label for="comentarios">Comentarios (opcional)</label>
         <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe aquí si necesitas algo extra..."></textarea>
 
+
+
+        <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+  <input type="text" id="cuponDescuento" placeholder="Código de descuento (opcional)" />
+  <button type="button" id="aplicarCupon" style="padding: 5px 10px;">Aplicar</button>
+</div>
+<p id="descuentoLabel"></p>
+
+
   <div class="terminos">
   <input type="checkbox" id="aceptaTerminos" required>
   <label for="aceptaTerminos">Acepto los <a href="#" id="verTerminos">Términos y Condiciones</a></label>
@@ -126,8 +135,9 @@
 
         <p><strong>Fechas:</strong> <span id="fechasReserva"></span></p>
         <p><strong>Huéspedes:</strong> <span id="huespedesReserva"></span></p>
-        <p><strong>Total:</strong> <span id="precioReserva"></span></p>
-        <p><strong>seña:</strong> <span id="seniaReserva"></span></p>
+        <p><strong>Total:</strong> <span id="precioReserva" class="precio-original"></span> <span id="precioConDescuento" class="precio-descuento"></span></p>
+        <p><strong>Seña:</strong> <span id="seniaReserva"></span></p>
+        <p id="descuentoLabel"></p>
       </div>
 
     </div>

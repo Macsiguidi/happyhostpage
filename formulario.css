@@ -222,6 +222,40 @@ body {
   cursor: pointer;
 }
 
+#precioReserva {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+#total-final {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1D292A;
+}
+
+.tachado {
+  text-decoration: line-through;
+  color: red;
+}
+
+.precio-descuento {
+  font-weight: bold;
+  margin-left: 8px;
+  color: green;
+  font-size: 1.5rem;
+}
+
+
+#descuentoLabel {
+  font-size: 0.9rem;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+
+
+
 @media (max-width: 768px) {
   .barra-menu {
     flex-direction: column;
@@ -272,5 +306,41 @@ body {
 
   .modal-contenido {
     padding: 12px;
+  }
+}
+
+
+#aplicarCupon {
+  background-color: #25D366; /* Verde WhatsApp */
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#aplicarCupon:hover {
+  background-color: #1ea154;
+}
+
+@media (max-width: 600px) {
+  #cuponDescuento,
+  #aplicarCupon {
+    width: 100%;
+  }
+
+  #cuponDescuento {
+    margin-bottom: 10px;
+  }
+
+  #aplicarCupon {
+    padding: 10px;
+  }
+
+  #cuponDescuento + #aplicarCupon {
+    margin-top: 5px;
   }
 }

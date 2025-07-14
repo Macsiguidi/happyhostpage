@@ -148,3 +148,102 @@ window.addEventListener("click", function(e) {
     modal.style.display = "none";
   }
 });
+
+
+// 🎯 CUPON DE DESCUENTO CON PRECIO TACHADO Y SEÑA ACTUALIZADA
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+
+  const propertyId = params.get('propertyId');
+  const roomTypeId = params.get('roomTypeId');
+  const checkInDate = params.get('checkInDate');
+  const checkOutDate = params.get('checkOutDate');
+  const numberOfGuests = params.get('numberOfGuests');
+  const totalPrice = params.get('totalPrice');
+
+  // Mapas
+  const nombreMap = {
+    '601552': 'calafate1',
+    '601707': 'calafate2',
+    '601708': 'calafate3',
+    '601710': 'calafate4',
+    '601711': 'calafate5',
+    '601712': 'calafate6',
+    '601713': 'calafate7',
+    '601720': 'paisajismo',
+    '601717': 'cruzdelsur4',
+    '601714': 'cruzdelsur5',
+    '601719': 'nilidas',
+    '648950': 'gurisa'
+  };
+
+  const alojamientoActual = nombreMap[propertyId];
+
+  const totalSpan = document.getElementById('precioReserva');
+  const descuentoSpan = document.getElementById('precioConDescuento');
+  const seniaSpan = document.getElementById('seniaReserva');
+  const labelCupon = document.getElementById('descuentoLabel');
+  const inputCupon = document.getElementById('cuponDescuento');
+  const botonCupon = document.getElementById('aplicarCupon');
+
+  const totalOriginal = parseFloat(totalPrice);
+
+  totalSpan.textContent = `$${totalOriginal.toFixed(2)}`;
+
+  const checkinDateObj = new Date(checkInDate);
+  const checkoutDateObj = new Date(checkOutDate);
+  const diffTime = Math.abs(checkoutDateObj - checkinDateObj);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  let seniaNoches = (diffDays > 5) ? 2 : 1;
+  let precioPorNoche = totalOriginal / diffDays;
+  let seniaOriginal = precioPorNoche * seniaNoches;
+
+  seniaSpan.textContent = `$${seniaOriginal.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
+
+  const cupones = {
+    "HAPPYINVIERNO": {
+      porcentaje: 15,
+      alojamientos: ["calafate1", "calafate2", "calafate3", "calafate4", "calafate5", "calafate6", "calafate7", "paisajismo"],
+      desde: new Date("2025-06-01"),
+      hasta: new Date("2025-08-31")
+    },
+    "PRIMAVERA2025": {
+      porcentaje: 20,
+      alojamientos: ["calafate1", "calafate2", "calafate3", "calafate4", "calafate5", "calafate6", "calafate7", "paisajismo"],
+      desde: new Date("2025-09-01"),
+      hasta: new Date("2025-10-30")
+    }
+  };
+
+  botonCupon.addEventListener('click', () => {
+    const codigo = inputCupon.value.trim().toUpperCase();
+    const cupon = cupones[codigo];
+    const hoy = new Date();
+
+    if (
+      cupon &&
+      cupon.alojamientos.includes(alojamientoActual) &&
+      hoy >= cupon.desde && hoy <= cupon.hasta
+    ) {
+      const descuento = (totalOriginal * cupon.porcentaje) / 100;
+      const totalConDescuento = totalOriginal - descuento;
+
+      totalSpan.classList.add('tachado');
+      descuentoSpan.textContent = `$${totalConDescuento.toFixed(2)}`;
+
+      const precioNocheDescuento = totalConDescuento / diffDays;
+      const seniaConDescuento = precioNocheDescuento * seniaNoches;
+      seniaSpan.textContent = `$${seniaConDescuento.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
+
+      labelCupon.textContent = `Cupón aplicado: ${codigo} (-${cupon.porcentaje}%)`;
+      labelCupon.style.color = "green";
+
+    } else {
+      labelCupon.textContent = "Cupón inválido o fuera de fecha.";
+      labelCupon.style.color = "red";
+      totalSpan.classList.remove('tachado');
+      descuentoSpan.textContent = "";
+      seniaSpan.textContent = `$${seniaOriginal.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
+    }
+  });
+});
