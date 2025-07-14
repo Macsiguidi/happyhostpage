@@ -5,6 +5,7 @@ const ical    = require('node-ical');
 const nodemailer = require('nodemailer');
 const app      = express();
 const PORT = process.env.PORT || 3000;
+
 const API_KEY  = 'tQF5BDMXbeN/vkKMRZiWKwM461gD8wL16EtUbwboi1OayWd3VZ24FMNKAuCF+3+m';
 const BASE_URL = 'https://api.lodgify.com';
 const cache    = {};
@@ -69,7 +70,8 @@ const icsUrls = {
   gurisa:      'https://www.lodgify.com/255b2a6d-26ce-469f-8d84-58443c3f361f.ics',
   paisajismo:  'https://www.lodgify.com/bd2720b5-ee80-4173-96bf-5fb5aafb84d1.ics'
 };
-// Endpoint de ocupados desde .ics
+
+// Endpoint para ocupación
 app.get('/api/ocupados/:casa', async (req, res) => {
   const nombre = req.params.casa;
   const url = icsUrls[nombre];
@@ -79,7 +81,6 @@ app.get('/api/ocupados/:casa', async (req, res) => {
   }
 
   try {
-    // Si está cacheado, devolvemos rápido
     if (cache[nombre] && (Date.now() - cache[nombre].timestamp < CACHE_TTL_MS)) {
       return res.json(cache[nombre].data);
     }
@@ -88,33 +89,25 @@ app.get('/api/ocupados/:casa', async (req, res) => {
     const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
 
     const eventos = Object.values(data)
-  .filter(ev => ev.type === 'VEVENT')
-  .map(ev => {
-    const inicio = new Date(ev.start);
-    const fin    = new Date(ev.end);
-    if (fin < hoy) return null; // ⛔ Ignoramos eventos que ya pasaron
+      .filter(ev => ev.type === 'VEVENT')
+      .map(ev => {
+        const inicio = new Date(ev.start);
+        const fin    = new Date(ev.end);
+        if (fin < hoy) return null;
 
-    const desde = new Date(inicio);
-    desde.setDate(desde.getDate() + 1);
-    const from = desde.toISOString().split('T')[0];
+        const desde = new Date(inicio);
+        desde.setDate(desde.getDate() + 1);
+        const from = desde.toISOString().split('T')[0];
 
-    const hasta = new Date(fin);
-    hasta.setDate(hasta.getDate() - 1);
-    const to = hasta.toISOString().split('T')[0];
+        const hasta = new Date(fin);
+        hasta.setDate(hasta.getDate() - 1);
+        const to = hasta.toISOString().split('T')[0];
 
-    console.log('⏳ Evento leído:', ev.summary, '→', from, 'a', to);
+        return { from, to };
+      })
+      .filter(Boolean);
 
-    return { from, to };
-  })
-  .filter(Boolean);
-
-
-    // Guardamos en cache
-    cache[nombre] = {
-      data: eventos,
-      timestamp: Date.now()
-    };
-
+    cache[nombre] = { data: eventos, timestamp: Date.now() };
     res.json(eventos);
   } catch (err) {
     console.error('⛔ Error al cargar el .ics:', err.message);
@@ -122,7 +115,7 @@ app.get('/api/ocupados/:casa', async (req, res) => {
   }
 });
 
-// Chequear alojamientos disponibles
+// Endpoint para disponibilidad general
 app.get('/api/disponibles', async (req, res) => {
   const { checkin, checkout } = req.query;
 
@@ -172,11 +165,7 @@ app.get('/api/disponibles', async (req, res) => {
     }
   }
 
-  cache[cacheKey] = {
-    data: disponibles,
-    timestamp: now
-  };
-
+  cache[cacheKey] = { data: disponibles, timestamp: now };
   res.json({ disponibles });
 });
 
@@ -224,40 +213,12 @@ app.post('/enviar-reserva', async (req, res) => {
   }
 });
 
-// Iniciar server
-app.listen(PORT, () =>
-  console.log(`⚡ Server corriendo en http://localhost:${PORT}`)
-);
-
-
-
-//reserva pushover
-const express = require('express');
-const axios = require('axios');
-const app = express();
-
-app.use(express.json());
-
-// Habilitar CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
+// Notificación por Pushover (reserva)
 app.post('/notificar-reserva', async (req, res) => {
   const {
-    nombre,
-    telefono,
-    email,
-    comentarios,
-    checkin,
-    checkout,
-    huespedes,
-    propiedad,
-    total,
-    senia,
-    cupon // ahora es el texto tipo ✅ Cupón: HAPPYINVIERNO
+    nombre, telefono, email, comentarios,
+    checkin, checkout, huespedes,
+    propiedad, total, senia, cupon
   } = req.body;
 
   const mensaje = `Nueva reserva:
@@ -271,7 +232,7 @@ app.post('/notificar-reserva', async (req, res) => {
 👥 Huéspedes: ${huespedes}
 💲 Total: ${total}
 💲 Seña: ${senia}
-🎟️ ${cupon || 'Sin cupón'}`; // 👈 mostramos siempre
+🎟️ ${cupon || 'Sin cupón'}`;
 
   try {
     await axios.post('https://api.pushover.net/1/messages.json', {
@@ -287,23 +248,10 @@ app.post('/notificar-reserva', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('Servidor corriendo en puerto 3000');
-});
-
-
-// servidor para formulario de propietarios
-
-
+// Formulario de propietarios
 app.post('/enviar-formulario-propietario', async (req, res) => {
   const {
-    nombre,
-    email,
-    telefono,
-    dia,
-    hora,
-    plan,
-    mensaje
+    nombre, email, telefono, dia, hora, plan, mensaje
   } = req.body;
 
   const contenido = `Nuevo contacto de propietario:
@@ -328,3 +276,8 @@ app.post('/enviar-formulario-propietario', async (req, res) => {
     res.status(500).send({ status: 'Error', error: error.message });
   }
 });
+
+// Iniciar servidor
+app.listen(PORT, () =>
+  console.log(`⚡ Server corriendo en http://localhost:${PORT}`)
+);
