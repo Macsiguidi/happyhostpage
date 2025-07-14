@@ -205,13 +205,13 @@ document.addEventListener('DOMContentLoaded', () => {
       porcentaje: 15,
       alojamientos: ["calafate1", "calafate2", "calafate3", "calafate4", "calafate5", "calafate6", "calafate7", "paisajismo"],
       desde: new Date("2025-06-01"),
-      hasta: new Date("2025-08-31")
+      hasta: new Date("2025-09-30")
     },
     "PRIMAVERA2025": {
       porcentaje: 20,
       alojamientos: ["calafate1", "calafate2", "calafate3", "calafate4", "calafate5", "calafate6", "calafate7", "paisajismo"],
-      desde: new Date("2025-09-01"),
-      hasta: new Date("2025-10-30")
+      desde: new Date("2025-10-01"),
+      hasta: new Date("2025-10-31")
     }
   };
 
