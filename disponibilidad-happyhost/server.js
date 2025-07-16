@@ -55,67 +55,7 @@ app.get('/api/precios-diarios', async (req, res) => {
   }
 });
 
-// URLs de calendarios
-const icsUrls = {
-  calafate1: 'https://www.lodgify.com/c5ff6e9d-c94a-4a0f-9633-511c8069d3d7.ics',
-  calafate2: 'https://www.lodgify.com/4c434567-54bf-460c-84dc-afd111b90f76.ics',
-  calafate3: 'https://www.lodgify.com/7afbf491-bad1-443d-bca0-83cb960b7d9a.ics',
-  calafate4: 'https://www.lodgify.com/32bdc6a2-1dc4-43dc-9c97-593d07714288.ics',
-  calafate5: 'https://www.lodgify.com/3d9233f1-b2e6-4070-b7c9-67353f3f0e6f.ics',
-  calafate6: 'https://www.lodgify.com/0bfc0b14-fea7-488c-bcc9-a07b6c063be7.ics',
-  calafate7: 'https://www.lodgify.com/b8419f93-3be3-42f0-87dc-b8ad622de155.ics',
-  cruzdelsur4: 'https://www.lodgify.com/6b8f84da-cbd7-43aa-83c1-3fa6e19f7132.ics',
-  cruzdelsur5: 'https://www.lodgify.com/ed954054-39e2-4193-b06b-dc2013fed6b5.ics',
-  nilidas:     'https://www.lodgify.com/62265ea3-79f4-4ead-ac12-95ed3266c6fb.ics',
-  gurisa:      'https://www.lodgify.com/255b2a6d-26ce-469f-8d84-58443c3f361f.ics',
-  paisajismo:  'https://www.lodgify.com/bd2720b5-ee80-4173-96bf-5fb5aafb84d1.ics'
-};
-
-// Endpoint para ocupación
-app.get('/api/ocupados/:casa', async (req, res) => {
-  const nombre = req.params.casa;
-  const url = icsUrls[nombre];
-
-  if (!url) {
-    return res.status(400).json({ success: false, message: 'Casa no encontrada' });
-  }
-
-  try {
-    if (cache[nombre] && (Date.now() - cache[nombre].timestamp < CACHE_TTL_MS)) {
-      return res.json(cache[nombre].data);
-    }
-
-    const data = await ical.fromURL(url);
-    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
-
-    const eventos = Object.values(data)
-      .filter(ev => ev.type === 'VEVENT')
-      .map(ev => {
-        const inicio = new Date(ev.start);
-        const fin    = new Date(ev.end);
-        if (fin < hoy) return null;
-
-        const desde = new Date(inicio);
-        desde.setDate(desde.getDate() + 1);
-        const from = desde.toISOString().split('T')[0];
-
-        const hasta = new Date(fin);
-        hasta.setDate(hasta.getDate() - 1);
-        const to = hasta.toISOString().split('T')[0];
-
-        return { from, to };
-      })
-      .filter(Boolean);
-
-    cache[nombre] = { data: eventos, timestamp: Date.now() };
-    res.json(eventos);
-  } catch (err) {
-    console.error('⛔ Error al cargar el .ics:', err.message);
-    res.status(500).json({ success: false, message: 'Error al cargar .ics' });
-  }
-});
-
-// Endpoint para disponibilidad general
+// NUEVO ENDPOINT para consultar disponibilidad general
 app.get('/api/disponibles', async (req, res) => {
   const { checkin, checkout } = req.query;
 
@@ -123,51 +63,33 @@ app.get('/api/disponibles', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Faltan fechas' });
   }
 
-  const cacheKey = `${checkin}-${checkout}`;
-  const now = Date.now();
-
-  if (cache[cacheKey] && (now - cache[cacheKey].timestamp < CACHE_TTL_MS)) {
-    return res.json({ disponibles: cache[cacheKey].data });
-  }
-
-  const fechasBuscadas = [];
-  const dInicio = new Date(checkin);
-  const dFin    = new Date(checkout);
-  for (let d = new Date(dInicio); d < dFin; d.setDate(d.getDate() + 1)) {
-    fechasBuscadas.push(d.toISOString().split('T')[0]);
-  }
-
-  const disponibles = [];
-
-  for (const [nombre, url] of Object.entries(icsUrls)) {
-    try {
-      const data = await ical.fromURL(url);
-      const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
-
-      const ocupadas = [];
-
-      for (const ev of Object.values(data)) {
-        if (ev.type !== 'VEVENT') continue;
-        const inicio = new Date(ev.start);
-        const fin    = new Date(ev.end);
-        if (fin < hoy) continue;
-
-        for (let d = new Date(inicio); d < fin; d.setDate(d.getDate() + 1)) {
-          ocupadas.push(d.toISOString().split('T')[0]);
-        }
+  try {
+    const response = await axios.get('https://api.lodgify.com/v1/availability', {
+      headers: {
+        'X-ApiKey': API_KEY
+      },
+      params: {
+        periodStart: checkin,
+        periodEnd: checkout
       }
+    });
 
-      const cruce = fechasBuscadas.some(f => ocupadas.includes(f));
-      if (!cruce) disponibles.push(nombre);
+    const disponibles = [];
 
-    } catch (e) {
-      console.error(`Error al procesar ${nombre}:`, e.message);
+    for (const item of response.data) {
+      if (item.available === true) {
+        disponibles.push(item.propertyId);
+      }
     }
-  }
 
-  cache[cacheKey] = { data: disponibles, timestamp: now };
-  res.json({ disponibles });
+    res.json({ disponibles });
+
+  } catch (err) {
+    console.error('⛔ Error consultando API Lodgify:', err.message);
+    res.status(500).json({ success: false, message: 'Error al consultar disponibilidad' });
+  }
 });
+
 
 // Enviar reserva por mail
 app.post('/enviar-reserva', async (req, res) => {
