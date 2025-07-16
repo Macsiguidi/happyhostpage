@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const checkout = localStorage.getItem('checkout');
   const huespedes = parseInt(localStorage.getItem('huespedes') || '1', 10);
 
+  console.log("📦 Check-in:", checkin);
+  console.log("📦 Check-out:", checkout);
+  console.log("📦 Huéspedes:", huespedes);
+
   const capacities = {
     calafate1: 6,
     calafate2: 4,
@@ -78,8 +82,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     paisajismo: 3
   };
 
-  const loading = document.getElementById('loading-disponibilidad');
-  const contenedor = document.getElementById('contenedor-alojamientos');
+  const mapNombreAId = {
+    calafate1: 601552,
+    calafate2: 601707,
+    calafate3: 601708,
+    calafate4: 601710,
+    calafate5: 601711,
+    calafate6: 601712,
+    calafate7: 601713,
+    cruzdelsur4: 601714,
+    cruzdelsur5: 601717,
+    nilidas: 601719,
+    gurisa: 648950,
+    paisajismo: 601720
+  };
+
+  const loading = document.getElementById('loading-disponibilidad') || null;
+  const contenedor = document.getElementById('listado-alojamientos') || null;
   const cards = document.querySelectorAll('.card[data-nombre]');
 
   if (!checkin || !checkout) {
@@ -87,29 +106,37 @@ document.addEventListener('DOMContentLoaded', async () => {
       const nombre = card.dataset.nombre;
       card.style.display = (huespedes <= capacities[nombre]) ? 'block' : 'none';
     });
-    loading.style.display = 'none';
-    contenedor.style.display = 'flex';
+    if (loading) loading.style.display = 'none';
+    if (contenedor) contenedor.style.display = 'flex';
     return;
   }
 
   try {
     const res = await fetch(
-      `https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`
+      `http://localhost:3000/api/disponibles?checkin=${checkin}&checkout=${checkout}`
     );
+
     const data = await res.json();
     const disponibles = data.disponibles || [];
 
+    console.log("✅ Datos recibidos del backend:", disponibles);
+
     cards.forEach(card => {
       const nombre = card.dataset.nombre;
-      const libre = disponibles.includes(nombre);
+      const idPropiedad = mapNombreAId[nombre];
+      const libre = disponibles.some(prop => prop.id === idPropiedad);
       const admite = huespedes <= capacities[nombre];
+
+      console.log(`🏠 ${nombre} (ID ${idPropiedad}) → Disponible: ${libre}, Capacidad OK: ${admite}`);
+
       card.style.display = (libre && admite) ? 'block' : 'none';
     });
-  } catch (err) {
-    console.error('❌ Error al consultar disponibilidad:', err);
-  } finally {
-    loading.style.display = 'none';
-    contenedor.style.display = 'flex';
+
+    if (loading) loading.style.display = 'none';
+    if (contenedor) contenedor.style.display = 'flex';
+  } catch (error) {
+    console.error("❌ Error al obtener disponibilidad:", error);
+    if (loading) loading.textContent = 'Ocurrió un error al cargar la disponibilidad.';
   }
 });
 
@@ -134,3 +161,4 @@ function redirigirConParametros(pagina) {
 
   window.location.href = url;
 }
+

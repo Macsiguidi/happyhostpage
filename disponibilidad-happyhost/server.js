@@ -1,15 +1,17 @@
-const express = require('express');
-const cors    = require('cors');
-const axios   = require('axios');
-const ical    = require('node-ical');
-const nodemailer = require('nodemailer');
-const app      = express();
-const PORT = process.env.PORT || 3000;
+const express     = require('express');
+const cors        = require('cors');
+const axios       = require('axios');
+const ical        = require('node-ical');
+const nodemailer  = require('nodemailer');
 
-const API_KEY  = 'tQF5BDMXbeN/vkKMRZiWKwM461gD8wL16EtUbwboi1OayWd3VZ24FMNKAuCF+3+m';
-const BASE_URL = 'https://api.lodgify.com';
-const cache    = {};
-const CACHE_TTL_MS = 1000 * 60 * 3; // 3 minutos
+const app         = express();
+const PORT        = process.env.PORT || 3000;
+
+const API_KEY     = 'tQF5BDMXbeN/vkKMRZiWKwM461gD8wL16EtUbwboi1OayWd3VZ24FMNKAuCF+3+m';
+const BASE_URL    = 'https://api.lodgify.com';
+
+app.use(cors());
+app.use(express.json());
 
 const propiedades = {
   601552: 'Calafate 1',
@@ -26,10 +28,7 @@ const propiedades = {
   601720: 'Paisajismo'
 };
 
-app.use(cors());
-app.use(express.json());
-
-// Endpoint para precios diarios
+// 🟢 PRECIOS DIARIOS
 app.get('/api/precios-diarios', async (req, res) => {
   const { start, end, houseId, roomId } = req.query;
   if (!start || !end || !houseId || !roomId) {
@@ -42,8 +41,8 @@ app.get('/api/precios-diarios', async (req, res) => {
       params: { HouseId: houseId, RoomTypeId: roomId, startDate: start, endDate: end }
     });
 
-    const raw    = lodgifyRes.data;
-    const dias   = Array.isArray(raw) ? raw : raw.dailyRates || [];
+    const raw = lodgifyRes.data;
+    const dias = Array.isArray(raw) ? raw : raw.dailyRates || [];
     const extras = Array.isArray(raw)
       ? (raw.guest_based_prices || raw.guestBasedPrices || [])
       : (raw.guest_based_prices || raw.guestBasedPrices || []);
@@ -55,7 +54,7 @@ app.get('/api/precios-diarios', async (req, res) => {
   }
 });
 
-// NUEVO ENDPOINT para consultar disponibilidad general
+// 🔍 DISPONIBILIDAD V1
 app.get('/api/disponibles', async (req, res) => {
   const { checkin, checkout } = req.query;
 
@@ -63,32 +62,74 @@ app.get('/api/disponibles', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Faltan fechas' });
   }
 
+  const propiedades = {
+    601552: 'Calafate 1',
+    601707: 'Calafate 2',
+    601708: 'Calafate 3',
+    601710: 'Calafate 4',
+    601711: 'Calafate 5',
+    601712: 'Calafate 6',
+    601713: 'Calafate 7',
+    601717: 'Cruz del Sur 4',
+    601714: 'Cruz del Sur 5',
+    601719: 'Las Nilidas',
+    648950: 'Gurisa',
+    601720: 'Paisajismo'
+  };
+
   try {
-    const response = await axios.get('https://api.lodgify.com/v1/availability', {
-      headers: {
-        'X-ApiKey': API_KEY
-      },
+    const response = await axios.get(`${BASE_URL}/v1/availability`, {
+      headers: { 'X-ApiKey': API_KEY },
       params: {
         periodStart: checkin,
-        periodEnd: checkout
+        periodEnd: checkout,
+        includeDetails: true
       }
     });
 
+    const start = new Date(checkin);
+    const end = new Date(checkout);
+    const diasRequeridos = [];
+
+    for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+      diasRequeridos.push(new Date(d).toISOString().split('T')[0]);
+    }
+
+    const fechasDisponiblesPorPropiedad = {};
+
+    for (const entrada of response.data) {
+      const propId = entrada.property_id;
+      if (entrada.available !== 1) continue;
+
+      const fechaInicio = new Date(entrada.period_start);
+      const fechaFin = new Date(entrada.period_end);
+
+      for (let d = new Date(fechaInicio); d <= fechaFin; d.setDate(d.getDate() + 1)) {
+        const fecha = d.toISOString().split('T')[0];
+        if (!fechasDisponiblesPorPropiedad[propId]) {
+          fechasDisponiblesPorPropiedad[propId] = new Set();
+        }
+        fechasDisponiblesPorPropiedad[propId].add(fecha);
+      }
+    }
+
     const disponibles = [];
 
-    for (const item of response.data) {
-      if (item.available === true) {
-        disponibles.push(item.propertyId);
+    for (const [propId, fechasDisponibles] of Object.entries(fechasDisponiblesPorPropiedad)) {
+      const cubreTodo = diasRequeridos.every(dia => fechasDisponibles.has(dia));
+      if (cubreTodo) {
+        disponibles.push({ id: Number(propId), nombre: propiedades[propId] });
       }
     }
 
     res.json({ disponibles });
 
   } catch (err) {
-    console.error('⛔ Error consultando API Lodgify:', err.message);
+    console.error('⛔ ERROR en disponibilidad:', err.response?.data || err.message);
     res.status(500).json({ success: false, message: 'Error al consultar disponibilidad' });
   }
 });
+
 
 
 // Enviar reserva por mail

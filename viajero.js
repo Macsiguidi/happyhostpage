@@ -1,29 +1,4 @@
-// ==========================
-// MENÚ HAMBURGUESA
-// ==========================
-const hamburguesa = document.querySelector('.hamburguesa');
-const menuList = document.querySelector('.menu-list');
 
-if (hamburguesa && menuList) {
-  hamburguesa.addEventListener('click', () => {
-    menuList.classList.toggle('active');
-  });
-}
-
-// ==========================
-// CAMBIO DE IMAGEN GRANDE
-// ==========================
-const miniaturas = document.querySelectorAll('.miniaturas img');
-const imagenGrande = document.querySelector('.imagen-grande');
-
-if (imagenGrande && miniaturas.length) {
-  miniaturas.forEach(img => {
-    img.addEventListener('click', () => {
-      imagenGrande.src = img.src;
-      imagenGrande.alt = img.alt;
-    });
-  });
-}
 
 // ==========================
 // FLATPICKR Y SELECTOR DE HUÉSPEDES
@@ -84,16 +59,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Formulario buscador
+  // ==========================
+  // FORMULARIO BUSCADOR
+  // ==========================
   const form = document.getElementById("form-busqueda");
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
       const rango = (dateInput.value || "").split(" a ");
-      const checkin = rango[0];
-      const checkout = rango[1];
+      const checkin = rango[0]?.trim();
+      const checkout = rango[1]?.trim();
       const huespedes = inputHuespedes.value;
+
+      // LOG PARA DEBUG
+      console.log("🧪 Rango seleccionado:", dateInput.value);
+      console.log("✅ Checkin:", checkin);
+      console.log("✅ Checkout:", checkout);
+      console.log("✅ Huéspedes:", huespedes);
 
       if (!checkin || !checkout) {
         alert("Por favor seleccioná un rango de fechas completo.");
@@ -109,6 +92,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// ==========================
+// CARRUSEL DE COMENTARIOS
+// ==========================
 document.addEventListener("DOMContentLoaded", function () {
   const grupos = document.querySelectorAll(".grupo-comentarios");
   let actual = 0;
@@ -129,6 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
   setInterval(siguienteGrupo, 7000); // cambia cada 7 segundos
 });
 
+// ==========================
+// VIDEOS ACTIVIDADES
+// ==========================
 document.querySelectorAll('.video-actividad video').forEach(video => {
   video.pause(); // Aseguramos que no empiecen solos
 
@@ -141,3 +130,5 @@ document.querySelectorAll('.video-actividad video').forEach(video => {
     video.currentTime = 0; // Opcional: vuelve al inicio al salir el cursor
   });
 });
+
+

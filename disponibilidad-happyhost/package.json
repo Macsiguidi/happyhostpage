@@ -1,7 +1,6 @@
 {
   "name": "disponibilidad-happyhost",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -18,5 +17,7 @@
     "litepicker": "^2.0.12",
     "node-ical": "^0.20.1",
     "nodemailer": "^7.0.2"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
