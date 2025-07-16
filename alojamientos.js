@@ -113,7 +113,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     const res = await fetch(
-      `http://localhost:3000/api/disponibles?checkin=${checkin}&checkout=${checkout}`
+      `https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles
+`
     );
 
     const data = await res.json();
