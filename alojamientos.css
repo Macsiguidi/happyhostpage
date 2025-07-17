@@ -137,7 +137,6 @@
 }
 
 
-/* Vista móvil */
 @media (max-width: 768px) {
   .grid-alojamientos {
     grid-template-columns: 1fr;
@@ -145,19 +144,26 @@
     padding: 15px;
   }
 
-  .card-footer h3 {
-    font-size: 1rem;
-  }
-
   .carousel {
-    height: 200px; /* Un poco más bajo para móvil si querés */
+    height: 200px; /* Más baja para pantalla chica */
   }
 
-  .carousel .prev,
-  .carousel .next {
-    padding: 6px;
+  .card {
+    max-width: 100%;
+    height: 200px; /* Asegura altura fija en móvil */
+  }
+
+  .nombre-alojamiento {
+    font-size: 1.1rem;
+    bottom: 10px;
+    left: 15px;
+  }
+
+  .overlay {
+    background: rgba(0, 0, 0, 0.2); /* Más suave en mobile si querés dejarlo fijo */
   }
 }
+
 
 
 .pantalla-carga {
