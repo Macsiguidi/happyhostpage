@@ -1,45 +1,29 @@
-// ========================================
-// INICIALIZACIÓN DE CARRUSEL POR TARJETA
-// ========================================
-document.addEventListener("DOMContentLoaded", () => {
-  const cards = document.querySelectorAll('.card');
+const intervalos = new Map();
 
-  cards.forEach(card => {
-    const slides = card.querySelectorAll('.carousel .slide');
-    const prevBtn = card.querySelector('.prev');
-    const nextBtn = card.querySelector('.next');
+function iniciarSlideshow(card) {
+  const slides = card.querySelectorAll('.slide');
+  if (slides.length <= 1) return;
 
-    if (!slides.length || !prevBtn || !nextBtn) return;
+  let index = 0;
 
-    card.dataset.currentIndex = "0";
+  intervalos.set(card, setInterval(() => {
+    slides[index].classList.remove('active');
+    index = (index + 1) % slides.length;
+    slides[index].classList.add('active');
+  }, 1000));
+}
 
-    const showSlide = (index) => {
-      slides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === index);
-      });
-    };
+function detenerSlideshow(card) {
+  clearInterval(intervalos.get(card));
+  intervalos.delete(card);
 
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      let current = parseInt(card.dataset.currentIndex);
-      current = (current - 1 + slides.length) % slides.length;
-      card.dataset.currentIndex = current.toString();
-      showSlide(current);
-    });
-
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      let current = parseInt(card.dataset.currentIndex);
-      current = (current + 1) % slides.length;
-      card.dataset.currentIndex = current.toString();
-      showSlide(current);
-    });
-
-    showSlide(0);
+  const slides = card.querySelectorAll('.slide');
+  slides.forEach((slide, i) => {
+    slide.classList.remove('active');
+    if (i === 0) slide.classList.add('active');
   });
-});
+}
+
 
 // ========================================
 // GUARDAR PARÁMETROS EN LOCALSTORAGE AL CARGAR
@@ -163,3 +147,14 @@ function redirigirConParametros(pagina) {
   window.location.href = url;
 }
 
+////orden aleatorio
+
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.querySelector('.grid-alojamientos');
+  if (!grid) return;
+
+  const cards = Array.from(grid.children);
+  const cardsMezcladas = cards.sort(() => Math.random() - 0.5);
+
+  cardsMezcladas.forEach(card => grid.appendChild(card));
+});
