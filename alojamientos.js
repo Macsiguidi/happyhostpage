@@ -10,7 +10,7 @@ function iniciarSlideshow(card) {
     slides[index].classList.remove('active');
     index = (index + 1) % slides.length;
     slides[index].classList.add('active');
-  }, 1000));
+  }, 2000));
 }
 
 function detenerSlideshow(card) {

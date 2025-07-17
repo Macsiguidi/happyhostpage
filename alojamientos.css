@@ -85,6 +85,19 @@
   width: 100%;
   height: 100%;
 }
+.carousel img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease;
+  transform: scale(1);
+  border-radius: 12px;
+}
+
+.card:hover .carousel img.slide.active {
+  transform: scale(0.95); /* más chico = se ve más de la imagen */
+}
+
 
 .slide {
   position: absolute;
@@ -121,10 +134,28 @@
   z-index: 2;
   bottom: 20px;
   left: 20px;
-  font-size: 1.4rem;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-family: 'Poppins', sans-serif;
-  font-weight: bold;
+  color: white;
+  font-size: 1.2rem;
 }
+
+.capacidad {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+}
+
+.capacidad img {
+  width: 25px;
+  height: 25px;
+  filter: brightness(0) invert(1); /* para que se vea blanco */
+}
+
 
 
 .grid-alojamientos {
