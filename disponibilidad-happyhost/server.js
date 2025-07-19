@@ -132,7 +132,7 @@ app.get('/api/disponibles', async (req, res) => {
   }
 });
 
-// 🔒 OCUPADOS por unidad
+// 🔒 OCUPADOS por unidad (bloquea solo días intermedios)
 app.get('/api/ocupados/:unidad', async (req, res) => {
   const unidad = req.params.unidad.toLowerCase();
   const PROPERTY_ID = propiedades[unidad];
@@ -145,7 +145,7 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
   const fechaFin = '2026-04-30';
 
   try {
-    const respuesta = await axios.get(`${BASE_URL}/v2/availability/${PROPERTY_ID}`, {
+    const respuesta = await axios.get(`${BASE_URL}/v1/availability/${PROPERTY_ID}`, {
       headers: { 'X-ApiKey': API_KEY },
       params: {
         start: fechaInicio,
@@ -156,22 +156,58 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
 
     const periods = respuesta.data?.[0]?.periods || [];
 
-    const ocupados = periods
-      .filter(p => p.available === 0)
-      .map(p => ({
-        from: p.start.split('T')[0],
-        to: p.end.split('T')[0]
-      }));
+    const fechasBloqueadas = [];
 
-    res.json(ocupados);
+    for (const p of periods) {
+      if (p.available === 0) {
+        const checkIn = new Date(p.start.split('T')[0]);
+        const checkOut = new Date(p.end.split('T')[0]);
+
+        const d = new Date(checkIn);
+        d.setDate(d.getDate() + 1); // 👉 dejar libre el día de check-in
+
+        while (d < checkOut) {
+          fechasBloqueadas.push(new Date(d));
+          d.setDate(d.getDate() + 1);
+        }
+      }
+    }
+
+    // Agrupar fechas consecutivas en rangos
+    fechasBloqueadas.sort((a, b) => a - b);
+    const rangos = [];
+
+    if (fechasBloqueadas.length > 0) {
+      let inicio = fechasBloqueadas[0];
+      let anterior = fechasBloqueadas[0];
+
+      for (let i = 1; i < fechasBloqueadas.length; i++) {
+        const actual = fechasBloqueadas[i];
+        const siguienteEsperado = new Date(anterior);
+        siguienteEsperado.setDate(siguienteEsperado.getDate() + 1);
+
+        if (actual.toDateString() !== siguienteEsperado.toDateString()) {
+          rangos.push({
+            from: inicio.toISOString().split('T')[0],
+            to: anterior.toISOString().split('T')[0]
+          });
+          inicio = actual;
+        }
+
+        anterior = actual;
+      }
+
+      rangos.push({
+        from: inicio.toISOString().split('T')[0],
+        to: anterior.toISOString().split('T')[0]
+      });
+    }
+
+    res.json(rangos);
   } catch (error) {
     console.error(`❌ Error al obtener ocupados de ${unidad}:`, error.message);
     res.status(500).json({ error: 'No se pudo obtener disponibilidad' });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`⚡ Server corriendo en http://localhost:${PORT}`);
 });
 
 

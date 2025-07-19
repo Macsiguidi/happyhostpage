@@ -542,3 +542,43 @@ body {
     font-size: 0.95rem;
   }
 }
+
+
+.flatpickr-calendar {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 16px;
+}
+
+.flatpickr-day {
+  font-weight: 400;
+  color: #1D292A; /* color general */
+}
+
+/* 🟥 Fechas deshabilitadas (ocupadas) */
+.flatpickr-day.disabled {
+  background-color: #ccc !important;
+  color: #999 !important;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  font-style: italic;
+}
+
+/* 🟩 Check-in y Check-out estilo "media celda" diagonal */
+.flatpickr-day.checkin::before,
+.flatpickr-day.checkout::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    #B58863,
+    #B58863 5px,
+    #fff 5px,
+    #fff 10px
+  );
+  z-index: 1;
+  opacity: 0.3;
+}
