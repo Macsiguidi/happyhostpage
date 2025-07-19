@@ -133,11 +133,13 @@ app.get('/api/disponibles', async (req, res) => {
 });
 
 // 🔒 OCUPADOS por unidad (bloquea solo días intermedios)// 🔒 OCUPADOS por unidad
+
+// 🔒 OCUPADOS por unidad (bloquea solo días intermedios)
 app.get('/api/ocupados/:unidad', async (req, res) => {
   const unidad = req.params.unidad.toLowerCase();
-  const PROPERTY_ID = propiedades[unidad];
+  const HOUSE_ID = propiedades[unidad]; // 👈 Este es el ID que vos usás en el HTML
 
-  if (!PROPERTY_ID) {
+  if (!HOUSE_ID) {
     return res.status(400).json({ error: `Propiedad '${unidad}' no encontrada.` });
   }
 
@@ -145,24 +147,22 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
   const fechaFin = '2026-04-30';
 
   try {
-    console.log(`🔍 Obteniendo disponibilidad v2 para '${unidad}' (${PROPERTY_ID})`);
-
-    const respuesta = await axios.get(`${BASE_URL}/v2/availability`, {
+    const respuesta = await axios.get(`${BASE_URL}/v1/availability`, {
       headers: { 'X-ApiKey': API_KEY },
       params: {
-        startDate: fechaInicio,
-        endDate: fechaFin,
-        propertyId: PROPERTY_ID
+        propertyId: HOUSE_ID,  // ✅ Lodgify necesita esto
+        start: fechaInicio,
+        end: fechaFin
       }
     });
 
-    const fechas = respuesta.data?.availability || [];
+    const data = respuesta.data;
 
     const ocupados = [];
     let bloque = null;
 
-    for (let i = 0; i < fechas.length; i++) {
-      const dia = fechas[i];
+    for (let i = 0; i < data.length; i++) {
+      const dia = data[i];
       if (!dia.available) {
         if (!bloque) {
           bloque = { from: dia.date, to: dia.date };
@@ -182,10 +182,10 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
     res.json(ocupados);
   } catch (error) {
     console.error(`❌ Error al obtener ocupados de ${unidad}:`, error.message);
-    console.error('🛑 Detalles:', error.response?.data || error);
     res.status(500).json({ error: 'No se pudo obtener disponibilidad' });
   }
 });
+
 
 
 
