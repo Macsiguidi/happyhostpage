@@ -145,22 +145,24 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
   const fechaFin = '2026-04-30';
 
   try {
-    const respuesta = await axios.get(`${BASE_URL}/v1/availability`, {
+    console.log(`🔍 Obteniendo disponibilidad v2 para '${unidad}' (${PROPERTY_ID})`);
+
+    const respuesta = await axios.get(`${BASE_URL}/v2/availability`, {
       headers: { 'X-ApiKey': API_KEY },
       params: {
-        start: fechaInicio,
-        end: fechaFin,
+        startDate: fechaInicio,
+        endDate: fechaFin,
         propertyId: PROPERTY_ID
       }
     });
 
-    const data = respuesta.data;
+    const fechas = respuesta.data?.availability || [];
 
     const ocupados = [];
     let bloque = null;
 
-    for (let i = 0; i < data.length; i++) {
-      const dia = data[i];
+    for (let i = 0; i < fechas.length; i++) {
+      const dia = fechas[i];
       if (!dia.available) {
         if (!bloque) {
           bloque = { from: dia.date, to: dia.date };
@@ -180,9 +182,11 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
     res.json(ocupados);
   } catch (error) {
     console.error(`❌ Error al obtener ocupados de ${unidad}:`, error.message);
+    console.error('🛑 Detalles:', error.response?.data || error);
     res.status(500).json({ error: 'No se pudo obtener disponibilidad' });
   }
 });
+
 
 
 
