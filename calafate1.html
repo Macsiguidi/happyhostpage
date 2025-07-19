@@ -238,8 +238,15 @@ let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date();
 hoy.setHours(0, 0, 0, 0);
 
-// 🔒 Limite de fecha para reservas (modificá solo esta línea según la propiedad)
+// 🔒 Límite máximo para reservar
 const fechaLimite = new Date('2026-04-30');
+
+// 🎨 Estilo visual de entrada/salida con fondo diagonal
+const pintarDiagonal = (date, tipo) => {
+  const div = document.createElement('div');
+  div.className = tipo === 'entrada' ? 'entrada-diagonal' : 'salida-diagonal';
+  return div;
+};
 
 window.addEventListener("DOMContentLoaded", () => {
   if (checkin) startInput.value = checkin;
@@ -269,6 +276,11 @@ const startPicker = flatpickr(startInput, {
     if (selectedDates[0]) {
       setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
     }
+  },
+  onDayCreate: (dObj, dStr, fp, dayElem) => {
+    if (startInput.value && dayElem.dateObj.toISOString().split('T')[0] === startInput.value) {
+      dayElem.appendChild(pintarDiagonal(dayElem.dateObj, 'entrada'));
+    }
   }
 });
 
@@ -280,7 +292,12 @@ const endPicker = flatpickr(endInput, {
   minDate: hoy,
   maxDate: fechaLimite,
   disableMobile: true,
-  onChange: calculate
+  onChange: calculate,
+  onDayCreate: (dObj, dStr, fp, dayElem) => {
+    if (endInput.value && dayElem.dateObj.toISOString().split('T')[0] === endInput.value) {
+      dayElem.appendChild(pintarDiagonal(dayElem.dateObj, 'salida'));
+    }
+  }
 });
 
 startPicker.config.onChange.push((selectedDates) => {
@@ -485,6 +502,7 @@ async function calculate() {
   }
 }
 </script>
+
 
 
 

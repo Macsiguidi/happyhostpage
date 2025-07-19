@@ -13,7 +13,24 @@ const BASE_URL    = 'https://api.lodgify.com';
 app.use(cors());
 app.use(express.json());
 
+// 👉 ID por nombre (para endpoint /api/ocupados/:unidad)
 const propiedades = {
+  calafate1: 601552,
+  calafate2: 601707,
+  calafate3: 601708,
+  calafate4: 601710,
+  calafate5: 601711,
+  calafate6: 601712,
+  calafate7: 601713,
+  cds4: 601717,
+  cds5: 601714,
+  nilidas: 601719,
+  gurisa: 648950,
+  paisajismo: 601720
+};
+
+// 👉 Nombres para mostrar (para endpoint /api/disponibles)
+const nombrePropiedades = {
   601552: 'Calafate 1',
   601707: 'Calafate 2',
   601708: 'Calafate 3',
@@ -62,21 +79,6 @@ app.get('/api/disponibles', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Faltan fechas' });
   }
 
-  const propiedades = {
-    601552: 'Calafate 1',
-    601707: 'Calafate 2',
-    601708: 'Calafate 3',
-    601710: 'Calafate 4',
-    601711: 'Calafate 5',
-    601712: 'Calafate 6',
-    601713: 'Calafate 7',
-    601717: 'Cruz del Sur 4',
-    601714: 'Cruz del Sur 5',
-    601719: 'Las Nilidas',
-    648950: 'Gurisa',
-    601720: 'Paisajismo'
-  };
-
   try {
     const response = await axios.get(`${BASE_URL}/v1/availability`, {
       headers: { 'X-ApiKey': API_KEY },
@@ -118,7 +120,7 @@ app.get('/api/disponibles', async (req, res) => {
     for (const [propId, fechasDisponibles] of Object.entries(fechasDisponiblesPorPropiedad)) {
       const cubreTodo = diasRequeridos.every(dia => fechasDisponibles.has(dia));
       if (cubreTodo) {
-        disponibles.push({ id: Number(propId), nombre: propiedades[propId] });
+        disponibles.push({ id: Number(propId), nombre: nombrePropiedades[propId] });
       }
     }
 
@@ -129,6 +131,49 @@ app.get('/api/disponibles', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error al consultar disponibilidad' });
   }
 });
+
+// 🔒 OCUPADOS por unidad
+app.get('/api/ocupados/:unidad', async (req, res) => {
+  const unidad = req.params.unidad.toLowerCase();
+  const PROPERTY_ID = propiedades[unidad];
+
+  if (!PROPERTY_ID) {
+    return res.status(400).json({ error: `Propiedad '${unidad}' no encontrada.` });
+  }
+
+  const fechaInicio = new Date().toISOString().split('T')[0];
+  const fechaFin = '2026-04-30';
+
+  try {
+    const respuesta = await axios.get(`${BASE_URL}/v2/availability/${PROPERTY_ID}`, {
+      headers: { 'X-ApiKey': API_KEY },
+      params: {
+        start: fechaInicio,
+        end: fechaFin,
+        includeDetails: true
+      }
+    });
+
+    const periods = respuesta.data?.[0]?.periods || [];
+
+    const ocupados = periods
+      .filter(p => p.available === 0)
+      .map(p => ({
+        from: p.start.split('T')[0],
+        to: p.end.split('T')[0]
+      }));
+
+    res.json(ocupados);
+  } catch (error) {
+    console.error(`❌ Error al obtener ocupados de ${unidad}:`, error.message);
+    res.status(500).json({ error: 'No se pudo obtener disponibilidad' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`⚡ Server corriendo en http://localhost:${PORT}`);
+});
+
 
 
 
