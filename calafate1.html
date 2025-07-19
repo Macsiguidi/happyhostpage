@@ -312,15 +312,22 @@ let fechasOcupadas = [];
 
 async function loadDisabledDates(picker) {
   try {
-    const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/calafate1');
+const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/calafate1');
+
+
     if (!resp.ok) throw new Error(await resp.text());
     const rangos = await resp.json();
     fechasOcupadas = rangos;
 
     picker.set('disable', [
-      ...rangos.map(r => ({ from: r.from, to: r.to })),
-      date => date < hoy || date > fechaLimite
-    ]);
+  ...rangos.map(r => {
+    const from = new Date(r.from);
+    from.setDate(from.getDate() + 1); // 👈 habilitamos el día de check-in
+    return { from, to: r.to };
+  }),
+  date => date < hoy || date > fechaLimite
+]);
+
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
   }

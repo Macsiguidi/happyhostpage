@@ -134,40 +134,39 @@ app.get('/api/disponibles', async (req, res) => {
 
 // 🔒 OCUPADOS por unidad (bloquea solo días intermedios)// 🔒 OCUPADOS por unidad
 
-// 🔒 OCUPADOS por unidad (bloquea solo días intermedios)
+// 🔒 OCUPADOS por unidad usando /v1/availability/{propertyId}
 app.get('/api/ocupados/:unidad', async (req, res) => {
   const unidad = req.params.unidad.toLowerCase();
-  const HOUSE_ID = propiedades[unidad]; // 👈 Este es el ID que vos usás en el HTML
+  const propertyId = propiedades[unidad];
 
-  if (!HOUSE_ID) {
+  if (!propertyId) {
     return res.status(400).json({ error: `Propiedad '${unidad}' no encontrada.` });
   }
 
-  const fechaInicio = new Date().toISOString().split('T')[0];
-  const fechaFin = '2026-04-30';
+  const periodStart = new Date().toISOString().split('T')[0];
+  const periodEnd   = '2026-04-30';
 
   try {
-    const respuesta = await axios.get(`${BASE_URL}/v2/availability`, {
+    const response = await axios.get(`${BASE_URL}/v1/availability/${propertyId}`, {
       headers: { 'X-ApiKey': API_KEY },
       params: {
-        propertyId: HOUSE_ID,  // ✅ Lodgify necesita esto
-        start: fechaInicio,
-        end: fechaFin
+        periodStart,
+        periodEnd
       }
     });
 
-    const data = respuesta.data;
+    const data = response.data;
 
     const ocupados = [];
     let bloque = null;
 
     for (let i = 0; i < data.length; i++) {
       const dia = data[i];
-      if (!dia.available) {
+      if (dia.available === 0) {
         if (!bloque) {
-          bloque = { from: dia.date, to: dia.date };
+          bloque = { from: dia.period_start, to: dia.period_end };
         } else {
-          bloque.to = dia.date;
+          bloque.to = dia.period_end;
         }
       } else {
         if (bloque) {
@@ -180,11 +179,13 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
     if (bloque) ocupados.push(bloque);
 
     res.json(ocupados);
+
   } catch (error) {
     console.error(`❌ Error al obtener ocupados de ${unidad}:`, error.message);
     res.status(500).json({ error: 'No se pudo obtener disponibilidad' });
   }
 });
+
 
 
 
