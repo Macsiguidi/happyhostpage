@@ -147,7 +147,7 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
   const fechaFin = '2026-04-30';
 
   try {
-    const respuesta = await axios.get(`${BASE_URL}/v1/availability`, {
+    const respuesta = await axios.get(`${BASE_URL}/v2/availability`, {
       headers: { 'X-ApiKey': API_KEY },
       params: {
         propertyId: HOUSE_ID,  // ✅ Lodgify necesita esto
