@@ -1,4 +1,5 @@
-/* GENERAL */
+/* === ESTILO MINIMALISTA Y ELEGANTE === */
+
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +8,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f5f5f5;
+  background-color: #F7F7F7;
   color: #1D292A;
 }
 
@@ -21,7 +22,7 @@ body {
 
 .header {
   width: 100%;
-  background-color: rgba(61, 77, 85, 0.7); /* gris translúcido */
+  background-color: rgba(29, 41, 42, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   position: relative;
@@ -37,7 +38,7 @@ body {
   padding: 12px 40px;
   max-width: 1200px;
   margin: 0 auto;
-  flex-wrap: wrap; /* por si hay poco espacio */
+  flex-wrap: wrap;
 }
 
 .logo img {
@@ -47,42 +48,39 @@ body {
 }
 
 .titulo-header {
-  font-family: 'Poppins', sans-serif;
-  font-size: 36px;
-  color: #c7e5db;
+  font-size: 32px;
+  color: white;
   text-transform: uppercase;
   text-align: center;
-  flex: 1; 
+  flex: 1;
 }
 
 .volver .boton-volver {
   text-decoration: none;
-  background-color: #7dafa6;
+  background-color: #3D4D55;
   color: #fff;
   padding: 8px 16px;
   border-radius: 20px;
-  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   transition: background 0.3s ease;
 }
 
 .volver .boton-volver:hover {
-  background-color: #a2846b;
+  background-color: #1D292A;
 }
 
-
-/* FORMULARIO */
 .formulario-reserva {
   flex: 2;
   background: #fff;
-  padding: 20px;
+  padding: 24px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .formulario-reserva h2 {
   margin-bottom: 12px;
   color: #3D4D55;
+  font-size: 1.3rem;
 }
 
 .formulario-reserva label {
@@ -94,61 +92,62 @@ body {
 .formulario-reserva input,
 .formulario-reserva textarea {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #B58863;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
+  background: #FAFAFA;
 }
 
 .formulario-reserva textarea {
   resize: vertical;
 }
 
+/* Checkbox de términos */
 .terminos {
   display: flex;
-  align-items: center;  /* Centra verticalmente el checkbox y el texto */
-  gap: 8px;             /* Espacio entre el checkbox y el texto */
-  justify-content: flex-start; /* Todo alineado a la izquierda */
-  margin: 10px 0;       /* Separación arriba y abajo */
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+  margin: 10px 0;
 }
 
 .terminos input[type="checkbox"] {
-  margin: 0;            /* Elimina márgenes que puedan desalinear */
-  width: 18px;          /* Tamaño estándar del checkbox */
+  margin: 0;
+  width: 18px;
   height: 18px;
 }
 
 .terminos label {
   font-size: 1rem;
-  color: #333;          /* Color de texto (podés ajustar según tu diseño) */
+  color: #3D4D55;
 }
 
 .terminos a {
-  color: #7DAFA6;       /* Color del link, ajustalo si querés */
+  color: #3D4D55;
   text-decoration: underline;
 }
 
 .terminos a:hover {
-  color: #486b64;       /* Color en hover */
+  color: #1D292A;
 }
 
-
-
+/* Mensaje informativo */
 .aviso-contacto {
-  font-family: 'Poppins', sans-serif;
   font-size: 0.9rem;
-  color: #486b64;
-  background: #d7f0e8;
+  color: #3D4D55;
+  background: #EEF1F2;
   padding: 8px 12px;
   border-radius: 6px;
   margin-bottom: 12px;
   text-align: center;
 }
 
+/* Botón */
 #botonReservar {
   width: 100%;
   padding: 12px;
-  background-color: #7dafa6;
+  background-color: #1D292A;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -158,21 +157,22 @@ body {
 }
 
 #botonReservar:hover {
-  background-color: #5d827b;
+  background-color: #3D4D55;
 }
 
-/* RESUMEN */
+/* === RESUMEN === */
 .resumen-reserva {
   flex: 1;
   background: #fff;
   padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .resumen-reserva h2 {
   margin-bottom: 12px;
   color: #3D4D55;
+  font-size: 1.3rem;
 }
 
 .info-reserva img {
@@ -185,7 +185,7 @@ body {
   margin: 6px 0;
 }
 
-/* MODAL */
+/* === MODAL DE TÉRMINOS === */
 .modal {
   display: none;
   position: fixed;
@@ -208,12 +208,10 @@ body {
   overflow-y: auto;
 }
 
-.modal-contenido h2 {
-  margin-bottom: 10px;
-}
-
+.modal-contenido h2,
 .modal-contenido h3 {
-  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #3D4D55;
 }
 
 .cerrar {
@@ -222,10 +220,11 @@ body {
   cursor: pointer;
 }
 
+/* === PRECIOS Y DESCUENTOS === */
 #precioReserva {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #333;
+  color: #3D4D55;
 }
 
 #total-final {
@@ -246,38 +245,30 @@ body {
   font-size: 1.5rem;
 }
 
-
 #descuentoLabel {
   font-size: 0.9rem;
   margin-top: 5px;
   margin-bottom: 10px;
 }
 
-
-
-
-@media (max-width: 768px) {
-  .barra-menu {
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px 20px;
-  }
-
-  .logo img {
-    height: 80px;
-  }
-
-  .titulo-header {
-    font-size: 24px;
-  }
-
-  .volver .boton-volver {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-  }
+/* === BOTÓN CUPÓN === */
+#aplicarCupon {
+  background-color: #25D366;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+#aplicarCupon:hover {
+  background-color: #1ea154;
+}
 
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -307,26 +298,7 @@ body {
   .modal-contenido {
     padding: 12px;
   }
-}
 
-
-#aplicarCupon {
-  background-color: #25D366; /* Verde WhatsApp */
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  font-weight: bold;
-  font-family: 'Poppins', sans-serif;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#aplicarCupon:hover {
-  background-color: #1ea154;
-}
-
-@media (max-width: 600px) {
   #cuponDescuento,
   #aplicarCupon {
     width: 100%;
@@ -344,3 +316,4 @@ body {
     margin-top: 5px;
   }
 }
+

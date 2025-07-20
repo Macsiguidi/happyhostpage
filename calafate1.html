@@ -25,6 +25,8 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <!-- Tu CSS completo, con overrides incluidos al final -->
   <link rel="stylesheet" href="unidades.css">
 </head>
@@ -212,18 +214,22 @@
   </script>
 
 <script>
+// 📌 Constantes de propiedad
 const HOUSE_ID = 601552;
 const ROOM_ID = 668343;
 
+// 📥 Leer parámetros de URL (checkin, checkout, huespedes)
 const params = new URLSearchParams(window.location.search);
 const checkin = params.get("checkin");
 const checkout = params.get("checkout");
 const huespedes = params.get("huespedes");
 
+// 🧹 Limpiar el localStorage
 localStorage.removeItem("checkin");
 localStorage.removeItem("checkout");
 localStorage.removeItem("huespedes");
 
+// 🎯 Elementos del DOM
 const startInput = document.getElementById('start');
 const endInput = document.getElementById('end');
 const guestsInput = document.getElementById('guests');
@@ -237,17 +243,16 @@ const contador = document.getElementById('contador');
 let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date();
 hoy.setHours(0, 0, 0, 0);
-
-// 🔒 Límite máximo para reservar
 const fechaLimite = new Date('2026-04-30');
 
-// 🎨 Estilo visual de entrada/salida con fondo diagonal
+// 🎨 Pintar media celda para check-in / check-out
 const pintarDiagonal = (date, tipo) => {
   const div = document.createElement('div');
   div.className = tipo === 'entrada' ? 'entrada-diagonal' : 'salida-diagonal';
   return div;
 };
 
+// 🧠 Al cargar la página, inicializa inputs si hay datos en URL
 window.addEventListener("DOMContentLoaded", () => {
   if (checkin) startInput.value = checkin;
   if (checkout) endInput.value = checkout;
@@ -256,7 +261,6 @@ window.addEventListener("DOMContentLoaded", () => {
     cantidad = parseInt(huespedes);
   }
   actualizarContador();
-
   if (checkin) {
     setCurrencyAndCalculate(checkin);
   } else {
@@ -264,6 +268,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// 📅 Flatpickr - Input de Check-in
 const startPicker = flatpickr(startInput, {
   altInput: true,
   altFormat: 'd/m/Y',
@@ -284,6 +289,7 @@ const startPicker = flatpickr(startInput, {
   }
 });
 
+// 📅 Flatpickr - Input de Check-out
 const endPicker = flatpickr(endInput, {
   altInput: true,
   altFormat: 'd/m/Y',
@@ -300,6 +306,7 @@ const endPicker = flatpickr(endInput, {
   }
 });
 
+// ⛓ Vincula check-in con apertura del calendario de check-out
 startPicker.config.onChange.push((selectedDates) => {
   if (selectedDates[0]) {
     endPicker.setDate(null);
@@ -310,40 +317,40 @@ startPicker.config.onChange.push((selectedDates) => {
 
 let fechasOcupadas = [];
 
+// 🔒 Cargar fechas ocupadas desde el servidor y bloquearlas en el calendario
 async function loadDisabledDates(picker) {
   try {
-const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/calafate1');
-
-
+    const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/calafate1');
     if (!resp.ok) throw new Error(await resp.text());
     const rangos = await resp.json();
     fechasOcupadas = rangos;
 
+    // Bloquear días ocupados, dejando habilitado el día de entrada (check-in)
     picker.set('disable', [
-  ...rangos.map(r => {
-    const from = new Date(r.from);
-    from.setDate(from.getDate() + 1); // 👈 habilitamos el día de check-in
-    return { from, to: r.to };
-  }),
-  date => date < hoy || date > fechaLimite
-]);
-
+      ...rangos.map(r => {
+        const from = new Date(r.from);
+        from.setDate(from.getDate() + 1); // ✅ habilitamos el check-in
+        return { from, to: r.to };
+      }),
+      date => date < hoy || date > fechaLimite
+    ]);
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
   }
 }
 
+// 🔁 Cargar fechas ocupadas al abrir/mostrar el calendario
 [startPicker, endPicker].forEach(picker => {
   picker.config.onReady.push(() => loadDisabledDates(picker));
   picker.config.onMonthChange.push(() => loadDisabledDates(picker));
   picker.config.onOpen.push(() => loadDisabledDates(picker));
 });
 
+// 👥 Contador de huéspedes
 function actualizarContador() {
   contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   guestsInput.value = cantidad;
 }
-
 menosBtn.addEventListener('click', () => {
   if (cantidad > 1) {
     cantidad--;
@@ -351,7 +358,6 @@ menosBtn.addEventListener('click', () => {
     calculate();
   }
 });
-
 masBtn.addEventListener('click', () => {
   if (cantidad < 6) {
     cantidad++;
@@ -359,14 +365,13 @@ masBtn.addEventListener('click', () => {
     calculate();
   }
 });
-
 guestsInput.addEventListener('input', calculate);
 currSelect.addEventListener('change', calculate);
 
+// 💵 Define moneda según fecha de check-in
 function setCurrencyAndCalculate(fechaCheckin) {
   const fecha = new Date(fechaCheckin);
   const limite = new Date('2025-09-30');
-
   if (fechaCheckin) {
     if (fecha <= limite) {
       currSelect.value = 'ARS';
@@ -379,10 +384,10 @@ function setCurrencyAndCalculate(fechaCheckin) {
     currSelect.style.display = 'block';
     currSelect.disabled = false;
   }
-
   calculate();
 }
 
+// ❌ Validar si hay cruce con fechas ocupadas
 function hayCruceConFechasOcupadas(checkin, checkout) {
   const ci = new Date(checkin);
   const co = new Date(checkout);
@@ -402,6 +407,7 @@ function hayCruceConFechasOcupadas(checkin, checkout) {
   });
 }
 
+// 💸 Calcular precios según fechas, cantidad y moneda
 async function calculate() {
   const startValue = startInput.value;
   const endValue = endInput.value;
@@ -471,6 +477,7 @@ async function calculate() {
     const extraUSD = extraQty * extraUnit * noches;
     const totalUSD = baseUSD + extraUSD;
 
+    // 💱 Factores de conversión por fecha
     const fechaCheckin = new Date(startValue);
     let factorARS = 1400;
     if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
@@ -482,6 +489,7 @@ async function calculate() {
     const total = moneda === 'USD' ? totalUSD : totalUSD * factorARS;
     const extra = moneda === 'USD' ? extraUSD : extraUSD * factorARS;
 
+    // 🧾 Mostrar resumen
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
       <li>Huéspedes: ${guests}</li>` +
@@ -490,6 +498,7 @@ async function calculate() {
     </ul>`;
     resDiv.innerHTML = html;
 
+    // 🟢 Activar botón de reservar
     reservarBtn.disabled = false;
     reservarBtn.onclick = () => {
       const qs = new URLSearchParams({
@@ -508,6 +517,7 @@ async function calculate() {
     resDiv.textContent = 'Error al obtener datos: ' + e.message;
   }
 }
+
 </script>
 
 

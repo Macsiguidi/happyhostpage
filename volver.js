@@ -20,3 +20,24 @@
 
     window.location.href = url;
   });
+
+
+  function marcarCheckInOutEnCalendario() {
+  // Elimina clases viejas
+  document.querySelectorAll('.flatpickr-day.checkin, .flatpickr-day.checkout').forEach(elem => {
+    elem.classList.remove('checkin', 'checkout');
+  });
+
+  const checkin = startInput.value;
+  const checkout = endInput.value;
+
+  if (checkin) {
+    const elemIn = document.querySelector(`.flatpickr-day[aria-label="${flatpickr.formatDate(new Date(checkin), "F j, Y")}"]`);
+    if (elemIn) elemIn.classList.add('checkin');
+  }
+
+  if (checkout) {
+    const elemOut = document.querySelector(`.flatpickr-day[aria-label="${flatpickr.formatDate(new Date(checkout), "F j, Y")}"]`);
+    if (elemOut) elemOut.classList.add('checkout');
+  }
+}
