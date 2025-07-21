@@ -1,8 +1,8 @@
-let cuponInfo = ''; // 👈 global para enviar al backend
+let cuponInfo = ''; // 👉 Se guarda el cupón usado para enviarlo al backend
 
 window.addEventListener('DOMContentLoaded', () => {
+  // === CARGAR DATOS DESDE LA URL ===
   const params = new URLSearchParams(window.location.search);
-
   const propertyId     = params.get('propertyId');
   const roomTypeId     = params.get('roomTypeId');
   const checkInDate    = params.get('checkInDate');
@@ -10,18 +10,19 @@ window.addEventListener('DOMContentLoaded', () => {
   const numberOfGuests = params.get('numberOfGuests');
   const totalPrice     = params.get('totalPrice');
 
-  // Cargar en inputs ocultos
-  document.getElementById('propertyId').value      = propertyId;
-  document.getElementById('roomTypeId').value      = roomTypeId;
-  document.getElementById('checkInDate').value     = checkInDate;
-  document.getElementById('checkOutDate').value    = checkOutDate;
-  document.getElementById('numberOfGuests').value  = numberOfGuests;
-  document.getElementById('totalPrice').value      = totalPrice;
+  // === CARGAR EN INPUTS OCULTOS ===
+  document.getElementById('propertyId').value     = propertyId;
+  document.getElementById('roomTypeId').value     = roomTypeId;
+  document.getElementById('checkInDate').value    = checkInDate;
+  document.getElementById('checkOutDate').value   = checkOutDate;
+  document.getElementById('numberOfGuests').value = numberOfGuests;
+  document.getElementById('totalPrice').value     = totalPrice;
 
-  // Mostrar resumen
+  // === MOSTRAR RESUMEN DE FECHAS Y HUÉSPEDES ===
   document.getElementById('fechasReserva').textContent    = `${checkInDate} → ${checkOutDate}`;
   document.getElementById('huespedesReserva').textContent = numberOfGuests;
 
+  // === MAPEO DE PROPIEDADES ===
   const nombreMap = {
     '601552': 'Calafate 1',
     '601707': 'Calafate 2',
@@ -59,25 +60,25 @@ window.addEventListener('DOMContentLoaded', () => {
   const headerTitulo = document.querySelector('.titulo-header');
   if (headerTitulo) headerTitulo.textContent = nombreProp;
 
-  const totalSpan = document.getElementById('precioReserva');
-  const descuentoSpan = document.getElementById('precioConDescuento');
-  const seniaSpan = document.getElementById('seniaReserva');
-  const labelCupon = document.getElementById('descuentoLabel');
-  const inputCupon = document.getElementById('cuponDescuento');
-  const botonCupon = document.getElementById('aplicarCupon');
-
+  // === DATOS DE PRECIO Y SEÑA INICIAL ===
   const totalOriginal = parseFloat(totalPrice);
+  const totalSpan     = document.getElementById('precioReserva');
+  const descuentoSpan = document.getElementById('precioConDescuento');
+  const seniaSpan     = document.getElementById('seniaReserva');
+
   totalSpan.textContent = `$${totalOriginal.toFixed(2)}`;
 
-  const checkinDateObj = new Date(checkInDate);
+  const checkinDateObj  = new Date(checkInDate);
   const checkoutDateObj = new Date(checkOutDate);
   const diffTime = Math.abs(checkoutDateObj - checkinDateObj);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  const seniaNoches = diffDays > 5 ? 2 : 1;
+  const seniaNoches = diffDays >= 5 ? 2 : 1;
   const precioNoche = totalOriginal / diffDays;
   const seniaOriginal = precioNoche * seniaNoches;
+
   seniaSpan.textContent = `$${seniaOriginal.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
 
+  // === CUPONES DISPONIBLES ===
   const cupones = {
     "HAPPYINVIERNO": {
       porcentaje: 15,
@@ -90,21 +91,34 @@ window.addEventListener('DOMContentLoaded', () => {
       alojamientos: ["calafate1", "calafate2", "calafate3", "calafate4", "calafate5", "calafate6", "calafate7", "paisajismo"],
       desde: new Date("2025-10-01"),
       hasta: new Date("2025-10-31")
-    }
+    },
+    "HAPPY10": { porcentaje: 10 },
+    "HAPPY15": { porcentaje: 15 },
+    "HAPPY20": { porcentaje: 20 }
   };
 
-  const nombreClave = nombreProp.toLowerCase().replace(/\s/g, '');
+  const nombreClave   = nombreProp.toLowerCase().replace(/\s/g, '');
+  const inputCupon    = document.getElementById('cuponDescuento');
+  const botonCupon    = document.getElementById('aplicarCupon');
+  const labelCupon    = document.getElementById('descuentoLabel');
 
+  // === APLICAR CUPÓN ===
   botonCupon.addEventListener('click', () => {
     const codigo = inputCupon.value.trim().toUpperCase();
     const cupon = cupones[codigo];
     const hoy = new Date();
 
-    if (
-      cupon &&
-      cupon.alojamientos.includes(nombreClave) &&
-      hoy >= cupon.desde && hoy <= cupon.hasta
-    ) {
+    let valido = false;
+
+    if (cupon && cupon.desde && cupon.hasta) {
+      // Cupón con fechas
+      valido = cupon.alojamientos.includes(nombreClave) && hoy >= cupon.desde && hoy <= cupon.hasta;
+    } else if (cupon && cupon.porcentaje) {
+      // Cupón general sin fecha ni restricción
+      valido = true;
+    }
+
+    if (valido) {
       const descuento = (totalOriginal * cupon.porcentaje) / 100;
       const totalConDescuento = totalOriginal - descuento;
       const precioNocheDescuento = totalConDescuento / diffDays;
@@ -117,20 +131,20 @@ window.addEventListener('DOMContentLoaded', () => {
       labelCupon.textContent = `Cupón aplicado: ${codigo} (-${cupon.porcentaje}%)`;
       labelCupon.style.color = "green";
 
-      cuponInfo = codigo; // 👈 guardar para enviar
+      cuponInfo = codigo;
 
     } else {
+      // Si es inválido
       labelCupon.textContent = "Cupón inválido o fuera de fecha.";
       labelCupon.style.color = "red";
       totalSpan.classList.remove('tachado');
       descuentoSpan.textContent = "";
       seniaSpan.textContent = `$${seniaOriginal.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
-
-      cuponInfo = ''; // limpiar
+      cuponInfo = '';
     }
   });
 
-  // SUBMIT
+  // === ENVÍO DEL FORMULARIO ===
   document.getElementById('formularioReserva').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -138,17 +152,17 @@ window.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        nombre: document.getElementById('nombre').value,
-        telefono: document.getElementById('telefono').value,
-        email: document.getElementById('email').value,
+        nombre:      document.getElementById('nombre').value,
+        telefono:    document.getElementById('telefono').value,
+        email:       document.getElementById('email').value,
         comentarios: document.getElementById('comentarios').value,
-        checkin: checkInDate,
-        checkout: checkOutDate,
-        huespedes: numberOfGuests,
-        propiedad: nombreProp,
-        total: descuentoSpan.textContent || totalSpan.textContent,
-        senia: seniaSpan.textContent,
-        cupon: cuponInfo
+        checkin:     checkInDate,
+        checkout:    checkOutDate,
+        huespedes:   numberOfGuests,
+        propiedad:   nombreProp,
+        total:       descuentoSpan.textContent || totalSpan.textContent,
+        senia:       seniaSpan.textContent,
+        cupon:       cuponInfo
       })
     })
     .then(res => res.json())
@@ -177,5 +191,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
 
 
