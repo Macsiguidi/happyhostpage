@@ -96,13 +96,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const res = await fetch(
-  `https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`
-);
+   let disponibles = [];
 
+const cache = localStorage.getItem("disponibles");
+const expira = parseInt(localStorage.getItem("disponibles_expira") || 0);
 
-    const data = await res.json();
-    const disponibles = data.disponibles || [];
+if (cache && Date.now() < expira) {
+  console.log("⚡ Usando disponibilidad desde cache");
+  disponibles = JSON.parse(cache);
+} else {
+  console.log("🌐 Consultando disponibilidad en vivo");
+  const res = await fetch(
+    `https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`
+  );
+  const data = await res.json();
+  disponibles = data.disponibles || [];
+
+  // Guardamos por si vuelve atrás o recarga
+  localStorage.setItem("disponibles", JSON.stringify(disponibles));
+  localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3);
+}
+
 
     console.log("✅ Datos recibidos del backend:", disponibles);
 

@@ -1,10 +1,7 @@
-
-
-// ==========================
-// FLATPICKR Y SELECTOR DE HUÉSPEDES
-// ==========================
-document.addEventListener("DOMContentLoaded", function () {
-  // Flatpickr
+document.addEventListener("DOMContentLoaded", async function () {
+  // ==========================
+  // FLATPICKR
+  // ==========================
   const dateInput = document.getElementById("rango-fechas");
   if (dateInput) {
     const isMobile = window.innerWidth <= 768;
@@ -18,7 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Huéspedes
+  // ==========================
+  // HUÉSPEDES
+  // ==========================
   const cantidadSpan = document.getElementById("cantidad");
   const inputHuespedes = document.getElementById("huespedes");
   const btnMas = document.getElementById("mas");
@@ -64,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==========================
   const form = document.getElementById("form-busqueda");
   if (form) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const rango = (dateInput.value || "").split(" a ");
@@ -72,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const checkout = rango[1]?.trim();
       const huespedes = inputHuespedes.value;
 
-      // LOG PARA DEBUG
       console.log("🧪 Rango seleccionado:", dateInput.value);
       console.log("✅ Checkin:", checkin);
       console.log("✅ Checkout:", checkout);
@@ -87,15 +85,24 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("checkout", checkout);
       localStorage.setItem("huespedes", huespedes);
 
+      // 🔥 PREFETCH de disponibilidad
+      try {
+        const response = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
+        const data = await response.json();
+        localStorage.setItem("disponibles", JSON.stringify(data.disponibles));
+        localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3); // 3 minutos
+        console.log("📦 Disponibles prefetch:", data.disponibles);
+      } catch (error) {
+        console.warn("⚠️ No se pudo prefetch disponibilidad", error);
+      }
+
       window.location.href = `alojamientos.html?checkin=${checkin}&checkout=${checkout}&huespedes=${huespedes}`;
     });
   }
-});
 
-// ==========================
-// CARRUSEL DE COMENTARIOS
-// ==========================
-document.addEventListener("DOMContentLoaded", function () {
+  // ==========================
+  // CARRUSEL DE COMENTARIOS
+  // ==========================
   const grupos = document.querySelectorAll(".grupo-comentarios");
   let actual = 0;
 
@@ -112,23 +119,24 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   mostrarGrupo(actual);
-  setInterval(siguienteGrupo, 7000); // cambia cada 7 segundos
-});
+  setInterval(siguienteGrupo, 7000);
 
-// ==========================
-// VIDEOS ACTIVIDADES
-// ==========================
-document.querySelectorAll('.video-actividad video').forEach(video => {
-  video.pause(); // Aseguramos que no empiecen solos
-
-  video.addEventListener('mouseenter', () => {
-    video.play();
-  });
-
-  video.addEventListener('mouseleave', () => {
+  // ==========================
+  // VIDEOS ACTIVIDADES
+  // ==========================
+  document.querySelectorAll('.video-actividad video').forEach(video => {
     video.pause();
-    video.currentTime = 0; // Opcional: vuelve al inicio al salir el cursor
+
+    video.addEventListener('mouseenter', () => {
+      video.play();
+    });
+
+    video.addEventListener('mouseleave', () => {
+      video.pause();
+      video.currentTime = 0;
+    });
   });
 });
+
 
 
