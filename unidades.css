@@ -278,7 +278,7 @@ body {
 }
 
 #resultado {
-  font-size: 1rem;
+  font-size: 13px;
   color: #1D292A;
   background: #EEEEEE;
   padding: 6px 12px;
@@ -339,13 +339,12 @@ body {
   }
 
   #resultado {
-    font-size: 12px;
+    font-size: 10px;
     text-align: left;
     padding: 5px;
     border-radius: 10px;
   }
 }
-
 
 
 
