@@ -40,24 +40,8 @@
   ✅ ¡Gracias por tu reserva! En breve nos contactaremos 😊
 </div>
 
-<div id="modal-ruleta" class="modal-ruleta">
-  <div class="contenido-ruleta">
-    <h2>🎁 Girá y descubrí tu beneficio</h2>
-    <div class="ruleta-wrapper">
-      <div class="flecha">🔻</div>
-      <canvas id="canvas-ruleta" width="360" height="360"></canvas>
-    </div>
-    <button id="girarBtn">GIRAR</button>
-    <p id="resultado-ruleta"></p>
-  </div>
-</div>
 
 
-    </div>
-    <button id="girarBtn">GIRAR</button>
-    <p id="resultado-ruleta"></p>
-  </div>
-</div>
 
 
 <script>
@@ -73,90 +57,6 @@
   }
 });
 
-
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  if (!localStorage.getItem("giroRealizado")) {
-    document.getElementById("modal-ruleta").style.display = "flex";
-  }
-
-  const premios = [
-    "10% OFF",
-    "Nada 😢",
-    "4x3",
-    "15% OFF",
-    "Upgrade",
-    "🎲 Volvé a intentar"
-  ];
-
-  const colores = ["#fce4d6", "#f8cbad", "#fde9d9", "#f4cccc", "#fff2cc", "#d9ead3"];
-  const canvas = document.getElementById("canvas-ruleta");
-  const ctx = canvas.getContext("2d");
-  const girarBtn = document.getElementById("girarBtn");
-  const resultado = document.getElementById("resultado-ruleta");
-
-  let puedeGirar = true;
-
-  function dibujarRuleta() {
-    const size = canvas.width;
-    const cx = size / 2;
-    const cy = size / 2;
-    const radio = cx;
-    const arc = (2 * Math.PI) / premios.length;
-
-    for (let i = 0; i < premios.length; i++) {
-      const angle = i * arc;
-
-      ctx.beginPath();
-      ctx.fillStyle = colores[i];
-      ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, radio, angle, angle + arc);
-      ctx.fill();
-
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(angle + arc / 2);
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#333";
-      ctx.font = "bold 16px Poppins";
-      ctx.fillText(premios[i], radio - 20, 10);
-      ctx.restore();
-    }
-  }
-
-  function girarRuleta() {
-    if (!puedeGirar) return;
-    puedeGirar = false;
-
-    const giroExtra = 360 * 5;
-    const indexGanador = Math.floor(Math.random() * premios.length);
-    const gradosPorPremio = 360 / premios.length;
-    const gradosFinales = giroExtra + (360 - indexGanador * gradosPorPremio - gradosPorPremio / 2);
-
-    canvas.style.transition = "transform 4s ease-out";
-    canvas.style.transform = `rotate(${gradosFinales}deg)`;
-
-    setTimeout(() => {
-      const premio = premios[indexGanador];
-      if (premio === "Nada 😢") {
-        resultado.textContent = "¡Ups! No ganaste esta vez 😔";
-        localStorage.setItem("giroRealizado", "true");
-      } else if (premio === "🎲 Volvé a intentar") {
-        resultado.textContent = "¡Tenés una segunda oportunidad! 🎲";
-        puedeGirar = true;
-      } else {
-        resultado.textContent = `¡Ganaste: ${premio}! 🎉`;
-        localStorage.setItem("cuponRuleta", premio);
-        localStorage.setItem("giroRealizado", "true");
-      }
-    }, 4200);
-  }
-
-  dibujarRuleta();
-  girarBtn.addEventListener("click", girarRuleta);
-});
 
 </script>
 
