@@ -24,7 +24,6 @@ function detenerSlideshow(card) {
   });
 }
 
-
 // ========================================
 // GUARDAR PARÁMETROS EN LOCALSTORAGE AL CARGAR
 // ========================================
@@ -85,6 +84,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const contenedor = document.getElementById('listado-alojamientos') || null;
   const cards = document.querySelectorAll('.card[data-nombre]');
 
+  // 🔥 Mostrar spinner apenas entra
+  if (loading) loading.style.display = 'flex';
+
   if (!checkin || !checkout) {
     cards.forEach(card => {
       const nombre = card.dataset.nombre;
@@ -96,27 +98,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-   let disponibles = [];
+    let disponibles = [];
 
-const cache = localStorage.getItem("disponibles");
-const expira = parseInt(localStorage.getItem("disponibles_expira") || 0);
+    const cache = localStorage.getItem("disponibles");
+    const expira = parseInt(localStorage.getItem("disponibles_expira") || 0);
 
-if (cache && Date.now() < expira) {
-  console.log("⚡ Usando disponibilidad desde cache");
-  disponibles = JSON.parse(cache);
-} else {
-  console.log("🌐 Consultando disponibilidad en vivo");
-  const res = await fetch(
-    `https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`
-  );
-  const data = await res.json();
-  disponibles = data.disponibles || [];
+    if (cache) {
+      console.log("⚡ Usando disponibilidad desde cache");
+      disponibles = JSON.parse(cache);
+    } else {
+      console.log("🌐 Consultando disponibilidad en vivo");
+      const res = await fetch(
+        `https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`
+      );
+      const data = await res.json();
+      disponibles = data.disponibles || [];
 
-  // Guardamos por si vuelve atrás o recarga
-  localStorage.setItem("disponibles", JSON.stringify(disponibles));
-  localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3);
-}
-
+      localStorage.setItem("disponibles", JSON.stringify(disponibles));
+      localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3);
+    }
 
     console.log("✅ Datos recibidos del backend:", disponibles);
 
@@ -161,14 +161,14 @@ function redirigirConParametros(pagina) {
   window.location.href = url;
 }
 
-////orden aleatorio
-
+// ========================================
+// ORDENAR CARDS ALEATORIAMENTE
+// ========================================
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid-alojamientos');
   if (!grid) return;
 
   const cards = Array.from(grid.children);
   const cardsMezcladas = cards.sort(() => Math.random() - 0.5);
-
   cardsMezcladas.forEach(card => grid.appendChild(card));
 });
