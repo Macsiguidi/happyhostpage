@@ -293,7 +293,7 @@ let fechasOcupadas = [];
 
 async function loadDisabledDates(picker) {
   try {
-    const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/cruzdelsur4');
+    const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/cds4');
     if (!resp.ok) throw new Error(await resp.text());
     const rangos = await resp.json();
     fechasOcupadas = rangos;
