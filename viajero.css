@@ -383,6 +383,19 @@ body {
   .buscador button[type="submit"]:hover {
     background: #486b64;
   }
+
+   .flatpickr-calendar .dayContainer:nth-child(2) {
+    display: none !important;
+  }
+
+   .flatpickr-calendar {
+    width: 350px !important; /* o un valor que se vea bien en tu diseño */
+  }
+
+  .flatpickr-calendar .dayContainer {
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
 }
 
 
@@ -670,5 +683,114 @@ body {
   
   .video-actividad video {
     height: 180px;
+  }
+}
+
+
+.eventos-villa {
+  padding: 40px 20px;
+  background: #f8f8f8;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.eventos-villa h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.eventos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.evento-card {
+  position: relative;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 300px;
+  color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+  background-color: #000; /* para que no quede blanco de fondo si hay bordes */
+}
+
+
+.evento-card:hover {
+  transform: scale(1.03);
+}
+
+.evento-card .info {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  padding: 20px;
+  text-align: left;
+}
+
+.evento-card .info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.evento-card .info .fecha {
+  margin-top: 5px;
+  font-size: 0.95rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.evento-card:hover .fecha {
+  opacity: 1;
+}
+
+
+@media (max-width: 768px) {
+  .eventos-villa h2 {
+    font-size: 1.5rem;
+  }
+
+  .eventos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .evento-card {
+    height: 240px;
+    border-radius: 10px;
+  }
+
+  .evento-card .info {
+    padding: 16px;
+  }
+
+  .evento-card .info h3 {
+    font-size: 1.1rem;
+  }
+
+  .evento-card .info .fecha {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .evento-card {
+    height: 200px;
+  }
+
+  .evento-card .info {
+    padding: 12px;
+  }
+
+  .evento-card .info h3 {
+    font-size: 1rem;
+  }
+
+  .evento-card .info .fecha {
+    font-size: 0.8rem;
   }
 }
