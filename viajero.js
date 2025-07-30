@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   const form = document.getElementById("form-busqueda");
   if (form) {
-    form.addEventListener("submit", async function (e) {
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
 
       const rango = (dateInput.value || "").split(" a ");
@@ -85,17 +85,19 @@ document.addEventListener("DOMContentLoaded", async function () {
       localStorage.setItem("checkout", checkout);
       localStorage.setItem("huespedes", huespedes);
 
-      // 🔥 PREFETCH de disponibilidad
-      try {
-        const response = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
-        const data = await response.json();
-        localStorage.setItem("disponibles", JSON.stringify(data.disponibles));
-        localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3); // 3 minutos
-        console.log("📦 Disponibles prefetch:", data.disponibles);
-      } catch (error) {
-        console.warn("⚠️ No se pudo prefetch disponibilidad", error);
-      }
+      // 🔥 Prefetch sin bloquear la redirección
+      fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`)
+        .then(res => res.json())
+        .then(data => {
+          localStorage.setItem("disponibles", JSON.stringify(data.disponibles));
+          localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3); // 3 minutos
+          console.log("📦 Prefetch disponibilidad:", data.disponibles);
+        })
+        .catch(error => {
+          console.warn("⚠️ Prefetch falló:", error);
+        });
 
+      // ✅ Redirige ya mismo
       window.location.href = `alojamientos.html?checkin=${checkin}&checkout=${checkout}&huespedes=${huespedes}`;
     });
   }
@@ -137,6 +139,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 });
+
 
 
 
