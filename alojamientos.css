@@ -170,8 +170,8 @@
 
 @media (max-width: 768px) {
   .grid-alojamientos {
-    display: grid;
-    grid-template-columns: 1fr !important; /* Solo una columna */
+    display: grid !important;
+    grid-template-columns: 1fr;
     gap: 20px;
     padding: 0 16px;
     margin-bottom: 40px;
@@ -182,9 +182,16 @@
   }
 
   .card {
+    display: flex;
+    flex-direction: column;
     max-width: 100%;
-    width: 100% !important; /* Que no se achique ni corte */
-    height: 200px; /* Asegura altura fija en móvil */
+    width: 100%;
+    height: auto; /* O mantené 200px si querés altura fija */
+  }
+
+  /* 👇 Esto permite que las tarjetas ocultas por JS realmente se oculten */
+  .card[style*="display: none"] {
+    display: none !important;
   }
 
   .nombre-alojamiento {
@@ -197,6 +204,7 @@
     background: rgba(0, 0, 0, 0.2); /* Más suave en mobile si querés dejarlo fijo */
   }
 }
+
 
 
 

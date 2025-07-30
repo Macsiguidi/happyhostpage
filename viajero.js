@@ -1,3 +1,10 @@
+// 🔄 Limpiar filtros anteriores (por si vuelve desde alojamientos o toca "Inicio")
+localStorage.removeItem("checkin");
+localStorage.removeItem("checkout");
+localStorage.removeItem("huespedes");
+localStorage.removeItem("disponibles");
+localStorage.removeItem("disponibles_expira");
+
 document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   // FLATPICKR
@@ -63,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   const form = document.getElementById("form-busqueda");
   if (form) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const rango = (dateInput.value || "").split(" a ");
@@ -85,20 +92,35 @@ document.addEventListener("DOMContentLoaded", async function () {
       localStorage.setItem("checkout", checkout);
       localStorage.setItem("huespedes", huespedes);
 
-      // 🔥 Prefetch sin bloquear la redirección
-      fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`)
-        .then(res => res.json())
-        .then(data => {
-          localStorage.setItem("disponibles", JSON.stringify(data.disponibles));
-          localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3); // 3 minutos
-          console.log("📦 Prefetch disponibilidad:", data.disponibles);
-        })
-        .catch(error => {
-          console.warn("⚠️ Prefetch falló:", error);
-        });
+      try {
+        const response = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
+        const data = await response.json();
+        console.log("📦 Disponibles prefetch:", data.disponibles);
 
-      // ✅ Redirige ya mismo
+        localStorage.setItem("disponibles", JSON.stringify(data.disponibles));
+        localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3);
+
+        // 🔒 Espera breve para garantizar que se guarde bien antes de redirigir
+        await new Promise(resolve => setTimeout(resolve, 200));
+      } catch (error) {
+        console.warn("⚠️ No se pudo prefetch disponibilidad", error);
+      }
+
       window.location.href = `alojamientos.html?checkin=${checkin}&checkout=${checkout}&huespedes=${huespedes}`;
+    });
+  }
+
+  // ==========================
+  // BOTÓN INICIO
+  // ==========================
+  const btnInicio = document.getElementById("inicio");
+  if (btnInicio) {
+    btnInicio.addEventListener("click", () => {
+      localStorage.removeItem("checkin");
+      localStorage.removeItem("checkout");
+      localStorage.removeItem("huespedes");
+      localStorage.removeItem("disponibles");
+      localStorage.removeItem("disponibles_expira");
     });
   }
 
@@ -139,6 +161,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 });
+
+
 
 
 
