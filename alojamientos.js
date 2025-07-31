@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     calafate5: 601711,
     calafate6: 601712,
     calafate7: 601713,
-    cruzdelsur4: 601714,
-    cruzdelsur5: 601717,
+    cruzdelsur4: 601717,
+    cruzdelsur5: 601714,
     nilidas: 601719,
     gurisa: 648950,
     paisajismo: 601720
