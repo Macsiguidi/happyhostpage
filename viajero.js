@@ -6,6 +6,11 @@ localStorage.removeItem("disponibles");
 localStorage.removeItem("disponibles_expira");
 
 document.addEventListener("DOMContentLoaded", async function () {
+  // 🚀 WAKE-UP CALL PARA RENDER
+  fetch("https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=2025-01-01&checkout=2025-01-02")
+    .then(() => console.log("✅ Render activado"))
+    .catch(() => console.warn("⚠️ Wake-up fallido"));
+
   // ==========================
   // FLATPICKR
   // ==========================
