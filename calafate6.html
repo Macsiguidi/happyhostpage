@@ -485,7 +485,23 @@ async function calculate() {
     resDiv.textContent = 'Error al obtener datos: ' + e.message;
   }
 }
+
+// ↓ ESTE BLOQUE va justo aquí, antes de cerrar el <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnVolver = document.getElementById("btnVolver");
+    if (!btnVolver) return;
+
+    btnVolver.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "alojamientos.html";
+      }
+    });
+  });
 </script>
+
 
 
 <script src="volver.js"></script>

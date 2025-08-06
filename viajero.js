@@ -96,6 +96,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       localStorage.setItem("checkin", checkin);
       localStorage.setItem("checkout", checkout);
       localStorage.setItem("huespedes", huespedes);
+      localStorage.setItem("busqueda_desde_buscador", "true");
+
 
       try {
         const response = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
