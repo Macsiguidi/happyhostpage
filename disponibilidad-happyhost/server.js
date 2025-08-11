@@ -257,24 +257,21 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
 
 
 // ========================= P U S H O V E R =========================
-// Requiere: const axios = require('axios'); (ya debería estar arriba)
-
-const { PUSHOVER_TOKEN, PUSHOVER_USER } = process.env; // setéalos en Render
+// Usa tus claves directamente (si luego querés, podemos pasarlas a variables de entorno)
+const PUSHOVER_TOKEN = 'a8nyif562ezb7sc9buqt8aioybkp5n'; // API Token/Key (app)
+const PUSHOVER_USER  = 'uhwyimqvtop7fswmvs4p6i5e69nomg'; // User Key (tu cuenta)
 
 async function enviarPushover(message, title = 'Notificación') {
   try {
-    if (!PUSHOVER_TOKEN || !PUSHOVER_USER) {
-      console.warn('Pushover no configurado: faltan PUSHOVER_TOKEN o PUSHOVER_USER');
-      return;
-    }
     await axios.post('https://api.pushover.net/1/messages.json', {
       token: PUSHOVER_TOKEN,
       user:  PUSHOVER_USER,
       title,
       message
     });
+    console.log('✅ Pushover enviado');
   } catch (e) {
-    console.error('Pushover error:', e.response?.data || e.message);
+    console.error('❌ Pushover error:', e.response?.data || e.message);
   }
 }
 
@@ -335,6 +332,7 @@ app.get('/test-pushover', async (_req, res) => {
   await enviarPushover('🔔 Prueba de Pushover desde el servidor');
   res.json({ ok: true });
 });
+
 
 
 
