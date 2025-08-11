@@ -3,6 +3,9 @@ const cors        = require('cors');
 const axios       = require('axios');
 const ical        = require('node-ical');
 const nodemailer  = require('nodemailer');
+const path        = require('path');
+const { randomUUID } = require('crypto'); // ← NUEVO
+
 
 const app         = express();
 const PORT        = process.env.PORT || 3000;
@@ -12,8 +15,9 @@ const BASE_URL    = 'https://api.lodgify.com';
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname)); // sirve tus .html/.js/.css desde localhost:3000
 
-// 👉 ID por nombre (para endpoint /api/ocupados/:unidad)
+// 👉 IDs por nombre (para endpoint /api/ocupados/:unidad)
 const propiedades = {
   calafate1: 601552,
   calafate2: 601707,
@@ -44,6 +48,75 @@ const nombrePropiedades = {
   648950: 'Gurisa',
   601720: 'Paisajismo'
 };
+
+/* ===========================
+   Helpers Lodgify (MENSAJES + NOTAS)
+   =========================== */
+const LOD_HEADERS = {
+  'X-ApiKey': API_KEY,
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+};
+
+// Agrega un mensaje en la pestaña "Mensajes" del booking.
+// El endpoint espera un ARRAY de objetos: [{ subject?, message, type?, send_notification?, message_id? }]
+async function addBookingMessage(bookingId, text) {
+  const body = [
+    {
+      subject: 'WEB - Detalles de cobro',
+      message: text,
+      type: 'Owner',            // lo deja como mensaje interno
+      send_notification: false  // no notifica al huésped
+      // message_id: crypto.randomUUID?.() // opcional
+    }
+  ];
+
+  await axios.post(
+    `${BASE_URL}/v1/reservation/booking/${bookingId}/messages`,
+    body,
+    { headers: LOD_HEADERS, timeout: 15000 }
+  );
+}
+
+// Setea el cuadro "Notas" del booking.
+// Primero intentamos con { id, notes }. Si el tenant exige más campos, hacemos fallback:
+// traemos el booking y mandamos un mínimo "completo".
+async function updateBookingNotes(bookingId, text) {
+  try {
+    await axios.put(
+      `${BASE_URL}/v1/reservation/booking`,
+      { id: bookingId, notes: text },
+      { headers: LOD_HEADERS, timeout: 15000 }
+    );
+  } catch (e1) {
+    // Fallback: traer detalles y reenviar con campos mínimos
+    const details = (await axios.get(
+      `${BASE_URL}/v1/reservation/booking/${bookingId}`,
+      { headers: LOD_HEADERS, timeout: 15000 }
+    )).data;
+
+    const body = {
+      id: bookingId,
+      notes: text,
+      arrival:   details.arrival,
+      departure: details.departure,
+      property_id: details.property_id || details.property?.id,
+      status: details.status || 'booked',
+      rooms:  details.rooms,
+      guest:  details.guest
+    };
+
+    await axios.put(
+      `${BASE_URL}/v1/reservation/booking`,
+      body,
+      { headers: LOD_HEADERS, timeout: 15000 }
+    );
+  }
+}
+
+/* ===========================
+   Endpoints
+   =========================== */
 
 // 🟢 PRECIOS DIARIOS
 app.get('/api/precios-diarios', async (req, res) => {
@@ -90,7 +163,7 @@ app.get('/api/disponibles', async (req, res) => {
     });
 
     const start = new Date(checkin);
-    const end = new Date(checkout);
+    const end   = new Date(checkout);
     const diasRequeridos = [];
 
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
@@ -132,8 +205,6 @@ app.get('/api/disponibles', async (req, res) => {
   }
 });
 
-// 🔒 OCUPADOS por unidad (bloquea solo días intermedios)// 🔒 OCUPADOS por unidad
-
 // 🔒 OCUPADOS por unidad usando /v1/availability/{propertyId}
 app.get('/api/ocupados/:unidad', async (req, res) => {
   const unidad = req.params.unidad.toLowerCase();
@@ -149,10 +220,7 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
   try {
     const response = await axios.get(`${BASE_URL}/v1/availability/${propertyId}`, {
       headers: { 'X-ApiKey': API_KEY },
-      params: {
-        periodStart,
-        periodEnd
-      }
+      params: { periodStart, periodEnd }
     });
 
     const data = response.data;
@@ -188,64 +256,16 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
 
 
 
-
-
-
-
-
-// Enviar reserva por mail
-app.post('/enviar-reserva', async (req, res) => {
-  const {
-    nombre, email, telefono, comentarios,
-    propertyId, roomTypeId, checkInDate,
-    checkOutDate, numberOfGuests, totalPrice
-  } = req.body;
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'complejocalafatevla@gmail.com',
-      pass: 'wumwuhlgxzqflbeu'
-    }
-  });
-
-  const mailOptions = {
-    from: 'complejocalafatevla@gmail.com',
-    to: 'happyhostpatagonia@gmail.com',
-    subject: '🛎️ Nueva solicitud de reserva - Happy Host',
-    html: `
-      <h2>Detalles de la reserva</h2>
-      <p><strong>Nombre:</strong> ${nombre}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Teléfono:</strong> ${telefono}</p>
-      <p><strong>Fechas:</strong> ${checkInDate} → ${checkOutDate}</p>
-      <p><strong>Huéspedes:</strong> ${numberOfGuests}</p>
-      <p><strong>Total:</strong> $${totalPrice}</p>
-      <p><strong>Comentarios:</strong> ${comentarios || 'Sin comentarios'}</p>
-      <p><strong>Property ID:</strong> ${propertyId}</p>
-      <p><strong>Propiedad:</strong> ${propiedades[propertyId] || 'Desconocida'}</p>
-      <p><strong>Room Type ID:</strong> ${roomTypeId}</p>
-    `
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    res.json({ success: true, message: '📨 Correo enviado con éxito' });
-  } catch (err) {
-    console.error('❌ Error al enviar el correo:', err);
-    res.status(500).json({ success: false, message: 'Error al enviar el correo' });
-  }
-});
-
-// Notificación por Pushover (reserva)
+// Notificación por Pushover (reserva) – usa la MISMA app/usuario
 app.post('/notificar-reserva', async (req, res) => {
-  const {
-    nombre, telefono, email, comentarios,
-    checkin, checkout, huespedes,
-    propiedad, total, senia, cupon
-  } = req.body;
+  try {
+    const {
+      nombre, telefono, email, comentarios,
+      checkin, checkout, huespedes,
+      propiedad, total, senia, cupon
+    } = req.body;
 
-  const mensaje = `Nueva reserva:
+    const mensaje = `Nueva reserva:
 🏡 Propiedad: ${propiedad}
 👤 Nombre: ${nombre}
 📧 Email: ${email}
@@ -258,50 +278,173 @@ app.post('/notificar-reserva', async (req, res) => {
 💲 Seña: ${senia}
 🎟️ ${cupon || 'Sin cupón'}`;
 
-  try {
-    await axios.post('https://api.pushover.net/1/messages.json', {
-      token: 'a8nyif562ezb7sc9buqt8aioybkp5n',
-      user: 'uhwyimqvtop7fswmvs4p6i5e69nomg',
-      message: mensaje
-    });
-
+    await enviarPushover(mensaje, '🟢 Nueva reserva');
     res.send({ status: 'Notificación enviada' });
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
+    console.error(error.response?.data || error.message);
     res.status(500).send({ status: 'Error', error: error.message });
   }
 });
 
-// Formulario de propietarios
+// Formulario de propietarios – también va al MISMO Pushover
 app.post('/enviar-formulario-propietario', async (req, res) => {
-  const {
-    nombre, email, telefono, dia, hora, plan, mensaje
-  } = req.body;
+  try {
+    const { nombre, email, telefono, dia, hora, plan, mensaje } = req.body;
 
-  const contenido = `Nuevo contacto de propietario:
+    const contenido = `Nuevo contacto de propietario:
 👤 Nombre: ${nombre}
 📧 Email: ${email}
 📱 Teléfono: ${telefono}
 📅 Día para llamada: ${dia}
 🕒 Hora preferida: ${hora}
 📦 Plan elegido: ${plan}
-💬 Mensaje: ${mensaje}`;
+💬 Mensaje: ${mensaje || '—'}`;
 
-  try {
-    await axios.post('https://api.pushover.net/1/messages.json', {
-      token: 'a9pjwizhvmj2gkmo6x27pxvjanw8zz',
-      user: 'udbr5cvegxckcin59py95xt5wsq8jd',
-      message: contenido
-    });
-
+    await enviarPushover(contenido, '📣 Propietario: nuevo contacto');
     res.send({ status: 'Notificación enviada' });
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
+    console.error(error.response?.data || error.message);
     res.status(500).send({ status: 'Error', error: error.message });
   }
 });
+
+
+// === Crear reserva directa en Lodgify (confirmada) ===
+app.post('/api/crear-reserva', async (req, res) => {
+  try {
+    const b = req.body || {};
+    if (!b.arrival || !b.departure || !b.property_id || !Array.isArray(b.rooms) || !b.guest) {
+      return res.status(400).json({ error: 'Faltan campos (arrival, departure, property_id, rooms, guest)' });
+    }
+
+    const idemKey = req.header('X-Idempotency-Key');
+
+    // 1) Crear la reserva
+    const createRes = await axios.post(
+      `${BASE_URL}/v1/reservation/booking`,
+      b,
+      {
+        headers: {
+          'X-ApiKey': API_KEY,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          ...(idemKey ? { 'X-Idempotency-Key': idemKey } : {})
+        },
+        timeout: 20000
+      }
+    );
+
+    const body    = createRes.data;
+    const headers = createRes.headers || {};
+    let bookingId =
+      body?.id ||
+      body?.booking_id ||
+      body?.bookingId ||
+      body?.data?.id ||
+      null;
+
+    // 🔎 Fallback: intentar extraer el ID desde el header Location/Content-Location
+    if (!bookingId) {
+      const loc = headers.location || headers.Location || headers['content-location'];
+      if (loc) {
+        const m = String(loc).match(/\/booking\/(\d+)/i) || String(loc).match(/(\d+)(?!.*\d)/);
+        if (m) bookingId = parseInt(m[1], 10);
+      }
+    }
+
+    console.log('✅ Crear reserva OK. status:', createRes.status, 'ID:', bookingId, 'keys:', body ? Object.keys(body) : []);
+
+    // Si igualmente no hay ID, devolvemos lo recibido para inspección, pero sin romper.
+    if (!bookingId) {
+      return res.status(200).json({
+        ok: true,
+        warning: 'No se detectó ID; revisar headers Location/Content-Location',
+        headers: {
+          location: headers.location || headers.Location || headers['content-location'] || null
+        },
+        body: body ?? null
+      });
+    }
+
+    // Texto para notas/mensajes
+    const totalUI = b._total_ui || '';
+    const seniaUI = b._senia_ui || '';
+    const cupon   = b._cupon || '';
+    const comm    = b._comments || '';
+    const textForNotes =
+      `[WEB]\n` +
+      `Total ARS: ${totalUI || '—'}\n` +
+      `Seña: ${seniaUI || '—'}\n` +
+      `Cupón: ${cupon || '—'}\n` +
+      `Comentarios: ${comm || '—'}`;
+
+    let messageAdded = false;
+    let notesUpdated = false;
+    let messageError = null;
+    let notesError   = null;
+
+    // 2) Agregar mensaje al hilo (si falla, no rompemos)
+    try {
+      await axios.post(
+        `${BASE_URL}/v1/reservation/booking/${bookingId}/messages`,
+        [{ subject: 'Datos de la reserva', message: textForNotes, type: 'Owner', send_notification: false }],
+        { headers: { 'X-ApiKey': API_KEY, 'Accept': 'application/json', 'Content-Type': 'application/json' } }
+      );
+      messageAdded = true;
+      console.log('✅ MENSAJE agregado');
+    } catch (e) {
+      messageError = e.response?.data || e.message;
+      console.log('❌ MENSAJE no agregado:', messageError);
+    }
+
+    // 3) Actualizar notas (probamos notes y luego note)
+    try {
+      await axios.put(
+        `${BASE_URL}/v1/reservation/booking/${bookingId}`,
+        { notes: textForNotes },
+        { headers: { 'X-ApiKey': API_KEY, 'Accept': 'application/json', 'Content-Type': 'application/json' } }
+      );
+      notesUpdated = true;
+      console.log('✅ NOTAS actualizadas');
+    } catch (e1) {
+      try {
+        await axios.put(
+          `${BASE_URL}/v1/reservation/booking/${bookingId}`,
+          { note: textForNotes },
+          { headers: { 'X-ApiKey': API_KEY, 'Accept': 'application/json', 'Content-Type': 'application/json' } }
+        );
+        notesUpdated = true;
+        console.log('✅ NOTA (singular) actualizada');
+      } catch (e2) {
+        notesError = e2.response?.data || e2.message;
+        console.log('❌ NOTAS no actualizadas:', notesError);
+      }
+    }
+
+    return res.json({
+      ok: true,
+      id: bookingId,
+      bookingId,
+      messageAdded,
+      notesUpdated,
+      messageError,
+      notesError
+    });
+
+  } catch (err) {
+    const status = err.response?.status || 500;
+    const data   = err.response?.data || { error: 'Error al crear la reserva' };
+    console.error('❌ Lodgify:', status, data);
+    return res.status(status).json(data);
+  }
+});
+
+
 
 // Iniciar servidor
 app.listen(PORT, () =>
   console.log(`⚡ Server corriendo en http://localhost:${PORT}`)
 );
+
+
+

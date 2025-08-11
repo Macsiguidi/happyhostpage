@@ -59,21 +59,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const diffTime = Math.abs(checkoutDateObj - checkinDateObj);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   const resultadoSenia = calcularSeniaInteligente(totalOriginal, diffDays);
-const seniaFinal = resultadoSenia.seniaFinal;
-const seniaNoches = resultadoSenia.seniaNoches;
+  const seniaFinal = resultadoSenia.seniaFinal;
+  const seniaNoches = resultadoSenia.seniaNoches;
+  const seniaOriginal = seniaFinal; // para usar como fallback
 
-seniaSpan.textContent = `$${seniaFinal}`;
+  seniaSpan.textContent = `$${seniaFinal}`;
 
   const cupones = {
     "HAPPYINVIERNO": {
       porcentaje: 15,
-      alojamientos: ["calafate1", "calafate2", "calafate3", "calafate4", "calafate5", "calafate6", "calafate7", "paisajismo"],
+      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo"],
       desde: new Date("2025-06-01"),
       hasta: new Date("2025-09-30")
     },
     "PRIMAVERA2025": {
       porcentaje: 20,
-      alojamientos: ["calafate1", "calafate2", "calafate3", "calafate4", "calafate5", "calafate6", "calafate7", "paisajismo"],
+      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo"],
       desde: new Date("2025-10-01"),
       hasta: new Date("2025-10-31")
     },
@@ -108,7 +109,6 @@ seniaSpan.textContent = `$${seniaFinal}`;
       }
     }
     // === FIN CUPÓN GANASTE ===
-
     else if (cupon && cupon.desde && cupon.hasta) {
       const hoy = new Date();
       valido = cupon.alojamientos.includes(nombreClave) && hoy >= cupon.desde && hoy <= cupon.hasta;
@@ -142,54 +142,121 @@ seniaSpan.textContent = `$${seniaFinal}`;
     }
   });
 
-  // === ENVÍO DEL FORMULARIO ===
-  document.getElementById('formularioReserva').addEventListener('submit', function(e) {
-    e.preventDefault();
+  // === ENVÍO DEL FORMULARIO → CREA RESERVA CONFIRMADA EN LODGIFY ===
+document.getElementById('formularioReserva').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-    fetch('https://disponibilidad-happy-host-patagonia.onrender.com/notificar-reserva', {
+  const boton = document.getElementById('botonReservar');
+  if (boton) { boton.disabled = true; boton.textContent = 'Confirmando...'; }
+
+  try {
+    const nombreCompleto = document.getElementById('nombre').value.trim();
+    const email          = document.getElementById('email').value.trim();
+    const telefono       = document.getElementById('telefono').value.trim();
+    const comentarios    = document.getElementById('comentarios').value.trim();
+
+    const propertyId     = document.getElementById('propertyId').value || '601719';
+    const roomTypeId     = document.getElementById('roomTypeId').value || '668510';
+    const numberOfGuests = document.getElementById('numberOfGuests').value || '2';
+
+    // nombre → name + first/last
+    const [first_name, ...rest] = nombreCompleto.split(' ').filter(Boolean);
+    const last_name = rest.join(' ') || '-';
+
+    // total mostrado al huésped (si hay descuento, usamos ese)
+    const totalUI = (descuentoSpan.textContent || totalSpan.textContent || '').trim();
+
+    // payload mínimo (confirmada)
+    const payload = {
+      source_text: 'Reserva web Happy Host',
+      arrival:     checkInDate,
+      departure:   checkOutDate,
+      property_id: Number(propertyId) || 601719,
+      status:      'booked',
+
+      // 👉 obligatorio
+      rooms: [{
+        room_type_id: Number(roomTypeId) || 668510,
+        units: 1,
+        adults: Number(numberOfGuests) || 2,
+        children: 0
+      }],
+
+      // 👉 obligatorio
+      guest: {
+        name: nombreCompleto,
+        first_name,
+        last_name,
+        email,
+        phone: telefono
+      },
+
+      // 👉 extra para que el server arme el texto de Notas/Mensajes
+      _total_ui: totalUI,
+      _senia_ui: seniaSpan.textContent,
+      _cupon:    cuponInfo || '',
+      _comments: comentarios
+    };
+
+    // ====== BACKEND ======
+    // Usamos Render directamente. (Si querés testear local, cambiá esta línea por "http://localhost:3000")
+    const API_BASE = 'https://disponibilidad-happy-host-patagonia.onrender.com';
+
+    // Idempotencia para evitar duplicados por doble click
+    const idKey = (window.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : `web-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+    const resp = await fetch(`${API_BASE}/api/crear-reserva`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        nombre:      document.getElementById('nombre').value,
-        telefono:    document.getElementById('telefono').value,
-        email:       document.getElementById('email').value,
-        comentarios: document.getElementById('comentarios').value,
-        checkin:     checkInDate,
-        checkout:    checkOutDate,
-        huespedes:   numberOfGuests,
-        propiedad:   nombreProp,
-        total:       descuentoSpan.textContent || totalSpan.textContent,
-        senia:       seniaSpan.textContent,
-        cupon:       cuponInfo
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      Swal.fire({
-        title: '✅ Reserva confirmada',
-        html: 'La notificación fue enviada con éxito.<br>¡Gracias por elegir Happy Host!',
-        imageUrl: 'logos/happy host.png',
-        imageWidth: 100,
-        confirmButtonText: '¡Gracias!',
-        confirmButtonColor: '#25D366',
-        timer: 10000,
-        timerProgressBar: true
-      }).then(() => {
-        window.location.href = 'viajero.html';
-      });
-    })
-    .catch(err => {
-      console.error('Error al enviar la notificación:', err);
-      Swal.fire({
-        title: '❌ Error',
-        text: 'Hubo un error al enviar la notificación.',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': idKey
+      },
+      body: JSON.stringify(payload)
     });
-  });
+
+    const data = await resp.json().catch(() => ({}));
+
+    if (!resp.ok) {
+      console.error('Error al crear reserva:', data);
+      await Swal.fire({
+        icon: 'error',
+        title: 'No se pudo confirmar',
+        text: (data && (data.message || data.error)) || 'Intentá nuevamente.'
+      });
+      return;
+    }
+
+    const bookingId = data?.id || data?.booking_id || data?.bookingId || '';
+
+    // Éxito + redirección automática en 5 segundos
+    await Swal.fire({
+      icon: 'success',
+      title: '✅ Reserva confirmada',
+      html: `Tu reserva fue creada con éxito.<br><small>ID: ${bookingId || '—'}</small><br><br>Te redirijo en 5 segundos...`,
+      timer: 5000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
+
+    // Redirección
+    window.location.href = 'viajero.html';
+
+  } catch (err) {
+    console.error('Error al enviar la reserva:', err);
+    await Swal.fire({
+      icon: 'error',
+      title: '❌ Error',
+      text: 'Hubo un problema al confirmar la reserva.'
+    });
+  } finally {
+    if (boton) { boton.disabled = false; boton.textContent = 'Confirmar Reserva'; }
+  }
 });
 
+
+// === utilidades ===
 function calcularSeniaInteligente(total, diffDays) {
   let seniaMinNoches = 1;
   if (diffDays >= 5 && diffDays <= 9) seniaMinNoches = 2;
@@ -213,17 +280,14 @@ function calcularSeniaInteligente(total, diffDays) {
   };
 }
 
-
 // === INICIO CUPÓN GANASTE ===
 function getUsosGanaste() {
   return parseInt(localStorage.getItem("ganaste_usos")) || 0;
 }
-
 function incrementarUsoGanaste() {
   const usos = getUsosGanaste() + 1;
   localStorage.setItem("ganaste_usos", usos);
 }
-
 function aplicarCuponGanaste(codigo, checkInDate) {
   const hoy = new Date();
   const checkin = new Date(checkInDate);
@@ -248,5 +312,3 @@ function aplicarCuponGanaste(codigo, checkInDate) {
   };
 }
 // === FIN CUPÓN GANASTE ===
-
-
