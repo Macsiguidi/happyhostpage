@@ -256,6 +256,28 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
 
 
 
+// ========================= P U S H O V E R =========================
+// Requiere: const axios = require('axios'); (ya debería estar arriba)
+
+const { PUSHOVER_TOKEN, PUSHOVER_USER } = process.env; // setéalos en Render
+
+async function enviarPushover(message, title = 'Notificación') {
+  try {
+    if (!PUSHOVER_TOKEN || !PUSHOVER_USER) {
+      console.warn('Pushover no configurado: faltan PUSHOVER_TOKEN o PUSHOVER_USER');
+      return;
+    }
+    await axios.post('https://api.pushover.net/1/messages.json', {
+      token: PUSHOVER_TOKEN,
+      user:  PUSHOVER_USER,
+      title,
+      message
+    });
+  } catch (e) {
+    console.error('Pushover error:', e.response?.data || e.message);
+  }
+}
+
 // Notificación por Pushover (reserva) – usa la MISMA app/usuario
 app.post('/notificar-reserva', async (req, res) => {
   try {
@@ -307,6 +329,13 @@ app.post('/enviar-formulario-propietario', async (req, res) => {
     res.status(500).send({ status: 'Error', error: error.message });
   }
 });
+
+// Test rápido para confirmar que Pushover está OK
+app.get('/test-pushover', async (_req, res) => {
+  await enviarPushover('🔔 Prueba de Pushover desde el servidor');
+  res.json({ ok: true });
+});
+
 
 
 // === Crear reserva directa en Lodgify (confirmada) ===
