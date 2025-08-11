@@ -370,7 +370,7 @@ app.post('/api/crear-reserva', async (req, res) => {
       body?.data?.id ||
       null;
 
-    // 🔎 Fallback: intentar extraer el ID desde el header Location/Content-Location
+    // 🔎 Fallback: intentar extraer el ID desde Location/Content-Location
     if (!bookingId) {
       const loc = headers.location || headers.Location || headers['content-location'];
       if (loc) {
@@ -393,17 +393,34 @@ app.post('/api/crear-reserva', async (req, res) => {
       });
     }
 
-    // Texto para notas/mensajes
+    // ===== Texto para notas/mensajes (con HUÉSPEDES y TELÉFONO) =====
     const totalUI = b._total_ui || '';
     const seniaUI = b._senia_ui || '';
     const cupon   = b._cupon || '';
     const comm    = b._comments || '';
+
+    // Teléfono del huésped
+    const phone = (b?.guest?.phone || b?.guest?.phone_number || '').toString().trim() || '—';
+
+    // Huéspedes (sumamos adultos/menores de todos los rooms)
+    const rooms = Array.isArray(b?.rooms) ? b.rooms : [];
+    let adultsTotal = 0, childrenTotal = 0;
+    rooms.forEach(r => {
+      adultsTotal   += Number(r?.adults   || 0);
+      childrenTotal += Number(r?.children || 0);
+    });
+    const guestsLine = childrenTotal > 0
+      ? `${adultsTotal} adultos, ${childrenTotal} menores`
+      : `${adultsTotal || '—'} huéspedes`;
+
     const textForNotes =
-      `[WEB]\n` +
-      `Total ARS: ${totalUI || '—'}\n` +
-      `Seña: ${seniaUI || '—'}\n` +
-      `Cupón: ${cupon || '—'}\n` +
-      `Comentarios: ${comm || '—'}`;
+      `[WEB]
+Total ARS: ${totalUI || '—'}
+Seña: ${seniaUI || '—'}
+Huéspedes: ${guestsLine}
+Teléfono: ${phone}
+Cupón: ${cupon || '—'}
+Comentarios: ${comm || '—'}`;
 
     let messageAdded = false;
     let notesUpdated = false;
@@ -465,6 +482,7 @@ app.post('/api/crear-reserva', async (req, res) => {
     return res.status(status).json(data);
   }
 });
+
 
 
 
