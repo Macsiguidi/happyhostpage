@@ -1,15 +1,16 @@
+// server.js
 const express     = require('express');
 const cors        = require('cors');
 const axios       = require('axios');
 const ical        = require('node-ical');
 const nodemailer  = require('nodemailer');
 const path        = require('path');
-const { randomUUID } = require('crypto'); // ← NUEVO
-
+const { randomUUID } = require('crypto');
 
 const app         = express();
 const PORT        = process.env.PORT || 3000;
 
+// ⚠️ Recomendado: pasar a .env y ROTAR estas claves
 const API_KEY     = 'tQF5BDMXbeN/vkKMRZiWKwM461gD8wL16EtUbwboi1OayWd3VZ24FMNKAuCF+3+m';
 const BASE_URL    = 'https://api.lodgify.com';
 
@@ -59,7 +60,6 @@ const LOD_HEADERS = {
 };
 
 // Agrega un mensaje en la pestaña "Mensajes" del booking.
-// El endpoint espera un ARRAY de objetos: [{ subject?, message, type?, send_notification?, message_id? }]
 async function addBookingMessage(bookingId, text) {
   const body = [
     {
@@ -67,7 +67,6 @@ async function addBookingMessage(bookingId, text) {
       message: text,
       type: 'Owner',            // lo deja como mensaje interno
       send_notification: false  // no notifica al huésped
-      // message_id: crypto.randomUUID?.() // opcional
     }
   ];
 
@@ -78,9 +77,7 @@ async function addBookingMessage(bookingId, text) {
   );
 }
 
-// Setea el cuadro "Notas" del booking.
-// Primero intentamos con { id, notes }. Si el tenant exige más campos, hacemos fallback:
-// traemos el booking y mandamos un mínimo "completo".
+// Setea el cuadro "Notas" del booking (con fallback si pide más campos).
 async function updateBookingNotes(bookingId, text) {
   try {
     await axios.put(
@@ -89,7 +86,6 @@ async function updateBookingNotes(bookingId, text) {
       { headers: LOD_HEADERS, timeout: 15000 }
     );
   } catch (e1) {
-    // Fallback: traer detalles y reenviar con campos mínimos
     const details = (await axios.get(
       `${BASE_URL}/v1/reservation/booking/${bookingId}`,
       { headers: LOD_HEADERS, timeout: 15000 }
@@ -113,6 +109,105 @@ async function updateBookingNotes(bookingId, text) {
     );
   }
 }
+
+/* ===========================
+   P U S H O V E R
+   =========================== */
+
+// ⚠️ Recomendado: mover a .env y ROTAR claves
+const PUSHOVER_TOKEN = 'a8nyif562ezb7sc9buqt8aioybkp5n'; // API Token/Key (app)
+const PUSHOVER_USER  = 'uhwyimqvtop7fswmvs4p6i5e69nomg'; // User Key (tu cuenta)
+
+// Envío con timeout + reintento simple
+async function enviarPushover(message, title = 'Notificación', extra = {}) {
+  const payload = {
+    token: PUSHOVER_TOKEN,
+    user:  PUSHOVER_USER,
+    title,
+    message,
+    priority: extra.priority ?? 0,       // -2..2
+    sound:   extra.sound ?? 'pushover',
+    url:       extra.url,
+    url_title: extra.url_title
+  };
+
+  try {
+    await axios.post('https://api.pushover.net/1/messages.json', payload, { timeout: 10000 });
+    console.log('✅ Pushover enviado');
+  } catch (e) {
+    const status = e.response?.status;
+    console.error('❌ Pushover error:', e.response?.data || e.message);
+
+    // Reintenta si fue rate limit o timeout/network
+    if (!e.response || status === 429) {
+      try {
+        await new Promise(r => setTimeout(r, 1500));
+        await axios.post('https://api.pushover.net/1/messages.json', payload, { timeout: 10000 });
+        console.log('✅ Pushover enviado en reintento');
+      } catch (e2) {
+        console.error('❌ Pushover error (reintento):', e2.response?.data || e2.message);
+      }
+    }
+  }
+}
+
+// Notificación manual (si querés llamarla desde el front)
+app.post('/notificar-reserva', async (req, res) => {
+  try {
+    const {
+      nombre, telefono, email, comentarios,
+      checkin, checkout, huespedes,
+      propiedad, total, senia, cupon
+    } = req.body;
+
+    const mensaje = `Nueva reserva:
+🏡 Propiedad: ${propiedad}
+👤 Nombre: ${nombre}
+📧 Email: ${email}
+📱 Teléfono: ${telefono}
+💬 Comentarios: ${comentarios || 'Ninguno'}
+📅 Check-in: ${checkin}
+📅 Check-out: ${checkout}
+👥 Huéspedes: ${huespedes}
+💲 Total: ${total}
+💲 Seña: ${senia}
+🎟️ ${cupon || 'Sin cupón'}`;
+
+    await enviarPushover(mensaje, '🟢 Nueva reserva');
+    res.send({ status: 'Notificación enviada' });
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    res.status(500).send({ status: 'Error', error: error.message });
+  }
+});
+
+// Formulario de propietarios
+app.post('/enviar-formulario-propietario', async (req, res) => {
+  try {
+    const { nombre, email, telefono, dia, hora, plan, mensaje } = req.body;
+
+    const contenido = `Nuevo contacto de propietario:
+👤 Nombre: ${nombre}
+📧 Email: ${email}
+📱 Teléfono: ${telefono}
+📅 Día para llamada: ${dia}
+🕒 Hora preferida: ${hora}
+📦 Plan elegido: ${plan}
+💬 Mensaje: ${mensaje || '—'}`;
+
+    await enviarPushover(contenido, '📣 Propietario: nuevo contacto');
+    res.send({ status: 'Notificación enviada' });
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    res.status(500).send({ status: 'Error', error: error.message });
+  }
+});
+
+// Test rápido para confirmar que Pushover está OK
+app.get('/test-pushover', async (_req, res) => {
+  await enviarPushover('🔔 Prueba de Pushover desde el servidor', 'Test Pushover');
+  res.json({ ok: true });
+});
 
 /* ===========================
    Endpoints
@@ -254,89 +349,9 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
   }
 });
 
-
-
-// ========================= P U S H O V E R =========================
-// Usa tus claves directamente (si luego querés, podemos pasarlas a variables de entorno)
-const PUSHOVER_TOKEN = 'a8nyif562ezb7sc9buqt8aioybkp5n'; // API Token/Key (app)
-const PUSHOVER_USER  = 'uhwyimqvtop7fswmvs4p6i5e69nomg'; // User Key (tu cuenta)
-
-async function enviarPushover(message, title = 'Notificación') {
-  try {
-    await axios.post('https://api.pushover.net/1/messages.json', {
-      token: PUSHOVER_TOKEN,
-      user:  PUSHOVER_USER,
-      title,
-      message
-    });
-    console.log('✅ Pushover enviado');
-  } catch (e) {
-    console.error('❌ Pushover error:', e.response?.data || e.message);
-  }
-}
-
-// Notificación por Pushover (reserva) – usa la MISMA app/usuario
-app.post('/notificar-reserva', async (req, res) => {
-  try {
-    const {
-      nombre, telefono, email, comentarios,
-      checkin, checkout, huespedes,
-      propiedad, total, senia, cupon
-    } = req.body;
-
-    const mensaje = `Nueva reserva:
-🏡 Propiedad: ${propiedad}
-👤 Nombre: ${nombre}
-📧 Email: ${email}
-📱 Teléfono: ${telefono}
-💬 Comentarios: ${comentarios || 'Ninguno'}
-📅 Check-in: ${checkin}
-📅 Check-out: ${checkout}
-👥 Huéspedes: ${huespedes}
-💲 Total: ${total}
-💲 Seña: ${senia}
-🎟️ ${cupon || 'Sin cupón'}`;
-
-    await enviarPushover(mensaje, '🟢 Nueva reserva');
-    res.send({ status: 'Notificación enviada' });
-  } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).send({ status: 'Error', error: error.message });
-  }
-});
-
-// Formulario de propietarios – también va al MISMO Pushover
-app.post('/enviar-formulario-propietario', async (req, res) => {
-  try {
-    const { nombre, email, telefono, dia, hora, plan, mensaje } = req.body;
-
-    const contenido = `Nuevo contacto de propietario:
-👤 Nombre: ${nombre}
-📧 Email: ${email}
-📱 Teléfono: ${telefono}
-📅 Día para llamada: ${dia}
-🕒 Hora preferida: ${hora}
-📦 Plan elegido: ${plan}
-💬 Mensaje: ${mensaje || '—'}`;
-
-    await enviarPushover(contenido, '📣 Propietario: nuevo contacto');
-    res.send({ status: 'Notificación enviada' });
-  } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).send({ status: 'Error', error: error.message });
-  }
-});
-
-// Test rápido para confirmar que Pushover está OK
-app.get('/test-pushover', async (_req, res) => {
-  await enviarPushover('🔔 Prueba de Pushover desde el servidor');
-  res.json({ ok: true });
-});
-
-
-
-
-// === Crear reserva directa en Lodgify (confirmada) ===
+/* ===========================
+   Crear reserva directa en Lodgify + Pushover
+   =========================== */
 app.post('/api/crear-reserva', async (req, res) => {
   try {
     const b = req.body || {};
@@ -465,6 +480,32 @@ Comentarios: ${comm || '—'}`;
       }
     }
 
+    // === Pushover: avisar nueva reserva (no bloquea la respuesta)
+    try {
+      const propertyName = nombrePropiedades[b.property_id] || b.property_name || b.property_id;
+      const totalGuests = (Array.isArray(b.rooms) ? b.rooms : [])
+        .reduce((acc, r) => acc + Number(r?.adults || 0) + Number(r?.children || 0), 0);
+
+      const msg =
+`🟢 Nueva reserva
+🏡 ${propertyName}
+📅 ${b.arrival} → ${b.departure}
+👥 Huéspedes: ${totalGuests || '—'}
+👤 ${b?.guest?.firstName || ''} ${b?.guest?.lastName || ''}
+📧 ${b?.guest?.email || '—'}
+📱 ${b?.guest?.phone || b?.guest?.phone_number || '—'}
+💲 Total: ${b._total_ui || '—'}
+💲 Seña: ${b._senia_ui || '—'}
+🎟️ Cupón: ${b._cupon || '—'}
+💬 ${b._comments || '—'}`;
+
+      // Si querés adjuntar link:
+      // const urlToBooking = bookingId ? `https://app.lodgify.com/reservations/${bookingId}` : undefined;
+      enviarPushover(msg, '🟢 Nueva reserva' /*, { url: urlToBooking, url_title: 'Abrir en Lodgify' }*/);
+    } catch (npErr) {
+      console.log('⚠️ Pushover (post-reserva) no enviado:', npErr?.message || npErr);
+    }
+
     return res.json({
       ok: true,
       id: bookingId,
@@ -479,12 +520,21 @@ Comentarios: ${comm || '—'}`;
     const status = err.response?.status || 500;
     const data   = err.response?.data || { error: 'Error al crear la reserva' };
     console.error('❌ Lodgify:', status, data);
+
+    // Alerta de error por Pushover (opcional)
+    try {
+      enviarPushover(
+        `❌ Error creando reserva: ${status} ${data?.message || JSON.stringify(data).slice(0,200)}`,
+        'Error de reserva',
+        { priority: 1 }
+      );
+    } catch (e) {
+      console.log('⚠️ No se pudo notificar error por Pushover:', e.message);
+    }
+
     return res.status(status).json(data);
   }
 });
-
-
-
 
 // Iniciar servidor
 app.listen(PORT, () =>
