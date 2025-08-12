@@ -361,10 +361,16 @@ app.post('/api/crear-reserva', async (req, res) => {
 
     const idemKey = req.header('X-Idempotency-Key');
 
-    // 1) Crear la reserva
+    // 1) Crear la reserva (marcamos canal/origen como Website)
+    const payload = {
+      ...b,
+      source: b.source || 'Website',
+      channel: b.channel || { type: 'Website' }
+    };
+
     const createRes = await axios.post(
       `${BASE_URL}/v1/reservation/booking`,
-      b,
+      payload,
       {
         headers: {
           'X-ApiKey': API_KEY,
@@ -499,7 +505,6 @@ Comentarios: ${comm || '—'}`;
 🎟️ Cupón: ${b._cupon || '—'}
 💬 ${b._comments || '—'}`;
 
-      // Si querés adjuntar link:
       // const urlToBooking = bookingId ? `https://app.lodgify.com/reservations/${bookingId}` : undefined;
       enviarPushover(msg, '🟢 Nueva reserva' /*, { url: urlToBooking, url_title: 'Abrir en Lodgify' }*/);
     } catch (npErr) {
@@ -535,6 +540,7 @@ Comentarios: ${comm || '—'}`;
     return res.status(status).json(data);
   }
 });
+
 
 // Iniciar servidor
 app.listen(PORT, () =>
