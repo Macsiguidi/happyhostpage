@@ -388,7 +388,7 @@ currSelect.addEventListener('change', calculate);
 // 💵 Define moneda según fecha de check-in
 function setCurrencyAndCalculate(fechaCheckin) {
   const fecha = new Date(fechaCheckin);
-  const limite = new Date('2025-09-30');
+  const limite = new Date('2025-12-20');
   if (fechaCheckin) {
     if (fecha <= limite) {
       currSelect.value = 'ARS';
