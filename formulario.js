@@ -85,9 +85,9 @@ window.addEventListener('DOMContentLoaded', () => {
     },
     "PRIMAVERA2025": {
       porcentaje: 20,
-      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo"],
-      desde: new Date("2025-10-01"),
-      hasta: new Date("2025-10-31")
+      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo","gurisa","nilidas","cruz4","cruz5"],
+      desde: new Date("2025-09-04"),
+      hasta: new Date("2025-12-20")
     },
     "HAPPY10": { porcentaje: 10 },
     "HAPPY15": { porcentaje: 15 },
