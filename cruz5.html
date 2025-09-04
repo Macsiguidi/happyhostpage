@@ -246,7 +246,7 @@ const contador = document.getElementById('contador');
 
 let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date();
-hoy.setHours(0, 0, 0, 0);
+hoy.setHours(0,0,0,0);
 
 // 🔒 Fecha límite de reservas para Cruz del Sur 5
 const fechaLimite = new Date('2026-03-31');
@@ -259,7 +259,12 @@ window.addEventListener("DOMContentLoaded", () => {
     cantidad = parseInt(huespedes);
   }
   actualizarContador();
-  calculate();
+
+  if (checkin) {
+    setCurrencyAndCalculate(checkin);
+  } else {
+    calculate();
+  }
 });
 
 const startPicker = flatpickr(startInput, {
@@ -272,7 +277,7 @@ const startPicker = flatpickr(startInput, {
   disableMobile: true,
   onChange: (selectedDates) => {
     if (selectedDates[0]) {
-      calculate();
+      setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
     }
   }
 });
@@ -306,14 +311,13 @@ async function loadDisabledDates(picker) {
     fechasOcupadas = rangos;
 
     picker.set('disable', [
-  ...rangos.map(r => {
-    const from = new Date(r.from);
-    from.setDate(from.getDate() + 1); // 👈 habilitamos el día de check-in
-    return { from, to: r.to };
-  }),
-  date => date < hoy || date > fechaLimite
-]);
-
+      ...rangos.map(r => {
+        const from = new Date(r.from);
+        from.setDate(from.getDate() + 1); // habilitamos check-in
+        return { from, to: r.to };
+      }),
+      date => date < hoy || date > fechaLimite
+    ]);
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
   }
@@ -337,7 +341,6 @@ menosBtn.addEventListener('click', () => {
     calculate();
   }
 });
-
 masBtn.addEventListener('click', () => {
   if (cantidad < 6) {
     cantidad++;
@@ -345,38 +348,49 @@ masBtn.addEventListener('click', () => {
     calculate();
   }
 });
-
 guestsInput.addEventListener('input', calculate);
 
-// 🔒 Fijamos moneda a USD y ocultamos el selector
-currSelect.value = 'USD';
-currSelect.style.display = 'none';
-currSelect.disabled = true;
+/* ========= Moneda automática por fecha (como CDS4) ========= */
+function setCurrencyAndCalculate(fechaCheckin) {
+  const fecha  = new Date(fechaCheckin);
+  const limite = new Date('2025-12-20'); // hasta aquí mostrar en ARS
+
+  if (fechaCheckin) {
+    currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
+    currSelect.style.display = 'none';
+    currSelect.disabled = true;
+  } else {
+    currSelect.style.display = 'block';
+    currSelect.disabled = false;
+  }
+  calculate();
+}
 
 function hayCruceConFechasOcupadas(checkin, checkout) {
   const ci = new Date(checkin);
   const co = new Date(checkout);
-  ci.setHours(0, 0, 0, 0);
-  co.setHours(0, 0, 0, 0);
-
+  ci.setHours(0,0,0,0); co.setHours(0,0,0,0);
   return fechasOcupadas.some(({ from, to }) => {
-    const inicio = new Date(from);
-    const fin = new Date(to);
-    inicio.setHours(0, 0, 0, 0);
-    fin.setHours(0, 0, 0, 0);
-    return (
-      (ci > inicio && ci < fin) ||
-      (co > inicio && co < fin) ||
-      (ci <= inicio && co >= fin)
-    );
+    const inicio = new Date(from), fin = new Date(to);
+    inicio.setHours(0,0,0,0); fin.setHours(0,0,0,0);
+    return ( (ci > inicio && ci < fin) || (co > inicio && co < fin) || (ci <= inicio && co >= fin) );
   });
 }
 
+/* ===========================
+   🔧 AJUSTE +USD 20/NOCHE (03/09/2025–20/12/2025)
+   =========================== */
+const AJUSTE_USD_POR_NOCHE = 20;
+const AJUSTE_DESDE = new Date('2025-09-03');
+const AJUSTE_HASTA  = new Date('2025-12-20');
+function ymd(date) { const d = new Date(date); d.setHours(0,0,0,0); return d; }
+function enRangoAjuste(d) { const x = ymd(d); return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA); }
+
 async function calculate() {
   const startValue = startInput.value;
-  const endValue = endInput.value;
-  const guests = +guestsInput.value;
-  const moneda = 'USD';
+  const endValue   = endInput.value;
+  const guests     = +guestsInput.value;
+  const moneda     = currSelect.value; // ← ahora lee ARS/USD
 
   if (!startValue || !endValue) {
     resDiv.textContent = 'Seleccioná ambas fechas.';
@@ -428,24 +442,52 @@ async function calculate() {
       return;
     }
 
+    // 🔢 Base USD con +20 solo en noches dentro del rango
     let baseUSD = 0;
+    const startDateLocal = ymd(startValue);
+
     for (let i = 0; i < noches; i++) {
       const d = dias[i];
-      const p = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
-        || d.prices.reduce((a, b) => a.min_stay < b.min_stay ? a : b);
-      baseUSD += p.price_per_day;
+      const p =
+        d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay) ||
+        d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
+
+      const fechaNoche = new Date(startDateLocal);
+      fechaNoche.setDate(fechaNoche.getDate() + i);
+
+      const precioNocheUSD = enRangoAjuste(fechaNoche)
+        ? p.price_per_day + AJUSTE_USD_POR_NOCHE
+        : p.price_per_day;
+
+      baseUSD += precioNocheUSD;
     }
 
+    // 👥 Extras (sin ajuste)
     const extraUnit = extras[0]?.price_per_day || 12;
-    const extraQty = Math.max(0, guests - FREE_GUESTS);
-    const extraUSD = extraQty * extraUnit * noches;
+    const extraQty  = Math.max(0, guests - FREE_GUESTS);
+    const extraUSD  = extraQty * extraUnit * noches;
+
     const totalUSD = baseUSD + extraUSD;
 
+    // 💱 Tipo de cambio por fecha (igual que CDS4)
+    const fechaCheckin = new Date(startValue);
+    let factorARS = 1400;
+    if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
+      factorARS = 1250;
+    } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-12-20')) {
+      factorARS = 1450;
+    }
+
+    // Totales según moneda
+    const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
+    const extra = (moneda === 'USD') ? extraUSD : extraUSD * factorARS;
+
+    // 🧾 UI (no mostramos el ajuste)
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
       <li>Huéspedes: ${guests}</li>` +
-      (extraQty > 0 ? `<li>Extra huésped: ${extraUSD.toLocaleString()} USD</li>` : '') +
-      `<li><strong>Total estadia:</strong> ${totalUSD.toLocaleString()} USD</strong></li>
+      (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
+      `<li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
     </ul>`;
     resDiv.innerHTML = html;
 
@@ -457,8 +499,8 @@ async function calculate() {
         checkInDate: startValue,
         checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice: totalUSD,
-        currency: 'USD'
+        totalPrice: total,
+        currency: moneda
       }).toString();
       window.location.href = `formulario.html?${qs}`;
     };
@@ -469,20 +511,21 @@ async function calculate() {
 }
 
 // ↓ ESTE BLOQUE va justo aquí, antes de cerrar el <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const btnVolver = document.getElementById("btnVolver");
-    if (!btnVolver) return;
+document.addEventListener("DOMContentLoaded", () => {
+  const btnVolver = document.getElementById("btnVolver");
+  if (!btnVolver) return;
 
-    btnVolver.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = "alojamientos.html";
-      }
-    });
+  btnVolver.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "alojamientos.html";
+    }
   });
+});
 </script>
+
 
 
 
