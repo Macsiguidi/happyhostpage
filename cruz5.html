@@ -226,45 +226,38 @@ const HOUSE_ID = 601714;
 const ROOM_ID = 668505;
 
 const params = new URLSearchParams(window.location.search);
-const checkin = params.get("checkin");
-const checkout = params.get("checkout");
+const checkin   = params.get("checkin");
+const checkout  = params.get("checkout");
 const huespedes = params.get("huespedes");
 
 localStorage.removeItem("checkin");
 localStorage.removeItem("checkout");
 localStorage.removeItem("huespedes");
 
-const startInput = document.getElementById('start');
-const endInput = document.getElementById('end');
+const startInput  = document.getElementById('start');
+const endInput    = document.getElementById('end');
 const guestsInput = document.getElementById('guests');
-const currSelect = document.getElementById('currency');
-const resDiv = document.getElementById('resultado');
+const currSelect  = document.getElementById('currency');
+const resDiv      = document.getElementById('resultado');
 const reservarBtn = document.getElementById('btnReservar');
-const menosBtn = document.getElementById('menos');
-const masBtn = document.getElementById('mas');
-const contador = document.getElementById('contador');
+const menosBtn    = document.getElementById('menos');
+const masBtn      = document.getElementById('mas');
+const contador    = document.getElementById('contador');
 
 let cantidad = parseInt(huespedes) || 1;
-const hoy = new Date();
-hoy.setHours(0,0,0,0);
+const hoy = new Date(); hoy.setHours(0,0,0,0);
 
 // 🔒 Fecha límite de reservas para Cruz del Sur 5
 const fechaLimite = new Date('2026-03-31');
 
 window.addEventListener("DOMContentLoaded", () => {
-  if (checkin) startInput.value = checkin;
-  if (checkout) endInput.value = checkout;
-  if (huespedes) {
-    guestsInput.value = huespedes;
-    cantidad = parseInt(huespedes);
-  }
+  if (checkin)  startInput.value = checkin;
+  if (checkout) endInput.value   = checkout;
+  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
   actualizarContador();
 
-  if (checkin) {
-    setCurrencyAndCalculate(checkin);
-  } else {
-    calculate();
-  }
+  if (checkin) setCurrencyAndCalculate(checkin);
+  else         calculate();
 });
 
 const startPicker = flatpickr(startInput, {
@@ -333,7 +326,6 @@ function actualizarContador() {
   contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   guestsInput.value = cantidad;
 }
-
 menosBtn.addEventListener('click', () => {
   if (cantidad > 1) {
     cantidad--;
@@ -349,11 +341,14 @@ masBtn.addEventListener('click', () => {
   }
 });
 guestsInput.addEventListener('input', calculate);
+// (si dejás el selector visible en el futuro)
+// currSelect.addEventListener('change', calculate);
 
-/* ========= Moneda automática por fecha (como CDS4) ========= */
+/* ========= Moneda automática por fecha =========
+   ARS hasta 20/12/2025 (inclusive), luego USD */
 function setCurrencyAndCalculate(fechaCheckin) {
   const fecha  = new Date(fechaCheckin);
-  const limite = new Date('2025-12-20'); // hasta aquí mostrar en ARS
+  const limite = new Date('2025-12-20'); // igual que CDS4/Calafate1
 
   if (fechaCheckin) {
     currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
@@ -367,13 +362,16 @@ function setCurrencyAndCalculate(fechaCheckin) {
 }
 
 function hayCruceConFechasOcupadas(checkin, checkout) {
-  const ci = new Date(checkin);
-  const co = new Date(checkout);
+  const ci = new Date(checkin), co = new Date(checkout);
   ci.setHours(0,0,0,0); co.setHours(0,0,0,0);
   return fechasOcupadas.some(({ from, to }) => {
     const inicio = new Date(from), fin = new Date(to);
     inicio.setHours(0,0,0,0); fin.setHours(0,0,0,0);
-    return ( (ci > inicio && ci < fin) || (co > inicio && co < fin) || (ci <= inicio && co >= fin) );
+    return (
+      (ci > inicio && ci < fin) ||
+      (co > inicio && co < fin) ||
+      (ci <= inicio && co >= fin)
+    );
   });
 }
 
@@ -382,7 +380,7 @@ function hayCruceConFechasOcupadas(checkin, checkout) {
    =========================== */
 const AJUSTE_USD_POR_NOCHE = 20;
 const AJUSTE_DESDE = new Date('2025-09-03');
-const AJUSTE_HASTA  = new Date('2025-12-20');
+const AJUSTE_HASTA = new Date('2025-12-20');
 function ymd(date) { const d = new Date(date); d.setHours(0,0,0,0); return d; }
 function enRangoAjuste(d) { const x = ymd(d); return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA); }
 
@@ -390,7 +388,7 @@ async function calculate() {
   const startValue = startInput.value;
   const endValue   = endInput.value;
   const guests     = +guestsInput.value;
-  const moneda     = currSelect.value; // ← ahora lee ARS/USD
+  const moneda     = currSelect.value;
 
   if (!startValue || !endValue) {
     resDiv.textContent = 'Seleccioná ambas fechas.';
@@ -442,7 +440,7 @@ async function calculate() {
       return;
     }
 
-    // 🔢 Base USD con +20 solo en noches dentro del rango
+    // 🔢 Base USD con +20 sólo en las noches dentro del rango
     let baseUSD = 0;
     const startDateLocal = ymd(startValue);
 
@@ -478,7 +476,6 @@ async function calculate() {
       factorARS = 1450;
     }
 
-    // Totales según moneda
     const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
     const extra = (moneda === 'USD') ? extraUSD : extraUSD * factorARS;
 
@@ -491,6 +488,7 @@ async function calculate() {
     </ul>`;
     resDiv.innerHTML = html;
 
+    // 🟢 Botón reservar
     reservarBtn.disabled = false;
     reservarBtn.onclick = () => {
       const qs = new URLSearchParams({
@@ -499,7 +497,7 @@ async function calculate() {
         checkInDate: startValue,
         checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice: total,
+        totalPrice: total, // incluye el ajuste + extras
         currency: moneda
       }).toString();
       window.location.href = `formulario.html?${qs}`;
@@ -510,7 +508,7 @@ async function calculate() {
   }
 }
 
-// ↓ ESTE BLOQUE va justo aquí, antes de cerrar el <script>
+// ↓ Botón Volver
 document.addEventListener("DOMContentLoaded", () => {
   const btnVolver = document.getElementById("btnVolver");
   if (!btnVolver) return;
@@ -525,8 +523,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
-
 
 
 

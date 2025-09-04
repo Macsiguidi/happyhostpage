@@ -225,78 +225,86 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
   </script>
 
 <script>
+// 📌 Constantes de propiedad (CRUZ DEL SUR 4)
 const HOUSE_ID = 601717;
 const ROOM_ID = 668508;
-const SOLO_USD = false; // ✅ Cruz del Sur acepta ARS
 
+// 📥 Parámetros de URL
 const params = new URLSearchParams(window.location.search);
-const checkin = params.get("checkin");
-const checkout = params.get("checkout");
+const checkin   = params.get("checkin");
+const checkout  = params.get("checkout");
 const huespedes = params.get("huespedes");
 
+// 🧹 Limpiar localStorage
 localStorage.removeItem("checkin");
 localStorage.removeItem("checkout");
 localStorage.removeItem("huespedes");
 
-const startInput   = document.getElementById('start');
-const endInput     = document.getElementById('end');
-const guestsInput  = document.getElementById('guests');
-const currSelect   = document.getElementById('currency');
-const resDiv       = document.getElementById('resultado');
-const reservarBtn  = document.getElementById('btnReservar');
-const menosBtn     = document.getElementById('menos');
-const masBtn       = document.getElementById('mas');
-const contador     = document.getElementById('contador');
+// 🎯 Elementos del DOM
+const startInput  = document.getElementById('start');
+const endInput    = document.getElementById('end');
+const guestsInput = document.getElementById('guests');
+const currSelect  = document.getElementById('currency');
+const resDiv      = document.getElementById('resultado');
+const reservarBtn = document.getElementById('btnReservar');
+const menosBtn    = document.getElementById('menos');
+const masBtn      = document.getElementById('mas');
+const contador    = document.getElementById('contador');
 
 let cantidad = parseInt(huespedes) || 1;
-const hoy = new Date();
-hoy.setHours(0, 0, 0, 0);
-
-// 🔒 Fecha máxima permitida para Cruz del Sur
+const hoy = new Date(); hoy.setHours(0,0,0,0);
 const fechaLimite = new Date('2026-03-31');
 
+// 🎨 Media celda para check-in / check-out (igual que Calafate)
+const pintarDiagonal = (date, tipo) => {
+  const div = document.createElement('div');
+  div.className = tipo === 'entrada' ? 'entrada-diagonal' : 'salida-diagonal';
+  return div;
+};
+
+// 🧠 Inicialización
 window.addEventListener("DOMContentLoaded", () => {
   if (checkin)  startInput.value = checkin;
   if (checkout) endInput.value   = checkout;
-  if (huespedes) {
-    guestsInput.value = huespedes;
-    cantidad = parseInt(huespedes);
-  }
+  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
   actualizarContador();
-
-  if (checkin) {
-    setCurrencyAndCalculate(checkin);
-  } else {
-    calculate();
-  }
+  if (checkin) setCurrencyAndCalculate(checkin);
+  else         calculate();
 });
 
+// 📅 Flatpickr - Check-in
 const startPicker = flatpickr(startInput, {
-  altInput: true,
-  altFormat: 'd/m/Y',
-  dateFormat: 'Y-m-d',
+  altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
   defaultDate: checkin || null,
-  minDate: hoy,
-  maxDate: fechaLimite,
+  minDate: hoy, maxDate: fechaLimite,
   disableMobile: true,
   onChange: (selectedDates) => {
     if (selectedDates[0]) {
       setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
     }
+  },
+  onDayCreate: (dObj, dStr, fp, dayElem) => {
+    if (startInput.value && dayElem.dateObj.toISOString().split('T')[0] === startInput.value) {
+      dayElem.appendChild(pintarDiagonal(dayElem.dateObj, 'entrada'));
+    }
   }
 });
 
+// 📅 Flatpickr - Check-out
 const endPicker = flatpickr(endInput, {
-  altInput: true,
-  altFormat: 'd/m/Y',
-  dateFormat: 'Y-m-d',
+  altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
   defaultDate: checkout || null,
-  minDate: hoy,
-  maxDate: fechaLimite,
+  minDate: hoy, maxDate: fechaLimite,
   disableMobile: true,
-  onChange: calculate
+  onChange: calculate,
+  onDayCreate: (dObj, dStr, fp, dayElem) => {
+    if (endInput.value && dayElem.dateObj.toISOString().split('T')[0] === endInput.value) {
+      dayElem.appendChild(pintarDiagonal(dayElem.dateObj, 'salida'));
+    }
+  }
 });
 
+// ⛓ Vincular apertura de check-out al elegir check-in
 startPicker.config.onChange.push((selectedDates) => {
   if (selectedDates[0]) {
     endPicker.setDate(null);
@@ -307,6 +315,7 @@ startPicker.config.onChange.push((selectedDates) => {
 
 let fechasOcupadas = [];
 
+// 🔒 Fechas ocupadas (CDS4)
 async function loadDisabledDates(picker) {
   try {
     const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/cds4');
@@ -314,10 +323,11 @@ async function loadDisabledDates(picker) {
     const rangos = await resp.json();
     fechasOcupadas = rangos;
 
+    // Bloquear días ocupados, habilitando el día de check-in
     picker.set('disable', [
       ...rangos.map(r => {
         const from = new Date(r.from);
-        from.setDate(from.getDate() + 1); // 👈 habilitamos el día de check-in
+        from.setDate(from.getDate() + 1); // ✅ habilitamos check-in
         return { from, to: r.to };
       }),
       date => date < hoy || date > fechaLimite
@@ -327,161 +337,101 @@ async function loadDisabledDates(picker) {
   }
 }
 
+// Cargar ocupadas en eventos del calendario
 [startPicker, endPicker].forEach(picker => {
   picker.config.onReady.push(() => loadDisabledDates(picker));
   picker.config.onMonthChange.push(() => loadDisabledDates(picker));
   picker.config.onOpen.push(() => loadDisabledDates(picker));
 });
 
+// 👥 Contador de huéspedes
 function actualizarContador() {
   contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   guestsInput.value = cantidad;
 }
-
 menosBtn.addEventListener('click', () => {
-  if (cantidad > 1) {
-    cantidad--;
-    actualizarContador();
-    calculate();
-  }
+  if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); }
 });
-
 masBtn.addEventListener('click', () => {
-  if (cantidad < 6) {
-    cantidad++;
-    actualizarContador();
-    calculate();
-  }
+  if (cantidad < 6) { cantidad++; actualizarContador(); calculate(); }
 });
-
 guestsInput.addEventListener('input', calculate);
 currSelect.addEventListener('change', calculate);
 
+// 💵 Moneda auto por fecha (ARS hasta 20/12/2025, luego USD) — igual que Calafate1
 function setCurrencyAndCalculate(fechaCheckin) {
   const fecha  = new Date(fechaCheckin);
-  const limite = new Date('2025-12-20'); // tu regla actual
-
-  if (SOLO_USD) {
-    currSelect.value = 'USD';
+  const limite = new Date('2025-12-20');
+  if (fechaCheckin) {
+    currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
     currSelect.style.display = 'none';
     currSelect.disabled = true;
   } else {
-    if (fechaCheckin) {
-      currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
-      currSelect.style.display = 'none';   // automático por fecha
-      currSelect.disabled = true;
-    } else {
-      currSelect.style.display = 'block';
-      currSelect.disabled = false;
-    }
+    currSelect.style.display = 'block';
+    currSelect.disabled = false;
   }
   calculate();
 }
 
+// ❌ Cruce con ocupadas
 function hayCruceConFechasOcupadas(checkin, checkout) {
-  const ci = new Date(checkin);
-  const co = new Date(checkout);
-  ci.setHours(0, 0, 0, 0);
-  co.setHours(0, 0, 0, 0);
-
+  const ci = new Date(checkin), co = new Date(checkout);
+  ci.setHours(0,0,0,0); co.setHours(0,0,0,0);
   return fechasOcupadas.some(({ from, to }) => {
-    const inicio = new Date(from);
-    const fin    = new Date(to);
-    inicio.setHours(0, 0, 0, 0);
-    fin.setHours(0, 0, 0, 0);
-    return (
-      (ci > inicio && ci < fin) ||
-      (co > inicio && co < fin) ||
-      (ci <= inicio && co >= fin)
-    );
+    const inicio = new Date(from), fin = new Date(to);
+    inicio.setHours(0,0,0,0); fin.setHours(0,0,0,0);
+    return ((ci > inicio && ci < fin) || (co > inicio && co < fin) || (ci <= inicio && co >= fin));
   });
 }
 
 /* ===========================
-   🔧 AJUSTE ESTACIONAL +USD 20/NOCHE (03/09/2025–20/12/2025)
+   🔧 AJUSTE +USD 20 / NOCHE (03/09/2025–20/12/2025) — igual que Calafate1
    =========================== */
 const AJUSTE_USD_POR_NOCHE = 20;
 const AJUSTE_DESDE = new Date('2025-09-03');
 const AJUSTE_HASTA = new Date('2025-12-20');
+function ymd(date) { const d = new Date(date); d.setHours(0,0,0,0); return d; }
+function enRangoAjuste(d) { const x = ymd(d); return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA); }
 
-// Normalizar a 00:00 para evitar TZ
-function ymd(date) {
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-function enRangoAjuste(d) {
-  const x = ymd(d);
-  return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA);
-}
-
+// 💸 Calcular precios
 async function calculate() {
   const startValue = startInput.value;
   const endValue   = endInput.value;
   const guests     = +guestsInput.value;
   const moneda     = currSelect.value;
 
-  if (!startValue || !endValue) {
-    resDiv.textContent = 'Seleccioná ambas fechas.';
-    reservarBtn.disabled = true;
-    return;
-  }
+  if (!startValue || !endValue) { resDiv.textContent = 'Seleccioná ambas fechas.'; reservarBtn.disabled = true; return; }
 
   const sd = new Date(startValue), ed = new Date(endValue);
-  if (ed <= sd) {
-    resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.';
-    reservarBtn.disabled = true;
-    return;
-  }
+  if (ed <= sd) { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
 
-  const MAX_GUESTS = 2, FREE_GUESTS = 2;
-  if (guests > MAX_GUESTS) {
-    resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`;
-    reservarBtn.disabled = true;
-    return;
-  }
+  const MAX_GUESTS = 2, FREE_GUESTS = 2; // Cruz
+  if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
 
-  if (hayCruceConFechasOcupadas(sd, ed)) {
-    resDiv.textContent = 'El rango incluye fechas ya ocupadas.';
-    reservarBtn.disabled = true;
-    return;
-  }
+  if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
 
   const noches = Math.round((ed - sd) / (1000 * 60 * 60 * 24));
-  resDiv.textContent = 'Cargando…';
-  reservarBtn.disabled = true;
+  resDiv.textContent = 'Cargando…'; reservarBtn.disabled = true;
 
   try {
-    const url = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+    const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(await resp.text());
     const { dias = [], extras = [] } = await resp.json();
 
-    if (dias.length === 0) {
-      resDiv.textContent = 'No hay precios para estas fechas.';
-      return;
-    }
+    if (dias.length === 0) { resDiv.textContent = 'No hay precios para estas fechas.'; return; }
 
-    const minStay = dias
-      .map(d => Math.min(...d.prices.map(p => p.min_stay)))
-      .reduce((a, b) => Math.min(a, b), Infinity);
+    const minStay = dias.map(d => Math.min(...d.prices.map(p => p.min_stay))).reduce((a,b) => Math.min(a,b), Infinity);
+    if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
 
-    if (noches < minStay) {
-      resDiv.textContent = `La estadía mínima es de ${minStay} noches.`;
-      return;
-    }
-
-    // ----------- Base USD por noche (aplica +USD20 solo dentro del rango) ----------
+    // 🔢 Base USD por noche (aplicando +USD20 solo dentro del rango 03/09–20/12)
     let baseUSD = 0;
     const startDateLocal = ymd(startValue);
-
     for (let i = 0; i < noches; i++) {
       const d = dias[i];
-      const p =
-        d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay) ||
-        d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
+      const p = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
+            || d.prices.reduce((a,b) => (a.min_stay < b.min_stay ? a : b));
 
-      // Fecha de la noche i
       const fechaNoche = new Date(startDateLocal);
       fechaNoche.setDate(fechaNoche.getDate() + i);
 
@@ -492,15 +442,14 @@ async function calculate() {
       baseUSD += precioNocheUSD;
     }
 
-    // ----------- Extras por huésped ----------
+    // 👥 Extras por huésped
     const extraUnit = extras[0]?.price_per_day || 12;
     const extraQty  = Math.max(0, guests - FREE_GUESTS);
     const extraUSD  = extraQty * extraUnit * noches;
 
-    // Total USD (base + extras)
     const totalUSD = baseUSD + extraUSD;
 
-    // ----------- Tipo de cambio por fecha ----------
+    // 💱 Factor ARS por fecha (alineado a tu Calafate1)
     const fechaCheckin = new Date(startValue);
     let factorARS = 1400;
     if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
@@ -509,19 +458,19 @@ async function calculate() {
       factorARS = 1450;
     }
 
-    // Totales por moneda
     const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
     const extra = (moneda === 'USD') ? extraUSD : extraUSD * factorARS;
 
-    // ----------- UI (sin mostrar el ajuste) ----------
+    // 🧾 Desglose (ajuste oculto)
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
       <li>Huéspedes: ${guests}</li>` +
       (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
+      `<li><strong>Total estadia:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
     </ul>`;
     resDiv.innerHTML = html;
 
+    // 🟢 Reservar
     reservarBtn.disabled = false;
     reservarBtn.onclick = () => {
       const qs = new URLSearchParams({
@@ -530,7 +479,7 @@ async function calculate() {
         checkInDate: startValue,
         checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice: total,   // incluye base + extras (con ajuste por noche cuando corresponde)
+        totalPrice: total, // ✅ incluye ajuste por noche (oculto) + extras
         currency: moneda
       }).toString();
       window.location.href = `formulario.html?${qs}`;
@@ -541,23 +490,17 @@ async function calculate() {
   }
 }
 
-// ↓ BOTÓN VOLVER
+// ↓ Botón Volver
 document.addEventListener("DOMContentLoaded", () => {
   const btnVolver = document.getElementById("btnVolver");
   if (!btnVolver) return;
-
   btnVolver.addEventListener("click", (e) => {
     e.preventDefault();
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = "alojamientos.html";
-    }
+    if (window.history.length > 1) window.history.back();
+    else window.location.href = "alojamientos.html";
   });
 });
 </script>
-
-
 
   
 
