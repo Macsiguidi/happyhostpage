@@ -85,7 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
     },
     "PRIMAVERA2025": {
       porcentaje: 20,
-      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo","gurisa","las nilidas","cruzdelsur4","cruzdelsur5"],
+      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo","gurisa","lasnilidas","cruzdelsur4","cruzdelsur5"],
       desde: new Date("2025-09-04"),
       hasta: new Date("2025-12-20")
     },
