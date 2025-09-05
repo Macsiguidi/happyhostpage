@@ -337,6 +337,180 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
   </div>
 </footer>
 
+<!-- === Popup Primavera 2025 (ticket + cierre al copiar) === -->
+<style>
+  :root{
+    --hh-olive:#3e5f3a;      /* verde oliva */
+    --hh-olive-700:#2e472b;
+    --hh-cream:#f7f3ea;      /* crema */
+    --hh-ink:#1f2937;
+  }
+
+  /* Backdrop con fade */
+  .hh-backdrop{
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.45); z-index:1000; padding:16px;
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .hh-backdrop[aria-hidden="false"]{ opacity:1; pointer-events:auto; }
+
+  /* Wrapper del ticket */
+  .hh-wrap{ position:relative; width:min(560px,92vw); color:var(--hh-ink); }
+  .hh-skin{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  .hh-content{
+    position:relative; padding:22px 24px 26px; text-align:center;
+    font-family: system-ui, -apple-system, "Inter", "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* Encabezado compacto */
+  .hh-header{
+    background:linear-gradient(135deg, var(--hh-olive), var(--hh-olive-700));
+    color:#fff; font-weight:800; border-radius:12px; padding:10px 14px; display:inline-block;
+    margin:2px 0 14px;
+  }
+
+  .hh-close{
+    position:absolute; right:10px; top:8px; background:transparent; border:0; color:#15451a;
+    font-size:1.25rem; line-height:1; cursor:pointer; padding:6px 10px; border-radius:10px;
+  }
+  .hh-close:hover{ background:rgba(0,0,0,.06); }
+
+  .hh-pill{
+    display:inline-flex; gap:8px; align-items:center; font-weight:800;
+    background:#eaf3ec; color:var(--hh-olive); border:1px solid #d9e6dc;
+    padding:6px 10px; border-radius:999px; font-size:.9rem;
+  }
+  .hh-lead{ margin:14px 0 10px; font-size:1.05rem; }
+
+  /* Línea perforada */
+  .hh-perf{
+    height:1px; margin:16px auto; max-width:440px;
+    background:repeating-linear-gradient(90deg, rgba(0,0,0,.30) 0 10px, transparent 10px 20px);
+    opacity:.75;
+  }
+
+  /* Caja del cupón */
+  .hh-codebox{
+    display:flex; flex-direction:column; gap:10px; align-items:center; justify-content:center;
+    background:#fff; border:2px dashed #d8dccf; border-radius:14px; padding:14px; margin:10px auto 0; max-width:460px;
+  }
+  .hh-codebox small{ opacity:.7; display:block; margin-bottom:4px; }
+  .hh-code{
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-weight:800; font-size:1.15rem;
+    background:#f3f4f2; padding:4px 10px; border-radius:8px; border:1px solid #e5e7de;
+  }
+  .hh-btn{
+    cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-weight:800; min-width:180px;
+    background:#efece2; color:#3f3a33; margin-top:10px;
+  }
+  .hh-btn:hover{ filter:brightness(.97); }
+</style>
+
+<div class="hh-backdrop" id="hhPromo" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="hhPromoTitle">
+  <div class="hh-wrap">
+    <!-- SKIN del ticket (mordidas + doble borde) -->
+    <svg class="hh-skin" viewBox="0 0 640 380" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <!-- máscara: rect redondeado menos 4 círculos (mordidas). Ajustá r para más/menos mordida -->
+        <mask id="hhTicketMask">
+          <rect x="0" y="0" width="640" height="380" rx="26" ry="26" fill="white"/>
+          <circle cx="0"   cy="0"   r="22" fill="black"/>
+          <circle cx="640" cy="0"   r="22" fill="black"/>
+          <circle cx="0"   cy="380" r="22" fill="black"/>
+          <circle cx="640" cy="380" r="22" fill="black"/>
+        </mask>
+      </defs>
+      <!-- relleno y doble borde del ticket -->
+      <rect x="0" y="0" width="640" height="380" rx="26" ry="26" fill="#f7f3ea" mask="url(#hhTicketMask)"/>
+      <rect x="1"  y="1"  width="638" height="378" rx="24" ry="24" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="2" mask="url(#hhTicketMask)"/>
+      <rect x="12" y="12" width="616" height="356" rx="20" ry="20" fill="none" stroke="rgba(0,0,0,.45)" stroke-width="2" mask="url(#hhTicketMask)"/>
+    </svg>
+
+    <!-- Contenido -->
+    <div class="hh-content">
+      <button class="hh-close" type="button" aria-label="Cerrar" id="hhCloseBtn">×</button>
+
+      <div class="hh-header" id="hhPromoTitle">¡Primavera en la Villa! 🌿</div>
+
+      <div class="hh-pill">20% OFF • exclusivo web</div>
+      <p class="hh-lead">Copiá el código y usalo al reservar:</p>
+
+      <div class="hh-perf"></div>
+
+      <div class="hh-codebox">
+        <div>
+          <small>Cupón</small>
+          <kbd class="hh-code" id="hhCouponText">primavera2025</kbd>
+        </div>
+        <button class="hh-btn" type="button" id="hhCopyBtn">Copiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(()=> {
+  const COUPON = "primavera2025";
+  const COOKIE_KEY = "hh_promo_primavera2025_seen";
+  const SHOW_DELAY = 900; // ms
+
+  function setCookie(name, value, days){
+    const maxAge = days * 24 * 60 * 60;
+    const secure = location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `${name}=${encodeURIComponent(value)}; Max-Age=${maxAge}; Path=/; SameSite=Lax${secure}`;
+  }
+  function getCookie(name){
+    return document.cookie.split("; ").find(p => p.startsWith(name + "="))?.split("=")[1] || "";
+  }
+
+  const $backdrop = document.getElementById("hhPromo");
+  const $copy     = document.getElementById("hhCopyBtn");
+  const $close    = document.getElementById("hhCloseBtn");
+
+  function open(){
+    $backdrop?.setAttribute("aria-hidden","false");
+    document.addEventListener("keydown", onEsc);
+  }
+  function close(){
+    $backdrop?.setAttribute("aria-hidden","true");
+    document.removeEventListener("keydown", onEsc);
+  }
+  function onEsc(e){ if(e.key === "Escape") close(); }
+
+  // Mostrar solo si nunca se mostró
+  if (!getCookie(COOKIE_KEY)) {
+    setTimeout(() => {
+      setCookie(COOKIE_KEY, "1", 365); // lo marcamos como "visto" por 1 año
+      open();
+    }, SHOW_DELAY);
+  }
+
+  // Cerrar por click fuera o con la X
+  $backdrop?.addEventListener("click", (e)=>{ if(e.target === $backdrop) close(); });
+  $close?.addEventListener("click", close);
+
+  // Copiar y cerrar con mini feedback
+  $copy?.addEventListener("click", async ()=>{
+    try {
+      await navigator.clipboard.writeText(COUPON);
+    } catch(e) {
+      // Fallback simple
+      const t = document.createElement("textarea");
+      t.value = COUPON; document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); } catch(_) {}
+      document.body.removeChild(t);
+    }
+    $copy.disabled = true;
+    const original = $copy.textContent;
+    $copy.textContent = "¡Copiado! ✓";
+    setTimeout(()=> { $copy.textContent = original; close(); }, 350);
+  });
+})();
+</script>
+
+<!-- === /Popup Primavera 2025 === -->
+
+
 <script src="viajero.js"></script>
 <!-- Flatpickr CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -346,3 +520,4 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 </body>
 </html>
+
