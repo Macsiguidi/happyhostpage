@@ -535,8 +535,10 @@ async function calculate() {
     let factorARS = 1400;
     if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
       factorARS = 1250;
-    } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-12-20')) {
+    } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-10-31')) {
       factorARS = 1450;
+    }else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
+      factorARS = 1520;
     }
 
     const total = moneda === 'USD' ? totalUSD : totalUSD * factorARS;
