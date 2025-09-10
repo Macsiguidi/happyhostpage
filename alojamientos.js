@@ -72,7 +72,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     cruzdelsur5: 2,
     nilidas: 4,
     gurisa: 7,
-    paisajismo: 3
+    paisajismo: 3,
+    koiquetrihue: 3,
+    mitiempo: 3,
+    refugiopatagonico: 8 
   };
 
   const mapNombreAId = {
@@ -87,7 +90,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     cruzdelsur5: 601714,
     nilidas: 601719,
     gurisa: 648950,
-    paisajismo: 601720
+    paisajismo: 601720,
+    koiquetrihue: 677269,
+    mitiempo: 677286,
+    refugiopatagonico: 677289
   };
 
   const loading = document.getElementById('loading-disponibilidad');
