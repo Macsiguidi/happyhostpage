@@ -8,6 +8,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const setVal  = (id, v) => { const el = $(id); if (el) el.value = v ?? ''; };
   const setText = (id, v) => { const el = $(id); if (el) el.textContent = v ?? ''; };
 
+  // 🔤 normalizador a slug (minúsculas, sin acentos, sin espacios)
+  const slugify = s =>
+    (s || '').toString().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
+
   // ---------- leer params de la URL ----------
   const params = new URLSearchParams(window.location.search);
   let propertyId     = params.get('propertyId');
@@ -39,7 +45,9 @@ window.addEventListener('DOMContentLoaded', () => {
     '601552': 'Calafate 1', '601707': 'Calafate 2', '601708': 'Calafate 3',
     '601710': 'Calafate 4', '601711': 'Calafate 5', '601712': 'Calafate 6',
     '601713': 'Calafate 7', '601717': 'Cruz del Sur 4', '601714': 'Cruz del Sur 5',
-    '601719': 'Las Nilidas', '648950': 'Gurisa', '601720': 'Paisajismo'
+    '601719': 'Las Nilidas', '648950': 'Gurisa', '601720': 'Paisajismo',
+    // nuevos
+    '677269': 'Koi Quetrihue', '677286': 'Mi Tiempo', '677289': 'Refugio Patagónico'
   };
   const imagenMap = {
     '601552': 'unidades/casa1/casa1_img1.jpg', '601707': 'unidades/casa2/casa2_img3.jpg',
@@ -47,7 +55,11 @@ window.addEventListener('DOMContentLoaded', () => {
     '601711': 'unidades/casa5/casa5_img3.jpg', '601712': 'unidades/casa6/casa6_img1.jpg',
     '601713': 'unidades/casa7/casa7_img1.jpg', '601717': 'unidades/cds4/cds4_1.jpg',
     '601714': 'unidades/cds5/cds5_2.jpg', '601719': 'unidades/nilidas/nilidas1.jpg',
-    '648950': 'unidades/gurisa/gurisa2.jpg', '601720': 'unidades/paisajismo/paisajismo1.jpg'
+    '648950': 'unidades/gurisa/gurisa2.jpg', '601720': 'unidades/paisajismo/paisajismo1.jpg',
+    // nuevos (si cambiás nombres de archivos, actualizá acá)
+    '677269': 'unidades/koi/koi1.jpg',
+    '677286': 'unidades/mitiempo/mitiempo1.jpg',
+    '677289': 'unidades/refugio/refugio2.jpg'
   };
 
   const nombreProp = nombreMap[propertyId] || 'Alojamiento';
@@ -85,7 +97,11 @@ window.addEventListener('DOMContentLoaded', () => {
     },
     "PRIMAVERA2025": {
       porcentaje: 20,
-      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo","gurisa","lasnilidas","cruzdelsur4","cruzdelsur5"],
+      alojamientos: [
+        "calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7",
+        "paisajismo","gurisa","lasnilidas","cruzdelsur4","cruzdelsur5","koiquetrihue","mitiempo",
+        "refugiopatagonico" // ✅ slug correcto para Refugio
+      ],
       desde: new Date("2025-09-04"),
       hasta: new Date("2025-12-20")
     },
@@ -94,7 +110,8 @@ window.addEventListener('DOMContentLoaded', () => {
     "HAPPY20": { porcentaje: 20 }
   };
 
-  const nombreClave   = nombreProp.toLowerCase().replace(/\s/g, '');
+  // slug que usaremos para comparar con el cupón (coincide con los del array)
+  const nombreClave   = slugify(nombreProp);
   const inputCupon    = $('cuponDescuento');
   const botonCupon    = $('aplicarCupon');
   const labelCupon    = $('descuentoLabel');
@@ -116,6 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       } else if (cupon && cupon.desde && cupon.hasta) {
         const hoy = new Date();
+        // comparamos con el slug normalizado (ej.: "Refugio Patagónico" -> "refugiopatagonico")
         valido = cupon.alojamientos.includes(nombreClave) && hoy >= cupon.desde && hoy <= cupon.hasta;
         porcentaje = cupon.porcentaje;
       } else if (cupon && cupon.porcentaje) {
