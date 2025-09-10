@@ -31,7 +31,10 @@ const propiedades = {
   cds5: 601714,
   nilidas: 601719,
   gurisa: 648950,
-  paisajismo: 601720
+  paisajismo: 601720,
+  koiquetrihue: 677269,
+  mitiempo: 677286,
+  refugiopatagonico: 677289
 };
 
 // 👉 Nombres para mostrar (para endpoint /api/disponibles)
@@ -47,7 +50,10 @@ const nombrePropiedades = {
   601714: 'Cruz del Sur 5',
   601719: 'Las Nilidas',
   648950: 'Gurisa',
-  601720: 'Paisajismo'
+  601720: 'Paisajismo',
+  677269: 'Koi Quetrihue',
+  677286: 'Mi Tiempo',
+  677289: 'Refugio Patagónico'
 };
 
 /* ===========================
