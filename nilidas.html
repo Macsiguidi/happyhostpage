@@ -90,7 +90,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
        <div class="info servicios">
         <h3>Servicios</h3>
         <div class="iconos-servicios">
-          <div><img src="iconos/4 personas.png" alt="WiFi"><span>4 pax</span></div>
+          <div><img src="iconos/persona.png" alt="WiFi"><span>4 pax</span></div>
           <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
           <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
           <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
@@ -249,26 +249,19 @@ const masBtn = document.getElementById('mas');
 const contador = document.getElementById('contador');
 
 let cantidad = parseInt(huespedes) || 1;
-const hoy = new Date();
-hoy.setHours(0, 0, 0, 0);
+const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
 
 // 🔒 Fecha máxima permitida para reservas en Nilidas
 const fechaLimite = new Date('2026-04-30');
 
 window.addEventListener("DOMContentLoaded", () => {
-  if (checkin) startInput.value = checkin;
-  if (checkout) endInput.value = checkout;
-  if (huespedes) {
-    guestsInput.value = huespedes;
-    cantidad = parseInt(huespedes);
-  }
+  if (checkin)  startInput.value = checkin;
+  if (checkout) endInput.value   = checkout;
+  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
   actualizarContador();
 
-  if (checkin) {
-    setCurrencyAndCalculate(checkin);
-  } else {
-    calculate();
-  }
+  if (checkin) setCurrencyAndCalculate(checkin);
+  else         calculate();
 });
 
 const startPicker = flatpickr(startInput, {
@@ -317,12 +310,11 @@ async function loadDisabledDates(picker) {
     picker.set('disable', [
       ...rangos.map(r => {
         const from = new Date(r.from);
-        from.setDate(from.getDate() + 1); // 👈 habilitamos el día de check-in
+        from.setDate(from.getDate() + 1); // habilitamos check-in
         return { from, to: r.to };
       }),
       date => date < hoy || date > fechaLimite
     ]);
-
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
   }
@@ -334,11 +326,11 @@ async function loadDisabledDates(picker) {
   picker.config.onOpen.push(() => loadDisabledDates(picker));
 });
 
+// 👥 Contador de huéspedes (máx. 4)
 function actualizarContador() {
   contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   guestsInput.value = cantidad;
 }
-
 menosBtn.addEventListener('click', () => {
   if (cantidad > 1) {
     cantidad--;
@@ -346,35 +338,37 @@ menosBtn.addEventListener('click', () => {
     calculate();
   }
 });
-
 masBtn.addEventListener('click', () => {
-  if (cantidad < 6) {
+  if (cantidad < 4) {  // ⛔️ antes estaba 6
     cantidad++;
     actualizarContador();
     calculate();
   }
 });
+guestsInput.addEventListener('input', () => {
+  let v = parseInt(guestsInput.value) || 1;
+  if (v < 1) v = 1;
+  if (v > 4) v = 4;     // clamp manual
+  cantidad = v;
+  actualizarContador();
+  calculate();
+});
 
-guestsInput.addEventListener('input', calculate);
 currSelect.addEventListener('change', calculate);
 
+// 💵 Moneda según fecha de check-in
 function setCurrencyAndCalculate(fechaCheckin) {
-  const fecha = new Date(fechaCheckin);
+  const fecha  = new Date(fechaCheckin);
   const limite = new Date('2025-12-20');
 
   if (fechaCheckin) {
-    if (fecha <= limite) {
-      currSelect.value = 'ARS';
-    } else {
-      currSelect.value = 'USD';
-    }
+    currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
     currSelect.style.display = 'none';
     currSelect.disabled = true;
   } else {
     currSelect.style.display = 'block';
     currSelect.disabled = false;
   }
-
   calculate();
 }
 
@@ -386,7 +380,7 @@ function hayCruceConFechasOcupadas(checkin, checkout) {
 
   return fechasOcupadas.some(({ from, to }) => {
     const inicio = new Date(from);
-    const fin = new Date(to);
+    const fin    = new Date(to);
     inicio.setHours(0, 0, 0, 0);
     fin.setHours(0, 0, 0, 0);
     return (
@@ -403,23 +397,14 @@ function hayCruceConFechasOcupadas(checkin, checkout) {
 const AJUSTE_USD_POR_NOCHE = 20;
 const AJUSTE_DESDE = new Date('2025-09-03');
 const AJUSTE_HASTA = new Date('2025-12-20');
-
-// Normalizar fecha a 00:00 (evita problemas por TZ)
-function ymd(date) {
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-function enRangoAjuste(d) {
-  const x = ymd(d);
-  return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA);
-}
+function ymd(date) { const d = new Date(date); d.setHours(0,0,0,0); return d; }
+function enRangoAjuste(d) { const x = ymd(d); return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA); }
 
 async function calculate() {
   const startValue = startInput.value;
-  const endValue = endInput.value;
-  const guests = +guestsInput.value;
-  const moneda = currSelect.value;
+  const endValue   = endInput.value;
+  const guests     = +guestsInput.value;
+  const moneda     = currSelect.value;
 
   if (!startValue || !endValue) {
     resDiv.textContent = 'Seleccioná ambas fechas.';
@@ -434,7 +419,7 @@ async function calculate() {
     return;
   }
 
-  const MAX_GUESTS = 4, FREE_GUESTS = 4;
+  const MAX_GUESTS = 4, FREE_GUESTS = 4; // ✅ Nilidas: tope 4, sin extras
   if (guests > MAX_GUESTS) {
     resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`;
     reservarBtn.disabled = true;
@@ -452,10 +437,10 @@ async function calculate() {
   reservarBtn.disabled = true;
 
   try {
-    const url = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+    const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(await resp.text());
-    const { dias = [], extras = [] } = await resp.json();
+    const { dias = [] } = await resp.json();
 
     if (dias.length === 0) {
       resDiv.textContent = 'No hay precios para estas fechas.';
@@ -471,10 +456,8 @@ async function calculate() {
       return;
     }
 
-    // 🔢 Base USD por noche (aplicando +USD20 solo dentro del rango 03/09–20/12)
+    // 🔢 Base USD por noche (+USD20 solo en el rango definido)
     let baseUSD = 0;
-
-    // Fecha base real del check-in (normalizada a 00:00)
     const startDateLocal = ymd(startValue);
 
     for (let i = 0; i < noches; i++) {
@@ -483,11 +466,9 @@ async function calculate() {
         d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay) ||
         d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
 
-      // Fecha de la noche i
       const fechaNoche = new Date(startDateLocal);
       fechaNoche.setDate(fechaNoche.getDate() + i);
 
-      // +USD 20 solo si la noche cae entre 03/09 y 20/12 (inclusive)
       const precioNocheUSD = enRangoAjuste(fechaNoche)
         ? p.price_per_day + AJUSTE_USD_POR_NOCHE
         : p.price_per_day;
@@ -495,35 +476,31 @@ async function calculate() {
       baseUSD += precioNocheUSD;
     }
 
-    // 👥 Extras por huésped (se mantienen sin ajuste)
-    const extraUnit = extras[0]?.price_per_day || 12;
-    const extraQty = Math.max(0, guests - FREE_GUESTS);
-    const extraUSD = extraQty * extraUnit * noches;
+    // 👥 Sin extras (FREE_GUESTS = MAX_GUESTS = 4)
+    const totalUSD = baseUSD;
 
-    const totalUSD = baseUSD + extraUSD;
-
-    // 💱 Factores de conversión por fecha (se mantiene como lo tenías)
+    // 💱 Conversión ARS por fecha
     const fechaCheckin = new Date(startValue);
     let factorARS = 1400;
     if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
       factorARS = 1250;
     } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-10-31')) {
       factorARS = 1500;
-    }else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
+    } else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
       factorARS = 1600;
     }
 
-    const total = moneda === 'USD' ? totalUSD : totalUSD * factorARS;
-    const extra = moneda === 'USD' ? extraUSD : extraUSD * factorARS;
+    const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
 
+    // 🧾 Resumen compacto
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
-      <li>Huéspedes: ${guests}</li>` +
-      (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total estadia:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
+      <li>Huéspedes: ${guests}</li>
+      <li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</li>
     </ul>`;
     resDiv.innerHTML = html;
 
+    // 🟢 Reservar
     reservarBtn.disabled = false;
     reservarBtn.onclick = () => {
       const qs = new URLSearchParams({
@@ -543,7 +520,7 @@ async function calculate() {
   }
 }
 
-// ↓ ESTE BLOQUE va justo aquí, antes de cerrar el <script>
+// ↓ Volver
 document.addEventListener("DOMContentLoaded", () => {
   const btnVolver = document.getElementById("btnVolver");
   if (!btnVolver) return;

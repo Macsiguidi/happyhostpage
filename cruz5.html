@@ -84,7 +84,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
       <div class="info servicios">
         <h3>Servicios</h3>
         <div class="iconos-servicios">
-          <div><img src="iconos/2 personas.png" alt="WiFi"><span>2 pax</span></div>
+          <div><img src="iconos/persona.png" alt="WiFi"><span>2 pax</span></div>
           <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
           <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
           <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
@@ -322,6 +322,7 @@ async function loadDisabledDates(picker) {
   picker.config.onOpen.push(() => loadDisabledDates(picker));
 });
 
+// 👥 Contador de huéspedes (máx. 2)
 function actualizarContador() {
   contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   guestsInput.value = cantidad;
@@ -334,15 +335,21 @@ menosBtn.addEventListener('click', () => {
   }
 });
 masBtn.addEventListener('click', () => {
-  if (cantidad < 6) {
+  if (cantidad < 2) {              // ⛔️ máximo 2
     cantidad++;
     actualizarContador();
     calculate();
   }
 });
-guestsInput.addEventListener('input', calculate);
-// (si dejás el selector visible en el futuro)
-// currSelect.addEventListener('change', calculate);
+guestsInput.addEventListener('input', () => {
+  let v = parseInt(guestsInput.value) || 1;
+  if (v < 1) v = 1;
+  if (v > 2) v = 2;                 // ⛔️ clamp a 2
+  cantidad = v;
+  actualizarContador();
+  calculate();
+});
+currSelect.addEventListener('change', calculate);
 
 /* ========= Moneda automática por fecha =========
    ARS hasta 20/12/2025 (inclusive), luego USD */
@@ -460,32 +467,30 @@ async function calculate() {
       baseUSD += precioNocheUSD;
     }
 
-    // 👥 Extras (sin ajuste)
+    // 👥 Extras (incluidos en total, no se muestran aparte)
     const extraUnit = extras[0]?.price_per_day || 12;
     const extraQty  = Math.max(0, guests - FREE_GUESTS);
     const extraUSD  = extraQty * extraUnit * noches;
 
     const totalUSD = baseUSD + extraUSD;
 
-    // 💱 Tipo de cambio por fecha (igual que CDS4)
+    // 💱 Tipo de cambio por fecha
     const fechaCheckin = new Date(startValue);
     let factorARS = 1400;
     if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
       factorARS = 1250;
     } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-10-31')) {
       factorARS = 1500;
-    }else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
+    } else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
       factorARS = 1600;
     }
     const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
-    const extra = (moneda === 'USD') ? extraUSD : extraUSD * factorARS;
 
-    // 🧾 UI (no mostramos el ajuste)
+    // 🧾 UI (sin línea de “Extra huésped”)
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
-      <li>Huéspedes: ${guests}</li>` +
-      (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
+      <li>Huéspedes: ${guests}</li>
+      <li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</li>
     </ul>`;
     resDiv.innerHTML = html;
 
@@ -498,7 +503,7 @@ async function calculate() {
         checkInDate: startValue,
         checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice: total, // incluye el ajuste + extras
+        totalPrice: total, // incluye ajuste + extras
         currency: moneda
       }).toString();
       window.location.href = `formulario.html?${qs}`;
@@ -524,6 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
 
 
 

@@ -87,7 +87,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
       <div class="info servicios">
         <h3>Servicios</h3>
         <div class="iconos-servicios">
-          <div><img src="iconos/2 personas.png" alt="WiFi"><span>2 pax</span></div>
+          <div><img src="iconos/persona.png" alt="WiFi"><span>2 pax</span></div>
           <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
           <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
           <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
@@ -255,7 +255,7 @@ let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date(); hoy.setHours(0,0,0,0);
 const fechaLimite = new Date('2026-03-31');
 
-// 🎨 Media celda para check-in / check-out (igual que Calafate)
+// 🎨 Media celda para check-in / check-out
 const pintarDiagonal = (date, tipo) => {
   const div = document.createElement('div');
   div.className = tipo === 'entrada' ? 'entrada-diagonal' : 'salida-diagonal';
@@ -304,7 +304,7 @@ const endPicker = flatpickr(endInput, {
   }
 });
 
-// ⛓ Vincular apertura de check-out al elegir check-in
+// ⛓ Vincular apertura de check-out
 startPicker.config.onChange.push((selectedDates) => {
   if (selectedDates[0]) {
     endPicker.setDate(null);
@@ -323,11 +323,10 @@ async function loadDisabledDates(picker) {
     const rangos = await resp.json();
     fechasOcupadas = rangos;
 
-    // Bloquear días ocupados, habilitando el día de check-in
     picker.set('disable', [
       ...rangos.map(r => {
         const from = new Date(r.from);
-        from.setDate(from.getDate() + 1); // ✅ habilitamos check-in
+        from.setDate(from.getDate() + 1);
         return { from, to: r.to };
       }),
       date => date < hoy || date > fechaLimite
@@ -337,14 +336,13 @@ async function loadDisabledDates(picker) {
   }
 }
 
-// Cargar ocupadas en eventos del calendario
 [startPicker, endPicker].forEach(picker => {
   picker.config.onReady.push(() => loadDisabledDates(picker));
   picker.config.onMonthChange.push(() => loadDisabledDates(picker));
   picker.config.onOpen.push(() => loadDisabledDates(picker));
 });
 
-// 👥 Contador de huéspedes
+// 👥 Contador de huéspedes (máx. 2)
 function actualizarContador() {
   contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   guestsInput.value = cantidad;
@@ -353,12 +351,17 @@ menosBtn.addEventListener('click', () => {
   if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); }
 });
 masBtn.addEventListener('click', () => {
-  if (cantidad < 6) { cantidad++; actualizarContador(); calculate(); }
+  if (cantidad < 2) { cantidad++; actualizarContador(); calculate(); } // ⚡ solo hasta 2
 });
-guestsInput.addEventListener('input', calculate);
+guestsInput.addEventListener('input', () => {
+  if (guestsInput.value > 2) guestsInput.value = 2;
+  cantidad = parseInt(guestsInput.value) || 1;
+  actualizarContador();
+  calculate();
+});
 currSelect.addEventListener('change', calculate);
 
-// 💵 Moneda auto por fecha (ARS hasta 20/12/2025, luego USD) — igual que Calafate1
+// 💵 Moneda auto por fecha
 function setCurrencyAndCalculate(fechaCheckin) {
   const fecha  = new Date(fechaCheckin);
   const limite = new Date('2025-12-20');
@@ -385,7 +388,7 @@ function hayCruceConFechasOcupadas(checkin, checkout) {
 }
 
 /* ===========================
-   🔧 AJUSTE +USD 20 / NOCHE (03/09/2025–20/12/2025) — igual que Calafate1
+   🔧 AJUSTE +USD 20 / NOCHE (03/09/2025–20/12/2025)
    =========================== */
 const AJUSTE_USD_POR_NOCHE = 20;
 const AJUSTE_DESDE = new Date('2025-09-03');
@@ -405,7 +408,7 @@ async function calculate() {
   const sd = new Date(startValue), ed = new Date(endValue);
   if (ed <= sd) { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
 
-  const MAX_GUESTS = 2, FREE_GUESTS = 2; // Cruz
+  const MAX_GUESTS = 2, FREE_GUESTS = 2;
   if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
 
   if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
@@ -424,7 +427,7 @@ async function calculate() {
     const minStay = dias.map(d => Math.min(...d.prices.map(p => p.min_stay))).reduce((a,b) => Math.min(a,b), Infinity);
     if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
 
-    // 🔢 Base USD por noche (aplicando +USD20 solo dentro del rango 03/09–20/12)
+    // 🔢 Base USD por noche
     let baseUSD = 0;
     const startDateLocal = ymd(startValue);
     for (let i = 0; i < noches; i++) {
@@ -442,14 +445,14 @@ async function calculate() {
       baseUSD += precioNocheUSD;
     }
 
-    // 👥 Extras por huésped
+    // 👥 Extra huésped (ya incluido en total)
     const extraUnit = extras[0]?.price_per_day || 12;
     const extraQty  = Math.max(0, guests - FREE_GUESTS);
     const extraUSD  = extraQty * extraUnit * noches;
 
     const totalUSD = baseUSD + extraUSD;
 
-    // 💱 Factor ARS por fecha (alineado a tu Calafate1)
+    // 💱 Conversión
     const fechaCheckin = new Date(startValue);
     let factorARS = 1400;
     if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
@@ -461,14 +464,12 @@ async function calculate() {
     }
 
     const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
-    const extra = (moneda === 'USD') ? extraUSD : extraUSD * factorARS;
 
-    // 🧾 Desglose (ajuste oculto)
+    // 🧾 Mostrar resumen (sin línea separada de extra)
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
-      <li>Huéspedes: ${guests}</li>` +
-      (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total estadia:</strong> ${total.toLocaleString()} ${moneda}</strong></li>
+      <li>Huéspedes: ${guests}</li>
+      <li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</li>
     </ul>`;
     resDiv.innerHTML = html;
 
@@ -481,7 +482,7 @@ async function calculate() {
         checkInDate: startValue,
         checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice: total, // ✅ incluye ajuste por noche (oculto) + extras
+        totalPrice: total,
         currency: moneda
       }).toString();
       window.location.href = `formulario.html?${qs}`;

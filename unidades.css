@@ -277,15 +277,47 @@ body {
   cursor: not-allowed;
 }
 
+/* ——— Dejar fijo el slot del resultado ——— */
 #resultado {
-  font-size: 13px;
-  color: #1D292A;
-  background: #EEEEEE;
-  padding: 6px 12px;
-  border-radius: 12px;
+  flex: 0 0 240px;      /* ancho fijo de “slot” */
+  min-height: 38px;     /* alto mínimo (coherente con tus paddings) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;     /* por si el texto se pasa */
+  text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 500;
+
+  /* Mata cualquier transición/animación que venga de otro lado */
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+  opacity: 1 !important;
 }
+
+/* Por si algún script agrega clases de animación */
+#resultado .fade, 
+#resultado .fade-in, 
+#resultado .slide, 
+#resultado .slide-up, 
+#resultado .animate__animated {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+/* Ajustes responsivos para que no moleste en pantallas chicas */
+@media (max-width: 768px) {
+  .reserva { padding: 20px; }
+  #resultado {
+    flex: 1 1 100%;
+    order: 4;           /* que quede abajo de todo si se rompe en varias líneas */
+    min-height: 40px;
+  }
+}
+
 
 /* Mobile styles */
 @media (max-width: 768px) {

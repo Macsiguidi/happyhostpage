@@ -93,7 +93,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
       <div class="info servicios">
         <h3>Servicios</h3>
         <div class="iconos-servicios">
-          <div><img src="iconos/6 personas.png" alt="WiFi"><span>6 pax</span></div>
+          <div><img src="iconos/persona.png" alt="WiFi"><span>6 pax</span></div>
           <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
           <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
           <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
@@ -342,11 +342,10 @@ async function loadDisabledDates(picker) {
     const rangos = await resp.json();
     fechasOcupadas = rangos;
 
-    // Bloquear días ocupados, dejando habilitado el día de entrada (check-in)
     picker.set('disable', [
       ...rangos.map(r => {
         const from = new Date(r.from);
-        from.setDate(from.getDate() + 1); // ✅ habilitamos el check-in
+        from.setDate(from.getDate() + 1); 
         return { from, to: r.to };
       }),
       date => date < hoy || date > fechaLimite
@@ -431,7 +430,6 @@ const AJUSTE_USD_POR_NOCHE = 20;
 const AJUSTE_DESDE = new Date('2025-09-03');
 const AJUSTE_HASTA = new Date('2025-12-20');
 
-// Normalizar fecha a 00:00 (evita problemas por TZ)
 function ymd(date) {
   const d = new Date(date);
   d.setHours(0, 0, 0, 0);
@@ -499,10 +497,8 @@ async function calculate() {
       return;
     }
 
-    // 🔢 Base USD por noche (aplicando +USD20 solo dentro del rango 03/09–20/12)
+    // 🔢 Base USD por noche (+20 si cae entre 03/09–20/12)
     let baseUSD = 0;
-
-    // Fecha base real del check-in (normalizada a 00:00)
     const startDateLocal = ymd(startValue);
 
     for (let i = 0; i < noches; i++) {
@@ -511,11 +507,9 @@ async function calculate() {
         d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay) ||
         d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
 
-      // Fecha de la noche i
       const fechaNoche = new Date(startDateLocal);
       fechaNoche.setDate(fechaNoche.getDate() + i);
 
-      // +USD 20 solo si la noche cae entre 03/09 y 20/12 (inclusive)
       const precioNocheUSD = enRangoAjuste(fechaNoche)
         ? p.price_per_day + AJUSTE_USD_POR_NOCHE
         : p.price_per_day;
@@ -523,33 +517,31 @@ async function calculate() {
       baseUSD += precioNocheUSD;
     }
 
-    // 👥 Extras por huésped (se mantienen sin ajuste)
+    // 👥 Extra huéspedes (ya sumado al total, no se muestra separado)
     const extraUnit = extras[0]?.price_per_day || 12;
     const extraQty = Math.max(0, guests - FREE_GUESTS);
     const extraUSD = extraQty * extraUnit * noches;
 
     const totalUSD = baseUSD + extraUSD;
 
-    // 💱 Factores de conversión por fecha
+    // 💱 Conversión ARS
     const fechaCheckin = new Date(startValue);
     let factorARS = 1400;
     if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
       factorARS = 1250;
     } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-10-31')) {
       factorARS = 1500;
-    }else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
+    } else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
       factorARS = 1600;
     }
 
     const total = moneda === 'USD' ? totalUSD : totalUSD * factorARS;
-    const extra = moneda === 'USD' ? extraUSD : extraUSD * factorARS;
 
-    // 🧾 Mostrar resumen (sin leyendas del ajuste)
+    // 🧾 Mostrar resumen (sin “Extra huésped”)
     let html = `<ul class="booking-summary">
       <li>Noches: ${noches}</li>
-      <li>Huéspedes: ${guests}</li>` +
-      (extraQty > 0 ? `<li>Extra huésped: ${extra.toLocaleString()} ${moneda}</li>` : '') +
-      `<li><strong>Total estadia:</strong> ${total.toLocaleString()} ${moneda}</li>
+      <li>Huéspedes: ${guests}</li>
+      <li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</li>
     </ul>`;
     resDiv.innerHTML = html;
 
@@ -573,7 +565,7 @@ async function calculate() {
   }
 }
 
-// ↓ ESTE BLOQUE va justo aquí, antes de cerrar el <script>
+// ↓ Botón “Volver”
 document.addEventListener("DOMContentLoaded", () => {
   const btnVolver = document.getElementById("btnVolver");
   if (!btnVolver) return;
@@ -588,6 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
 
 
 
