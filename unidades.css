@@ -178,205 +178,207 @@ body {
   }
 }
 
-.motor-reservas-fijo {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+/* ====== BASE ====== */
+*{box-sizing:border-box}
+html,body{overflow-x:hidden}
+body:has(.motor-reservas-fijo){ /* deja aire para que no tape contenido */
+  padding-bottom: 120px;
+}
+
+/* Barra fija inferior */
+.motor-reservas-fijo{
+  position:fixed; inset:auto 0 0 0;
+  z-index:999;
+  display:flex; justify-content:center;
+  padding:12px 14px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));
   backdrop-filter: blur(8px);
-  padding: 20px 24px;
-  z-index: 999;
-  display: flex;
-  justify-content: center;
-  font-family: 'Poppins', sans-serif;
 }
 
-.reserva {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  padding: 40px 40px;
-  background: rgba(255, 255, 255, 0.7);
+/* Caja principal */
+.reserva{
+  --h:44px;                 /* altura controles mobile */
+  --rad:14px;               /* radios mobile */
+  --fs:14px;                /* fuente mobile */
+  --gap:10px;
+
+  font-family:'Poppins',sans-serif;
+  display:flex; flex-wrap:wrap; align-items:center; gap:var(--gap);
+  width:100%; max-width:520px; /* mobile compacto */
+  background:rgba(255,255,255,.78);
   backdrop-filter: blur(6px);
-  max-width: 1600px;
-  width: 100%;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-  font-size: 1rem;
+  border:1px solid #d9d9d9; border-radius:18px;
+  padding:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.075);
+}
+.reserva>*{min-width:0}
+
+.dates{display:flex; gap:var(--gap); width:100%}
+.date-field{flex:1}
+.dates input{
+  width:100%; height:var(--h);
+  padding:0 12px; font-size:var(--fs);
+  border:1px solid #bbb; border-radius:var(--rad); background:#fff;
 }
 
-.dates {
-  display: flex;
-  gap: 12px;
-  flex: 1;
+/* Stepper huéspedes */
+.huespedes-control{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px; width:100%; height:var(--h);
+  padding:0 8px; font-size:var(--fs);
+  border:1px solid #bbb; border-radius:var(--rad); background:#fff;
 }
-
-.date-field {
-  flex: 1;
+.huespedes-control button{
+  width:36px; height:36px; border:0; border-radius:12px;
+  background:#3D4D55; color:#fff; font-size:18px; font-weight:700; cursor:pointer;
 }
+.huespedes-control button:active{transform:scale(.98)}
+#contador{flex:1; text-align:center; font-weight:600}
 
-.dates input {
-  width: 100%;
-  padding: 16px 18px;
-  border: 1px solid #bbb;
-  border-radius: 20px;
-  font-size: 1rem;
-  box-sizing: border-box;
+/* Botón reservar */
+#btnReservar{
+  width:100%; height:calc(var(--h) + 2px);
+  border:0; border-radius:16px; cursor:pointer;
+  background:#1D292A; color:#fff; font-weight:700; font-size:15px;
+  letter-spacing:.2px;
 }
+#btnReservar:hover:enabled{background:#2a383a}
+#btnReservar:disabled{background:#cfcfcf; cursor:not-allowed}
 
-.huespedes-control {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border: 1px solid #bbb;
-  border-radius: 20px;
-  padding: 16px 18px;
-  gap: 10px;
-  font-size: 1rem;
+/* Resumen */
+#resultado{
+  width:100%;
+  font-size:13px; line-height:1.35;
+  padding:6px 2px; border-radius:10px;
+  display:block;
+  overflow:hidden; text-overflow:ellipsis;
+  white-space:normal;
+  animation:none!important; transition:none!important; transform:none!important; opacity:1!important;
 }
+#resultado .animate__animated{animation:none!important}
 
-.huespedes-control button {
-  background: #3D4D55;
-  border: none;
-  color: white;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.huespedes-control button:hover {
-  background: #1D292A;
-}
-
-#contador {
-  font-weight: 500;
-}
-
-#btnReservar {
-  background: #1D292A;
-  border: none;
-  color: white;
-  font-weight: bold;
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-#btnReservar:hover:enabled {
-  background: #3D4D55;
-}
-
-#btnReservar:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* ——— Dejar fijo el slot del resultado ——— */
-#resultado {
-  flex: 0 0 240px;      /* ancho fijo de “slot” */
-  min-height: 38px;     /* alto mínimo (coherente con tus paddings) */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;     /* por si el texto se pasa */
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  /* Mata cualquier transición/animación que venga de otro lado */
-  animation: none !important;
-  transition: none !important;
-  transform: none !important;
-  opacity: 1 !important;
-}
-
-/* Por si algún script agrega clases de animación */
-#resultado .fade, 
-#resultado .fade-in, 
-#resultado .slide, 
-#resultado .slide-up, 
-#resultado .animate__animated {
-  animation: none !important;
-  transition: none !important;
-  transform: none !important;
-  opacity: 1 !important;
-}
-
-/* Ajustes responsivos para que no moleste en pantallas chicas */
-@media (max-width: 768px) {
-  .reserva { padding: 20px; }
-  #resultado {
-    flex: 1 1 100%;
-    order: 4;           /* que quede abajo de todo si se rompe en varias líneas */
-    min-height: 40px;
-  }
-}
-
-
-/* Mobile styles */
+/* ====== MOBILE (≤768px) ====== */
 @media (max-width: 768px) {
   .motor-reservas-fijo {
-    padding: 10px 0; /* menos padding lateral */
+    padding: 8px 10px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   }
 
   .reserva {
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    align-items: stretch;
+    gap: 8px;
     width: 100%;
-    max-width: 360px;
+    max-width: 400px;       /* un poco más angosto */
     margin: 0 auto;
-    padding: 16px;
-    border-radius: 20px;
+    padding: 12px;
+    border-radius: 16px;
+    --h: 38px;              /* altura controles */
+    --rad: 10px;
+    --fs: 13px;             /* tipografía un poco menor */
   }
 
   .dates {
     flex-direction: column;
     width: 100%;
-    gap: 8px;
+    gap: 6px;
   }
 
   .date-field input {
-    width: 90%;
-    padding: 10px 14px;
-    font-size: 1rem;
-    border-radius: 10px;
+    width: 100%;
+    height: var(--h);
+    padding: 8px 10px;
+    font-size: var(--fs);
+    border-radius: var(--rad);
   }
 
   .huespedes-control {
-    width: 90%;
+    width: 100%;
     justify-content: space-between;
-    padding: 10px 14px;
-    font-size: 1rem;
-    border-radius: 10px;
+    height: var(--h);
+    padding: 8px 10px;
+    font-size: var(--fs);
+    border-radius: var(--rad);
   }
-
   .huespedes-control button {
-    width: 30px;
-    height: 30px;
-    font-size: 1.2rem;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
   }
 
   #btnReservar {
     width: 100%;
-    padding: 5px;
-    font-size: 1rem;
-    border-radius: 10px;
+    height: calc(var(--h) + 2px);
+    font-size: 14px;
+    padding: 8px;
+    border-radius: var(--rad);
+  }
+
+  /* Resultado más discreto */
+  #resultado {
+    order: 99;
+    font-size: 12px;
+    line-height: 1.3;
+    text-align: left;
+    padding: 4px;
+    border-radius: 8px;
+  }
+}
+
+/* ====== TABLET (más aire, aún compacto) ====== */
+@media (min-width: 600px) {
+  .reserva { max-width: 680px; }
+  .reserva { --h: 46px; --rad: 14px; --fs: 15px; --gap: 12px; }
+}
+
+/* ====== ESCRITORIO (una sola línea armónica) ====== */
+@media (min-width: 1024px) {
+  body:has(.motor-reservas-fijo) { padding-bottom: 90px; }
+
+  .reserva {
+    --h: 40px; --rad: 12px; --fs: 14px; --gap: 12px;
+    max-width: min(1100px, 90vw);
+    padding: 14px 16px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 220px 170px auto;
+    /* 2 fechas | stepper | resumen | botón */
+    column-gap: 12px; row-gap: 8px;
+    background: rgba(255,255,255,.86);
+  }
+
+  .dates { display: contents; }          /* cada campo toma su columna */
+  #df-start, #df-end { display: block; }
+  #df-start, #df-end, .huespedes-control, #resultado { width: 100%; }
+
+  .huespedes-control {
+    height: 40px; padding: 0 10px; border-radius: 12px; font-size: 14px;
+  }
+  .huespedes-control button {
+    width: 32px; height: 32px; border-radius: 10px; font-size: 18px;
+  }
+
+  #btnReservar {
+    height: 42px; min-width: 180px;
+    border-radius: 12px; font-size: 14px; justify-self: end;
+    padding: 0 16px;
   }
 
   #resultado {
-    font-size: 10px;
-    text-align: left;
-    padding: 5px;
-    border-radius: 10px;
+    font-size: 13px; text-align: left; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
   }
 }
+
+/* ====== EXTRA COMPACTO (teléfonos chicos ≤360px) ====== */
+@media (max-width: 360px) {
+  .reserva { --h: 36px; --rad: 10px; --fs: 12px; --gap: 6px; max-width: 92vw; }
+  #btnReservar { font-size: 13px; }
+  #resultado { font-size: 11px; }
+}
+
+
+
 
 
 
