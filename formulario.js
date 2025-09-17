@@ -55,10 +55,10 @@ window.addEventListener('DOMContentLoaded', () => {
     '601711': 'unidades/casa5/casa5_img3.jpg', '601712': 'unidades/casa6/casa6_img1.jpg',
     '601713': 'unidades/casa7/casa7_img1.jpg', '601717': 'unidades/cds4/cds4_1.jpg',
     '601714': 'unidades/cds5/cds5_2.jpg', '601719': 'unidades/nilidas/nilidas1.jpg',
-    '648950': 'unidades/gurisa/gurisa2.jpg', '601720': 'unidades/paisajismo/paisajismo1.jpg',
+    '648950': 'unidades/gurisa/gurisa2.jpg', '601720': 'unidades/paisajismo/paisajismo1.jpg', 
     // nuevos (si cambiás nombres de archivos, actualizá acá)
     '677269': 'unidades/koi/koi1.jpg',
-    '677286': 'unidades/mitiempo/mitiempo1.jpg',
+    '677286': 'unidades/mitiempo/tiempo3.jpg',
     '677289': 'unidades/refugio/refugio2.jpg'
   };
 
