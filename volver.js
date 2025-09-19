@@ -41,3 +41,5 @@
     if (elemOut) elemOut.classList.add('checkout');
   }
 }
+
+
