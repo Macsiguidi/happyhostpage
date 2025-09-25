@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Refugio Patagónico | Alquiler turístico en Villa La Angostura - Happy Host</title>
-  <meta name="description" content="Refugio Patagónico: casa amplia y equipada en Villa La Angostura. Ideal para grupos y familias (hasta 8 pax). Jardín, parrilla y todas las comodidades.">
-  <meta name="keywords" content="Refugio Patagónico, alojamiento turístico Villa La Angostura, alquiler vacacional Patagonia, casa grande 8 personas, parrilla, jardín, Happy Host Patagonia, Nahuel Huapi, Cerro Bayo, Lago Correntoso, familias, grupos, casa equipada, estacionamiento, calefacción, wifi">
-  <meta name="author" content="Happy Host Patagonia">
+  <meta name="description" content="Refugio Patagónico: casa amplia y equipada en Villa La Angostura. Ideal para grupos y familias (hasta 9 pax). Jardín, parrilla y todas las comodidades." />
+  <meta name="keywords" content="Refugio Patagónico, alojamiento turístico Villa La Angostura, alquiler vacacional Patagonia, casa grande 9 personas, parrilla, jardín, Happy Host Patagonia, Nahuel Huapi, Cerro Bayo, Lago Correntoso, familias, grupos, casa equipada, estacionamiento, calefacción, wifi" />
+  <meta name="author" content="Happy Host Patagonia" />
 
+  <!-- Pixel -->
   <script>
   if (location.hostname === 'happyhostpatagonia.com.ar') {
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1812973002649828');
-    fbq('track', 'PageView');
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)n=f._fbq;
+    n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+    t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','1812973002649828'); fbq('track','PageView');
   }
   </script>
 
   <!-- Icono y fuentes -->
-  <link rel="icon" type="image/png" sizes="64x64" href="logos/happyhost.png" sizes="128x128">
+  <link rel="icon" type="image/png" sizes="128x128" href="logos/happyhost.png">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Refugio Patagónico en Villa La Angostura | Happy Host Patagonia">
-  <meta property="og:description" content="Casa amplia hasta 8 personas con jardín y parrilla. Ideal familias y grupos.">
-  <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/refugio/ref_1.jpg">
+  <meta property="og:description" content="Casa amplia hasta 9 personas con jardín y parrilla. Ideal familias y grupos.">
+  <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/refugio/refugio2.jpg">
   <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/refugiopatagonico.html">
   <meta property="og:type" content="website">
 
@@ -38,13 +37,27 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-  <!-- Estilos -->
+  <!-- Estilos del sitio -->
   <link rel="stylesheet" href="unidades.css">
+
+  <!-- Estilos mínimos para el lightbox (autónomo) -->
+  <style>
+    .lightbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:9999}
+    .lightbox[hidden]{display:none}
+    .lightbox__img{max-width:min(92vw,1600px);max-height:88vh;border-radius:8px}
+    .lightbox__btn{position:absolute;top:50%;transform:translateY(-50%);font-size:32px;background:rgba(255,255,255,.15);border:0;color:#fff;width:48px;height:72px;border-radius:8px;cursor:pointer}
+    .lightbox__btn:hover{background:rgba(255,255,255,.25)}
+    .lightbox__prev{left:16px}
+    .lightbox__next{right:16px}
+    .lightbox__close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.2);border:0;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer}
+    .miniaturas img.activa{outline:3px solid #fff;border-radius:6px}
+    .imagen-principal img{cursor:zoom-in}
+  </style>
 </head>
 
 <body>
   <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></noscript>
+  src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1" alt=""></noscript>
 
   <header class="header">
     <div class="barra-menu">
@@ -58,413 +71,503 @@
     </div>
   </header>
 
-  <div class="fondo-blur">
-    <section class="detalle-alojamiento">
-      <div class="imagen-principal">
-        <!-- 🔁 Cambiá las rutas a tus fotos reales -->
-        <img src="unidades/refugio/refugio2.jpg" alt="Refugio Patagónico - Foto principal">
-        <div class="miniaturas-container">
-          <button class="flecha izq">&#10094;</button>
-          <div class="miniaturas" id="miniaturas-scroll">
-            <img src="unidades/refugio/refugio2.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio1.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio3.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio4.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio5.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio6.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio7.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio8.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio9.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio10.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio11.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio12.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio13.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio14.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio15.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio16.jpg" alt="refugio">
-            <img src="unidades/refugio/refugio17.jpg" alt="refugio">
-          </div>
-          <button class="flecha der">&#10095;</button>
-        </div>
+  <main id="main" tabindex="-1">
+    <div class="fondo-blur">
+      <section class="detalle-alojamiento">
+        <div class="imagen-principal">
+          <img id="foto-principal" src="unidades/refugio/refugio2.jpg" alt="Refugio Patagónico - Foto principal">
 
-        <div class="info servicios">
-          <h3>Servicios</h3>
-          <div class="iconos-servicios">
-            <div><img src="iconos/persona.png" alt="Capacidad"><span>9 pax</span></div>
-            <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
-            <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
-            <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
-            <div><img src="iconos/sabanas y toallas.png" alt="Sábanas"><span>Blancos</span></div>
-            <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
-            <div><img src="iconos/parrilla.png" alt="Parrilla"><span>Parrilla</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="motor-reservas-fijo">
-        <div class="reserva">
-          <!-- Fechas -->
-          <div class="dates">
-            <div class="date-field" id="df-start">
-              <input type="text" id="start" placeholder="Check in" readonly>
+          <div class="miniaturas-container">
+            <button class="flecha izq" type="button" aria-label="Ver fotos anteriores">&#10094;</button>
+            <div class="miniaturas" id="miniaturas-scroll">
+              <img src="unidades/refugio/refugio2.jpg"  alt="Refugio - living">
+              <img src="unidades/refugio/refugio1.jpg"  alt="Refugio - exterior">
+              <img src="unidades/refugio/refugio3.jpg"  alt="Refugio - cocina">
+              <img src="unidades/refugio/refugio4.jpg"  alt="Refugio - comedor">
+              <img src="unidades/refugio/refugio5.jpg"  alt="Refugio - dormitorio">
+              <img src="unidades/refugio/refugio6.jpg"  alt="Refugio - dormitorio">
+              <img src="unidades/refugio/refugio7.jpg"  alt="Refugio - baño">
+              <img src="unidades/refugio/refugio8.jpg"  alt="Refugio - jardín">
+              <img src="unidades/refugio/refugio9.jpg"  alt="Refugio - vista">
+              <img src="unidades/refugio/refugio10.jpg" alt="Refugio - detalles">
+              <img src="unidades/refugio/refugio11.jpg" alt="Refugio - ambiente">
+              <img src="unidades/refugio/refugio12.jpg" alt="Refugio - ambiente">
+              <img src="unidades/refugio/refugio13.jpg" alt="Refugio - ambiente">
+              <img src="unidades/refugio/refugio14.jpg" alt="Refugio - ambiente">
+              <img src="unidades/refugio/refugio15.jpg" alt="Refugio - ambiente">
+              <img src="unidades/refugio/refugio16.jpg" alt="Refugio - ambiente">
+              <img src="unidades/refugio/refugio17.jpg" alt="Refugio - ambiente">
             </div>
-            <div class="date-field" id="df-end">
-              <input type="text" id="end" placeholder="Check out" readonly>
+            <button class="flecha der" type="button" aria-label="Ver fotos siguientes">&#10095;</button>
+          </div>
+
+          <aside class="info servicios">
+            <h3>Servicios</h3>
+            <div class="iconos-servicios">
+              <div><img src="iconos/persona.png" alt="Capacidad"><span>9 pax</span></div>
+              <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
+              <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
+              <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
+              <div><img src="iconos/sabanas y toallas.png" alt="Sábanas"><span>Blancos</span></div>
+              <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
+              <div><img src="iconos/parrilla.png" alt="Parrilla"><span>Parrilla</span></div>
             </div>
-          </div>
-
-          <!-- Huéspedes -->
-          <input type="hidden" id="guests" value="1" />
-          <div class="huespedes-control">
-            <button id="menos">−</button>
-            <span id="contador">1 huésped</span>
-            <button id="mas">+</button>
-          </div>
-
-          <!-- Moneda (auto) -->
-          <label for="currency" style="display:none;">Moneda</label>
-          <select id="currency" style="display:none;">
-            <option value="USD">USD</option>
-            <option value="ARS">ARS</option>
-          </select>
-
-          <!-- CTA -->
-          <button id="btnReservar" disabled>Reservar ahora</button>
-
-          <!-- Resumen -->
-          <div id="resultado"></div>
+          </aside>
         </div>
-      </div>
-    </section>
 
-    <section class="contenido-info">
-      <div class="info descripcion">
-  <h3>Descripción</h3>
-  <p><strong>¡Experimenta la autenticidad de Villa La Angostura en nuestro cálido Refugio Patagónico!</strong> Con 3 habitaciones acogedoras, extenso parque, 2 baños completos y amplias áreas comunes. Ubicado en el tranquilo barrio Lomas del Correntoso, a solo 2 km del centro. Anfitrión disponible las 24 horas para asegurar una estadía perfecta. ¡Vive momentos inolvidables! Descubre la verdadera esencia de este hermoso lugar.</p>
-
-  <p><strong>IMPORTANTE:</strong> Aprovechá las promociones de marzo y abril y viví el otoño en Villa La Angostura. Consultar precio por cantidad de personas y fechas de estadía. Estadía mínima 3 días.</p>
-
-  <p>Hermosa casa de excelente calidad constructiva en Barrio Lomas del Correntoso con 160 m2 cubiertos, implantada sobre un lote de 900 m2 totalmente cercado, con vista al Cerro Bayo, a 1 km del Lago Nahuel Huapí (Playa Puerto Elma), a 2 km de la playa del Lago Correntoso y a 2,3 km del centro comercial de Villa La Angostura.</p>
-
-  <p>La casa está totalmente equipada, tiene Smart TV 43" con servicio de cable en ambos pisos, WiFi, cafetera, pava eléctrica, tostadora, microondas, heladera con freezer, vajilla completa y ropa blanca (toallas y sábanas). Cuenta con cocina, comedor, living, cámara fría, 2 baños completos, 3 habitaciones, 1 playroom, lavadero completo con lavarropas automático de 8 kg, amplio jardín, parrilla, garage techado y calefacción central por radiadores. Además, posee grupo electrógeno.</p>
-
-  <p><strong>Distribución de plazas:</strong></p>
-  <ul>
-    <li>Habitación Principal: 1 Sommier Queen Línea Donatello</li>
-    <li>Habitación Doble: 2 Sommier de 1 plaza Zinus (con opción de unir en 2 plazas)</li>
-    <li>Habitación Triple: 3 camas de 1 plaza</li>
-    <li>Playroom: cama diván con carrito (1 plazas)</li>
-  </ul>
-
-  <p><em>Contáctanos, con gusto te asesoraremos. Barrio residencial sumamente pintoresco y tranquilo.</em></p>
-</div>
-
-
-      <div class="info mapa">
-        <h3>Ubicación</h3>
-        <!-- 📍 Si querés, cambiamos por el punto exacto de Refugio -->
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d534.3297589829551!2d-71.66095246481596!3d-40.74826388349344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9610c0ae96279b4f%3A0x47d8330a716bf7a3!2sDel%20Radal%20514%2C%20Q8407%20Neuqu%C3%A9n!5e0!3m2!1ses!2sar!4v1757526183914!5m2!1ses!2sar" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>>
-        <div class="redes-contacto">
-          <a href="https://wa.me/5492944654591" target="_blank">
-            <img src="logos/whatsapp.png" alt="WhatsApp">
-          </a>
-          <a href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
-            <img src="logos/instagram.png" alt="Instagram">
-          </a>
-          <a href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw" target="_blank">
-            <img src="logos/twitter.png" alt="X">
-          </a>
+        <!-- Lightbox -->
+        <div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog">
+          <button class="lightbox__close" type="button" aria-label="Cerrar (Esc)">×</button>
+          <button class="lightbox__btn lightbox__prev" type="button" aria-label="Anterior">‹</button>
+          <img class="lightbox__img" id="lightboxImg" src="" alt="Vista ampliada">
+          <button class="lightbox__btn lightbox__next" type="button" aria-label="Siguiente">›</button>
         </div>
-      </div>
-    </section>
-  </div>
 
+        <!-- Motor de reservas -->
+        <div class="motor-reservas-fijo" role="region" aria-label="Reserva">
+          <div class="reserva">
+            <div class="dates" role="group" aria-label="Seleccionar fechas">
+              <div class="date-field" id="df-start">
+                <input type="text" id="start" placeholder="Check in" aria-label="Fecha de check in" readonly>
+              </div>
+              <div class="date-field" id="df-end">
+                <input type="text" id="end" placeholder="Check out" aria-label="Fecha de check out" readonly>
+              </div>
+            </div>
+
+            <!-- Huéspedes -->
+            <input type="hidden" id="guests" value="1">
+            <div class="huespedes-control" role="group" aria-label="Cantidad de huéspedes">
+              <button id="menos" type="button" aria-label="Quitar huésped">−</button>
+              <span id="contador" aria-live="polite">1 huésped</span>
+              <button id="mas" type="button" aria-label="Agregar huésped">+</button>
+            </div>
+
+            <!-- Moneda (auto) -->
+            <label for="currency" class="sr-only">Moneda</label>
+            <select id="currency" style="display:none;">
+              <option value="USD">USD</option>
+              <option value="ARS">ARS</option>
+            </select>
+
+            <button id="btnReservar" disabled>Reservar ahora</button>
+            <div id="resultado" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contenido-info">
+        <article class="info descripcion">
+          <h3>Descripción</h3>
+          <p><strong>Refugio Patagónico</strong> es una casa amplia y súper cómoda en <strong>Lomas del Correntoso</strong>, ideal para grupos y familias de <strong>hasta 9 huéspedes</strong>. Gran <strong>jardín</strong>, <strong>parrilla</strong> y un entorno residencial muy tranquilo, a minutos del centro.</p>
+
+          <p>Cuenta con <strong>3 dormitorios</strong>, <strong>playroom</strong>, <strong>2 baños completos</strong> y amplias áreas sociales (cocina, comedor y living). Está <strong>totalmente equipada</strong>: <strong>Wi-Fi</strong>, Smart TV con cable, <strong>calefacción por radiadores</strong>, cocina completa (heladera con freezer, microondas, tostadora, pava eléctrica, cafetera y vajilla), <strong>lavadero</strong> con lavarropas y <strong>estacionamiento techado</strong>. Además, dispone de <strong>grupo electrógeno</strong> y ropa blanca (sábanas y toallas).</p>
+
+          <p><strong>Distribución de camas</strong></p>
+          <ul>
+            <li><strong>Suite principal:</strong> sommier queen</li>
+            <li><strong>Dormitorio doble:</strong> 2 sommiers de 1 plaza (unibles)</li>
+            <li><strong>Dormitorio triple:</strong> 3 camas de 1 plaza</li>
+            <li><strong>Playroom:</strong> diván con carrito (1 plaza)</li>
+          </ul>
+
+          <p><strong>Ubicación</strong>: a 1 km de <em>Playa Puerto Elma</em> (Nahuel Huapi), a 2 km de la playa del <em>Lago Correntoso</em> y a 2,3 km del centro. <strong>Check in / Check out AUTÓNOMO</strong>.</p>
+        </article>
+
+        <aside class="info mapa">
+          <h3>Ubicación</h3>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d534.3297589829551!2d-71.66095246481596!3d-40.74826388349344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9610c0ae96279b4f%3A0x47d8330a716bf7a3!2sDel%20Radal%20514%2C%20Q8407%20Neuqu%C3%A9n!5e0!3m2!1ses!2sar!4v1757526183914!5m2!1ses!2sar"
+                  allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+          <div class="redes-contacto" aria-label="Contacto">
+            <a class="red" href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp Happy Host">
+              <img src="logos/whatsapp.png" alt="WhatsApp">
+            </a>
+            <a class="red" href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="Instagram Happy Host">
+              <img src="logos/instagram.png" alt="Instagram">
+            </a>
+            <a class="red" href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw" target="_blank" rel="noopener" aria-label="X Happy Host">
+              <img src="logos/twitter.png" alt="X">
+            </a>
+          </div>
+        </aside>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <small>© Happy Host Patagonia</small>
+  </footer>
+
+  <!-- ========== GALERÍA + LIGHTBOX ========== -->
   <script>
-    // ------ Carrusel miniaturas ------
+  'use strict';
+  window.addEventListener('load', () => {
     const scrollContainer = document.getElementById('miniaturas-scroll');
     const flechaIzq = document.querySelector('.flecha.izq');
     const flechaDer = document.querySelector('.flecha.der');
+    const principal = document.getElementById('foto-principal');
+    const thumbs = Array.from(scrollContainer?.querySelectorAll('img') || []);
 
-    flechaIzq.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: -150, behavior: 'smooth' });
-    });
-    flechaDer.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: 150, behavior: 'smooth' });
-    });
+    // Scroll flechas
+    const desplazar = (px) => scrollContainer?.scrollBy({ left: px, behavior: 'smooth' });
+    flechaIzq?.addEventListener('click', () => desplazar(-150));
+    flechaDer?.addEventListener('click', () => desplazar(150));
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const principal = document.querySelector('.imagen-principal > img');
-      const miniaturas = document.querySelectorAll('#miniaturas-scroll img');
+    // Estado de imagen actual
+    let currentIndex = 0;
+    const syncIndexFromSrc = () => {
+      const idx = thumbs.findIndex(t => t.src === principal.src);
+      currentIndex = (idx >= 0 ? idx : 0);
+      thumbs.forEach(t => t.classList.remove('activa'));
+      if (thumbs[currentIndex]) thumbs[currentIndex].classList.add('activa');
+    };
+    syncIndexFromSrc();
 
-      miniaturas.forEach(mini => {
-        mini.addEventListener('click', () => {
-          principal.src = mini.src;
-          miniaturas.forEach(m => m.classList.remove('activa'));
-          mini.classList.add('activa');
-        });
+    // Click en miniaturas
+    thumbs.forEach((mini, i) => {
+      mini.addEventListener('click', () => {
+        principal.src = mini.src;
+        currentIndex = i;
+        thumbs.forEach(t => t.classList.remove('activa'));
+        mini.classList.add('activa');
       });
     });
+
+    // -------- Lightbox --------
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const btnClose = lb.querySelector('.lightbox__close');
+    const btnPrev  = lb.querySelector('.lightbox__prev');
+    const btnNext  = lb.querySelector('.lightbox__next');
+
+    function openLightbox(index){
+      if (!thumbs.length) return;
+      currentIndex = (index ?? 0);
+      lbImg.src = thumbs[currentIndex].src;
+      lb.removeAttribute('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(){
+      lb.setAttribute('hidden','');
+      document.body.style.overflow = '';
+    }
+    function show(delta){
+      if (!thumbs.length) return;
+      currentIndex = (currentIndex + delta + thumbs.length) % thumbs.length;
+      lbImg.src = thumbs[currentIndex].src;
+      principal.src = thumbs[currentIndex].src;
+      thumbs.forEach(t => t.classList.remove('activa'));
+      thumbs[currentIndex].classList.add('activa');
+    }
+
+    // Abrir al click en principal
+    principal?.addEventListener('click', () => openLightbox(currentIndex));
+    // Abrir al click en miniatura (zoom directo)
+    thumbs.forEach((mini, i) => mini.addEventListener('dblclick', () => openLightbox(i)));
+
+    // Controles
+    btnClose.addEventListener('click', closeLightbox);
+    btnPrev .addEventListener('click', () => show(-1));
+    btnNext .addEventListener('click', () => show(+1));
+
+    // Cerrar con fondo / ESC, navegar con flechas
+    lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if (lb.hasAttribute('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') show(-1);
+      if (e.key === 'ArrowRight') show(+1);
+    });
+  });
   </script>
 
-<script>
-// 📌 Constantes de propiedad (Refugio Patagónico)
-const HOUSE_ID = 677289;
-const ROOM_ID  = 744265;
+  <!-- ========== MOTOR DE RESERVAS (SIN DESCUENTOS) ========== -->
+  <script>
+  'use strict';
+  // IDs Refugio Patagónico
+  const HOUSE_ID = 677289;
+  const ROOM_ID  = 744265;
 
-// 📥 Parámetros de URL
-const params = new URLSearchParams(window.location.search);
-const checkin   = params.get("checkin");
-const checkout  = params.get("checkout");
-const huespedes = params.get("huespedes");
-
-// 🧹 Limpiar localStorage (para forzar nuevo flujo)
-localStorage.removeItem("checkin");
-localStorage.removeItem("checkout");
-localStorage.removeItem("huespedes");
-
-// 🎯 DOM
-const startInput = document.getElementById('start');
-const endInput   = document.getElementById('end');
-const guestsInput= document.getElementById('guests');
-const currSelect = document.getElementById('currency');
-const resDiv     = document.getElementById('resultado');
-const reservarBtn= document.getElementById('btnReservar');
-const menosBtn   = document.getElementById('menos');
-const masBtn     = document.getElementById('mas');
-const contador   = document.getElementById('contador');
-
-let cantidad = parseInt(huespedes) || 1;
-const hoy = new Date(); hoy.setHours(0,0,0,0);
-const fechaLimite = new Date('2026-04-30');
-
-// 🎨 medias celdas
-const pintarDiagonal = (date, tipo) => {
-  const div = document.createElement('div');
-  div.className = tipo === 'entrada' ? 'entrada-diagonal' : 'salida-diagonal';
-  return div;
-};
-
-// Init UI
-window.addEventListener("DOMContentLoaded", () => {
-  if (checkin)  startInput.value = checkin;
-  if (checkout) endInput.value   = checkout;
-  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
-  actualizarContador();
-  if (checkin) setCurrencyAndCalculate(checkin);
-  else         calculate();
-});
-
-// 📅 Pickers
-const startPicker = flatpickr(startInput, {
-  altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
-  defaultDate: checkin || null, minDate: hoy, maxDate: fechaLimite, disableMobile: true,
-  onChange: (selectedDates) => {
-    if (selectedDates[0]) setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
-  },
-  onDayCreate: (dObj, dStr, fp, dayElem) => {
-    if (startInput.value && dayElem.dateObj.toISOString().split('T')[0] === startInput.value) {
-      dayElem.appendChild(pintarDiagonal(dayElem.dateObj, 'entrada'));
-    }
+  // Helpers fechas locales
+  function parseYMDLocal(s) {
+    if (!s) return null;
+    if (s.includes('-')) { const [y,m,d] = s.split('-').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
+    const t = new Date(s); if (!isNaN(t.getTime())) return new Date(t.getFullYear(), t.getMonth(), t.getDate());
+    return null;
   }
-});
+  function ymdLocal(d){ const x=new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setHours(0,0,0,0); return x; }
+  function fmtLocal(d){ const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); return `${dd}/${mm}/${d.getFullYear()}`; }
+  const fmt = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
-const endPicker = flatpickr(endInput, {
-  altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
-  defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite, disableMobile: true,
-  onChange: calculate,
-  onDayCreate: (dObj, dStr, fp, dayElem) => {
-    if (endInput.value && dayElem.dateObj.toISOString().split('T')[0] === endInput.value) {
-      dayElem.appendChild(pintarDiagonal(dayElem.dateObj, 'salida'));
-    }
-  }
-});
+  // URL params
+  const params    = new URLSearchParams(window.location.search);
+  const checkin   = params.get("checkin");
+  const checkout  = params.get("checkout");
+  const huespedes = params.get("huespedes");
 
-// Abrir checkout al elegir checkin
-startPicker.config.onChange.push((selectedDates) => {
-  if (selectedDates[0]) {
-    endPicker.setDate(null);
-    endPicker.jumpToDate(selectedDates[0]);
-    endPicker.open();
-  }
-});
+  // DOM
+  const startInput  = document.getElementById('start');
+  const endInput    = document.getElementById('end');
+  const guestsInput = document.getElementById('guests');
+  const currSelect  = document.getElementById('currency');
+  const resDiv      = document.getElementById('resultado');
+  const reservarBtn = document.getElementById('btnReservar');
+  const menosBtn    = document.getElementById('menos');
+  const masBtn      = document.getElementById('mas');
+  const contador    = document.getElementById('contador');
 
-let fechasOcupadas = [];
+  let cantidad = parseInt(huespedes) || 1;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const fechaLimite = new Date('2026-04-30');
 
-// 🔒 Cargar fechas ocupadas (endpoint Refugio)
-async function loadDisabledDates(picker) {
-  try {
-    const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/refugiopatagonico');
-    if (!resp.ok) throw new Error(await resp.text());
-    const rangos = await resp.json();
-    fechasOcupadas = rangos;
-
-    picker.set('disable', [
-      ...rangos.map(r => {
-        const from = new Date(r.from);
-        from.setDate(from.getDate() + 1); // habilitamos el check-in
-        return { from, to: r.to };
-      }),
-      date => date < hoy || date > fechaLimite
-    ]);
-  } catch (e) {
-    console.error('No se pudieron cargar fechas ocupadas:', e.message);
-  }
-}
-
-[startPicker, endPicker].forEach(picker => {
-  picker.config.onReady.push(() => loadDisabledDates(picker));
-  picker.config.onMonthChange.push(() => loadDisabledDates(picker));
-  picker.config.onOpen.push(() => loadDisabledDates(picker));
-});
-
-// 👥 Contador (máximo 8)
-function actualizarContador() {
-  contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
-  guestsInput.value = cantidad;
-}
-menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); }});
-masBtn.addEventListener('click', () => { if (cantidad < 9) { cantidad++; actualizarContador(); calculate(); }});
-guestsInput.addEventListener('input', calculate);
-currSelect.addEventListener('change', calculate);
-
-// 💵 Selección automática de moneda por fecha de check-in
-function setCurrencyAndCalculate(fechaCheckin) {
-  const fecha = new Date(fechaCheckin);
-  const limite = new Date('2025-12-20');
-  if (fechaCheckin) {
-    currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
-    currSelect.style.display = 'none';
-    currSelect.disabled = true;
-  } else {
-    currSelect.style.display = 'block';
-    currSelect.disabled = false;
-  }
-  calculate();
-}
-
-// ❌ Cruce de fechas
-function hayCruceConFechasOcupadas(checkin, checkout) {
-  const ci = new Date(checkin), co = new Date(checkout);
-  ci.setHours(0,0,0,0); co.setHours(0,0,0,0);
-  return fechasOcupadas.some(({ from, to }) => {
-    const inicio = new Date(from), fin = new Date(to);
-    inicio.setHours(0,0,0,0); fin.setHours(0,0,0,0);
-    return ((ci > inicio && ci < fin) || (co > inicio && co < fin) || (ci <= inicio && co >= fin));
+  // Init
+  window.addEventListener("DOMContentLoaded", () => {
+    if (checkin)  startInput.value = checkin;
+    if (checkout) endInput.value   = checkout;
+    if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
+    actualizarContador();
+    if (checkin) setCurrencyAndCalculate(checkin);
+    else         calculate();
   });
-}
 
-// ===========================
-// 🔧 AJUSTE ESTACIONAL
-// ===========================
-const AJUSTE_USD_POR_NOCHE = 20;
-const AJUSTE_DESDE = new Date('2025-09-03');
-const AJUSTE_HASTA = new Date('2025-12-20');
-function ymd(date){ const d=new Date(date); d.setHours(0,0,0,0); return d; }
-function enRangoAjuste(d){ const x=ymd(d); return x>=ymd(AJUSTE_DESDE)&&x<=ymd(AJUSTE_HASTA); }
-
-// 💸 Calcular
-async function calculate() {
-  const startValue = startInput.value;
-  const endValue   = endInput.value;
-  const guests     = +guestsInput.value;
-  const moneda     = currSelect.value;
-
-  if (!startValue || !endValue) { resDiv.textContent = 'Seleccioná ambas fechas.'; reservarBtn.disabled = true; return; }
-
-  const sd = new Date(startValue), ed = new Date(endValue);
-  if (ed <= sd) { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
-
-  const MAX_GUESTS = 9, FREE_GUESTS = 4; // ✅ extra a partir del 5º
-  if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
-
-  if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
-
-  const noches = Math.round((ed - sd) / (1000*60*60*24));
-  resDiv.textContent = 'Cargando…';
-  reservarBtn.disabled = true;
-
-  try {
-    const url = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(await resp.text());
-    const { dias = [], extras = [] } = await resp.json();
-
-    if (dias.length === 0) { resDiv.textContent = 'No hay precios para estas fechas.'; return; }
-
-    const minStay = dias
-      .map(d => Math.min(...d.prices.map(p => p.min_stay)))
-      .reduce((a,b) => Math.min(a,b), Infinity);
-
-    if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
-
-    // Base USD + ajuste estacional por noche
-    let baseUSD = 0;
-    const startDateLocal = ymd(startValue);
-    for (let i=0; i<noches; i++) {
-      const d = dias[i];
-      const p = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
-            || d.prices.reduce((a,b) => (a.min_stay < b.min_stay ? a : b));
-      const fechaNoche = new Date(startDateLocal); fechaNoche.setDate(fechaNoche.getDate()+i);
-      const precioNocheUSD = enRangoAjuste(fechaNoche) ? p.price_per_day + AJUSTE_USD_POR_NOCHE : p.price_per_day;
-      baseUSD += precioNocheUSD;
+  // Flatpickr
+  const startPicker = flatpickr(startInput, {
+    altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
+    defaultDate: checkin || null, minDate: hoy, maxDate: fechaLimite,
+    disableMobile: true,
+    onChange: (selectedDates) => {
+      if (selectedDates[0]) {
+        const y = selectedDates[0].getFullYear();
+        const m = String(selectedDates[0].getMonth()+1).padStart(2,'0');
+        const d = String(selectedDates[0].getDate()).padStart(2,'0');
+        setCurrencyAndCalculate(`${y}-${m}-${d}`);
+      }
     }
+  });
+  const endPicker = flatpickr(endInput, {
+    altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
+    defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
+    disableMobile: true, onChange: calculate
+  });
+  startPicker.config.onChange.push((selectedDates) => {
+    if (selectedDates[0]) { endPicker.setDate(null); endPicker.jumpToDate(selectedDates[0]); endPicker.open(); }
+  });
 
-    // 👥 Extra USD 14 por noche por cada huésped > 4 (oculto en UI)
-    const extraUnit = extras[0]?.price_per_day || 14;
-    const extraQty  = Math.max(0, guests - FREE_GUESTS);
-    const extraUSD  = extraQty * extraUnit * noches;
+  // Fechas ocupadas
+  let fechasOcupadas = [];
+  async function loadDisabledDates(picker) {
+    try {
+      const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/refugiopatagonico');
+      if (!resp.ok) throw new Error(await resp.text());
+      const rangos = await resp.json();
+      fechasOcupadas = rangos;
 
-    const totalUSD  = baseUSD + extraUSD;
-
-    // 💱 Conversión ARS por fecha de check-in
-    const fechaCheckin = new Date(startValue);
-    let factorARS = 1400;
-    if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) factorARS = 1250;
-    else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-10-31')) factorARS = 1550;
-    else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) factorARS = 1620;
-
-    const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
-
-    let html = `<ul class="booking-summary">
-      <li>Noches: ${noches}</li>
-      <li>Huéspedes: ${guests}</li>
-      <li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</li>
-    </ul>`;
-    resDiv.innerHTML = html;
-
-    // 🟢 Reservar
-    reservarBtn.disabled = false;
-    reservarBtn.onclick = () => {
-      const qs = new URLSearchParams({
-        propertyId: HOUSE_ID,
-        roomTypeId: ROOM_ID,
-        checkInDate: startValue,
-        checkOutDate: endValue,
-        numberOfGuests: guests,
-        totalPrice: total,
-        currency: moneda
-      }).toString();
-      window.location.href = `formulario.html?${qs}`;
-    };
-  } catch (e) {
-    console.error(e);
-    resDiv.textContent = 'Error al obtener datos: ' + e.message;
+      picker.set('disable', [
+        ...rangos.map(r => {
+          const from = parseYMDLocal(r.from);
+          const to   = parseYMDLocal(r.to);
+          if (from) from.setDate(from.getDate() + 1); // habilitar check-in
+          return { from, to };
+        }),
+        date => date < hoy || date > fechaLimite
+      ]);
+    } catch (e) {
+      console.error('No se pudieron cargar fechas ocupadas:', e.message);
+    }
   }
-}
+  ;[startPicker, endPicker].forEach(p => {
+    p.config.onReady.push(() => loadDisabledDates(p));
+    p.config.onMonthChange.push(() => loadDisabledDates(p));
+    p.config.onOpen.push(() => loadDisabledDates(p));
+  });
 
-// ← Volver
-document.addEventListener("DOMContentLoaded", () => {
-  const btnVolver = document.getElementById("btnVolver");
-  if (!btnVolver) return;
-  btnVolver.addEventListener("click", (e) => {
+  // Huéspedes (máx. 9)
+  function actualizarContador() {
+    contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
+    guestsInput.value = cantidad;
+  }
+  menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
+  masBtn.addEventListener('click', () => { if (cantidad < 9) { cantidad++; actualizarContador(); calculate(); } });
+  guestsInput.addEventListener('input', () => {
+    let v = parseInt(guestsInput.value) || 1; if (v < 1) v = 1; if (v > 9) v = 9;
+    cantidad = v; actualizarContador(); calculate();
+  });
+  currSelect.addEventListener('change', calculate);
+
+  // Moneda auto: ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
+  function setCurrencyAndCalculate(fechaCheckinStr) {
+    const fecha  = parseYMDLocal(fechaCheckinStr);
+    const limite = parseYMDLocal('2025-12-20');
+    if (fecha) { currSelect.value = (fecha <= limite) ? 'ARS' : 'USD'; currSelect.style.display = 'none'; currSelect.disabled = true; }
+    else { currSelect.style.display = 'block'; currSelect.disabled = false; }
+    calculate();
+  }
+
+  function hayCruceConFechasOcupadas(checkin, checkout) {
+    const ci = (checkin instanceof Date) ? checkin : parseYMDLocal(checkin);
+    const co = (checkout instanceof Date) ? checkout : parseYMDLocal(checkout);
+    if (!ci || !co) return true;
+    const ci0 = ymdLocal(ci), co0 = ymdLocal(co);
+    return fechasOcupadas.some(({ from, to }) => {
+      const inicio = parseYMDLocal(from), fin = parseYMDLocal(to);
+      if (!inicio || !fin) return false;
+      const i0 = ymdLocal(inicio), f0 = ymdLocal(fin);
+      return ((ci0 > i0 && ci0 < f0) || (co0 > i0 && co0 < f0) || (ci0 <= i0 && co0 >= f0));
+    });
+  }
+
+  // Ajuste estacional +USD 20/noche (03/09/2025–20/12/2025)
+  const AJUSTE_USD_POR_NOCHE = 20;
+  const AJ_DESDE = parseYMDLocal('2025-09-03');
+  const AJ_HASTA = parseYMDLocal('2025-12-20');
+  const enRangoAjuste = (d) => {
+    const x = ymdLocal(d);
+    return x >= ymdLocal(AJ_DESDE) && x <= ymdLocal(AJ_HASTA);
+  };
+
+  // Calcular (sin descuentos por cantidad de noches)
+  async function calculate() {
+    const startValue = startInput.value;
+    const endValue   = endInput.value;
+    const guests     = +guestsInput.value;
+    const moneda     = currSelect.value;
+
+    if (!startValue || !endValue) { resDiv.textContent = 'Seleccioná ambas fechas.'; reservarBtn.disabled = true; return; }
+
+    const sd = parseYMDLocal(startValue);
+    const ed = parseYMDLocal(endValue);
+    if (!sd || !ed) { resDiv.textContent = 'Fechas inválidas.'; reservarBtn.disabled = true; return; }
+    if (ed <= sd)   { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
+
+    const MAX_GUESTS = 9, FREE_GUESTS = 4;  // extra desde 5º
+    if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
+    if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
+
+    const noches = Math.round((ed - sd) / (1000 * 60 * 60 * 24));
+    resDiv.textContent = 'Cargando…';
+    reservarBtn.disabled = true;
+
+    try {
+      const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(await resp.text());
+      const { dias = [], extras = [] } = await resp.json();
+      if (dias.length === 0) { resDiv.textContent = 'No hay precios para estas fechas.'; return; }
+
+      const minStay = dias.map(d => Math.min(...d.prices.map(p => p.min_stay))).reduce((a,b)=>Math.min(a,b), Infinity);
+      if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
+
+      // Conversión ARS por fecha de check-in
+      const fechaCheckin = parseYMDLocal(startValue);
+      let factorARS = 1400;
+      if (fechaCheckin >= parseYMDLocal('2025-05-01') && fechaCheckin <= parseYMDLocal('2025-06-30')) factorARS = 1250;
+      else if (fechaCheckin >= parseYMDLocal('2025-07-01') && fechaCheckin <= parseYMDLocal('2025-10-31')) factorARS = 1550;
+      else if (fechaCheckin >= parseYMDLocal('2025-11-01') && fechaCheckin <= parseYMDLocal('2025-12-20')) factorARS = 1620;
+
+      // Base + desglose por noche (con ajuste estacional cuando corresponda)
+      let baseUSD = 0;
+      const breakdownNoches = [];
+      const startLocal = ymdLocal(sd);
+
+      for (let i = 0; i < noches; i++) {
+        const d = dias[i];
+        const tarifa = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
+                     || d.prices.reduce((a,b)=> (a.min_stay < b.min_stay ? a : b));
+
+        const fechaNoche = new Date(startLocal);
+        fechaNoche.setDate(startLocal.getDate() + i);
+
+        const usd = enRangoAjuste(fechaNoche)
+          ? (tarifa.price_per_day + AJUSTE_USD_POR_NOCHE)
+          : tarifa.price_per_day;
+
+        baseUSD += usd;
+
+        const montoMoneda = (moneda === 'USD') ? Math.round(usd) : Math.round(usd * factorARS);
+        breakdownNoches.push({ fecha: new Date(fechaNoche), montoMoneda });
+      }
+
+      // Extra huésped > 4
+      const extraUnit = extras?.[0]?.price_per_day ?? 14;
+      const extraQty  = Math.max(0, guests - FREE_GUESTS);
+      const extraUSD  = extraQty * extraUnit * noches;
+
+      const totalUSD = baseUSD + extraUSD;
+
+      // Totales en moneda
+      const totalMoneda = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
+      const extraMoneda = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
+
+      // Resumen (sin descuentos)
+      const headerHtml = `
+        <ul class="booking-summary">
+          <li>Noches: ${noches}</li>
+          <li>Huéspedes: ${guests}</li>
+          <li class="total-line"><strong>Total estadía:</strong> <span class="price-current">${fmt(totalMoneda)} ${moneda}</span></li>
+        </ul>`;
+
+      const itemsNoches = breakdownNoches.map(it =>
+        `<li><span>${fmtLocal(it.fecha)}</span><span>${fmt(it.montoMoneda)} ${moneda}</span></li>`
+      ).join('');
+
+      const extraHtml = (extraQty > 0)
+        ? `<li class="bd-extra"><span>Extra huésped (${extraQty} x ${noches} noches)</span><span>+ ${fmt(extraMoneda)} ${moneda}</span></li>`
+        : '';
+
+      const subtotalHtml = `<li class="bd-subtotal"><span>Subtotal</span><span>${fmt(totalMoneda)} ${moneda}</span></li>`;
+
+      const breakdownHtml = `
+        <div class="price-breakdown">
+          <button class="bd-toggle" type="button" aria-expanded="false" aria-controls="bd-list">Ver detalle de precios</button>
+          <ul id="bd-list" class="bd-list" hidden>
+            ${itemsNoches}
+            ${extraHtml}
+            ${subtotalHtml}
+          </ul>
+        </div>`;
+
+      resDiv.innerHTML = headerHtml + breakdownHtml;
+
+      // Toggle desglose
+      const toggle = resDiv.querySelector('.bd-toggle');
+      const list = resDiv.querySelector('#bd-list');
+      toggle?.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        if (expanded) { list.hidden = true; toggle.textContent = 'Ver detalle de precios'; }
+        else { list.hidden = false; toggle.textContent = 'Ocultar detalle de precios'; }
+      });
+
+      // CTA
+      reservarBtn.disabled = false;
+      reservarBtn.onclick = () => {
+        const qs = new URLSearchParams({
+          propertyId: HOUSE_ID,
+          roomTypeId: ROOM_ID,
+          checkInDate: startValue,
+          checkOutDate: endValue,
+          numberOfGuests: guests,
+          totalPrice: totalMoneda,
+          currency: moneda
+        }).toString();
+        window.location.href = `formulario.html?${qs}`;
+      };
+    } catch (e) {
+      console.error(e);
+      resDiv.textContent = 'Error al obtener datos: ' + e.message;
+      reservarBtn.disabled = true;
+    }
+  }
+
+  // ← Volver
+  document.getElementById("btnVolver")?.addEventListener("click", (e) => {
     e.preventDefault();
-    if (window.history.length > 1) window.history.back();
+    if (window.history.length > 1) history.back();
     else window.location.href = "alojamientos.html";
   });
-});
-</script>
+  </script>
 
-
-  <script src="volver.js"></script>
+  <script src="volver.js" defer></script>
 </body>
 </html>

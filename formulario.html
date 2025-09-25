@@ -4,174 +4,320 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Confirmar Reserva - Happy Host</title>
+
   <link rel="stylesheet" href="formulario.css">
   <link rel="icon" type="image/png" sizes="64x64" href="logos/happyhost.png" sizes="128x128">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <!-- NUEVO: Poppins para alinear con Alojamientos -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- Open Graph para WhatsApp y redes sociales -->
-<meta property="og:title" content="Happy Host Patagonia">
-<meta property="og:description" content="Tu SUPERHOST en Villa La Angostura 🏔️ Casas únicas, anfitriones atentos y experiencias inolvidables.">
-<meta property="og:image" content="https://www.happyhostpatagonia.com.ar/logos/happyhost.png">
-<meta property="og:url" content="https://www.happyhostpatagonia.com.ar">
-<meta property="og:type" content="website">
-
+  <!-- Open Graph -->
+  <meta property="og:title" content="Happy Host Patagonia">
+  <meta property="og:description" content="Tu SUPERHOST en Villa La Angostura 🏔️ Casas únicas, anfitriones atentos y experiencias inolvidables.">
+  <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/logos/happyhost.png">
+  <meta property="og:url" content="https://www.happyhostpatagonia.com.ar">
+  <meta property="og:type" content="website">
 </head>
 <body>
-    <header class="header">
-        <div class="barra-menu">
-          <div class="logo">
-            <img src="logos/happy host.png" alt="Logo Happy Host" href="index.html">
-          </div>
-    
-          <h1 class="titulo-header">Nombre de Alojamiento</h1>
-
-          <div class="volver">
-            <a href="alojamientos.html" class="boton-volver">← Volver a alojamientos</a>
-          </div>
-        </div>
-      </header>
-
-  <div class="container">
-
-    <div class="formulario-reserva">
-      <h2>Datos de contacto</h2>
-      <form id="formularioReserva">
-
-        <label for="nombre">Nombre completo</label>
-        <input type="text" id="nombre" name="nombre" required>
-
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono" name="telefono" required>
-
-        <label for="comentarios">Comentarios (opcional)</label>
-        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe aquí si necesitas algo extra..."></textarea>
-
-
-
-        <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
-  <input type="text" id="cuponDescuento" placeholder="Código de descuento (opcional)" style="width: 250px;" />
-  <button type="button" id="aplicarCupon" style="padding: 5px 10px;">Aplicar</button>
-</div>
-<p id="descuentoLabel"></p>
-
-
-  <div class="terminos">
-  <input type="checkbox" id="aceptaTerminos" required>
-  <label for="aceptaTerminos">Acepto los <a href="#" id="verTerminos">Términos y Condiciones</a></label>
-</div>
-
-<div class="aviso-contacto">
-  📞 Nos contactaremos por teléfono para coordinar el pago de la seña.
-</div>
-
-
-        <!-- Modal de Términos -->
-<div id="modal-terminos" class="modal">
-  <div class="modal-contenido">
-    <span class="cerrar">&times;</span>
-    <h2><strong>Términos y Condiciones de la Reserva</strong></h2>
-
-    <h3>1. Confirmación de la Reserva</h3>
-    <p>La reserva se confirma con una <strong>seña equivalente a 2 noches</strong> mediante <strong>transferencia bancaria en pesos argentinos</strong>.<br>
-    El saldo restante se abona <strong>en efectivo al momento del ingreso</strong>.<br>
-    <strong>No se aceptan pagos con tarjeta de crédito o débito.</strong></p>
-
-    <h3>2. Tarifas en Dólares</h3>
-    <p>Las tarifas en dólares se calculan al <strong>dólar blue del día</strong>.<br>
-    La seña se abona <strong>en pesos argentinos</strong> mediante transferencia.<br>
-    El saldo restante se paga al ingresar, <strong>en efectivo</strong>:
-    <ul>
-      <li>Puede abonarse en <strong>pesos argentinos</strong> o en <strong>dólares estadounidenses</strong>.</li>
-      <li><strong>IMPORTANTE:</strong> Los billetes en dólares deben estar en <strong>perfecto estado</strong> (sin roturas, manchas ni marcas). No se aceptarán billetes deteriorados.</li>
-    </ul>
-    </p>
-
-    <h3>3. Horarios</h3>
-    <p><strong>Check-in:</strong> a partir de las 15:00 hs.<br>
-    <strong>Check-out:</strong> hasta las 10:00 hs.<br>
-    Si querés ingresar antes o salir después de estos horarios, consultanos previamente.</p>
-
-    <h3>4. Información del Alojamiento</h3>
-    <p>Un día antes de tu llegada te enviaremos todos los detalles del alojamiento y la info necesaria para el ingreso.</p>
-
-    <h3>5. Uso de la Propiedad</h3>
-    <p>La propiedad debe mantenerse en buen estado y respetarse la capacidad máxima establecida.<br>
-    Las <strong>parrillas y fogones</strong> deben usarse con extrema precaución para evitar cualquier riesgo de incendio.<br>
-    En caso de rotura de vajilla u otros elementos pequeños, se solicita reponerlos antes del check-out. Recomendamos comprar en:
-    <br>
-    <strong>H2O - Artículos de Cocina y Hogar</strong><br>
-    Dirección: <em>Cerro Inacayal 155, Q8407 Villa La Angostura, Neuquén.</em><br>
-    Si hay daño o rotura de elementos importantes, es obligatorio informar de inmediato para coordinar su reposición.</p>
-
-    <h3>6. Cancelaciones</h3>
-    <p>La seña es <strong>no reembolsable</strong> bajo ninguna circunstancia. En fechas de alta demanda, se pueden aplicar políticas más estrictas.</p>
-  </div>
-</div>
-
-
-        <!-- Inputs ocultos para Property y Room -->
-        <input type="hidden" id="propertyId" name="propertyId">
-        <input type="hidden" id="roomTypeId" name="roomTypeId">
-        <input type="hidden" id="checkInDate" name="checkInDate">
-        <input type="hidden" id="checkOutDate" name="checkOutDate">
-        <input type="hidden" id="numberOfGuests" name="numberOfGuests">
-        <input type="hidden" id="totalPrice" name="totalPrice">
-
-        <button type="submit" id="botonReservar">Confirmar Reserva</button>
-
-      </form>
-    </div>
-
-    <div class="resumen-reserva">
-      <h2>Resumen de la reserva</h2>
-
-      <div class="info-reserva">
-        <img id="imagenPropiedad" src="" alt="Imagen de la propiedad">
-        <h3 id="nombrePropiedad">Nombre Propiedad</h3>
-
-        <p><strong>Fechas:</strong> <span id="fechasReserva"></span></p>
-        <p><strong>Huéspedes:</strong> <span id="huespedesReserva"></span></p>
-        <p><strong>Total:</strong> <span id="precioReserva" class="precio-original"></span> <span id="precioConDescuento" class="precio-descuento"></span></p>
-        <p><strong>Seña:</strong> <span id="seniaReserva"></span></p>
-        <p id="descuentoLabel"></p>
+  <header class="header">
+    <div class="barra-menu">
+      <div class="logo">
+        <img src="logos/happy host.png" alt="Logo Happy Host" href="index.html">
       </div>
 
-    </div>
+      <!-- NUEVO: el h1 toma el nombre dinámico si tu JS lo completa -->
+      <h1 class="titulo-header" id="tituloAlojamiento">Nombre de Alojamiento</h1>
 
-  </div>
+      <div class="volver">
+        <a href="alojamientos.html" class="boton-volver" id="btnVolver">← Volver a alojamientos</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NUEVO: wrapper tipo Alojamientos -->
+  <main class="fondo-blur">
+
+    <div class="container container--grid"><!-- NUEVO: grid 2 col (ver CSS) -->
+      <!-- ===== Columna Form ===== -->
+      <div class="formulario-reserva card">
+        <h2>Datos de contacto</h2>
+        <form id="formularioReserva">
+
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="telefonoNumero">Teléfono</label>
+<div class="telefono-row">
+  <select id="telefonoPais" aria-label="País">
+    <option value="+54" selected>🇦🇷 +54 </option>
+    <option value="+55">🇧🇷 +55 </option>
+    <option value="+56">🇨🇱 +56 </option>
+    <option value="+598">🇺🇾 +598 </option>
+    <option value="+595">🇵🇾 +595</option>
+    <option value="+591">🇧🇴 +591 </option>
+    <option value="+51">🇵🇪 +51</option>
+    <option value="+57">🇨🇴 +57 </option>
+    <option value="+52">🇲🇽 +52</option>
+    <option value="+1">🇺🇸 +1 </option>
+    <option value="+34">🇪🇸 +34</option>
+  </select>
+
+  <input
+    type="tel"
+    id="telefonoNumero"
+    inputmode="tel"
+    placeholder="Ej: 11 1234 5678"
+    aria-label="Número de teléfono"
+    required
+  />
+</div>
+
+<!-- Mantengo lo que ya usa tu JS, pero ahora oculto y autocompletado -->
+<input type="hidden" id="telefono" name="telefono" />
+
+
+          <label for="comentarios">Comentarios (opcional)</label>
+          <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe aquí si necesitas algo extra..."></textarea>
+
+          <div class="cupon-row">
+            <input type="text" id="cuponDescuento" placeholder="Código de descuento (opcional)" />
+            <button type="button" id="aplicarCupon" class="btn btn--ghost">Aplicar</button>
+          </div>
+          <!-- FIX: ID duplicado → renombrado -->
+          <p id="descuentoLabelForm"></p>
+
+          <div class="terminos">
+            <input type="checkbox" id="aceptaTerminos" required>
+            <label for="aceptaTerminos">Acepto los <a href="#" id="verTerminos">Términos y Condiciones</a></label>
+          </div>
+
+          <div class="aviso-contacto">
+            📞 Nos contactaremos por teléfono para coordinar el pago de la seña.
+          </div>
+
+          <!-- Modal de Términos -->
+          <div id="modal-terminos" class="modal">
+            <div class="modal-contenido">
+              <span class="cerrar">&times;</span>
+              <h2><strong>Términos y Condiciones de la Reserva</strong></h2>
+
+              <h3>1. Confirmación de la Reserva</h3>
+              <p>La reserva se confirma con una <strong>seña equivalente a 2 noches</strong> mediante <strong>transferencia bancaria en pesos argentinos</strong>.<br>
+              El saldo restante se abona <strong>en efectivo al momento del ingreso</strong>.<br>
+              <strong>No se aceptan pagos con tarjeta de crédito o débito.</strong></p>
+
+              <h3>2. Tarifas en Dólares</h3>
+              <p>Las tarifas en dólares se calculan al <strong>dólar blue del día</strong>.<br>
+              La seña se abona <strong>en pesos argentinos</strong> mediante transferencia.<br>
+              El saldo restante se paga al ingresar, <strong>en efectivo</strong>:
+              <ul>
+                <li>Puede abonarse en <strong>pesos argentinos</strong> o en <strong>dólares estadounidenses</strong>.</li>
+                <li><strong>IMPORTANTE:</strong> Los billetes en dólares deben estar en <strong>perfecto estado</strong> (sin roturas, manchas ni marcas).</li>
+              </ul>
+              </p>
+
+              <h3>3. Horarios</h3>
+              <p><strong>Check-in:</strong> a partir de las 15:00 hs.<br>
+              <strong>Check-out:</strong> hasta las 10:00 hs.</p>
+
+              <h3>4. Información del Alojamiento</h3>
+              <p>Un día antes de tu llegada te enviaremos todos los detalles del alojamiento y la info necesaria para el ingreso.</p>
+
+              <h3>5. Uso de la Propiedad</h3>
+              <p>La propiedad debe mantenerse en buen estado y respetarse la capacidad máxima establecida.<br>
+              Usar parrillas con precaución. Roturas pequeñas: reponer antes del check-out. <br>
+              <strong>H2O - Artículos de Cocina y Hogar</strong> (Cerro Inacayal 155, VLA). Roturas importantes: avisar de inmediato.</p>
+
+              <h3>6. Cancelaciones</h3>
+              <p>La seña es <strong>no reembolsable</strong>. En fechas de alta demanda, pueden aplicar políticas más estrictas.</p>
+            </div>
+          </div>
+
+          <!-- Inputs ocultos para Property y Room -->
+          <input type="hidden" id="propertyId" name="propertyId">
+          <input type="hidden" id="roomTypeId" name="roomTypeId">
+          <input type="hidden" id="checkInDate" name="checkInDate">
+          <input type="hidden" id="checkOutDate" name="checkOutDate">
+          <input type="hidden" id="numberOfGuests" name="numberOfGuests">
+          <input type="hidden" id="totalPrice" name="totalPrice">
+          <!-- NUEVO: currency y discountRate por compatibilidad con unidades -->
+          <input type="hidden" id="currency" name="currency">
+          <input type="hidden" id="discountRate" name="discountRate">
+
+          <button type="submit" id="botonReservar" class="btn btn--primary">Confirmar Reserva</button>
+        </form>
+      </div>
+
+      <!-- ===== Columna Resumen ===== -->
+      <aside class="resumen-reserva card summary">
+        <h2>Resumen de la reserva</h2>
+
+        <div class="info-reserva">
+          <img id="imagenPropiedad" src="" alt="Imagen de la propiedad">
+          <h3 id="nombrePropiedad">Nombre Propiedad</h3>
+
+          <p><strong>Fechas:</strong> <span id="fechasReserva"></span></p>
+          <p><strong>Huéspedes:</strong> <span id="huespedesReserva"></span></p>
+
+        <!-- NUEVO: Price Stack (estética Alojamientos). Si tu JS no lo usa, se ven los de abajo. -->
+          <div id="priceStack" class="price-stack" style="display:none;">
+            <div class="old-price old-price--big" id="precioTachado"></div>
+            <div class="new-price" id="precioFinal"></div>
+          </div>
+
+          <!-- Compatibilidad con tu JS actual -->
+          <p><strong>Total:</strong>
+            <span id="precioReserva" class="precio-original"></span>
+            <span id="precioConDescuento" class="precio-descuento"></span>
+          </p>
+
+          <p><strong>Seña:</strong> <span id="seniaReserva"></span></p>
+          <!-- Este queda como estaba (único ID) -->
+          <p id="descuentoLabel"></p>
+
+          <!-- NUEVO: Breakdown igual que en unidades -->
+          <div class="price-breakdown" id="breakdownBox" style="display:none;">
+            <button class="bd-toggle" type="button" aria-expanded="false" aria-controls="bd-list">Ver detalle de precios</button>
+            <ul id="bd-list" class="bd-list" hidden>
+              <!-- items cargados por JS, por ejemplo por noche, descuento, subtotal -->
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
 
   <script src="formulario.js"></script>
 
   <script>
-  // Abrir el modal al hacer clic en el enlace
-  document.getElementById('verTerminos').addEventListener('click', function(e) {
-    e.preventDefault();
-    const modal = document.getElementById('modal-terminos');
-    if (modal) modal.style.display = 'flex';
-  });
+  (function() {
+    const $ = (id) => document.getElementById(id);
+    const sel = $('telefonoPais');
+    const num = $('telefonoNumero');
+    const hid = $('telefono'); // el que ya lee tu formulario.js
 
-  // Cerrar el modal al hacer clic en la "X"
-  const cerrar = document.querySelector('#modal-terminos .cerrar');
-  if (cerrar) {
-    cerrar.addEventListener('click', function () {
-      document.getElementById('modal-terminos').style.display = 'none';
-    });
-  }
-
-  // Cerrar el modal si se hace clic fuera del contenido
-  window.addEventListener('click', function (e) {
-    const modal = document.getElementById('modal-terminos');
-    if (e.target === modal) {
-      modal.style.display = 'none';
+    function normalizar(n) {
+      // quita espacios, guiones y paréntesis
+      return (n || '').replace(/[\s\-().]/g, '');
     }
-  });
+    function sync() {
+      const pref = (sel?.value || '').trim();     // ej: +54
+      let   n    = normalizar(num?.value || '');  // ej: 11xxxxxxx
+
+      if (!pref && !n) { hid.value = ''; return; }
+
+      // si empieza con 0, lo quitamos (norma habitual en internacional)
+      if (n.startsWith('0')) n = n.slice(1);
+
+      // si el usuario ya pegó un +54... lo respetamos
+      if (n.startsWith('+')) { hid.value = n; return; }
+
+      hid.value = `${pref}${n}`;
+    }
+
+    sel?.addEventListener('change', sync);
+    num?.addEventListener('input', sync);
+
+    // primer sincronización por si hay autocompletado del navegador
+    sync();
+  })();
 </script>
 
 
+ <script>
+  // --- Back inteligente al alojamiento ---
+  window.addEventListener('load', () => {
+    const back = document.getElementById('btnVolver');
+    if (!back) return;
+
+    // Cambiamos el texto del botón
+    back.textContent = '← Volver al alojamiento';
+
+    // Intento 1: usar el referrer (si viene de una unidad)
+    try {
+      const ref = document.referrer || '';
+      const sameOrigin = ref.startsWith(location.origin);
+      const cameFromUnit = /(casa|cruz|refugio|mitiempo|unidades)\/.*\.html/i.test(ref) && !/formulario\.html/i.test(ref);
+
+      // Armamos query con los parámetros de fechas/huéspedes
+      const qs = new URLSearchParams(location.search);
+      const backQs = new URLSearchParams();
+
+      const ci = qs.get('checkInDate')   || qs.get('checkin')   || document.getElementById('checkInDate')?.value   || '';
+      const co = qs.get('checkOutDate')  || qs.get('checkout')  || document.getElementById('checkOutDate')?.value  || '';
+      const gh = qs.get('numberOfGuests')|| qs.get('huespedes') || document.getElementById('numberOfGuests')?.value|| '';
+
+      if (ci) backQs.set('checkin', ci);
+      if (co) backQs.set('checkout', co);
+      if (gh) backQs.set('huespedes', gh);
+
+      if (sameOrigin && cameFromUnit) {
+        const url = new URL(ref);
+        url.search = backQs.toString();
+        back.href = url.toString();
+        return;
+      }
+    } catch(e){ /* seguimos al fallback */ }
+
+    // Intento 2 (fallback): mapear propertyId → archivo de la unidad
+const UNIT_BY_PROPERTY = {
+  // ==== Casas Calafate ====
+  '601552': 'calafate1.html', // Calafate 1
+  '601707': 'calafate2.html', // Calafate 2
+  '601708': 'calafate3.html', // Calafate 3
+  '601710': 'calafate4.html', // Calafate 4
+  '601711': 'calafate5.html', // Calafate 5
+  '601712': 'calafate6.html', // Calafate 6
+  '601713': 'calafate7.html', // Calafate 7
+
+  // ==== Cruz del Sur ====
+  '601717': 'cruz4.html',     // Cruz del Sur 4
+  '601714': 'cruz5.html',     // Cruz del Sur 5
+
+  // ==== Nilidas ====
+  '601719': 'nilidas.html',   // Las Nilidas
+
+  // ==== Gurisa ====
+  '648950': 'gurisa.html',    // La Gurisa
+
+  // ==== Paisajismo ====
+  '601720': 'paisajismo.html',
+
+  // ==== Koi Quetrihue ====
+  '677269': 'koiquetrihue.html',
+
+  // ==== Mi Tiempo ====
+  '677286': 'mitiempo.html',
+
+  // ==== Refugio Patagónico ====
+  '677289': 'refugiopatagonico.html'
+};
+
+
+    const qs2 = new URLSearchParams(location.search);
+    const property = qs2.get('propertyId') || document.getElementById('propertyId')?.value || '';
+
+    const target = UNIT_BY_PROPERTY[property];
+    if (target) {
+      const ci = qs2.get('checkInDate')   || document.getElementById('checkInDate')?.value   || '';
+      const co = qs2.get('checkOutDate')  || document.getElementById('checkOutDate')?.value  || '';
+      const gh = qs2.get('numberOfGuests')|| document.getElementById('numberOfGuests')?.value|| '';
+
+      const backQs = new URLSearchParams();
+      if (ci) backQs.set('checkin', ci);
+      if (co) backQs.set('checkout', co);
+      if (gh) backQs.set('huespedes', gh);
+
+      back.href = backQs.toString() ? `${target}?${backQs.toString()}` : target;
+    }
+    // Si no hay referrer válido ni propertyId, queda como estaba (alojamientos.html).
+  });
+</script>
 
 </body>
 </html>

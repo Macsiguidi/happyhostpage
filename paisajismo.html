@@ -1,528 +1,599 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Paisajismo en el centro de Villa La Angostura | Departamento con vista al Cerro Bayo - Happy Host</title>
-<meta name="description" content="Paisajismo es un departamento moderno ubicado a solo 50 metros de la avenida principal de Villa La Angostura. Ideal para 2 o 3 personas, con vista al Cerro Bayo y todo el confort de Happy Host Patagonia.">
-<meta name="keywords" content="Paisajismo, departamento en el centro Villa La Angostura, depto turístico Patagonia, alojamiento para parejas Patagonia, vista al Cerro Bayo, alquiler temporario en el sur, departamento para 2 personas Patagonia, alquiler turístico Villa La Angostura, turismo en el sur argentino, depto moderno Patagonia, alojamiento con vista a la montaña, hospedaje céntrico Villa La Angostura, turismo activo en Patagonia, Happy Host Patagonia, Cerro Bayo, Lago Correntoso, Lago Espejo, Río Bonito, casas y departamentos en alquiler, Patagonia Argentina, vacaciones en la cordillera, depto equipado, turismo en Neuquén, escapadas al sur, alojamientos cerca del centro, alquiler sin auto Patagonia, depto con cocina y confort, relax en el sur argentino">
-<meta name="author" content="Happy Host Patagonia">
+  <!-- Meta base -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<script>
-if (location.hostname === 'happyhostpatagonia.com.ar') {
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1812973002649828');
-  fbq('track', 'PageView');
-}
-</script>
+  <title>Paisajismo en el centro de Villa La Angostura | Departamento con vista al Cerro Bayo - Happy Host</title>
+  <meta name="description" content="Paisajismo es un departamento moderno a 50 m de la avenida principal de Villa La Angostura. Ideal para 2 o 3 personas, con vista al Cerro Bayo y todo el confort de Happy Host Patagonia." />
+  <meta name="author" content="Happy Host Patagonia" />
+  <link rel="canonical" href="https://www.happyhostpatagonia.com.ar/paisajismo.html" />
 
   <!-- Icono y fuentes -->
   <link rel="icon" type="image/png" sizes="128x128" href="logos/happyhost.png">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
-  <!-- Open Graph para WhatsApp y redes sociales -->
-  <meta property="og:title" content="Paisajismo en el centro de Villa La Angostura | Happy Host Patagonia">
-  <meta property="og:description" content="Departamento moderno y bien ubicado. Paisajismo te espera en pleno centro de Villa La Angostura.">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Paisajismo en Villa La Angostura | Happy Host Patagonia">
+  <meta property="og:description" content="Departamento moderno y bien ubicado. Paisajismo te espera en pleno centro de VLA.">
   <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/paisajismo/paisajismo1.jpg">
   <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/paisajismo.html">
   <meta property="og:type" content="website">
 
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Flatpickr CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <!-- Tu CSS completo, con overrides incluidos al final -->
+  <!-- CSS del sitio -->
   <link rel="stylesheet" href="unidades.css">
+
+  <!-- Lightbox mínimo (por si tu CSS no lo tiene) -->
+  <style>
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1000}
+    .lightbox.is-open{display:flex}
+    .lightbox__img{max-width:90vw;max-height:90vh;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+    .lightbox__close{position:absolute;top:16px;right:20px;font-size:36px;line-height:1;color:#fff;background:transparent;border:0;cursor:pointer}
+    .lightbox__nav{position:absolute;top:50%;transform:translateY(-50%);font-size:42px;line-height:1.2;color:#fff;background:transparent;border:0;cursor:pointer;padding:.25rem .5rem}
+    .lightbox__nav--prev{left:20px}
+    .lightbox__nav--next{right:20px}
+    .miniaturas img.activa{outline:3px solid #6aa27a; outline-offset:2px; border-radius:6px}
+    .price-stack{display:flex;flex-direction:column;gap:2px}
+    .old-price--big{text-decoration:line-through;opacity:.6;font-size:1.1rem}
+    .new-price{font-weight:700;font-size:1.25rem}
+    .price-breakdown{margin-top:.5rem}
+    .bd-list{list-style:none;margin:.5rem 0 0;padding:0;border-top:1px solid #e5e5e5}
+    .bd-list li{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px dashed #eee}
+    .bd-extra{color:#555}
+    .bd-discount{color:#1b7e1b}
+    .bd-subtotal{font-weight:600}
+    .bd-toggle{width:100%;border:1px solid #e5e5e5;border-radius:.6rem;background:#f7f7f7;padding:.5rem .75rem;cursor:pointer}
+  </style>
 </head>
 
 <body>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></noscript>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1" alt="">
+  </noscript>
 
+  <!-- Header -->
   <header class="header">
     <div class="barra-menu">
-      <div class="logo">
-        <img src="logos/happy host.png" alt="Logo Happy Host" href="index.html">
-      </div>
-
+      <a class="logo" href="index.html" aria-label="Ir al inicio">
+        <img src="logos/happy host.png" alt="Happy Host Patagonia">
+      </a>
       <h1 class="titulo-header">Paisajismo</h1>
-
-      <div class="volver">
-  <a href="#" id="btnVolver" class="boton-volver">← Volver a alojamientos</a>
-</div>
+      <nav class="volver" aria-label="Volver a alojamientos">
+        <a href="#" id="btnVolver" class="boton-volver">← Volver a alojamientos</a>
+      </nav>
     </div>
   </header>
 
-  <div class="fondo-blur">
-  <section class="detalle-alojamiento">
-    <div class="imagen-principal">
-      <img src="unidades/paisajismo/paisajismo1.jpg" alt="Foto principal Paisajismo">
-      <div class="miniaturas-container">
-        <button class="flecha izq">&#10094;</button>
-        <div class="miniaturas" id="miniaturas-scroll">
-          <img src="unidades/paisajismo/paisajismo1.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo2.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo3.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo4.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo5.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo6.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo7.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo8.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo9.jpg" alt="Paisajismo">
-          <img src="unidades/paisajismo/paisajismo10.jpg" alt="Paisajismo">
+  <main id="main" tabindex="-1">
+    <div class="fondo-blur">
+      <!-- Galería + Servicios -->
+      <section class="detalle-alojamiento">
+        <div class="imagen-principal">
+          <img id="foto-principal" src="unidades/paisajismo/paisajismo1.jpg" alt="Foto principal Paisajismo">
+
+          <div class="miniaturas-container" role="group" aria-label="Galería de fotos">
+            <button class="flecha izq" type="button" aria-label="Ver fotos anteriores">&#10094;</button>
+            <div class="miniaturas" id="miniaturas-scroll">
+              <img src="unidades/paisajismo/paisajismo1.jpg"  alt="Paisajismo - living">
+              <img src="unidades/paisajismo/paisajismo2.jpg"  alt="Paisajismo - vista">
+              <img src="unidades/paisajismo/paisajismo3.jpg"  alt="Paisajismo - cocina">
+              <img src="unidades/paisajismo/paisajismo4.jpg"  alt="Paisajismo - comedor">
+              <img src="unidades/paisajismo/paisajismo5.jpg"  alt="Paisajismo - baño">
+              <img src="unidades/paisajismo/paisajismo6.jpg"  alt="Paisajismo - dormitorio">
+              <img src="unidades/paisajismo/paisajismo7.jpg"  alt="Paisajismo - detalles">
+              <img src="unidades/paisajismo/paisajismo8.jpg"  alt="Paisajismo - escalera">
+              <img src="unidades/paisajismo/paisajismo9.jpg"  alt="Paisajismo - edificio">
+              <img src="unidades/paisajismo/paisajismo10.jpg" alt="Paisajismo - entorno">
+            </div>
+            <button class="flecha der" type="button" aria-label="Ver fotos siguientes">&#10095;</button>
+          </div>
+
+          <!-- Lightbox / Zoom -->
+          <div id="lightbox" class="lightbox" aria-hidden="true">
+            <button class="lightbox__close" aria-label="Cerrar (Esc)">&times;</button>
+            <button class="lightbox__nav lightbox__nav--prev" aria-label="Anterior">&#10094;</button>
+            <img class="lightbox__img" alt="Vista ampliada" />
+            <button class="lightbox__nav lightbox__nav--next" aria-label="Siguiente">&#10095;</button>
+          </div>
+
+          <aside class="info servicios">
+            <h3>Servicios</h3>
+            <div class="iconos-servicios">
+              <div><img src="iconos/persona.png" alt="Capacidad 2 a 3 personas"><span>2–3 pax</span></div>
+              <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
+              <div><img src="iconos/cocina.png" alt="Cocina equipada"><span>Cocina</span></div>
+              <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
+              <div><img src="iconos/sabanas y toallas.png" alt="Ropa blanca incluida"><span>Blancos</span></div>
+              <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
+            </div>
+          </aside>
         </div>
-        <button class="flecha der">&#10095;</button>
-      </div>
-      
-       <div class="info servicios">
-        <h3>Servicios</h3>
-        <div class="iconos-servicios">
-          <div><img src="iconos/persona.png" alt="WiFi"><span>2 pax</span></div>
-          <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
-          <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
-          <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
-          <div><img src="iconos/sabanas y toallas.png" alt="Sábanas"><span>Blancos</span></div>
-          <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
+
+        <!-- Motor de reservas -->
+        <div class="motor-reservas-fijo" role="region" aria-label="Reserva">
+          <div class="reserva" data-house-id="601720" data-room-id="668511">
+            <div class="dates" role="group" aria-label="Seleccionar fechas">
+              <div class="date-field" id="df-start">
+                <input type="text" id="start" placeholder="Check in" aria-label="Fecha de check in" readonly>
+              </div>
+              <div class="date-field" id="df-end">
+                <input type="text" id="end" placeholder="Check out" aria-label="Fecha de check out" readonly>
+              </div>
+            </div>
+
+            <!-- Huéspedes -->
+            <input type="hidden" id="guests" value="1">
+            <div class="huespedes-control" role="group" aria-label="Cantidad de huéspedes">
+              <button id="menos" type="button" aria-label="Quitar huésped">−</button>
+              <span id="contador" aria-live="polite">1 huésped</span>
+              <button id="mas" type="button" aria-label="Agregar huésped">+</button>
+            </div>
+
+            <!-- Moneda (autogestionada por JS) -->
+            <label for="currency" class="sr-only">Moneda</label>
+            <select id="currency" style="display:none;">
+              <option value="USD">USD</option>
+              <option value="ARS">ARS</option>
+            </select>
+
+            <!-- CTA -->
+            <button id="btnReservar" disabled>Reservar ahora</button>
+
+            <!-- Resumen + desglose -->
+            <div id="resultado" aria-live="polite"></div>
+          </div>
         </div>
-      </div>
-      
+      </section>
+
+      <!-- Descripción + Ubicación -->
+      <section class="contenido-info">
+        <article class="info descripcion">
+          <h3>Descripción</h3>
+          <p><strong>Paisajismo</strong> es un dúplex moderno dentro del complejo <em>Domo 1</em>, a solo <strong>50 metros</strong> de la avenida principal. La ubicación perfecta para moverte caminando por el centro y, a la vez, disfrutar la vista al Cerro Bayo.</p>
+          <p>En planta baja: cocina equipada integrada al comedor con ventanal y <strong>baño completo</strong>. La <strong>losa radiante</strong> mantiene una calidez uniforme todo el año.</p>
+          <p>En planta alta: <strong>dormitorio matrimonial</strong> amplio para un descanso de hotel, pero con la libertad de tu propio departamento.</p>
+          <p>Sumá confort con <strong>Wi-Fi</strong>, <strong>Smart TV</strong> (sin cable), <strong>lavarropas</strong> y <strong>cochera</strong> cubierta. Ideal para 2 personas (opción 3° huésped).</p>
+        </article>
+
+        <aside class="info mapa">
+          <h3>Ubicación</h3>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3021.96212449116!2d-71.64622102397176!3d-40.76285777138593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDDCsDQ1JzQ2LjMiUyA3McKwMzgnMzcuMSJX!5e0!3m2!1ses!2sar!4v1745595638456!5m2!1ses!2sar"
+                  allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+          <div class="redes-contacto" aria-label="Contacto">
+            <a class="red" href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp Happy Host">
+              <img src="logos/whatsapp.png" alt="WhatsApp">
+            </a>
+            <a class="red" href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="Instagram Happy Host">
+              <img src="logos/instagram.png" alt="Instagram">
+            </a>
+            <a class="red" href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw" target="_blank" rel="noopener" aria-label="X Happy Host">
+              <img src="logos/twitter.png" alt="X">
+            </a>
+          </div>
+        </aside>
+      </section>
     </div>
-<div class="motor-reservas-fijo">
-     <div class="reserva">
-      <!-- Fechas en la misma línea -->
-      <div class="dates">
-        <div class="date-field" id="df-start">
-          <input
-            type="text"
-            id="start"
-            placeholder="Check in"
-            readonly
-          >
-        </div>
-        <div class="date-field" id="df-end">
-          <input
-            type="text"
-            id="end"
-            placeholder="Check out"
-            readonly
-          >
-        </div>
-      </div>
-    
-      <!-- Huéspedes -->
-      <!-- Oculto para que el script siga funcionando -->
-      <input type="hidden" id="guests" value="1" />
+  </main>
 
-       <!-- Control visual para huéspedes -->
-        <div class="huespedes-control">
-           <button id="menos">−</button>
-           <span id="contador">1 huésped</span>
-           <button id="mas">+</button>
-        </div>
-    
-      <!-- Selección de moneda -->
-      <label for="currency" style="display:none;">Moneda</label>
-      <select id="currency" style="display:none;">
-      <option value="USD">USD</option>
-      <option value="ARS">ARS</option>
-      </select>
-    
-      <!-- Botón -->
-      <button id="btnReservar" disabled>Reservar ahora</button>
-    
-      <!-- Resumen debajo -->
-      <div id="resultado"></div>
-  
-    </div>
-  </div>
-  </section>
+  <footer class="footer" role="contentinfo">
+    <small>© Happy Host Patagonia</small>
+  </footer>
 
-   <section class="contenido-info">
-    <div class="info descripcion">
-      <h3>Descripción</h3>
-      <p><strong>Paisajismo</strong> , un exclusivo departamento en el complejo Domo 1, ubicado a solo unos metros del centro de Villa La Angostura.</p>
+  <!-- ========== SCRIPTS ========== -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        <p>Este elegante departamento, situado en el 2° piso con acceso por escalera o ascensor, está distribuido en dos plantas. En la planta baja, encontrarás una cocina equipada y un comedor integrado con una ventana que ofrece vistas impresionantes a los cerros, además de un baño completo. La calefacción por losa radiante asegura un ambiente acogedor en cualquier época del año.</p>
-        <p>En la planta superior, se encuentra una cómoda habitación con cama matrimonial para un descanso reparador.</p>
-        <p>Para tu entretenimiento y comodidad, el departamento cuenta con Smart TV (sin cable), Wi-Fi, y lavarropas. Además, tendrás a disposición una cochera para tu vehículo.</p>
-        <p>Es la opción perfecta para quienes buscan confort y conveniencia en un entorno natural incomparable.</p>
-    </div>
-
-    <div class="info mapa">
-      <h3>Ubicación</h3>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3021.96212449116!2d-71.64622102397176!3d-40.76285777138593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDDCsDQ1JzQ2LjMiUyA3McKwMzgnMzcuMSJX!5e0!3m2!1ses!2sar!4v1745595638456!5m2!1ses!2sar"  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      <div class="redes-contacto">
-        <a href="https://wa.me/5492944700773" target="_blank">
-          <img src="logos/whatsapp.png" alt="WhatsApp">
-        </a>
-        <a href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
-          <img src="logos/instagram.png" alt="Instagram">
-        </a>
-        <a href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw">
-          <img src="logos/twitter.png" alt="Correo">
-        </a>
-      </div>   
-    </div>
-  </section>
-  </div>
-
+  <!-- ========== GALERÍA (miniaturas + flechas + ZOOM) ========== -->
   <script>
-
+  'use strict';
+  window.addEventListener('load', () => {
     const scrollContainer = document.getElementById('miniaturas-scroll');
     const flechaIzq = document.querySelector('.flecha.izq');
     const flechaDer = document.querySelector('.flecha.der');
-  
-    flechaIzq.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: -150, behavior: 'smooth' });
-    });
-  
-    flechaDer.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: 150, behavior: 'smooth' });
-    });
+    const principal = document.getElementById('foto-principal');
 
+    const desplazar = (px) => scrollContainer?.scrollBy({ left: px, behavior: 'smooth' });
+    flechaIzq?.addEventListener('click', () => desplazar(-150));
+    flechaDer?.addEventListener('click', () => desplazar(150));
 
-   document.addEventListener("DOMContentLoaded", function () {
-   const principal = document.querySelector('.imagen-principal > img');
-   const miniaturas = document.querySelectorAll('#miniaturas-scroll img');
-
-    miniaturas.forEach(mini => {
-    mini.addEventListener('click', () => {
-      principal.src = mini.src; // Cambia la imagen principal
-       });
-     });
-    });
-  document.addEventListener("DOMContentLoaded", function () {
-  const principal = document.querySelector('.imagen-principal > img');
-  const miniaturas = document.querySelectorAll('#miniaturas-scroll img');
-
-  miniaturas.forEach(mini => {
-    mini.addEventListener('click', () => {
-      principal.src = mini.src;
-
-      // Quitar la clase activa a todas las miniaturas
-      miniaturas.forEach(m => m.classList.remove('activa'));
-
-      // Agregar clase activa a la que se clickeó
-      mini.classList.add('activa');
+    const minis = Array.from(scrollContainer?.querySelectorAll('img') || []);
+    minis.forEach((mini) => {
+      mini.tabIndex = 0;
+      mini.addEventListener('click', () => {
+        if (!principal) return;
+        principal.src = mini.src;
+        minis.forEach(m => m.classList.remove('activa'));
+        mini.classList.add('activa');
       });
-     });
+      mini.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mini.click(); }
+      });
     });
+
+    // ----- Lightbox -----
+    const lb = document.getElementById('lightbox');
+    const lbImg = lb.querySelector('.lightbox__img');
+    const btnClose = lb.querySelector('.lightbox__close');
+    const btnPrev = lb.querySelector('.lightbox__nav--prev');
+    const btnNext = lb.querySelector('.lightbox__nav--next');
+    let currentIndex = 0;
+
+    function indexFromSrc(src){
+      const i = minis.findIndex(m => m.src === src);
+      return i >= 0 ? i : 0;
+    }
+    function showByIndex(i){
+      if (!minis.length) return;
+      currentIndex = (i + minis.length) % minis.length;
+      lbImg.src = minis[currentIndex].src;
+    }
+    function openLB() {
+      lb.classList.add('is-open');
+      lb.setAttribute('aria-hidden', 'false');
+      lbImg.src = principal.src;
+      currentIndex = indexFromSrc(principal.src);
+    }
+    function closeLB() {
+      lb.classList.remove('is-open');
+      lb.setAttribute('aria-hidden', 'true');
+      lbImg.src = '';
+    }
+
+    // abrir con click en principal
+    principal?.addEventListener('click', openLB);
+
+    // cerrar/navegar
+    btnClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+    btnPrev.addEventListener('click', () => showByIndex(currentIndex - 1));
+    btnNext.addEventListener('click', () => showByIndex(currentIndex + 1));
+
+    // teclado cuando está abierto
+    document.addEventListener('keydown', (e) => {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLB();
+      if (e.key === 'ArrowLeft') showByIndex(currentIndex - 1);
+      if (e.key === 'ArrowRight') showByIndex(currentIndex + 1);
+    });
+
+    // si el LB está abierto y clickeás miniaturas, se actualiza la grande
+    minis.forEach((mini, i) => mini.addEventListener('click', () => {
+      if (lb.classList.contains('is-open')) { currentIndex = i; lbImg.src = mini.src; }
+    }));
+  });
   </script>
 
-<script>
-const HOUSE_ID = 601720;
-const ROOM_ID = 668511;
+  <!-- ========== MOTOR DE RESERVAS (PAISAJISMO) ========== -->
+  <script>
+  'use strict';
+  const HOUSE_ID = 601720;
+  const ROOM_ID  = 668511;
 
-const fechaLimite = new Date('2026-04-30');
-const params = new URLSearchParams(window.location.search);
-const checkin   = params.get("checkin");
-const checkout  = params.get("checkout");
-const huespedes = params.get("huespedes");
+  const fechaLimite = new Date('2026-04-30');
+  const params    = new URLSearchParams(window.location.search);
+  const checkin   = params.get("checkin");
+  const checkout  = params.get("checkout");
+  const huespedes = params.get("huespedes");
 
-localStorage.removeItem("checkin");
-localStorage.removeItem("checkout");
-localStorage.removeItem("huespedes");
+  localStorage.removeItem("checkin");
+  localStorage.removeItem("checkout");
+  localStorage.removeItem("huespedes");
 
-const startInput  = document.getElementById('start');
-const endInput    = document.getElementById('end');
-const guestsInput = document.getElementById('guests');
-const currSelect  = document.getElementById('currency');
-const resDiv      = document.getElementById('resultado');
-const reservarBtn = document.getElementById('btnReservar');
-const menosBtn    = document.getElementById('menos');
-const masBtn      = document.getElementById('mas');
-const contador    = document.getElementById('contador');
+  // DOM
+  const startInput  = document.getElementById('start');
+  const endInput    = document.getElementById('end');
+  const guestsInput = document.getElementById('guests');
+  const currSelect  = document.getElementById('currency');
+  const resDiv      = document.getElementById('resultado');
+  const reservarBtn = document.getElementById('btnReservar');
+  const menosBtn    = document.getElementById('menos');
+  const masBtn      = document.getElementById('mas');
+  const contador    = document.getElementById('contador');
 
-let cantidad = parseInt(huespedes) || 1;
-const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  // ===== Helpers fechas (local) =====
+  function parseYMDLocal(s) {
+    if (!s) return null;
+    if (s.includes('-')) { const [y,m,d] = s.split('-').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
+    const t = new Date(s); if (!isNaN(t.getTime())) return new Date(t.getFullYear(), t.getMonth(), t.getDate());
+    return null;
+  }
+  function ymdLocal(d){ const x=new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setHours(0,0,0,0); return x; }
+  function fmtLocal(d){ const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); return `${dd}/${mm}/${d.getFullYear()}`; }
+  const fmt = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
-window.addEventListener("DOMContentLoaded", () => {
-  if (checkin)  startInput.value = checkin;
-  if (checkout) endInput.value   = checkout;
-  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
-  actualizarContador();
+  let cantidad = parseInt(huespedes) || 1;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
 
-  if (checkin) setCurrencyAndCalculate(checkin);
-  else         calculate();
-});
+  // Init
+  window.addEventListener("DOMContentLoaded", () => {
+    if (checkin)  startInput.value = checkin;
+    if (checkout) endInput.value   = checkout;
+    if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
+    actualizarContador();
+    if (checkin) setCurrencyAndCalculate(checkin);
+    else         calculate();
+  });
 
-const startPicker = flatpickr(startInput, {
-  altInput: true,
-  altFormat: 'd/m/Y',
-  dateFormat: 'Y-m-d',
-  defaultDate: checkin || null,
-  minDate: hoy,
-  maxDate: fechaLimite,
-  disableMobile: true,
-  onChange: (selectedDates) => {
+  // Flatpickr
+  const startPicker = flatpickr(startInput, {
+    altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
+    defaultDate: checkin || null, minDate: hoy, maxDate: fechaLimite,
+    disableMobile: true,
+    onChange: (selectedDates) => {
+      if (selectedDates[0]) {
+        const y = selectedDates[0].getFullYear();
+        const m = String(selectedDates[0].getMonth()+1).padStart(2,'0');
+        const d = String(selectedDates[0].getDate()).padStart(2,'0');
+        setCurrencyAndCalculate(`${y}-${m}-${d}`);
+      }
+    }
+  });
+  const endPicker = flatpickr(endInput, {
+    altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
+    defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
+    disableMobile: true, onChange: calculate
+  });
+  startPicker.config.onChange.push((selectedDates) => {
     if (selectedDates[0]) {
-      setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
+      endPicker.setDate(null);
+      endPicker.jumpToDate(selectedDates[0]);
+      endPicker.open();
+    }
+  });
+
+  // Fechas ocupadas
+  let fechasOcupadas = [];
+  async function loadDisabledDates(picker) {
+    try {
+      const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/paisajismo');
+      if (!resp.ok) throw new Error(await resp.text());
+      const rangos = await resp.json();
+      fechasOcupadas = rangos;
+
+      picker.set('disable', [
+        ...rangos.map(r => {
+          const from = parseYMDLocal(r.from);
+          const to   = parseYMDLocal(r.to);
+          if (from) from.setDate(from.getDate() + 1); // habilitar día de check-in
+          return { from, to };
+        }),
+        date => date < hoy || date > fechaLimite
+      ]);
+    } catch (e) {
+      console.error('No se pudieron cargar fechas ocupadas:', e.message);
     }
   }
-});
+  [startPicker, endPicker].forEach(picker => {
+    picker.config.onReady.push(() => loadDisabledDates(picker));
+    picker.config.onMonthChange.push(() => loadDisabledDates(picker));
+    picker.config.onOpen.push(() => loadDisabledDates(picker));
+  });
 
-const endPicker = flatpickr(endInput, {
-  altInput: true,
-  altFormat: 'd/m/Y',
-  dateFormat: 'Y-m-d',
-  defaultDate: checkout || null,
-  minDate: hoy,
-  maxDate: fechaLimite,
-  disableMobile: true,
-  onChange: calculate
-});
-
-startPicker.config.onChange.push((selectedDates) => {
-  if (selectedDates[0]) {
-    endPicker.setDate(null);
-    endPicker.jumpToDate(selectedDates[0]);
-    endPicker.open();
+  // Huéspedes (máx. 3)
+  function actualizarContador() {
+    contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
+    guestsInput.value = cantidad;
   }
-});
+  menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
+  masBtn.addEventListener('click', () => { if (cantidad < 3) { cantidad++; actualizarContador(); calculate(); } });
+  guestsInput.addEventListener('input', () => {
+    let v = parseInt(guestsInput.value) || 1;
+    if (v < 1) v = 1; if (v > 3) v = 3;
+    cantidad = v; actualizarContador(); calculate();
+  });
+  currSelect.addEventListener('change', calculate);
 
-let fechasOcupadas = [];
-
-async function loadDisabledDates(picker) {
-  try {
-    const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/paisajismo');
-    if (!resp.ok) throw new Error(await resp.text());
-    const rangos = await resp.json();
-    fechasOcupadas = rangos;
-
-    picker.set('disable', [
-      ...rangos.map(r => {
-        const from = new Date(r.from);
-        from.setDate(from.getDate() + 1); // habilitamos check-in
-        return { from, to: r.to };
-      }),
-      date => date < hoy || date > fechaLimite
-    ]);
-  } catch (e) {
-    console.error('No se pudieron cargar fechas ocupadas:', e.message);
-  }
-}
-
-[startPicker, endPicker].forEach(picker => {
-  picker.config.onReady.push(() => loadDisabledDates(picker));
-  picker.config.onMonthChange.push(() => loadDisabledDates(picker));
-  picker.config.onOpen.push(() => loadDisabledDates(picker));
-});
-
-// 👥 Contador (máx. 3)
-function actualizarContador() {
-  contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
-  guestsInput.value = cantidad;
-}
-menosBtn.addEventListener('click', () => {
-  if (cantidad > 1) {
-    cantidad--;
-    actualizarContador();
+  // ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
+  function setCurrencyAndCalculate(fechaCheckinStr) {
+    const fecha  = parseYMDLocal(fechaCheckinStr);
+    const limite = parseYMDLocal('2025-12-20');
+    if (fecha) {
+      currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
+      currSelect.style.display = 'none';
+      currSelect.disabled = true;
+    } else {
+      currSelect.style.display = 'block';
+      currSelect.disabled = false;
+    }
     calculate();
   }
-});
-masBtn.addEventListener('click', () => {
-  if (cantidad < 3) { // tope 3
-    cantidad++;
-    actualizarContador();
-    calculate();
+
+  function hayCruceConFechasOcupadas(checkin, checkout) {
+    const ci = (checkin instanceof Date) ? checkin : parseYMDLocal(checkin);
+    const co = (checkout instanceof Date) ? checkout : parseYMDLocal(checkout);
+    if (!ci || !co) return true;
+    const ci0 = ymdLocal(ci), co0 = ymdLocal(co);
+    return fechasOcupadas.some(({ from, to }) => {
+      const inicio = parseYMDLocal(from), fin = parseYMDLocal(to);
+      if (!inicio || !fin) return false;
+      const i0 = ymdLocal(inicio), f0 = ymdLocal(fin);
+      return ((ci0 > i0 && ci0 < f0) || (co0 > i0 && co0 < f0) || (ci0 <= i0 && co0 >= f0));
+    });
   }
-});
-guestsInput.addEventListener('input', () => {
-  let v = parseInt(guestsInput.value) || 1;
-  if (v < 1) v = 1;
-  if (v > 3) v = 3; // clamp
-  cantidad = v;
-  actualizarContador();
-  calculate();
-});
 
-currSelect.addEventListener('change', calculate);
+  /* ===== Ajuste estacional +USD 20/noche (03/09/2025–20/12/2025) ===== */
+  const AJUSTE_USD_POR_NOCHE = 20;
+  const AJ_DESDE = parseYMDLocal('2025-09-03');
+  const AJ_HASTA = parseYMDLocal('2025-12-20');
+  const enRangoAjuste = (d) => {
+    const x = ymdLocal(d);
+    return x >= ymdLocal(AJ_DESDE) && x <= ymdLocal(AJ_HASTA);
+  };
 
-// 💵 Moneda (ARS hasta 2026-04-30; luego USD si superara esa fecha)
-function setCurrencyAndCalculate(fechaCheckin) {
-  const fecha  = new Date(fechaCheckin);
-  const limite = new Date('2026-04-30');
-  if (fechaCheckin) {
-    currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
-    currSelect.style.display = 'none';
-    currSelect.disabled = true;
-  } else {
-    currSelect.style.display = 'block';
-    currSelect.disabled = false;
+  async function calculate() {
+    const startValue = startInput.value;
+    const endValue   = endInput.value;
+    const guests     = +guestsInput.value;
+    const moneda     = currSelect.value;
+
+    if (!startValue || !endValue) { resDiv.textContent = 'Seleccioná ambas fechas.'; reservarBtn.disabled = true; return; }
+
+    const sd = parseYMDLocal(startValue);
+    const ed = parseYMDLocal(endValue);
+    if (!sd || !ed) { resDiv.textContent = 'Fechas inválidas.'; reservarBtn.disabled = true; return; }
+    if (ed <= sd)   { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
+
+    const MAX_GUESTS = 3, FREE_GUESTS = 2;
+    if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
+    if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
+
+    const noches = Math.round((ed - sd) / (1000 * 60 * 60 * 24));
+    resDiv.textContent = 'Cargando…';
+    reservarBtn.disabled = true;
+
+    try {
+      const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(await resp.text());
+      const { dias = [], extras = [] } = await resp.json();
+      if (dias.length === 0) { resDiv.textContent = 'No hay precios para estas fechas.'; return; }
+
+      const minStay = dias
+        .map(d => Math.min(...d.prices.map(p => p.min_stay)))
+        .reduce((a, b) => Math.min(a, b), Infinity);
+      if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
+
+      // Conversión ARS por check-in
+      const fechaCheckin = parseYMDLocal(startValue);
+      let factorARS = 1400;
+      if (fechaCheckin >= parseYMDLocal('2025-05-01') && fechaCheckin <= parseYMDLocal('2025-06-30')) factorARS = 1250;
+      else if (fechaCheckin >= parseYMDLocal('2025-07-01') && fechaCheckin <= parseYMDLocal('2025-10-31')) factorARS = 1550;
+      else if (fechaCheckin >= parseYMDLocal('2025-11-01') && fechaCheckin <= parseYMDLocal('2025-12-20')) factorARS = 1620;
+
+      // Base por noche + breakdown
+      let baseUSD = 0;
+      const breakdownNoches = [];
+      const startLocal = ymdLocal(sd);
+
+      for (let i = 0; i < noches; i++) {
+        const d = dias[i];
+        const tarifa = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
+                     || d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
+
+        const fechaNoche = new Date(startLocal);
+        fechaNoche.setDate(startLocal.getDate() + i);
+
+        const usd = enRangoAjuste(fechaNoche)
+          ? (tarifa.price_per_day + AJUSTE_USD_POR_NOCHE)
+          : tarifa.price_per_day;
+
+        baseUSD += usd;
+        const montoMoneda = (moneda === 'USD') ? Math.round(usd) : Math.round(usd * factorARS);
+        breakdownNoches.push({ fecha: new Date(fechaNoche), montoMoneda });
+      }
+
+      // Extra huésped desde el 3º
+      const extraUnit = extras[0]?.price_per_day || 12;
+      const extraQty  = Math.max(0, guests - FREE_GUESTS);
+      const extraUSD  = extraQty * extraUnit * noches;
+
+      const totalUSD = baseUSD + extraUSD;
+
+      // Totales en moneda
+      const totalSinDesc = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
+      const extraMoneda  = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
+
+      // Descuentos por estadía
+      let discountRate = 0;
+      if (noches >= 5 && noches <= 14) discountRate = 0.05;
+      else if (noches >= 15 && noches <= 25) discountRate = 0.10;
+
+      const descuento = Math.round(totalSinDesc * discountRate);
+      const totalConDesc = totalSinDesc - descuento;
+
+      // Cabecera total
+      const totalStack = (discountRate > 0)
+        ? `<div class="price-stack">
+             <div class="old-price old-price--big">${fmt(totalSinDesc)} ${moneda}</div>
+             <div class="new-price">${fmt(totalConDesc)} ${moneda}</div>
+           </div>`
+        : `<span class="price-current">${fmt(totalSinDesc)} ${moneda}</span>`;
+
+      const detalle = `
+        <ul class="booking-summary">
+          <li>Noches: ${noches}</li>
+          <li>Huéspedes: ${guests}</li>
+          <li class="total-line"><strong>Total estadía:</strong> ${totalStack}</li>
+        </ul>`;
+
+      const itemsNoches = breakdownNoches.map(it =>
+        `<li><span>${fmtLocal(it.fecha)}</span><span>${fmt(it.montoMoneda)} ${moneda}</span></li>`
+      ).join('');
+
+      const extraHtml = (extraQty > 0)
+        ? `<li class="bd-extra"><span>Extra huésped (${extraQty} x ${noches} noches)</span><span>+ ${fmt(extraMoneda)} ${moneda}</span></li>`
+        : '';
+
+      const descHtml = (discountRate > 0)
+        ? `<li class="bd-discount"><span>Descuento (${Math.round(discountRate*100)}%)</span><span>− ${fmt(descuento)} ${moneda}</span></li>`
+        : '';
+
+      const subtotalHtml = `<li class="bd-subtotal"><span>Subtotal</span><span>${fmt(discountRate>0? totalConDesc : totalSinDesc)} ${moneda}</span></li>`;
+
+      const breakdownHtml = `
+        <div class="price-breakdown">
+          <button class="bd-toggle" type="button" aria-expanded="false" aria-controls="bd-list">Ver detalle de precios</button>
+          <ul id="bd-list" class="bd-list" hidden>
+            ${itemsNoches}
+            ${extraHtml}
+            ${descHtml}
+            ${subtotalHtml}
+          </ul>
+        </div>`;
+
+      resDiv.innerHTML = detalle + breakdownHtml;
+
+      // Toggle desglose
+      const toggle = resDiv.querySelector('.bd-toggle');
+      const list = resDiv.querySelector('#bd-list');
+      toggle?.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        if (expanded) { list.hidden = true; toggle.textContent = 'Ver detalle de precios'; }
+        else { list.hidden = false; toggle.textContent = 'Ocultar detalle de precios'; }
+      });
+
+      // CTA (usa total con descuento si aplica)
+      const totalParaCobrar = (discountRate > 0) ? totalConDesc : totalSinDesc;
+      reservarBtn.disabled = false;
+      reservarBtn.onclick = () => {
+        const qs = new URLSearchParams({
+          propertyId: HOUSE_ID,
+          roomTypeId: ROOM_ID,
+          checkInDate: startValue,
+          checkOutDate: endValue,
+          numberOfGuests: guests,
+          totalPrice: totalParaCobrar,
+          currency: moneda,
+          discountRate
+        }).toString();
+        window.location.href = `formulario.html?${qs}`;
+      };
+    } catch (e) {
+      console.error(e);
+      resDiv.textContent = 'Error al obtener datos: ' + e.message;
+      reservarBtn.disabled = true;
+    }
   }
-  calculate();
-}
 
-function hayCruceConFechasOcupadas(checkin, checkout) {
-  const ci = new Date(checkin);
-  const co = new Date(checkout);
-  ci.setHours(0,0,0,0); co.setHours(0,0,0,0);
-  return fechasOcupadas.some(({ from, to }) => {
-    const inicio = new Date(from), fin = new Date(to);
-    inicio.setHours(0,0,0,0); fin.setHours(0,0,0,0);
-    return (
-      (ci > inicio && ci < fin) ||
-      (co > inicio && co < fin) ||
-      (ci <= inicio && co >= fin)
-    );
+  // Volver
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnVolver = document.getElementById("btnVolver");
+    if (!btnVolver) return;
+    btnVolver.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = "alojamientos.html";
+    });
   });
-}
+  </script>
 
-/* ===========================
-   🔧 AJUSTE +USD 20/NOCHE (03/09/2025–20/12/2025)
-   =========================== */
-const AJUSTE_USD_POR_NOCHE = 20;
-const AJUSTE_DESDE = new Date('2025-09-03');
-const AJUSTE_HASTA = new Date('2025-12-20');
-function ymd(date){ const d=new Date(date); d.setHours(0,0,0,0); return d; }
-function enRangoAjuste(d){ const x=ymd(d); return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA); }
-
-async function calculate() {
-  const startValue = startInput.value;
-  const endValue   = endInput.value;
-  const guests     = +guestsInput.value;
-  const moneda     = currSelect.value;
-
-  if (!startValue || !endValue) {
-    resDiv.textContent = 'Seleccioná ambas fechas.';
-    reservarBtn.disabled = true;
-    return;
-  }
-
-  const sd = new Date(startValue), ed = new Date(endValue);
-  if (ed <= sd) {
-    resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.';
-    reservarBtn.disabled = true;
-    return;
-  }
-
-  const MAX_GUESTS = 3, FREE_GUESTS = 2; // ✅ extra desde el 3º
-  if (guests > MAX_GUESTS) {
-    resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`;
-    reservarBtn.disabled = true;
-    return;
-  }
-
-  if (hayCruceConFechasOcupadas(sd, ed)) {
-    resDiv.textContent = 'El rango incluye fechas ya ocupadas.';
-    reservarBtn.disabled = true;
-    return;
-  }
-
-  const noches = Math.round((ed - sd) / (1000 * 60 * 60 * 24));
-  resDiv.textContent = 'Cargando…';
-  reservarBtn.disabled = true;
-
-  try {
-    const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(await resp.text());
-    const { dias = [], extras = [] } = await resp.json();
-
-    if (dias.length === 0) {
-      resDiv.textContent = 'No hay precios para estas fechas.';
-      return;
-    }
-
-    const minStay = dias
-      .map(d => Math.min(...d.prices.map(p => p.min_stay)))
-      .reduce((a, b) => Math.min(a, b), Infinity);
-
-    if (noches < minStay) {
-      resDiv.textContent = `La estadía mínima es de ${minStay} noches.`;
-      return;
-    }
-
-    // Base USD (aplica +20 en rango)
-    let baseUSD = 0;
-    const startDateLocal = ymd(startValue);
-
-    for (let i = 0; i < noches; i++) {
-      const d = dias[i];
-      const p =
-        d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay) ||
-        d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
-
-      const fechaNoche = new Date(startDateLocal);
-      fechaNoche.setDate(fechaNoche.getDate() + i);
-
-      const precioNocheUSD = enRangoAjuste(fechaNoche)
-        ? p.price_per_day + AJUSTE_USD_POR_NOCHE
-        : p.price_per_day;
-
-      baseUSD += precioNocheUSD;
-    }
-
-    // Extra por huésped desde el 3º (USD 12/noche c/u)
-    const extraUnit = extras[0]?.price_per_day || 12;
-    const extraQty  = Math.max(0, guests - FREE_GUESTS); // 0 si 1–2; 1 si 3
-    const extraUSD  = extraQty * extraUnit * noches;
-
-    const totalUSD = baseUSD + extraUSD;
-
-    // Conversión ARS por fecha
-    const fechaCheckin = new Date(startValue);
-    let factorARS = 1400;
-    if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
-      factorARS = 1250;
-    } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-10-31')) {
-      factorARS = 1550;
-    } else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
-      factorARS = 1620;
-    }
-
-    const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
-
-    // Resumen compacto (sin línea de “extra”)
-    let html = `<ul class="booking-summary">
-      <li>Noches: ${noches}</li>
-      <li>Huéspedes: ${guests}</li>
-      <li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</li>
-    </ul>`;
-    resDiv.innerHTML = html;
-
-    reservarBtn.disabled = false;
-    reservarBtn.onclick = () => {
-      const qs = new URLSearchParams({
-        propertyId: HOUSE_ID,
-        roomTypeId: ROOM_ID,
-        checkInDate: startValue,
-        checkOutDate: endValue,
-        numberOfGuests: guests,
-        totalPrice: total, // incluye extra si corresponde
-        currency: moneda
-      }).toString();
-      window.location.href = `formulario.html?${qs}`;
-    };
-  } catch (e) {
-    console.error(e);
-    resDiv.textContent = 'Error al obtener datos: ' + e.message;
-  }
-}
-
-// ↓ Volver
-document.addEventListener("DOMContentLoaded", () => {
-  const btnVolver = document.getElementById("btnVolver");
-  if (!btnVolver) return;
-  btnVolver.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (window.history.length > 1) window.history.back();
-    else window.location.href = "alojamientos.html";
-  });
-});
-</script>
-
-
-
-
-<script src="volver.js"></script>
-
+  <script src="volver.js" defer></script>
 </body>
 </html>

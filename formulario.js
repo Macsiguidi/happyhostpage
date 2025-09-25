@@ -85,6 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const { seniaFinal, seniaNoches } = calcularSeniaInteligente(isNaN(totalOriginal) ? 0 : totalOriginal, diffDays);
   const seniaOriginalNumber = seniaFinal; // para volver atrás si se quita cupón
+  // 🔥 Cambio pedido: NO mostrar "(X noches)" junto a la seña
   if (seniaSpan) seniaSpan.textContent = isNaN(seniaFinal) ? '' : `$${seniaFinal}`;
 
   // ---------- cupones ----------
@@ -100,7 +101,7 @@ window.addEventListener('DOMContentLoaded', () => {
       alojamientos: [
         "calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7",
         "paisajismo","gurisa","lasnilidas","cruzdelsur4","cruzdelsur5","koiquetrihue","mitiempo",
-        "refugiopatagonico" // ✅ slug correcto para Refugio
+        "refugiopatagonico"
       ],
       desde: new Date("2025-09-04"),
       hasta: new Date("2025-12-20")
@@ -110,7 +111,6 @@ window.addEventListener('DOMContentLoaded', () => {
     "HAPPY20": { porcentaje: 20 }
   };
 
-  // slug que usaremos para comparar con el cupón (coincide con los del array)
   const nombreClave   = slugify(nombreProp);
   const inputCupon    = $('cuponDescuento');
   const botonCupon    = $('aplicarCupon');
@@ -133,7 +133,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       } else if (cupon && cupon.desde && cupon.hasta) {
         const hoy = new Date();
-        // comparamos con el slug normalizado (ej.: "Refugio Patagónico" -> "refugiopatagonico")
         valido = cupon.alojamientos.includes(nombreClave) && hoy >= cupon.desde && hoy <= cupon.hasta;
         porcentaje = cupon.porcentaje;
       } else if (cupon && cupon.porcentaje) {
@@ -149,7 +148,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         totalSpan?.classList.add('tachado');
         if (descuentoSpan) descuentoSpan.textContent = `$${totalConDescuento.toFixed(2)}`;
-        if (seniaSpan) seniaSpan.textContent = `$${seniaConDescuento.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
+        // 🔥 Cambio pedido: NO mostrar "(X noches)" junto a la seña con cupón
+        if (seniaSpan) seniaSpan.textContent = `$${seniaConDescuento.toFixed(2)}`;
 
         if (labelCupon) { labelCupon.textContent = `Cupón aplicado: ${codigo} (-${porcentaje}%)`; labelCupon.style.color = "green"; }
         cuponInfo = codigo;
@@ -157,7 +157,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (labelCupon) { labelCupon.textContent = "Cupón inválido o fuera de fecha."; labelCupon.style.color = "red"; }
         totalSpan?.classList.remove('tachado');
         if (descuentoSpan) descuentoSpan.textContent = "";
-        if (seniaSpan) seniaSpan.textContent = `$${seniaOriginalNumber.toFixed(2)} (${seniaNoches} noche${seniaNoches > 1 ? 's' : ''})`;
+        // 🔥 Cambio pedido: NO mostrar "(X noches)" al quitar cupón
+        if (seniaSpan) seniaSpan.textContent = `$${seniaOriginalNumber.toFixed(2)}`;
         cuponInfo = '';
       }
     });
@@ -212,7 +213,6 @@ window.addEventListener('DOMContentLoaded', () => {
           _comments: comentarios
         };
 
-        // Render (cambiar por localhost si probás local)
         const API_BASE = 'https://disponibilidad-happy-host-patagonia.onrender.com';
 
         const idKey = (window.crypto && crypto.randomUUID)

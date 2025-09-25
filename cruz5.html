@@ -4,236 +4,285 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cruz del Sur 5 en Villa La Angostura | Escapada romántica en la Patagonia - Happy Host Patagonia</title>
-<meta name="description" content="Cruz del Sur 5 es una casa ideal para dos personas en el barrio Las Balsas de Villa La Angostura. Diseño moderno, calidez, confort y naturaleza patagónica. Disfrutá con Happy Host.">
-<meta name="keywords" content="Cruz del Sur 5, escapadas en pareja, casas para dos personas, alojamiento moderno Villa La Angostura, barrio Las Balsas, cabañas en la Patagonia, alquiler turístico sur argentino, casas boutique Patagonia, diseño patagónico, alojamiento romántico, Happy Host Patagonia, turismo en el sur, vacaciones en la cordillera, casas en alquiler Neuquén, relax en la montaña, casas con wifi y calefacción, cerro Bayo, Lago Nahuel Huapi, Lago Espejo, Lago Correntoso, Río Bonito, escapadas Patagonia Argentina, casas equipadas, naturaleza y confort, turismo de relax, alquiler turístico exclusivo, casas pequeñas Patagonia, alojamiento con estilo, sur argentino, casas modernas Patagonia">
-<meta name="author" content="Happy Host Patagonia">
+  <meta name="description" content="Cruz del Sur 5 es una casa ideal para dos personas en el barrio Las Balsas de Villa La Angostura. Diseño moderno, calidez, confort y naturaleza patagónica. Disfrutá con Happy Host.">
+  <meta name="author" content="Happy Host Patagonia">
 
-<script>
-if (location.hostname === 'happyhostpatagonia.com.ar') {
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1812973002649828');
-  fbq('track', 'PageView');
-}
-</script>
+  <script>
+  if (location.hostname === 'happyhostpatagonia.com.ar') {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','1812973002649828'); fbq('track','PageView');
+  }
+  </script>
 
   <!-- Icono y fuentes -->
   <link rel="icon" type="image/png" sizes="128x128" href="logos/happyhost.png">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
-  <!-- Open Graph para WhatsApp y redes sociales -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Cruz del Sur 5 en Villa La Angostura | Happy Host Patagonia">
   <meta property="og:description" content="Diseño moderno y calidez patagónica. Cruz del Sur 5 te invita a desconectar en Villa La Angostura.">
   <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/cds5/cds5_2.jpg">
   <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/cruzdelsur5.html">
   <meta property="og:type" content="website">
 
+  <!-- Flatpickr -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Flatpickr CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <!-- Tu CSS completo, con overrides incluidos al final -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <!-- CSS del sitio -->
   <link rel="stylesheet" href="unidades.css">
+
+  <!-- Lightbox + desglose (mínimo) -->
+  <style>
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1000}
+    .lightbox.is-open{display:flex}
+    .lightbox__img{max-width:90vw;max-height:90vh;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+    .lightbox__close{position:absolute;top:16px;right:20px;font-size:36px;line-height:1;color:#fff;background:transparent;border:0;cursor:pointer}
+    .lightbox__nav{position:absolute;top:50%;transform:translateY(-50%);font-size:42px;line-height:1.2;color:#fff;background:transparent;border:0;cursor:pointer;padding:.25rem .5rem}
+    .lightbox__nav--prev{left:20px}
+    .lightbox__nav--next{right:20px}
+    .miniaturas img.activa{outline:3px solid #6aa27a; outline-offset:2px; border-radius:6px}
+
+    .price-breakdown{margin-top:.5rem}
+    .bd-list{list-style:none;margin:.5rem 0 0;padding:0;border-top:1px solid #e5e5e5}
+    .bd-list li{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px dashed #eee}
+    .bd-extra{color:#555}
+    .bd-subtotal{font-weight:600}
+    .bd-toggle{width:100%;border:1px solid #e5e5e5;border-radius:.6rem;background:#f7f7f7;padding:.5rem .75rem;cursor:pointer}
+    .price-current{font-weight:700;font-size:1.25rem}
+  </style>
 </head>
 
 <body>
 <noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></noscript>
+src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1" alt=""></noscript>
 
-  <header class="header">
-    <div class="barra-menu">
-      <div class="logo">
-        <img src="logos/happy host.png" alt="Logo Happy Host" href="index.html">
+<header class="header">
+  <div class="barra-menu">
+    <a class="logo" href="index.html" aria-label="Ir al inicio">
+      <img src="logos/happy host.png" alt="Happy Host Patagonia">
+    </a>
+    <h1 class="titulo-header">Cruz del Sur 5</h1>
+    <nav class="volver" aria-label="Volver a alojamientos">
+      <a href="#" id="btnVolver" class="boton-volver">← Volver a alojamientos</a>
+    </nav>
+  </div>
+</header>
+
+<div class="fondo-blur">
+<section class="detalle-alojamiento">
+  <div class="imagen-principal">
+    <img id="foto-principal" src="unidades/cds5/cds5_2.jpg" alt="Foto principal Cruz 5">
+    <div class="miniaturas-container" role="group" aria-label="Galería de fotos">
+      <button class="flecha izq" type="button" aria-label="Ver fotos anteriores">&#10094;</button>
+      <div class="miniaturas" id="miniaturas-scroll">
+        <img src="unidades/cds5/cds5_2.jpg" alt="Cruz 5 - principal">
+        <img src="unidades/cds5/cds5_3.jpg" alt="Cruz 5 - living">
+        <img src="unidades/cds5/cds5_5.jpg" alt="Cruz 5 - cocina">
+        <img src="unidades/cds5/cds5_6.jpg" alt="Cruz 5 - comedor">
+        <img src="unidades/cds5/cds5_7.jpg" alt="Cruz 5 - dormitorio">
+        <img src="unidades/cds5/cds5_8.jpg" alt="Cruz 5 - baño">
+        <img src="unidades/cds5/cds5_9.jpg" alt="Cruz 5 - parque">
+        <img src="unidades/cds5/cds5_10.jpg" alt="Cruz 5 - parrilla">
+        <img src="unidades/cds5/cds5_11.jpg" alt="Cruz 5 - detalles">
+        <img src="unidades/cds5/cds5_12.jpg" alt="Cruz 5 - cochera">
+        <img src="unidades/cds5/cds5_1.jpg" alt="Cruz 5 - entorno">
       </div>
-
-      <h1 class="titulo-header">Cruz del Sur 5</h1>
-
-      <div class="volver">
-  <a href="#" id="btnVolver" class="boton-volver">← Volver a alojamientos</a>
-</div>
+      <button class="flecha der" type="button" aria-label="Ver fotos siguientes">&#10095;</button>
     </div>
-  </header>
 
-  <div class="fondo-blur">
-  <section class="detalle-alojamiento">
-    <div class="imagen-principal">
-      <img src="unidades/cds5/cds5_2.jpg" alt="Foto principal Cruz 5">
-      <div class="miniaturas-container">
-        <button class="flecha izq">&#10094;</button>
-        <div class="miniaturas" id="miniaturas-scroll">
-          <img src="unidades/cds5/cds5_2.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_3.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_5.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_6.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_7.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_8.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_9.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_10.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_11.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_12.jpg" alt="cruz5">
-          <img src="unidades/cds5/cds5_1.jpg" alt="cruz5">
-        </div>
-        <button class="flecha der">&#10095;</button>
-      </div>
-      
-      <div class="info servicios">
-        <h3>Servicios</h3>
-        <div class="iconos-servicios">
-          <div><img src="iconos/persona.png" alt="WiFi"><span>2 pax</span></div>
-          <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
-          <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
-          <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
-          <div><img src="iconos/sabanas y toallas.png" alt="Sábanas"><span>Blancos</span></div>
-          <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
-          <div><img src="iconos/parrilla.png" alt="Parrilla"><span>Parrilla</span></div>
-        </div>
-      </div>
-      
+    <!-- Lightbox / Zoom -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+      <button class="lightbox__close" aria-label="Cerrar (Esc)">&times;</button>
+      <button class="lightbox__nav lightbox__nav--prev" aria-label="Anterior">&#10094;</button>
+      <img class="lightbox__img" alt="Vista ampliada" />
+      <button class="lightbox__nav lightbox__nav--next" aria-label="Siguiente">&#10095;</button>
     </div>
-<div class="motor-reservas-fijo">
-     <div class="reserva">
-      <!-- Fechas en la misma línea -->
-      <div class="dates">
+
+    <div class="info servicios">
+      <h3>Servicios</h3>
+      <div class="iconos-servicios">
+        <div><img src="iconos/persona.png" alt="Capacidad 2 personas"><span>2 pax</span></div>
+        <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
+        <div><img src="iconos/cocina.png" alt="Cocina equipada"><span>Cocina</span></div>
+        <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
+        <div><img src="iconos/sabanas y toallas.png" alt="Ropa blanca"><span>Blancos</span></div>
+        <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
+        <div><img src="iconos/parrilla.png" alt="Parrilla"><span>Parrilla</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Motor de reservas -->
+  <div class="motor-reservas-fijo" role="region" aria-label="Reserva">
+    <div class="reserva" data-house-id="601714" data-room-id="668505">
+      <div class="dates" role="group" aria-label="Seleccionar fechas">
         <div class="date-field" id="df-start">
-          <input
-            type="text"
-            id="start"
-            placeholder="Check in"
-            readonly
-          >
+          <input type="text" id="start" placeholder="Check in" aria-label="Fecha de check in" readonly>
         </div>
         <div class="date-field" id="df-end">
-          <input
-            type="text"
-            id="end"
-            placeholder="Check out"
-            readonly
-          >
+          <input type="text" id="end" placeholder="Check out" aria-label="Fecha de check out" readonly>
         </div>
       </div>
-    
+
       <!-- Huéspedes -->
-      <!-- Oculto para que el script siga funcionando -->
-      <input type="hidden" id="guests" value="1" />
+      <input type="hidden" id="guests" value="1">
+      <div class="huespedes-control" role="group" aria-label="Cantidad de huéspedes">
+        <button id="menos" type="button" aria-label="Quitar huésped">−</button>
+        <span id="contador" aria-live="polite">1 huésped</span>
+        <button id="mas" type="button" aria-label="Agregar huésped">+</button>
+      </div>
 
-       <!-- Control visual para huéspedes -->
-        <div class="huespedes-control">
-           <button id="menos">−</button>
-           <span id="contador">1 huésped</span>
-           <button id="mas">+</button>
-        </div>
-    
-      <!-- Selección de moneda -->
-      <label for="currency" style="display:none;">Moneda</label>
+      <!-- Moneda (auto por JS) -->
+      <label for="currency" class="sr-only">Moneda</label>
       <select id="currency" style="display:none;">
-      <option value="USD">USD</option>
-      <option value="ARS">ARS</option>
+        <option value="USD">USD</option>
+        <option value="ARS">ARS</option>
       </select>
-    
-      <!-- Botón -->
+
+      <!-- CTA -->
       <button id="btnReservar" disabled>Reservar ahora</button>
-    
-      <!-- Resumen debajo -->
-      <div id="resultado"></div>
-  
+
+      <!-- Resumen y desglose -->
+      <div id="resultado" aria-live="polite"></div>
     </div>
   </div>
-  </section>
+</section>
 
-   <section class="contenido-info">
-    <div class="info descripcion">
-      <h3>Descripción</h3>
-      <p><strong>Cruz del Sur</strong> es una acogedora casa estilo loft, ideal para quienes buscan una estancia tranquila y en contacto con la naturaleza. Ubicada en el barrio de Las Balsas, a solo 2 km del centro de Villa La Angostura, esta propiedad combina comodidad y encanto en un entorno rodeado de vegetación.</p>
-
-        <p>En la planta baja, encontrarás un amplio espacio que integra una cocina completamente equipada, comedor y un living con grandes ventanales que permiten la entrada de luz natural y ofrecen vistas al verde exterior. La zona del living cuenta con un cómodo sofá y una Smart TV, perfecta para disfrutar de una noche de películas (no cuenta con TV por cable). Además, en este nivel, se encuentra un baño completo.</p>
-        <p>La planta alta encontraras una espaciosa habitación estilo loft con cama king, donde podrás descansar plácidamente mientras disfrutas de la tranquilidad del entorno.</p>
-        <p>La casa también dispone de Wi-Fi, un espacio para estacionamiento techado y un amplio parque ideal para relajarse al aire libre.</p>
-        <p><strong>Distancias de interés:</strong> 800 metros de Bahía Las Balsas -
-            5 minutos en auto al acceso del Cerro Bayo (7.6 km hasta la base)</p>
-        <p><strong>Cruz del Sur </strong> es el refugio perfecto para quienes desean escapar del bullicio y disfrutar de la paz y belleza natural de Villa La Angostura.</p>
-        
-        <strong>Check in / Check out AUTÓNOMO</strong></p>
-    </div>
-
-    <div class="info mapa">
-      <h3>Ubicación</h3>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.34864777023!2d-71.6252554!3d-40.7763487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9610bf888f6bab3f%3A0xb7395e0be7f27229!2sHAPPY%20HOST%20PATAGONIA%20-%20Casas%20Cruz%20del%20Sur!5e0!3m2!1ses!2sar!4v1745588245558!5m2!1ses!2sar"  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      <div class="redes-contacto">
-        <a href="https://wa.me/5492944700773" target="_blank">
-          <img src="logos/whatsapp.png" alt="WhatsApp">
-        </a>
-        <a href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
-          <img src="logos/instagram.png" alt="Instagram">
-        </a>
-        <a href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw">
-          <img src="logos/twitter.png" alt="Correo">
-        </a>
-      </div>   
-    </div>
-  </section>
+<section class="contenido-info">
+  <div class="info descripcion">
+    <h3>Descripción</h3>
+    <p><strong>Cruz del Sur</strong> es una acogedora casa estilo loft, ideal para quienes buscan una estancia tranquila y en contacto con la naturaleza. Ubicada en el barrio de Las Balsas, a solo 2 km del centro de Villa La Angostura, esta propiedad combina comodidad y encanto en un entorno rodeado de vegetación.</p>
+    <p>En la planta baja, encontrarás una cocina equipada, comedor y living con grandes ventanales. Smart TV (sin cable). Baño completo.</p>
+    <p>En la planta alta, una amplia habitación estilo loft con cama king para un descanso pleno.</p>
+    <p>Dispone de Wi-Fi, estacionamiento techado y un parque ideal para relajarse al aire libre.</p>
+    <p><strong>Distancias de interés:</strong> 800 m de Bahía Las Balsas — 5 min al acceso del Cerro Bayo (7,6 km a la base)</p>
+    <p><strong>Check in / Check out AUTÓNOMO</strong></p>
   </div>
 
-  <script>
+  <aside class="info mapa">
+    <h3>Ubicación</h3>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.34864777023!2d-71.6252554!3d-40.7763487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9610bf888f6bab3f%3A0xb7395e0be7f27229!2sHAPPY%20HOST%20PATAGONIA%20-%20Casas%20Cruz%20del%20Sur!5e0!3m2!1ses!2sar!4v1745588245558!5m2!1ses!2sar" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="redes-contacto" aria-label="Contacto">
+      <a class="red" href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp Happy Host">
+        <img src="logos/whatsapp.png" alt="WhatsApp">
+      </a>
+      <a class="red" href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="Instagram Happy Host">
+        <img src="logos/instagram.png" alt="Instagram">
+      </a>
+      <a class="red" href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw" target="_blank" rel="noopener" aria-label="X Happy Host">
+        <img src="logos/twitter.png" alt="X">
+      </a>
+    </div>
+  </aside>
+</section>
+</div>
 
-    const scrollContainer = document.getElementById('miniaturas-scroll');
-    const flechaIzq = document.querySelector('.flecha.izq');
-    const flechaDer = document.querySelector('.flecha.der');
-  
-    flechaIzq.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: -150, behavior: 'smooth' });
-    });
-  
-    flechaDer.addEventListener('click', () => {
-      scrollContainer.scrollBy({ left: 150, behavior: 'smooth' });
-    });
-
-
-   document.addEventListener("DOMContentLoaded", function () {
-   const principal = document.querySelector('.imagen-principal > img');
-   const miniaturas = document.querySelectorAll('#miniaturas-scroll img');
-
-    miniaturas.forEach(mini => {
-    mini.addEventListener('click', () => {
-      principal.src = mini.src; // Cambia la imagen principal
-       });
-     });
-    });
-  document.addEventListener("DOMContentLoaded", function () {
-  const principal = document.querySelector('.imagen-principal > img');
-  const miniaturas = document.querySelectorAll('#miniaturas-scroll img');
-
-  miniaturas.forEach(mini => {
-    mini.addEventListener('click', () => {
-      principal.src = mini.src;
-
-      // Quitar la clase activa a todas las miniaturas
-      miniaturas.forEach(m => m.classList.remove('activa'));
-
-      // Agregar clase activa a la que se clickeó
-      mini.classList.add('activa');
-      });
-     });
-    });
-  </script>
-
+<!-- ========== GALERÍA (miniaturas + flechas + ZOOM) ========== -->
 <script>
-const HOUSE_ID = 601714;
-const ROOM_ID = 668505;
+'use strict';
+window.addEventListener('load', () => {
+  const scrollContainer = document.getElementById('miniaturas-scroll');
+  const flechaIzq = document.querySelector('.flecha.izq');
+  const flechaDer = document.querySelector('.flecha.der');
+  const principal = document.getElementById('foto-principal');
 
-const params = new URLSearchParams(window.location.search);
+  const desplazar = (px) => scrollContainer?.scrollBy({ left: px, behavior: 'smooth' });
+  flechaIzq?.addEventListener('click', () => desplazar(-150));
+  flechaDer?.addEventListener('click', () => desplazar(150));
+
+  const minis = Array.from(scrollContainer?.querySelectorAll('img') || []);
+  minis.forEach((mini) => {
+    mini.tabIndex = 0;
+    mini.addEventListener('click', () => {
+      if (!principal) return;
+      principal.src = mini.src;
+      minis.forEach(m => m.classList.remove('activa'));
+      mini.classList.add('activa');
+    });
+    mini.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mini.click(); }
+    });
+  });
+
+  // ----- Lightbox -----
+  const lb = document.getElementById('lightbox');
+  const lbImg = lb.querySelector('.lightbox__img');
+  const btnClose = lb.querySelector('.lightbox__close');
+  const btnPrev = lb.querySelector('.lightbox__nav--prev');
+  const btnNext = lb.querySelector('.lightbox__nav--next');
+  let currentIndex = 0;
+
+  function indexFromSrc(src){
+    const i = minis.findIndex(m => m.src === src);
+    return i >= 0 ? i : 0;
+  }
+  function showByIndex(i){
+    if (!minis.length) return;
+    currentIndex = (i + minis.length) % minis.length;
+    lbImg.src = minis[currentIndex].src;
+  }
+  function openLB() {
+    lb.classList.add('is-open'); lb.setAttribute('aria-hidden','false');
+    lbImg.src = principal.src;
+    currentIndex = indexFromSrc(principal.src);
+  }
+  function closeLB() {
+    lb.classList.remove('is-open'); lb.setAttribute('aria-hidden','true');
+    lbImg.src = '';
+  }
+
+  principal?.addEventListener('click', openLB);
+  btnClose.addEventListener('click', closeLB);
+  lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+  btnPrev.addEventListener('click', () => showByIndex(currentIndex - 1));
+  btnNext.addEventListener('click', () => showByIndex(currentIndex + 1));
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLB();
+    if (e.key === 'ArrowLeft') showByIndex(currentIndex - 1);
+    if (e.key === 'ArrowRight') showByIndex(currentIndex + 1);
+  });
+  minis.forEach((mini, i) => mini.addEventListener('click', () => {
+    if (lb.classList.contains('is-open')) { currentIndex = i; lbImg.src = mini.src; }
+  }));
+});
+</script>
+
+<!-- ========== MOTOR DE RESERVAS (SIN descuentos por noches) ========== -->
+<script>
+'use strict';
+// IDs
+const HOUSE_ID = 601714;
+const ROOM_ID  = 668505;
+
+// Helpers fechas locales (evita TZ)
+function parseYMDLocal(s) {
+  if (!s) return null;
+  if (s.includes('-')) { const [y,m,d] = s.split('-').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
+  const t = new Date(s); if (!isNaN(t.getTime())) return new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  return null;
+}
+function ymdLocal(d){ const x=new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setHours(0,0,0,0); return x; }
+function fmtLocal(d){ const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); return `${dd}/${mm}/${d.getFullYear()}`; }
+const fmt = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+// URL params
+const params    = new URLSearchParams(window.location.search);
 const checkin   = params.get("checkin");
 const checkout  = params.get("checkout");
 const huespedes = params.get("huespedes");
 
+// limpiar LS
 localStorage.removeItem("checkin");
 localStorage.removeItem("checkout");
 localStorage.removeItem("huespedes");
 
+// DOM
 const startInput  = document.getElementById('start');
 const endInput    = document.getElementById('end');
 const guestsInput = document.getElementById('guests');
@@ -246,56 +295,43 @@ const contador    = document.getElementById('contador');
 
 let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date(); hoy.setHours(0,0,0,0);
-
-// 🔒 Fecha límite de reservas para Cruz del Sur 5
 const fechaLimite = new Date('2026-03-31');
 
+// Init
 window.addEventListener("DOMContentLoaded", () => {
   if (checkin)  startInput.value = checkin;
   if (checkout) endInput.value   = checkout;
   if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
   actualizarContador();
-
   if (checkin) setCurrencyAndCalculate(checkin);
   else         calculate();
 });
 
+// Calendarios
 const startPicker = flatpickr(startInput, {
-  altInput: true,
-  altFormat: 'd/m/Y',
-  dateFormat: 'Y-m-d',
-  defaultDate: checkin || null,
-  minDate: hoy,
-  maxDate: fechaLimite,
+  altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
+  defaultDate: checkin || null, minDate: hoy, maxDate: fechaLimite,
   disableMobile: true,
   onChange: (selectedDates) => {
     if (selectedDates[0]) {
-      setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
+      const y = selectedDates[0].getFullYear();
+      const m = String(selectedDates[0].getMonth()+1).padStart(2,'0');
+      const d = String(selectedDates[0].getDate()).padStart(2,'0');
+      setCurrencyAndCalculate(`${y}-${m}-${d}`);
     }
   }
 });
-
 const endPicker = flatpickr(endInput, {
-  altInput: true,
-  altFormat: 'd/m/Y',
-  dateFormat: 'Y-m-d',
-  defaultDate: checkout || null,
-  minDate: hoy,
-  maxDate: fechaLimite,
-  disableMobile: true,
-  onChange: calculate
+  altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
+  defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
+  disableMobile: true, onChange: calculate
 });
-
 startPicker.config.onChange.push((selectedDates) => {
-  if (selectedDates[0]) {
-    endPicker.setDate(null);
-    endPicker.jumpToDate(selectedDates[0]);
-    endPicker.open();
-  }
+  if (selectedDates[0]) { endPicker.setDate(null); endPicker.jumpToDate(selectedDates[0]); endPicker.open(); }
 });
 
+// Fechas ocupadas
 let fechasOcupadas = [];
-
 async function loadDisabledDates(picker) {
   try {
     const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/cds5');
@@ -305,9 +341,10 @@ async function loadDisabledDates(picker) {
 
     picker.set('disable', [
       ...rangos.map(r => {
-        const from = new Date(r.from);
-        from.setDate(from.getDate() + 1); // habilitamos check-in
-        return { from, to: r.to };
+        const from = parseYMDLocal(r.from);
+        const to   = parseYMDLocal(r.to);
+        if (from) from.setDate(from.getDate() + 1); // habilitar check-in
+        return { from, to };
       }),
       date => date < hoy || date > fechaLimite
     ]);
@@ -315,49 +352,32 @@ async function loadDisabledDates(picker) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
   }
 }
-
-[startPicker, endPicker].forEach(picker => {
-  picker.config.onReady.push(() => loadDisabledDates(picker));
-  picker.config.onMonthChange.push(() => loadDisabledDates(picker));
-  picker.config.onOpen.push(() => loadDisabledDates(picker));
+[startPicker, endPicker].forEach(p => {
+  p.config.onReady.push(() => loadDisabledDates(p));
+  p.config.onMonthChange.push(() => loadDisabledDates(p));
+  p.config.onOpen.push(() => loadDisabledDates(p));
 });
 
-// 👥 Contador de huéspedes (máx. 2)
+// Huéspedes (máx. 2)
 function actualizarContador() {
   contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   guestsInput.value = cantidad;
 }
-menosBtn.addEventListener('click', () => {
-  if (cantidad > 1) {
-    cantidad--;
-    actualizarContador();
-    calculate();
-  }
-});
-masBtn.addEventListener('click', () => {
-  if (cantidad < 2) {              // ⛔️ máximo 2
-    cantidad++;
-    actualizarContador();
-    calculate();
-  }
-});
+menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
+masBtn.addEventListener('click', () => { if (cantidad < 2) { cantidad++; actualizarContador(); calculate(); } });
 guestsInput.addEventListener('input', () => {
   let v = parseInt(guestsInput.value) || 1;
   if (v < 1) v = 1;
-  if (v > 2) v = 2;                 // ⛔️ clamp a 2
-  cantidad = v;
-  actualizarContador();
-  calculate();
+  if (v > 2) v = 2;
+  cantidad = v; actualizarContador(); calculate();
 });
 currSelect.addEventListener('change', calculate);
 
-/* ========= Moneda automática por fecha =========
-   ARS hasta 20/12/2025 (inclusive), luego USD */
-function setCurrencyAndCalculate(fechaCheckin) {
-  const fecha  = new Date(fechaCheckin);
-  const limite = new Date('2025-12-20'); // igual que CDS4/Calafate1
-
-  if (fechaCheckin) {
+// Moneda auto: ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
+function setCurrencyAndCalculate(fechaCheckinStr) {
+  const fecha  = parseYMDLocal(fechaCheckinStr);
+  const limite = parseYMDLocal('2025-12-20');
+  if (fecha) {
     currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
     currSelect.style.display = 'none';
     currSelect.disabled = true;
@@ -369,132 +389,135 @@ function setCurrencyAndCalculate(fechaCheckin) {
 }
 
 function hayCruceConFechasOcupadas(checkin, checkout) {
-  const ci = new Date(checkin), co = new Date(checkout);
-  ci.setHours(0,0,0,0); co.setHours(0,0,0,0);
+  const ci = (checkin instanceof Date) ? checkin : parseYMDLocal(checkin);
+  const co = (checkout instanceof Date) ? checkout : parseYMDLocal(checkout);
+  if (!ci || !co) return true;
+  const ci0 = ymdLocal(ci), co0 = ymdLocal(co);
   return fechasOcupadas.some(({ from, to }) => {
-    const inicio = new Date(from), fin = new Date(to);
-    inicio.setHours(0,0,0,0); fin.setHours(0,0,0,0);
-    return (
-      (ci > inicio && ci < fin) ||
-      (co > inicio && co < fin) ||
-      (ci <= inicio && co >= fin)
-    );
+    const inicio = parseYMDLocal(from), fin = parseYMDLocal(to);
+    if (!inicio || !fin) return false;
+    const i0 = ymdLocal(inicio), f0 = ymdLocal(fin);
+    return ((ci0 > i0 && ci0 < f0) || (co0 > i0 && co0 < f0) || (ci0 <= i0 && co0 >= f0));
   });
 }
 
-/* ===========================
-   🔧 AJUSTE +USD 20/NOCHE (03/09/2025–20/12/2025)
-   =========================== */
+/* Ajuste estacional +USD 20/noche (03/09/2025–20/12/2025) */
 const AJUSTE_USD_POR_NOCHE = 20;
-const AJUSTE_DESDE = new Date('2025-09-03');
-const AJUSTE_HASTA = new Date('2025-12-20');
-function ymd(date) { const d = new Date(date); d.setHours(0,0,0,0); return d; }
-function enRangoAjuste(d) { const x = ymd(d); return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA); }
+const AJ_DESDE = parseYMDLocal('2025-09-03');
+const AJ_HASTA = parseYMDLocal('2025-12-20');
+const enRangoAjuste = (d) => {
+  const x = ymdLocal(d);
+  return x >= ymdLocal(AJ_DESDE) && x <= ymdLocal(AJ_HASTA);
+};
 
+// Calcular (SIN descuentos por cantidad de noches)
 async function calculate() {
   const startValue = startInput.value;
   const endValue   = endInput.value;
   const guests     = +guestsInput.value;
   const moneda     = currSelect.value;
 
-  if (!startValue || !endValue) {
-    resDiv.textContent = 'Seleccioná ambas fechas.';
-    reservarBtn.disabled = true;
-    return;
-  }
+  if (!startValue || !endValue) { resDiv.textContent = 'Seleccioná ambas fechas.'; reservarBtn.disabled = true; return; }
 
-  const sd = new Date(startValue), ed = new Date(endValue);
-  if (ed <= sd) {
-    resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.';
-    reservarBtn.disabled = true;
-    return;
-  }
+  const sd = parseYMDLocal(startValue);
+  const ed = parseYMDLocal(endValue);
+  if (!sd || !ed) { resDiv.textContent = 'Fechas inválidas.'; reservarBtn.disabled = true; return; }
+  if (ed <= sd)   { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
 
   const MAX_GUESTS = 2, FREE_GUESTS = 2;
-  if (guests > MAX_GUESTS) {
-    resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`;
-    reservarBtn.disabled = true;
-    return;
-  }
-
-  if (hayCruceConFechasOcupadas(sd, ed)) {
-    resDiv.textContent = 'El rango incluye fechas ya ocupadas.';
-    reservarBtn.disabled = true;
-    return;
-  }
+  if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
+  if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
 
   const noches = Math.round((ed - sd) / (1000 * 60 * 60 * 24));
-  resDiv.textContent = 'Cargando…';
-  reservarBtn.disabled = true;
+  resDiv.textContent = 'Cargando…'; reservarBtn.disabled = true;
 
   try {
-    const url = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+    const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(await resp.text());
     const { dias = [], extras = [] } = await resp.json();
+    if (dias.length === 0) { resDiv.textContent = 'No hay precios para estas fechas.'; return; }
 
-    if (dias.length === 0) {
-      resDiv.textContent = 'No hay precios para estas fechas.';
-      return;
-    }
+    const minStay = dias.map(d => Math.min(...d.prices.map(p => p.min_stay))).reduce((a,b)=>Math.min(a,b), Infinity);
+    if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
 
-    const minStay = dias
-      .map(d => Math.min(...d.prices.map(p => p.min_stay)))
-      .reduce((a, b) => Math.min(a, b), Infinity);
+    // Tipo de cambio según check-in
+    const fechaCheckin = parseYMDLocal(startValue);
+    let factorARS = 1400;
+    if (fechaCheckin >= parseYMDLocal('2025-05-01') && fechaCheckin <= parseYMDLocal('2025-06-30')) factorARS = 1250;
+    else if (fechaCheckin >= parseYMDLocal('2025-07-01') && fechaCheckin <= parseYMDLocal('2025-10-31')) factorARS = 1550;
+    else if (fechaCheckin >= parseYMDLocal('2025-11-01') && fechaCheckin <= parseYMDLocal('2025-12-20')) factorARS = 1620;
 
-    if (noches < minStay) {
-      resDiv.textContent = `La estadía mínima es de ${minStay} noches.`;
-      return;
-    }
-
-    // 🔢 Base USD con +20 sólo en las noches dentro del rango
+    // Base + breakdown (ci .. co-1)
     let baseUSD = 0;
-    const startDateLocal = ymd(startValue);
+    const breakdownNoches = [];
+    const startLocal = ymdLocal(sd);
 
     for (let i = 0; i < noches; i++) {
       const d = dias[i];
-      const p =
-        d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay) ||
-        d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
+      const tarifa = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
+                   || d.prices.reduce((a,b)=> (a.min_stay < b.min_stay ? a : b));
 
-      const fechaNoche = new Date(startDateLocal);
-      fechaNoche.setDate(fechaNoche.getDate() + i);
+      const fechaNoche = new Date(startLocal);
+      fechaNoche.setDate(startLocal.getDate() + i);
 
-      const precioNocheUSD = enRangoAjuste(fechaNoche)
-        ? p.price_per_day + AJUSTE_USD_POR_NOCHE
-        : p.price_per_day;
+      const usd = enRangoAjuste(fechaNoche) ? (tarifa.price_per_day + AJUSTE_USD_POR_NOCHE) : tarifa.price_per_day;
+      baseUSD += usd;
 
-      baseUSD += precioNocheUSD;
+      const montoMoneda = (moneda === 'USD') ? Math.round(usd) : Math.round(usd * factorARS);
+      breakdownNoches.push({ fecha: new Date(fechaNoche), montoMoneda });
     }
 
-    // 👥 Extras (incluidos en total, no se muestran aparte)
-    const extraUnit = extras[0]?.price_per_day || 12;
+    // Extra (normalmente 0 con 2 pax)
+    const extraUnit = extras?.[0]?.price_per_day ?? 12;
     const extraQty  = Math.max(0, guests - FREE_GUESTS);
     const extraUSD  = extraQty * extraUnit * noches;
 
-    const totalUSD = baseUSD + extraUSD;
+    const totalUSD     = baseUSD + extraUSD;
+    const totalMoneda  = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
+    const extraMoneda  = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
 
-    // 💱 Tipo de cambio por fecha
-    const fechaCheckin = new Date(startValue);
-    let factorARS = 1400;
-    if (fechaCheckin >= new Date('2025-05-01') && fechaCheckin <= new Date('2025-06-30')) {
-      factorARS = 1250;
-    } else if (fechaCheckin >= new Date('2025-07-01') && fechaCheckin <= new Date('2025-10-31')) {
-      factorARS = 1550;
-    } else if (fechaCheckin >= new Date('2025-11-01') && fechaCheckin <= new Date('2025-12-20')) {
-      factorARS = 1620;
-    }
-    const total = (moneda === 'USD') ? totalUSD : totalUSD * factorARS;
+    // Resumen + desglose (SIN descuentos por noches)
+    const headerHtml = `
+      <ul class="booking-summary">
+        <li>Noches: ${noches}</li>
+        <li>Huéspedes: ${guests}</li>
+        <li class="total-line"><strong>Total estadía:</strong> <span class="price-current">${fmt(totalMoneda)} ${moneda}</span></li>
+      </ul>`;
 
-    // 🧾 UI (sin línea de “Extra huésped”)
-    let html = `<ul class="booking-summary">
-      <li>Noches: ${noches}</li>
-      <li>Huéspedes: ${guests}</li>
-      <li><strong>Total estadía:</strong> ${total.toLocaleString()} ${moneda}</li>
-    </ul>`;
-    resDiv.innerHTML = html;
+    const itemsNoches = breakdownNoches.map(it =>
+      `<li><span>${fmtLocal(it.fecha)}</span><span>${fmt(it.montoMoneda)} ${moneda}</span></li>`
+    ).join('');
 
-    // 🟢 Botón reservar
+    const extraHtml = (extraQty > 0)
+      ? `<li class="bd-extra"><span>Extra huésped (${extraQty} x ${noches} noches)</span><span>+ ${fmt(extraMoneda)} ${moneda}</span></li>`
+      : '';
+
+    const subtotalHtml = `<li class="bd-subtotal"><span>Subtotal</span><span>${fmt(totalMoneda)} ${moneda}</span></li>`;
+
+    const breakdownHtml = `
+      <div class="price-breakdown">
+        <button class="bd-toggle" type="button" aria-expanded="false" aria-controls="bd-list">Ver detalle de precios</button>
+        <ul id="bd-list" class="bd-list" hidden>
+          ${itemsNoches}
+          ${extraHtml}
+          ${subtotalHtml}
+        </ul>
+      </div>`;
+
+    resDiv.innerHTML = headerHtml + breakdownHtml;
+
+    // Toggle
+    const toggle = resDiv.querySelector('.bd-toggle');
+    const list = resDiv.querySelector('#bd-list');
+    toggle?.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      if (expanded) { list.hidden = true; toggle.textContent = 'Ver detalle de precios'; }
+      else { list.hidden = false; toggle.textContent = 'Ocultar detalle de precios'; }
+    });
+
+    // CTA
     reservarBtn.disabled = false;
     reservarBtn.onclick = () => {
       const qs = new URLSearchParams({
@@ -503,7 +526,7 @@ async function calculate() {
         checkInDate: startValue,
         checkOutDate: endValue,
         numberOfGuests: guests,
-        totalPrice: total, // incluye ajuste + extras
+        totalPrice: totalMoneda,
         currency: moneda
       }).toString();
       window.location.href = `formulario.html?${qs}`;
@@ -511,30 +534,22 @@ async function calculate() {
   } catch (e) {
     console.error(e);
     resDiv.textContent = 'Error al obtener datos: ' + e.message;
+    reservarBtn.disabled = true;
   }
 }
 
-// ↓ Botón Volver
+// Volver
 document.addEventListener("DOMContentLoaded", () => {
   const btnVolver = document.getElementById("btnVolver");
   if (!btnVolver) return;
-
   btnVolver.addEventListener("click", (e) => {
     e.preventDefault();
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = "alojamientos.html";
-    }
+    if (window.history.length > 1) window.history.back();
+    else window.location.href = "alojamientos.html";
   });
 });
 </script>
 
-
-
-
-
-<script src="volver.js"></script>
-
+<script src="volver.js" defer></script>
 </body>
 </html>
