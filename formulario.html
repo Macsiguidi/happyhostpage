@@ -230,94 +230,59 @@
 
 
  <script>
-  // --- Back inteligente al alojamiento ---
-  window.addEventListener('load', () => {
-    const back = document.getElementById('btnVolver');
-    if (!back) return;
+window.addEventListener('load', () => {
+  const back = document.getElementById('btnVolver');
+  if (!back) return;
 
-    // Cambiamos el texto del botón
-    back.textContent = '← Volver al alojamiento';
+  // Cambiamos texto
+  back.textContent = '← Volver';
 
-    // Intento 1: usar el referrer (si viene de una unidad)
-    try {
-      const ref = document.referrer || '';
-      const sameOrigin = ref.startsWith(location.origin);
-      const cameFromUnit = /(casa|cruz|refugio|mitiempo|unidades)\/.*\.html/i.test(ref) && !/formulario\.html/i.test(ref);
+  const qs = new URLSearchParams(location.search);
+  const ci = qs.get('checkInDate')   || qs.get('checkin')   || document.getElementById('checkInDate')?.value   || '';
+  const co = qs.get('checkOutDate')  || qs.get('checkout')  || document.getElementById('checkOutDate')?.value  || '';
+  const gh = qs.get('numberOfGuests')|| qs.get('huespedes') || document.getElementById('numberOfGuests')?.value|| '';
+  const backQs = new URLSearchParams();
+  if (ci) backQs.set('checkin', ci);
+  if (co) backQs.set('checkout', co);
+  if (gh) backQs.set('huespedes', gh);
 
-      // Armamos query con los parámetros de fechas/huéspedes
-      const qs = new URLSearchParams(location.search);
-      const backQs = new URLSearchParams();
+  // Detectar de dónde viniste
+  const ref = document.referrer || '';
+  const fromAlojamientos = ref.includes('alojamientos.html');
+  const fromUnidad = /(calafate|cruz|nilidas|paisajismo|gurisa|koi|mitiempo|refugio)\d*\.html/i.test(ref);
 
-      const ci = qs.get('checkInDate')   || qs.get('checkin')   || document.getElementById('checkInDate')?.value   || '';
-      const co = qs.get('checkOutDate')  || qs.get('checkout')  || document.getElementById('checkOutDate')?.value  || '';
-      const gh = qs.get('numberOfGuests')|| qs.get('huespedes') || document.getElementById('numberOfGuests')?.value|| '';
+  // Mapeo propertyId → unidad
+  const UNIT_BY_PROPERTY = {
+    '601552': 'calafate1.html','601707': 'calafate2.html','601708': 'calafate3.html',
+    '601710': 'calafate4.html','601711': 'calafate5.html','601712': 'calafate6.html',
+    '601713': 'calafate7.html','601717': 'cruz4.html','601714': 'cruz5.html',
+    '601719': 'nilidas.html','648950': 'gurisa.html','601720': 'paisajismo.html',
+    '677269': 'koiquetrihue.html','677286': 'mitiempo.html','677289': 'refugiopatagonico.html'
+  };
 
-      if (ci) backQs.set('checkin', ci);
-      if (co) backQs.set('checkout', co);
-      if (gh) backQs.set('huespedes', gh);
+  // Si venís desde alojamientos → volver al listado
+  if (fromAlojamientos) {
+    back.href = backQs.toString() ? `alojamientos.html?${backQs}` : 'alojamientos.html';
+    return;
+  }
 
-      if (sameOrigin && cameFromUnit) {
-        const url = new URL(ref);
-        url.search = backQs.toString();
-        back.href = url.toString();
-        return;
-      }
-    } catch(e){ /* seguimos al fallback */ }
+  // Si venís desde una unidad → volver a esa unidad
+  if (fromUnidad) {
+    back.href = ref; // conserva el referrer tal cual
+    return;
+  }
 
-    // Intento 2 (fallback): mapear propertyId → archivo de la unidad
-const UNIT_BY_PROPERTY = {
-  // ==== Casas Calafate ====
-  '601552': 'calafate1.html', // Calafate 1
-  '601707': 'calafate2.html', // Calafate 2
-  '601708': 'calafate3.html', // Calafate 3
-  '601710': 'calafate4.html', // Calafate 4
-  '601711': 'calafate5.html', // Calafate 5
-  '601712': 'calafate6.html', // Calafate 6
-  '601713': 'calafate7.html', // Calafate 7
-
-  // ==== Cruz del Sur ====
-  '601717': 'cruz4.html',     // Cruz del Sur 4
-  '601714': 'cruz5.html',     // Cruz del Sur 5
-
-  // ==== Nilidas ====
-  '601719': 'nilidas.html',   // Las Nilidas
-
-  // ==== Gurisa ====
-  '648950': 'gurisa.html',    // La Gurisa
-
-  // ==== Paisajismo ====
-  '601720': 'paisajismo.html',
-
-  // ==== Koi Quetrihue ====
-  '677269': 'koiquetrihue.html',
-
-  // ==== Mi Tiempo ====
-  '677286': 'mitiempo.html',
-
-  // ==== Refugio Patagónico ====
-  '677289': 'refugiopatagonico.html'
-};
-
-
-    const qs2 = new URLSearchParams(location.search);
-    const property = qs2.get('propertyId') || document.getElementById('propertyId')?.value || '';
-
-    const target = UNIT_BY_PROPERTY[property];
-    if (target) {
-      const ci = qs2.get('checkInDate')   || document.getElementById('checkInDate')?.value   || '';
-      const co = qs2.get('checkOutDate')  || document.getElementById('checkOutDate')?.value  || '';
-      const gh = qs2.get('numberOfGuests')|| document.getElementById('numberOfGuests')?.value|| '';
-
-      const backQs = new URLSearchParams();
-      if (ci) backQs.set('checkin', ci);
-      if (co) backQs.set('checkout', co);
-      if (gh) backQs.set('huespedes', gh);
-
-      back.href = backQs.toString() ? `${target}?${backQs.toString()}` : target;
-    }
-    // Si no hay referrer válido ni propertyId, queda como estaba (alojamientos.html).
-  });
+  // Fallback con propertyId
+  const property = qs.get('propertyId') || document.getElementById('propertyId')?.value || '';
+  const target = UNIT_BY_PROPERTY[property];
+  if (target) {
+    back.href = backQs.toString() ? `${target}?${backQs}` : target;
+  } else {
+    back.href = backQs.toString() ? `alojamientos.html?${backQs}` : 'alojamientos.html';
+  }
+});
 </script>
+
 
 </body>
 </html>

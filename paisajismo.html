@@ -280,10 +280,26 @@
   const checkin   = params.get("checkin");
   const checkout  = params.get("checkout");
   const huespedes = params.get("huespedes");
+  // 🔧 CAMBIO #1: saber si llegaron ambas fechas por URL para no resetear el checkout
+  const hasDatesFromURL = !!(checkin && checkout);
 
+  // limpiar LS
   localStorage.removeItem("checkin");
   localStorage.removeItem("checkout");
   localStorage.removeItem("huespedes");
+
+  // ===== Helpers fechas (local) =====
+  function parseYMDLocal(s) {
+    if (!s) return null;
+    // 🔧 CAMBIO #2: aceptar también dd/mm/yyyy
+    if (s.includes('-')) { const [y,m,d] = s.split('-').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
+    if (s.includes('/')) { const [d,m,y] = s.split('/').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
+    const t = new Date(s); if (!isNaN(t.getTime())) return new Date(t.getFullYear(), t.getMonth(), t.getDate());
+    return null;
+  }
+  function ymdLocal(d){ const x=new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setHours(0,0,0,0); return x; }
+  function fmtLocal(d){ const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); return `${dd}/${mm}/${d.getFullYear()}`; }
+  const fmt = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
   // DOM
   const startInput  = document.getElementById('start');
@@ -296,29 +312,14 @@
   const masBtn      = document.getElementById('mas');
   const contador    = document.getElementById('contador');
 
-  // ===== Helpers fechas (local) =====
-  function parseYMDLocal(s) {
-    if (!s) return null;
-    if (s.includes('-')) { const [y,m,d] = s.split('-').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
-    const t = new Date(s); if (!isNaN(t.getTime())) return new Date(t.getFullYear(), t.getMonth(), t.getDate());
-    return null;
-  }
-  function ymdLocal(d){ const x=new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setHours(0,0,0,0); return x; }
-  function fmtLocal(d){ const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); return `${dd}/${mm}/${d.getFullYear()}`; }
-  const fmt = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
-
   let cantidad = parseInt(huespedes) || 1;
   const hoy = new Date(); hoy.setHours(0,0,0,0);
 
-  // Init
-  window.addEventListener("DOMContentLoaded", () => {
-    if (checkin)  startInput.value = checkin;
-    if (checkout) endInput.value   = checkout;
-    if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
-    actualizarContador();
-    if (checkin) setCurrencyAndCalculate(checkin);
-    else         calculate();
-  });
+  // 🔧 CAMBIO #3: precargar inputs ANTES de crear Flatpickr (evita que pise valores)
+  if (checkin)  startInput.value = checkin;
+  if (checkout) endInput.value   = checkout;
+  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
+  actualizarContador();
 
   // Flatpickr
   const startPicker = flatpickr(startInput, {
@@ -327,6 +328,12 @@
     disableMobile: true,
     onChange: (selectedDates) => {
       if (selectedDates[0]) {
+        // 🔧 CAMBIO #4: si vino checkout por URL, NO lo borres ni abras el otro picker
+        if (!hasDatesFromURL && !endInput.value) {
+          endPicker.setDate(null);
+          endPicker.jumpToDate(selectedDates[0]);
+          endPicker.open();
+        }
         const y = selectedDates[0].getFullYear();
         const m = String(selectedDates[0].getMonth()+1).padStart(2,'0');
         const d = String(selectedDates[0].getDate()).padStart(2,'0');
@@ -339,8 +346,9 @@
     defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
     disableMobile: true, onChange: calculate
   });
+  // Empuje UX sólo si no venía todo desde URL
   startPicker.config.onChange.push((selectedDates) => {
-    if (selectedDates[0]) {
+    if (selectedDates[0] && !hasDatesFromURL && !endInput.value) {
       endPicker.setDate(null);
       endPicker.jumpToDate(selectedDates[0]);
       endPicker.open();
@@ -374,6 +382,9 @@
     picker.config.onMonthChange.push(() => loadDisabledDates(picker));
     picker.config.onOpen.push(() => loadDisabledDates(picker));
   });
+
+  // 🔧 CAMBIO #5: primer cálculo DESPUÉS de crear los pickers
+  if (checkin) setCurrencyAndCalculate(checkin); else calculate();
 
   // Huéspedes (máx. 3)
   function actualizarContador() {
@@ -586,13 +597,32 @@
   document.addEventListener("DOMContentLoaded", () => {
     const btnVolver = document.getElementById("btnVolver");
     if (!btnVolver) return;
+
     btnVolver.addEventListener("click", (e) => {
       e.preventDefault();
-      if (window.history.length > 1) window.history.back();
-      else window.location.href = "alojamientos.html";
+
+      const desdeBuscador = localStorage.getItem("busqueda_desde_buscador") === "true";
+      const checkinVal  = (document.getElementById('start')?.value || "").trim();
+      const checkoutVal = (document.getElementById('end')?.value || "").trim();
+      const guestsVal   = (document.getElementById('guests')?.value || "").trim();
+
+      if (desdeBuscador && checkinVal && checkoutVal && guestsVal) {
+        const qs = new URLSearchParams({
+          checkin: checkinVal,
+          checkout: checkoutVal,
+          huespedes: guestsVal
+        }).toString();
+        window.location.href = `alojamientos.html?${qs}`;
+      } else {
+        // salida "limpia"
+        localStorage.removeItem("checkin");
+        localStorage.removeItem("checkout");
+        localStorage.removeItem("huespedes");
+        window.location.href = "alojamientos.html";
+      }
     });
   });
-  </script>
+</script>
 
   <script src="volver.js" defer></script>
 </body>

@@ -6,19 +6,16 @@
    =============================== */
 
 /* ---------- Variables ---------- */
-/* Cambiá estos valores y el resto se ajusta solo */
 :root{
-  --logo-size: 90px;               /* 👈 Tamaño del logo Happy Host */
-  --service-icon-size: 36px;       /* 👈 Tamaño de los iconos de servicios */
+  --logo-size: 90px;
+  --service-icon-size: 36px;
 
-  /* 👇 Título "LAS NILIDAS" */
-  --title-font: "Bebas Neue", Poppins, sans-serif;  /* 👈 Cambiá la familia acá */
-  --title-size: clamp(22px, 4vw, 34px);             /* 👈 Tamaño del título */
-  --title-weight: 700;                               /* 👈 Peso del título (700–800) */
+  --title-font: "Bebas Neue", Poppins, sans-serif;
+  --title-size: clamp(22px, 4vw, 34px);
+  --title-weight: 700;
 
-  /* 👇 Iconos de redes (ficha redonda + logo interno) */
-  --social-chip-size: 40px;       /* 👈 diámetro del fondo redondo */
-  --social-icon-size: 20px;       /* 👈 tamaño del logo adentro */
+  --social-chip-size: 40px;
+  --social-icon-size: 20px;
 
   --hh-olive:#6B7B53;
   --hh-olive-700:#566344;
@@ -40,13 +37,12 @@
   --fs-sm: 14px;
 }
 
-
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
   font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color:var(--hh-ink);
-  background:var(--hh-sand); /* Fondo arena/beige */
+  background:var(--hh-sand);
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
@@ -68,7 +64,7 @@ body{
   font-family:"Bebas Neue", Poppins, sans-serif;
   font-size:clamp(22px, 4vw, 34px);
   font-weight:700;
-  color:var(--hh-olive); /* Verde oliva igual que en unidades */
+  color:var(--hh-olive);
   margin:0; justify-self:center; text-align:center;
   text-transform:uppercase; letter-spacing:.4px;
 }
@@ -111,8 +107,6 @@ body{
   color:var(--hh-olive);
   font-size:clamp(18px,2.2vw,20px);
 }
-
-/* Campos */
 .formulario-reserva label{
   display:block; margin:10px 0 6px; font-weight:600; color:var(--hh-ink);
 }
@@ -188,18 +182,81 @@ body{
   width:100%; border-radius:12px; margin-bottom:10px;
   aspect-ratio:16/9; object-fit:cover;
 }
-.info-reserva p{ margin:6px 0; display:flex; gap:6px; align-items:baseline }
-.info-reserva strong{ color:#2b2f2d }
+
+/* ===== Líneas de datos/importe ===== */
+.info-reserva p{
+  margin:6px 0;
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  justify-content:space-between;   /* deja el título a la izq y los importes a la derecha */
+}
+.info-reserva strong{
+  color:#2b2f2d;
+  margin-right:auto;               /* empuja todo lo que sigue hacia la derecha */
+}
 
 /* ---------- Precios ---------- */
-#precioReserva{font-size:1.1rem; font-weight:700; color:#2b2f2d;}
-.tachado{ text-decoration:line-through; color:#c03a3a; }
-.is-discount #precioReserva{ text-decoration:line-through; color:#c03a3a; opacity:.95 }
-.precio-descuento{
-  margin-left:8px; font-weight:800; font-size:1.25rem; color:var(--hh-olive);
+#precioReserva{
+  font-size:1rem;
+  font-weight:600;
+  color:#2b2f2d;
+  margin-left:8px;
 }
+/* --- Forzar un único renglón de Total --- */
+.summary .price-stack,
+#priceStack {
+  display: none !important;   /* oculta el stack viejo (el duplicado) */
+}
+
+/* Ajustes de la línea "Total" (estética imagen 2) */
+#precioReserva.tachado{
+  text-decoration: line-through;
+  color:#c03a3a;
+  font-size:0.9rem;
+  font-weight:500;
+  margin-right:8px;
+}
+
+.precio-descuento{
+  font-weight:700;
+  font-size:1.1rem;
+  color:#566344; /* oliva oscuro */
+}
+
 #descuentoLabel{ font-size:0.9rem; color:var(--hh-muted); margin:6px 0 10px }
-#seniaReserva{ font-weight:700; color:#2b2f2d }
+#seniaReserva{
+  font-weight:600;
+  font-size:0.95rem;
+  color:#2b2f2d;
+}
+
+/* === Alineación y dígitos tabulares en importes (como imagen 1) === */
+.info-reserva #precioReserva,
+.info-reserva #precioConDescuento,
+.info-reserva #seniaReserva,
+#precioTachado,
+#precioFinal{
+  font-variant-numeric: tabular-nums; /* dígitos con ancho fijo */
+  letter-spacing:.2px;
+  text-align:right;
+}
+
+/* === Price stack para descuentos (tachado arriba, nuevo abajo) === */
+.price-stack{
+  display:grid;
+  gap:2px;
+  justify-items:end;     /* alinea la columna de importes a la derecha */
+}
+.price-stack .old-price--big{
+  text-decoration:line-through;
+  opacity:.55;
+  font-weight:600;
+}
+.price-stack .new-price{
+  font-weight:700;
+  font-size:1.1rem;
+}
 
 /* ---------- Modal ---------- */
 .modal{
@@ -232,7 +289,7 @@ body{
   #aplicarCupon{ width:100% }
 }
 
-
+/* ---------- Teléfono ---------- */
 .telefono-row{
   display: grid;
   grid-template-columns: 160px 1fr;

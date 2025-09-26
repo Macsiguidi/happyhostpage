@@ -22,10 +22,21 @@ window.addEventListener('DOMContentLoaded', () => {
   let checkOutDate   = params.get('checkOutDate');
   let numberOfGuests = params.get('numberOfGuests');
   let totalPrice     = params.get('totalPrice');
+  let currencyParam  = (params.get('currency') || '').toUpperCase(); // USD o ARS
+
+  // Map visual de moneda (usamos ARS, no "ARG")
+  const displayCurrency = (currencyParam === 'USD') ? 'USD' : 'ARS';
+
+  // Formateador “imagen 1”: 713.000 ARS (sin $ y sin decimales)
+  const fmtMoney = (n) => {
+    const x = Number(n);
+    if (isNaN(x)) return '';
+    return `${x.toLocaleString('es-AR', { maximumFractionDigits: 0 })} ${displayCurrency}`;
+  };
 
   // Aviso si falta algo (no corto la ejecución)
   if (!propertyId || !roomTypeId || !checkInDate || !checkOutDate || !numberOfGuests || !totalPrice) {
-    console.warn('Faltan parámetros en la URL', { propertyId, roomTypeId, checkInDate, checkOutDate, numberOfGuests, totalPrice });
+    console.warn('Faltan parámetros en la URL', { propertyId, roomTypeId, checkInDate, checkOutDate, numberOfGuests, totalPrice, currencyParam });
   }
 
   // ---------- inputs ocultos (sin romper si faltan) ----------
@@ -35,6 +46,8 @@ window.addEventListener('DOMContentLoaded', () => {
   setVal('checkOutDate', checkOutDate);
   setVal('numberOfGuests', numberOfGuests);
   setVal('totalPrice', totalPrice);
+  setVal('currency', displayCurrency); // guardamos la moneda visible (ARS/USD)
+  setVal('discountRate', '0');        // por defecto sin descuento
 
   // ---------- resumen (columna derecha) ----------
   setText('fechasReserva', (checkInDate && checkOutDate) ? `${checkInDate} → ${checkOutDate}` : '');
@@ -46,7 +59,6 @@ window.addEventListener('DOMContentLoaded', () => {
     '601710': 'Calafate 4', '601711': 'Calafate 5', '601712': 'Calafate 6',
     '601713': 'Calafate 7', '601717': 'Cruz del Sur 4', '601714': 'Cruz del Sur 5',
     '601719': 'Las Nilidas', '648950': 'Gurisa', '601720': 'Paisajismo',
-    // nuevos
     '677269': 'Koi Quetrihue', '677286': 'Mi Tiempo', '677289': 'Refugio Patagónico'
   };
   const imagenMap = {
@@ -56,9 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
     '601713': 'unidades/casa7/casa7_img1.jpg', '601717': 'unidades/cds4/cds4_1.jpg',
     '601714': 'unidades/cds5/cds5_2.jpg', '601719': 'unidades/nilidas/nilidas1.jpg',
     '648950': 'unidades/gurisa/gurisa2.jpg', '601720': 'unidades/paisajismo/paisajismo1.jpg', 
-    // nuevos (si cambiás nombres de archivos, actualizá acá)
-    '677269': 'unidades/koi/koi1.jpg',
-    '677286': 'unidades/mitiempo/tiempo3.jpg',
+    '677269': 'unidades/koi/koi1.jpg', '677286': 'unidades/mitiempo/tiempo3.jpg',
     '677289': 'unidades/refugio/refugio2.jpg'
   };
 
@@ -70,13 +80,36 @@ window.addEventListener('DOMContentLoaded', () => {
   const headerTitulo = document.querySelector('.titulo-header');
   if (headerTitulo) headerTitulo.textContent = nombreProp;
 
-  // ---------- precios / seña ----------
-  const totalSpan     = $('precioReserva');
-  const descuentoSpan = $('precioConDescuento');
-  const seniaSpan     = $('seniaReserva');
+  // ---------- referencias de UI: precios / seña ----------
+  const totalSpan            = $('precioReserva');         // compat
+  const descuentoSpan        = $('precioConDescuento');    // compat
+  const seniaSpan            = $('seniaReserva');
 
+  const stackBox             = $('priceStack');            // tachado + final
+  const precioTachadoStack   = $('precioTachado');
+  const precioFinalStack     = $('precioFinal');
+
+  // Helpers para alternar entre modos (con/ sin descuento)
+  function mostrarTotalSinDescuento(total) {
+    if (stackBox) stackBox.style.display = 'none';
+    if (totalSpan) { totalSpan.classList.remove('tachado'); totalSpan.textContent = fmtMoney(total); }
+    if (descuentoSpan) descuentoSpan.textContent = '';
+  }
+  function mostrarTotalConDescuento(total, totalConDesc) {
+    // Compatibilidad
+    if (totalSpan) { totalSpan.classList.add('tachado'); totalSpan.textContent = fmtMoney(total); }
+    if (descuentoSpan) descuentoSpan.textContent = fmtMoney(totalConDesc);
+    // Price stack
+    if (precioTachadoStack) precioTachadoStack.textContent = fmtMoney(total);
+    if (precioFinalStack)   precioFinalStack.textContent   = fmtMoney(totalConDesc);
+    if (stackBox) stackBox.style.display = 'grid';
+  }
+
+  // ---------- cálculo de noches / seña ----------
   const totalOriginal = parseFloat(totalPrice || '0');
-  if (totalSpan) totalSpan.textContent = isNaN(totalOriginal) ? '' : `$${totalOriginal.toFixed(2)}`;
+  if (!isNaN(totalOriginal)) {
+    mostrarTotalSinDescuento(totalOriginal);
+  }
 
   const checkinDateObj  = new Date(checkInDate || '');
   const checkoutDateObj = new Date(checkOutDate || '');
@@ -85,8 +118,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const { seniaFinal, seniaNoches } = calcularSeniaInteligente(isNaN(totalOriginal) ? 0 : totalOriginal, diffDays);
   const seniaOriginalNumber = seniaFinal; // para volver atrás si se quita cupón
-  // 🔥 Cambio pedido: NO mostrar "(X noches)" junto a la seña
-  if (seniaSpan) seniaSpan.textContent = isNaN(seniaFinal) ? '' : `$${seniaFinal}`;
+  if (seniaSpan) seniaSpan.textContent = isNaN(seniaFinal) ? '' : fmtMoney(seniaFinal);
 
   // ---------- cupones ----------
   const cupones = {
@@ -116,6 +148,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const botonCupon    = $('aplicarCupon');
   const labelCupon    = $('descuentoLabel');
 
+  // helpers fechas cupón primavera
+  const PRIMAVERA_CHECKIN_INICIO = new Date("2025-09-04");
+  const PRIMAVERA_CHECKIN_FIN    = new Date("2025-12-15T23:59:59");
+
+  const checkinParaCupon = new Date(checkInDate || '');
+
   if (botonCupon) {
     botonCupon.addEventListener('click', () => {
       const codigo = (inputCupon?.value || '').trim().toUpperCase();
@@ -131,9 +169,17 @@ window.addEventListener('DOMContentLoaded', () => {
           if (labelCupon) { labelCupon.textContent = resultado.mensaje; labelCupon.style.color = "green"; }
           cuponInfo = codigo;
         }
+      } else if (codigo === "PRIMAVERA2025" && cupon) {
+        const alojOk = cupon.alojamientos.includes(nombreClave);
+        const fechaOk = (checkinParaCupon instanceof Date) && !isNaN(checkinParaCupon)
+            && checkinParaCupon >= PRIMAVERA_CHECKIN_INICIO
+            && checkinParaCupon <= PRIMAVERA_CHECKIN_FIN;
+        valido = alojOk && fechaOk;
+        porcentaje = cupon.porcentaje;
       } else if (cupon && cupon.desde && cupon.hasta) {
         const hoy = new Date();
-        valido = cupon.alojamientos.includes(nombreClave) && hoy >= cupon.desde && hoy <= cupon.hasta;
+        valido = cupon.alojamientos?.includes?.(nombreClave) !== false
+              && hoy >= cupon.desde && hoy <= cupon.hasta;
         porcentaje = cupon.porcentaje;
       } else if (cupon && cupon.porcentaje) {
         valido = true;
@@ -142,23 +188,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (valido) {
         const descuento = (totalOriginal * porcentaje) / 100;
-        const totalConDescuento = totalOriginal - descuento;
+        const totalConDescuento = Math.round(totalOriginal - descuento);
+
         const precioNocheDescuento = totalConDescuento / diffDays;
-        const seniaConDescuento = precioNocheDescuento * seniaNoches;
+        const seniaConDescuento = Math.round(precioNocheDescuento * seniaNoches);
 
-        totalSpan?.classList.add('tachado');
-        if (descuentoSpan) descuentoSpan.textContent = `$${totalConDescuento.toFixed(2)}`;
-        // 🔥 Cambio pedido: NO mostrar "(X noches)" junto a la seña con cupón
-        if (seniaSpan) seniaSpan.textContent = `$${seniaConDescuento.toFixed(2)}`;
-
+        mostrarTotalConDescuento(totalOriginal, totalConDescuento);
         if (labelCupon) { labelCupon.textContent = `Cupón aplicado: ${codigo} (-${porcentaje}%)`; labelCupon.style.color = "green"; }
+        if (seniaSpan)  seniaSpan.textContent = fmtMoney(seniaConDescuento);
+
+        setVal('discountRate', (porcentaje/100).toString());
         cuponInfo = codigo;
       } else {
         if (labelCupon) { labelCupon.textContent = "Cupón inválido o fuera de fecha."; labelCupon.style.color = "red"; }
-        totalSpan?.classList.remove('tachado');
-        if (descuentoSpan) descuentoSpan.textContent = "";
-        // 🔥 Cambio pedido: NO mostrar "(X noches)" al quitar cupón
-        if (seniaSpan) seniaSpan.textContent = `$${seniaOriginalNumber.toFixed(2)}`;
+        mostrarTotalSinDescuento(totalOriginal);
+        if (seniaSpan) seniaSpan.textContent = fmtMoney(seniaOriginalNumber);
+
+        setVal('discountRate', '0');
         cuponInfo = '';
       }
     });
@@ -186,7 +232,11 @@ window.addEventListener('DOMContentLoaded', () => {
         const [first_name, ...rest] = nombreCompleto.split(' ').filter(Boolean);
         const last_name = rest.join(' ') || '-';
 
-        const totalUI = (descuentoSpan?.textContent || totalSpan?.textContent || '').trim();
+        // Tomamos lo que se ve en UI (ya con ARS/USD y formato es-AR)
+        const totalUI = (descuentoSpan?.textContent?.trim()
+                        || precioFinalStack?.textContent?.trim()
+                        || totalSpan?.textContent?.trim()
+                        || '');
 
         const payload = {
           source_text: 'Reserva web Happy Host',

@@ -277,6 +277,9 @@ const checkin   = params.get("checkin");
 const checkout  = params.get("checkout");
 const huespedes = params.get("huespedes");
 
+// 🔧 CAMBIO #1: flag para saber si VENIMOS con ambas fechas por URL
+const hasDatesFromURL = !!(checkin && checkout);
+
 // limpiar LS
 localStorage.removeItem("checkin");
 localStorage.removeItem("checkout");
@@ -297,15 +300,11 @@ let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date(); hoy.setHours(0,0,0,0);
 const fechaLimite = new Date('2026-03-31');
 
-// Init
-window.addEventListener("DOMContentLoaded", () => {
-  if (checkin)  startInput.value = checkin;
-  if (checkout) endInput.value   = checkout;
-  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
-  actualizarContador();
-  if (checkin) setCurrencyAndCalculate(checkin);
-  else         calculate();
-});
+// Precargo inputs ANTES de crear flatpickr (para que los tome)
+if (checkin)  startInput.value = checkin;
+if (checkout) endInput.value   = checkout;
+if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
+actualizarContador();
 
 // Calendarios
 const startPicker = flatpickr(startInput, {
@@ -317,6 +316,12 @@ const startPicker = flatpickr(startInput, {
       const y = selectedDates[0].getFullYear();
       const m = String(selectedDates[0].getMonth()+1).padStart(2,'0');
       const d = String(selectedDates[0].getDate()).padStart(2,'0');
+      // 🔧 CAMBIO #2: si ya venimos con ambas fechas NO vaciamos ni abrimos checkout
+      if (!hasDatesFromURL && !endInput.value) {
+        endPicker.setDate(null);
+        endPicker.jumpToDate(selectedDates[0]);
+        endPicker.open();
+      }
       setCurrencyAndCalculate(`${y}-${m}-${d}`);
     }
   }
@@ -326,8 +331,14 @@ const endPicker = flatpickr(endInput, {
   defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
   disableMobile: true, onChange: calculate
 });
+
+// (refuerzo UX) solo si no traíamos las dos fechas
 startPicker.config.onChange.push((selectedDates) => {
-  if (selectedDates[0]) { endPicker.setDate(null); endPicker.jumpToDate(selectedDates[0]); endPicker.open(); }
+  if (selectedDates[0] && !hasDatesFromURL && !endInput.value) {
+    endPicker.setDate(null);
+    endPicker.jumpToDate(selectedDates[0]);
+    endPicker.open();
+  }
 });
 
 // Fechas ocupadas
@@ -357,6 +368,15 @@ async function loadDisabledDates(picker) {
   p.config.onMonthChange.push(() => loadDisabledDates(p));
   p.config.onOpen.push(() => loadDisabledDates(p));
 });
+
+// 🔧 CAMBIO #3: primer cálculo DESPUÉS de crear flatpickr (no antes)
+if (hasDatesFromURL) {
+  setCurrencyAndCalculate(checkin); // esto llama calculate()
+} else if (checkin) {
+  setCurrencyAndCalculate(checkin);
+} else {
+  calculate();
+}
 
 // Huéspedes (máx. 2)
 function actualizarContador() {
@@ -538,14 +558,32 @@ async function calculate() {
   }
 }
 
-// Volver
+// Botón VOLVER (igual lógica que el resto)
 document.addEventListener("DOMContentLoaded", () => {
   const btnVolver = document.getElementById("btnVolver");
   if (!btnVolver) return;
+
   btnVolver.addEventListener("click", (e) => {
     e.preventDefault();
-    if (window.history.length > 1) window.history.back();
-    else window.location.href = "alojamientos.html";
+
+    const desdeBuscador = localStorage.getItem("busqueda_desde_buscador") === "true";
+    const checkinVal  = (document.getElementById('start')?.value || "").trim();
+    const checkoutVal = (document.getElementById('end')?.value || "").trim();
+    const guestsVal   = (document.getElementById('guests')?.value || "").trim();
+
+    if (desdeBuscador && checkinVal && checkoutVal && guestsVal) {
+      const qs = new URLSearchParams({
+        checkin: checkinVal,
+        checkout: checkoutVal,
+        huespedes: guestsVal
+      }).toString();
+      window.location.href = `alojamientos.html?${qs}`;
+    } else {
+      localStorage.removeItem("checkin");
+      localStorage.removeItem("checkout");
+      localStorage.removeItem("huespedes");
+      window.location.href = "alojamientos.html";
+    }
   });
 });
 </script>
