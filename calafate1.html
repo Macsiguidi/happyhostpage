@@ -397,7 +397,7 @@
     guestsInput.value = cantidad;
   }
   menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
-  masBtn.addEventListener('click', () => { if (cantidad < 3) { cantidad++; actualizarContador(); calculate(); } });
+  masBtn.addEventListener('click', () => { if (cantidad < 6) { cantidad++; actualizarContador(); calculate(); } });
   guestsInput.addEventListener('input', () => {
     let v = parseInt(guestsInput.value) || 1;
     if (v < 1) v = 1; if (v > 3) v = 3;
@@ -455,7 +455,7 @@
     if (!sd || !ed) { resDiv.textContent = 'Fechas inválidas.'; reservarBtn.disabled = true; return; }
     if (ed <= sd)   { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
 
-    const MAX_GUESTS = 3, FREE_GUESTS = 2;
+    const MAX_GUESTS = 6, FREE_GUESTS = 4;
     if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
     if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
 
