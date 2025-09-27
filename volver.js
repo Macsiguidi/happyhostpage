@@ -99,14 +99,19 @@
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  const box = document.querySelector('.info.servicios');
-  const btn = box?.querySelector('.servicios-toggle');
-  if(!box || !btn) return;
 
-  btn.addEventListener('click', () => {
-    const isOpen = box.classList.toggle('abierto');
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cont = document.querySelector('.info.servicios');
+  const btn  = cont?.querySelector('.servicios-toggle');
+  if(!cont || !btn) return;
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const isOpen = cont.classList.toggle('abierto');
     btn.setAttribute('aria-expanded', String(isOpen));
   });
 });
+
+
 
