@@ -290,12 +290,13 @@
   </script>
 
   <!-- 3) Motor de reservas (extras, descuentos, breakdown y total apilado) -->
-  <script>
+<script>
   window.addEventListener('load', () => {
+   // IDs reales de Gurisa
     const HOUSE_ID = 648950;
     const ROOM_ID  = 715936;
 
-    /* Helpers fechas */
+    /* Helpers fechas (locales) */
     function parseYMDLocal(s) {
       if (!s) return null;
       if (s.includes('-')) { const [y,m,d] = s.split('-').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
@@ -306,56 +307,54 @@
     function fmtLocal(d){ const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); return `${dd}/${mm}/${d.getFullYear()}`; }
     const format = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
+    // URL params
     const params = new URLSearchParams(window.location.search);
     const checkin   = params.get("checkin");
     const checkout  = params.get("checkout");
     const huespedes = params.get("huespedes");
+    const hasDatesFromURL = !!(checkin && checkout);   // ★ FIX: flag útil
 
-    // 🔧 CAMBIO #1: flag para saber si venimos con ambas fechas por URL
-    const hasDatesFromURL = !!(checkin && checkout);
-
-    // limpiar valores anteriores
+    // limpiar LS previo
     localStorage.removeItem("checkin");
     localStorage.removeItem("checkout");
     localStorage.removeItem("huespedes");
 
-    const startInput  = document.getElementById('start');
-    const endInput    = document.getElementById('end');
-    const guestsInput = document.getElementById('guests');
-    const currSelect  = document.getElementById('currency');
-    const resDiv      = document.getElementById('resultado');
-    const reservarBtn = document.getElementById('btnReservar');
-    const menosBtn    = document.getElementById('menos');
-    const masBtn      = document.getElementById('mas');
-    const contador    = document.getElementById('contador');
+    // DOM
+    const startInput = document.getElementById('start');
+    const endInput   = document.getElementById('end');
+    const guestsInput= document.getElementById('guests');
+    const currSelect = document.getElementById('currency');
+    const resDiv     = document.getElementById('resultado');
+    const reservarBtn= document.getElementById('btnReservar');
+    const menosBtn   = document.getElementById('menos');
+    const masBtn     = document.getElementById('mas');
+    const contador   = document.getElementById('contador');
 
     let cantidad = parseInt(huespedes) || 1;
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     const fechaLimite = new Date('2026-04-30');
 
-    // Precargo inputs ANTES de crear flatpickr (para que los tome)
+    // Prefill de inputs visibles (texto), antes de flatpickr
     if (checkin)  startInput.value = checkin;
     if (checkout) endInput.value   = checkout;
     if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
     actualizarContador();
 
-    // Flatpickr
+    // ---------- Flatpickr (crear primero, calcular después) ----------
     const startPicker = flatpickr(startInput, {
       altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
       defaultDate: checkin || null, minDate: hoy, maxDate: fechaLimite,
       disableMobile: false, clickOpens: true, allowInput: true,
       onChange: (selectedDates) => {
         if (selectedDates[0]) {
-          // 🔧 CAMBIO #2: si ya traíamos ambas fechas, NO vaciamos ni forzamos apertura de checkout
-          if (!hasDatesFromURL && !endInput.value) {
+          // ★ FIX: si ya tenemos checkout (venimos por URL), NO lo toques.
+          if (!endInput.value) {
             endPicker.setDate(null);
             endPicker.jumpToDate(selectedDates[0]);
             endPicker.open();
           }
-          const y = selectedDates[0].getFullYear();
-          const m = String(selectedDates[0].getMonth()+1).padStart(2,'0');
-          const d = String(selectedDates[0].getDate()).padStart(2,'0');
-          setCurrencyAndCalculate(`${y}-${m}-${d}`);
+          // si cambia manualmente, ajustamos moneda y recalculamos
+          setCurrencyAndCalculate(selectedDates[0].toISOString().split('T')[0]);
         }
       }
     });
@@ -365,15 +364,6 @@
       defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
       disableMobile: false, clickOpens: true, allowInput: true,
       onChange: calculate
-    });
-
-    // (refuerzo UX): solo si no veníamos con las dos fechas
-    startPicker.config.onChange.push((selectedDates) => {
-      if (selectedDates[0] && !hasDatesFromURL && !endInput.value) {
-        endPicker.setDate(null);
-        endPicker.jumpToDate(selectedDates[0]);
-        endPicker.open();
-      }
     });
 
     // Fechas ocupadas
@@ -388,7 +378,7 @@
           ...rangos.map(r => {
             const from = parseYMDLocal(r.from);
             const to   = parseYMDLocal(r.to);
-            if (from) from.setDate(from.getDate() + 1); // habilitar día de check-in
+            if (from) from.setDate(from.getDate() + 1); // habilitamos día de check-in
             return { from, to };
           }),
           date => date < hoy || date > fechaLimite
@@ -401,28 +391,28 @@
       picker.config.onOpen.push(() => loadDisabledDates(picker));
     });
 
-    // 🔧 CAMBIO #3: primer cálculo DESPUÉS de crear los pickers
+    // ★ FIX: recién ahora, con los pickers creados, disparamos el cálculo inicial.
     if (hasDatesFromURL) {
-      setCurrencyAndCalculate(checkin); // llama a calculate()
+      setCurrencyAndCalculate(checkin);  // setea moneda y llama calculate()
     } else if (checkin) {
       setCurrencyAndCalculate(checkin);
     } else {
       calculate();
     }
 
-    // Huéspedes (máx 7)
+    // Huéspedes (capacidad 6)
     function actualizarContador() {
       contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
       guestsInput.value = cantidad;
     }
     menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
     masBtn.addEventListener('click', () => { if (cantidad < 7) { cantidad++; actualizarContador(); calculate(); } });
-
     guestsInput.addEventListener('input', () => {
-      let v = parseInt(guestsInput.value) || 1; if (v < 1) v = 1; if (v > 7) v = 7; cantidad = v; actualizarContador(); calculate();
+      let v = parseInt(guestsInput.value) || 1; if (v < 1) v = 1; if (v > 6) v = 6; cantidad = v; actualizarContador(); calculate();
     });
     currSelect.addEventListener('change', calculate);
 
+    // Moneda: ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
     function setCurrencyAndCalculate(fechaCheckinStr) {
       const fecha  = parseYMDLocal(fechaCheckinStr);
       const limite = new Date('2025-12-20');
@@ -451,11 +441,6 @@
     const ymd = (d) => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
     const enRangoAjuste = (d) => { const x = ymd(d); return x >= ymd(AJUSTE_DESDE) && x <= ymd(AJUSTE_HASTA); };
 
-    // Políticas La Gurisa
-    const MAX_GUESTS = 7;
-    const FREE_GUESTS = 4; // hasta 4 sin cargo
-    const EXTRA_USD_PER_GUEST_PER_NIGHT = 12;
-
     async function calculate() {
       const startValue = startInput.value;
       const endValue   = endInput.value;
@@ -469,6 +454,8 @@
       if (!sd || !ed) { resDiv.textContent = 'Seleccioná ambas fechas correctamente.'; reservarBtn.disabled = true; return; }
       if (ed <= sd)   { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
 
+      const MAX_GUESTS = 7;
+      const FREE_GUESTS = 4; // paga extra a partir del 6° (igual lógica a C2, ajustada a capacidad)
       if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
       if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
 
@@ -511,19 +498,20 @@
           const usd = enRangoAjuste(fechaNoche) ? (p.price_per_day + AJUSTE_USD_POR_NOCHE) : p.price_per_day;
           baseUSD += usd;
 
-          const montoMoneda = (moneda === 'USD') ? usd : Math.round(usd * factorARS);
+          const montoMoneda = (moneda === 'USD') ? Math.round(usd) : Math.round(usd * factorARS);
           breakdownNoches.push({ fecha: new Date(fechaNoche), montoMoneda });
         }
 
-        // Extra huésped (desde el 5º)
-        const extraUnitUSD = extras?.[0]?.price_per_day ?? EXTRA_USD_PER_GUEST_PER_NIGHT;
+        // Extra huésped
+        const extraUnitUSD = extras?.[0]?.price_per_day ?? 12;
         const extraQty = Math.max(0, guests - FREE_GUESTS);
         const extraUSD = extraQty * extraUnitUSD * noches;
 
         const totalUSD = baseUSD + extraUSD;
         const totalSinDescuento = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
+        const extraMoneda = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
 
-        // Descuentos por estadía (mismo esquema que calafate4)
+        // Descuentos por estadía
         let discountRate = 0;
         if (noches >= 5 && noches <= 14) discountRate = 0.05;
         else if (noches >= 15 && noches <= 25) discountRate = 0.10;
@@ -539,7 +527,7 @@
              </div>`
           : `<span class="price-current" data-price="${totalSinDescuento}">${format(totalSinDescuento)} ${moneda}</span>`;
 
-        // Resumen principal
+        // Resumen
         const detalle = `
           <ul class="booking-summary">
             <li>Noches: ${noches}</li>
@@ -552,8 +540,6 @@
           `<li><span>${fmtLocal(it.fecha)}</span><span>${format(it.montoMoneda)} ${moneda}</span></li>`
         ).join('');
 
-        // Extra (solo si aplica)
-        const extraMoneda = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
         const extraHtml = (extraQty > 0)
           ? `<li class="bd-extra"><span>Extra huésped (${extraQty} x ${noches} noches)</span><span>+ ${format(extraMoneda)} ${moneda}</span></li>`
           : '';
@@ -612,36 +598,36 @@
       }
     }
 
-    // Botón VOLVER (misma lógica que el resto)
-    document.addEventListener("DOMContentLoaded", () => {
-      const btnVolver = document.getElementById("btnVolver");
-      if (!btnVolver) return;
+    /* =========================
+       Volver SIEMPRE al listado
+       ========================= */
+    (function setupBackLink() {
+      const back = document.getElementById("btnVolver");
+      if (!back) return;
 
-      btnVolver.addEventListener("click", (e) => {
+      const urlParams = new URLSearchParams(location.search);
+      const ci = document.getElementById('start')?.value || urlParams.get('checkin') || urlParams.get('checkInDate') || '';
+      const co = document.getElementById('end')?.value   || urlParams.get('checkout')|| urlParams.get('checkOutDate')|| '';
+      const gh = document.getElementById('guests')?.value|| urlParams.get('huespedes')|| urlParams.get('numberOfGuests')|| '';
+
+      const qs = new URLSearchParams();
+      if (ci) qs.set('checkin', ci);
+      if (co) qs.set('checkout', co);
+      if (gh) qs.set('huespedes', gh);
+
+      const destino = qs.toString() ? `alojamientos.html?${qs.toString()}` : 'alojamientos.html';
+
+      back.setAttribute('href', destino);
+      back.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopImmediatePropagation(); // evita cualquier history.back() previo
+        window.location.href = destino;
+      }, { capture: true, once: true });
+    })();
 
-        const desdeBuscador = localStorage.getItem("busqueda_desde_buscador") === "true";
-        const checkinVal  = (document.getElementById('start')?.value || "").trim();
-        const checkoutVal = (document.getElementById('end')?.value || "").trim();
-        const guestsVal   = (document.getElementById('guests')?.value || "").trim();
-
-        if (desdeBuscador && checkinVal && checkoutVal && guestsVal) {
-          const qs = new URLSearchParams({
-            checkin: checkinVal,
-            checkout: checkoutVal,
-            huespedes: guestsVal
-          }).toString();
-          window.location.href = `alojamientos.html?${qs}`;
-        } else {
-          localStorage.removeItem("checkin");
-          localStorage.removeItem("checkout");
-          localStorage.removeItem("huespedes");
-          window.location.href = "alojamientos.html";
-        }
-      });
-    });
   });
 </script>
+
 
   <!-- (si usás lógica extra de volver) -->
   <script src="volver.js" defer></script>
