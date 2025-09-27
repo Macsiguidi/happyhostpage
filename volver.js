@@ -98,3 +98,15 @@
 
 
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  const box = document.querySelector('.info.servicios');
+  const btn = box?.querySelector('.servicios-toggle');
+  if(!box || !btn) return;
+
+  btn.addEventListener('click', () => {
+    const isOpen = box.classList.toggle('abierto');
+    btn.setAttribute('aria-expanded', String(isOpen));
+  });
+});
+

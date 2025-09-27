@@ -348,3 +348,44 @@ a:hover{text-decoration:underline}
   .motor-reservas-fijo { top: 76px; }
   .reserva { box-shadow: 0 12px 34px rgba(0,0,0,.16); }
 }
+
+
+/* Header con título y flecha */
+.info.servicios .servicios-header{
+  display:flex; align-items:center; justify-content:space-between;
+}
+
+/* Botón flecha */
+.servicios-toggle{
+  background:none; border:none; cursor:pointer;
+  font-size:18px; line-height:1;
+  color:#6B7B53;
+  transform:rotate(0deg);
+  transition:transform .25s ease;
+  padding:6px;
+}
+
+/* Estado abierto: gira flecha */
+.info.servicios.abierto .servicios-toggle{
+  transform:rotate(180deg);
+}
+
+/* ——— MÓVIL: flecha visible y lista oculta ——— */
+@media (max-width: 768px){
+  .iconos-servicios{
+    display:none;
+  }
+  .info.servicios.abierto .iconos-servicios{
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+  }
+}
+
+/* ——— DESKTOP: servicios siempre visibles, flecha oculta ——— */
+@media (min-width: 769px){
+  .iconos-servicios{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;
+  }
+  .servicios-toggle{
+    display:none; /* 🔴 flecha no aparece en desktop */
+  }
+}
