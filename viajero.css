@@ -759,7 +759,7 @@ body {
 
 /* ====== DESTACADOS ====== */
 #destacados{
-  max-width:1600px;
+  max-width:1600px;  /* 🔧 ancho total del bloque en desktop */
   margin:40px auto;
   padding:0 16px;
 }
@@ -767,16 +767,18 @@ body {
 #destacados h2{
   font-family:"Bebas Neue", Poppins, sans-serif;
   font-size:clamp(24px,4vw,36px);
-  color:#6B7B53; /* oliva Happy Host */
+  color:#6B7B53;
   margin:0 0 20px;
   letter-spacing:.5px;
   text-align:center;
 }
 
+/* === BASE (MOBILE / TABLET) === */
+/* 🔧 en mobile: una grilla flexible, sin mínimo gigante */
 .destacados-grid{
   display:grid;
-  gap:5px;
-  grid-template-columns:repeat(auto-fill,minmax(860px,1fr)); /* 🔧 ANCHURA base: subí/bajá el 260px */
+  gap:10px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 🔧 antes tenías 860px: sacalo de acá */
 }
 
 #destacados .card{
@@ -798,7 +800,7 @@ body {
 #destacados .carousel{
   position:relative;
   width:100%;
-  height:520px;   /* 🔧 ALTURA base: aumentá acá (ej 280px, 300px) */
+  height:260px; /* 🔧 altura base amigable para mobile */
   overflow:hidden;
 }
 
@@ -850,20 +852,36 @@ body {
   display:block;
 }
 
-/* 🔧 ESCRITORIO */
+/* === DESKTOP (>=1024px) === */
+/* 🔧 acá sí forzamos 4 en línea y las hacemos más anchas subiendo el contenedor */
 @media (min-width: 1024px){
   .destacados-grid{
-    grid-template-columns:repeat(4, minmax(0,1fr)); /* 🔧 Nº de columnas: probá con 3 para más ancho */
-    gap:20px;
+    grid-template-columns: repeat(4, 1fr); /* 🔧 4 en línea */
+    gap:16px;
   }
   #destacados .carousel{
-    height:300px;   /* 🔧 ALTURA escritorio: subila a 320px, 340px... */
+    height:340px; /* 🔧 más alto en desktop (ajustá a gusto) */
   }
 }
 
+/* === ULTRA-WIDE (>=1280px) === */
+/* 🔧 si querés que se vean todavía más anchas, aumentá altura y ancho del bloque */
 @media (min-width: 1280px){
-  #destacados{ max-width:1600px; }
-  #destacados .carousel{
-    height:620px;   /* 🔧 ALTURA pantallas grandes */
-  }
+  #destacados{ max-width:1600px; } /* ya lo tenías */
+  #destacados .carousel{ height:380px; } /* 🔧 tocá acá para más “largo” */
+}
+
+/* === OPCIONAL: si tenés pantallas XXL (>=1536px) === */
+@media (min-width: 1536px){
+  #destacados{ max-width: 1800px; } /* 🔧 subí si querés aún más ancho total */
+  #destacados .carousel{ height: 420px; }
+}
+
+/* Overlay interno de las cards de destacados (no interfiere con el hero) */
+#destacados .overlay-card{
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.35) 100%);
+  pointer-events:none;
+  z-index:1;
 }

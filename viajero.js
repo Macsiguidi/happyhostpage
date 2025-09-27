@@ -15,16 +15,32 @@ document.addEventListener("DOMContentLoaded", async function () {
   // FLATPICKR
   // ==========================
   const dateInput = document.getElementById("rango-fechas");
+  let rangoSeparator = " a "; // fallback seguro
+
   if (dateInput) {
-    const isMobile = window.innerWidth <= 768;
-    flatpickr(dateInput, {
-      mode: "range",
-      dateFormat: "Y-m-d",
-      locale: "es",
-      minDate: "today",
-      showMonths: isMobile ? 1 : 2,
-      disableMobile: true
-    });
+    if (window.flatpickr) {
+      const isMobile = window.innerWidth <= 768;
+
+      const fp = flatpickr(dateInput, {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        // Forzamos separador para no depender de la locale externa
+        locale: { rangeSeparator: " a " },
+        minDate: "today",
+        showMonths: isMobile ? 1 : 2,
+        disableMobile: true
+      });
+
+      // Tomamos el separador real que esté usando la instancia por si cambia
+      try {
+        rangoSeparator = (fp.config.locale && fp.config.locale.rangeSeparator) || " a ";
+      } catch (e) { /* noop */ }
+
+    } else {
+      console.warn("⚠️ flatpickr no está cargado. Verificá el <script> del CDN antes de viajeros.js");
+      // Opcional: bloquear edición si falta la lib
+      // dateInput.setAttribute("readonly", "readonly");
+    }
   }
 
   // ==========================
@@ -78,12 +94,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const rango = (dateInput.value || "").split(" a ");
+      // Usamos el separador real (no hardcodeado)
+      const rango = (dateInput?.value || "").split(rangoSeparator);
       const checkin = rango[0]?.trim();
       const checkout = rango[1]?.trim();
       const huespedes = inputHuespedes.value;
 
-      console.log("🧪 Rango seleccionado:", dateInput.value);
+      console.log("🧪 Rango seleccionado:", dateInput?.value);
       console.log("✅ Checkin:", checkin);
       console.log("✅ Checkout:", checkout);
       console.log("✅ Huéspedes:", huespedes);
@@ -97,7 +114,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       localStorage.setItem("checkout", checkout);
       localStorage.setItem("huespedes", huespedes);
       localStorage.setItem("busqueda_desde_buscador", "true");
-
 
       try {
         const response = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
@@ -152,36 +168,37 @@ document.addEventListener("DOMContentLoaded", async function () {
   mostrarGrupo(actual);
   setInterval(siguienteGrupo, 7000);
 
- // VIDEOS ACTIVIDADES — play on hover (desktop) / click-tap (mobile)
-(function initActividadVideos() {
-  const cards = document.querySelectorAll('.video-actividad');
-  if (!cards.length) return;
+  // VIDEOS ACTIVIDADES — play on hover (desktop) / click-tap (mobile)
+  (function initActividadVideos() {
+    const cards = document.querySelectorAll('.video-actividad');
+    if (!cards.length) return;
 
-  cards.forEach(card => {
-    const video = card.querySelector('video');
-    if (!video) return;
+    cards.forEach(card => {
+      const video = card.querySelector('video');
+      if (!video) return;
 
-    // Asegurar que NO arranquen solos aunque el HTML se olvide
-    video.autoplay = false;
-    video.loop = false;
-    video.removeAttribute('autoplay');
-    video.removeAttribute('loop');
-    video.preload = 'metadata';
-    try { video.pause(); video.currentTime = 0; } catch {}
+      // Asegurar que NO arranquen solos aunque el HTML se olvide
+      video.autoplay = false;
+      video.loop = false;
+      video.removeAttribute('autoplay');
+      video.removeAttribute('loop');
+      video.preload = 'metadata';
+      try { video.pause(); video.currentTime = 0; } catch {}
 
-    const play = () => { video.play().catch(() => {}); };
-    const stop = () => { video.pause(); video.currentTime = 0; };
+      const play = () => { video.play().catch(() => {}); };
+      const stop = () => { video.pause(); video.currentTime = 0; };
 
-    // Desktop: hover en el contenedor (no en el video) por si el overlay está encima
-    card.addEventListener('mouseenter', play);
-    card.addEventListener('mouseleave', stop);
+      // Desktop: hover en el contenedor (no en el video) por si el overlay está encima
+      card.addEventListener('mouseenter', play);
+      card.addEventListener('mouseleave', stop);
 
-    // Soporte simple para touch/click
-    card.addEventListener('click', () => {
-      if (video.paused) play(); else stop();
-    }, { passive: true });
-  });
-})();
+      // Soporte simple para touch/click
+      card.addEventListener('click', () => {
+        if (video.paused) play(); else stop();
+      }, { passive: true });
+    });
+  })();
+});
 
 
 

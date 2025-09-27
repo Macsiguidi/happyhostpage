@@ -198,7 +198,6 @@ body{
   font-weight: 600;
 }
 
-
 .badge-copa {
   position: absolute;
   top: 10px;
@@ -207,9 +206,49 @@ body{
   width: 32px;
   height: 32px;
 }
-
 .badge-copa img {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* ===== MENÚ MÓVIL (logo arriba centrado + links centrados debajo) ===== */
+@media (max-width: 768px) {
+  .menu-principal{
+    display: flex;
+    flex-direction: column;    /* apila logo y menú */
+    align-items: center;
+    justify-content: center;
+    gap: 6px;                  /* 🔧 distancia entre logo y links */
+    padding: 12px 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .logo{
+    display: block;
+    text-align: center;
+  }
+  .logo img{
+    width: 140px;              /* tamaño del logo en móvil */
+    height: auto;
+  }
+
+  .menu-list{
+    display: flex;
+    justify-content: center;   /* centra horizontalmente */
+    align-items: center;
+    gap: 18px;                 /* espacio entre INICIO y CONTACTO */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .menu-list li a{
+    font-size: 16px;           /* tamaño del texto en móvil */
+    font-weight: 700;
+    padding: 6px 8px;          /* menos padding para acercarlos al logo */
+    border-radius: 999px;
+  }
 }

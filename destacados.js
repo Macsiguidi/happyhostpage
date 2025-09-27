@@ -1,18 +1,24 @@
 // destacados.js
-console.log("Destacados JS v1.0.2");
+console.log("Destacados JS v1.0.5");
 
 // Forzar refresco del set si cambiamos la lógica o los datos
-const DESTACADOS_VERSION = "1.0.2";
+const DESTACADOS_VERSION = "1.0.5";
 if (localStorage.getItem("destacados_ver") !== DESTACADOS_VERSION) {
   localStorage.removeItem("destacados_set");
   localStorage.removeItem("destacados_at");
   localStorage.setItem("destacados_ver", DESTACADOS_VERSION);
 }
 
-// Evitar errores si funciones globales no están en esta página
-window.iniciarSlideshow = window.iniciarSlideshow || function(){};
-window.detenerSlideshow = window.detenerSlideshow || function(){};
-window.redirigirConParametros = window.redirigirConParametros || function(href){ window.location.href = href; };
+// Evitar errores si funciones globales no están en esta página (sin sobrescribir)
+if (typeof window.iniciarSlideshow === "undefined") {
+  window.iniciarSlideshow = function(){};
+}
+if (typeof window.detenerSlideshow === "undefined") {
+  window.detenerSlideshow = function(){};
+}
+if (typeof window.redirigirConParametros === "undefined") {
+  window.redirigirConParametros = function(href){ window.location.href = href; };
+}
 
 // === LISTA DE PROPIEDADES ===
 const propiedades = [
@@ -31,7 +37,7 @@ const propiedades = [
   { slug:"calafate7", titulo:"Calafate 7", href:"calafate7.html",
     imgs:["unidades/casa7/casa7_img1.jpg","unidades/casa7/casa7_img7.jpg","unidades/casa7/casa7_img5.jpg"], capacidad:"2/4" },
 
-  // Ajustado a tu ruta real
+  // Rutas ajustadas
   { slug:"cruz4", titulo:"Cruz del Sur 4", href:"cruz4.html",
     imgs:["unidades/cds4/cds4_1.jpg","unidades/cds4/cds4_2.jpg","unidades/cds4/cds4_9.jpg"], capacidad:"2" },
   { slug:"cruz5", titulo:"Cruz del Sur 5", href:"cruz5.html",
@@ -64,17 +70,18 @@ const randomPick = (arr, n) => arr.slice().sort(() => 0.5 - Math.random()).slice
 
 // Mantener 1 y cambiar 3 cada 2 días
 function getDestacados() {
-  const saved = JSON.parse(localStorage.getItem("destacados_set")) || null;
-  const savedAt = parseInt(localStorage.getItem("destacados_at")) || 0;
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem("destacados_set") || "null"); } catch (e) { saved = null; }
+  const savedAt = parseInt(localStorage.getItem("destacados_at") || "0", 10);
   const now = Date.now();
-  const dosDias = 2 * 24 * 60 * 60 * 1000; // ⏱️ cambio cada 2 días
+  const dosDias = 2 * 24 * 60 * 60 * 1000;
 
   if (!saved || now - savedAt > dosDias) {
     let nuevos;
     if (saved && saved.length) {
-      const fijo = randomPick(saved, 1); // mantener 1
+      const fijo = randomPick(saved, 1);
       const resto = propiedades.filter(p => !fijo.some(f => f.slug === p.slug));
-      nuevos = [...fijo, ...randomPick(resto, 3)]; // cambiar 3
+      nuevos = [...fijo, ...randomPick(resto, 3)];
     } else {
       nuevos = randomPick(propiedades, 4);
     }
@@ -86,7 +93,7 @@ function getDestacados() {
 }
 
 // Render
-async function renderDestacados() {
+function renderDestacados() {
   const cont = document.querySelector("#destacados .destacados-grid");
   if (!cont) return;
   const destacados = getDestacados();
@@ -97,7 +104,7 @@ async function renderDestacados() {
       onmouseout="detenerSlideshow(this)"
       onclick="redirigirConParametros('${p.href}'); return false;">
       <div class="carousel">
-        <div class="overlay"></div>
+        <div class="overlay"></div> <!-- usamos overlay unificado -->
 
         ${destacadosConCopa.has(p.slug) ? `
           <div class="badge-copa">
