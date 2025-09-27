@@ -600,166 +600,270 @@ body {
 }
 
 
-.actividades {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 20px;
+/* =======================
+   ACTIVIDADES (tiles)
+   ======================= */
+.actividades{
+  max-width:1200px;
+  margin:28px auto;
+  padding:0 16px;
+  display:grid;
+  gap:14px;
+  grid-template-columns:repeat(12,1fr);
+}
+.actividades h2{
+  grid-column:1 / -1;
+  text-align:center; /* <— centrado */
+  font-family:"Bebas Neue", Poppins, sans-serif;
+  color:#6B7B53;        /* oliva Happy Host */
+  font-size:clamp(22px,4vw,30px);
+  margin:0 0 12px;
+  letter-spacing:.3px;
 }
 
-.actividades h2 {
-  grid-column: 1 / -1;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  color: #070707;
-  font-size: 2rem;
-  margin-bottom: 20px;
+/* Card visual reusando tu .video-actividad como tile */
+.video-actividad{
+  grid-column:span 6;
+  position:relative; border-radius:18px; overflow:hidden;
+  min-height:220px; box-shadow:0 8px 30px rgba(0,0,0,.08);
+  background:#000;
+}
+.video-actividad video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  transform:scale(1.02); transition:transform .25s ease;
+}
+.video-actividad::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.55) 100%);
+}
+.video-actividad:hover video{ transform:scale(1.05) }
+
+/* Título overlay */
+.titulo-video{
+  position:absolute; left:14px; bottom:12px; z-index:2;
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(2px);
+  color:#fff; padding:8px 12px; border-radius:12px;
+  font-family:Poppins, sans-serif; font-weight:700;
+  font-size:clamp(14px,2.2vw,16px); letter-spacing:.2px;
 }
 
-.video-actividad {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+/* Variante pequeña (si la querés mezclar) */
+.video-actividad.is-small{ grid-column:span 4; min-height:180px }
+
+/* Responsive */
+@media (max-width:1000px){
+  .actividades{ grid-template-columns:repeat(8,1fr) }
+  .video-actividad{ grid-column:span 8 }
+  .video-actividad.is-small{ grid-column:span 4 }
+}
+@media (max-width:720px){
+  .actividades{ grid-template-columns:repeat(4,1fr) }
+  .video-actividad, .video-actividad.is-small{ grid-column:span 4; min-height:180px }
 }
 
-.video-actividad video {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  display: block;
-}
-
-.titulo-video {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  background: rgba(29, 41, 42, 0.6);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
-}
-
-/* Móvil */
-@media (max-width: 768px) {
-  .actividades {
-    grid-template-columns: 1fr;
-  }
-  
-  .video-actividad video {
-    height: 180px;
-  }
-}
-
-
+/* ============== EVENTOS ============== */
 .eventos-villa {
   padding: 40px 20px;
   background: #f8f8f8;
-  text-align: center;
   font-family: 'Poppins', sans-serif;
+  text-align: center; /* 🔹 centramos título */
 }
 
 .eventos-villa h2 {
-  font-size: 2rem;
-  margin-bottom: 30px;
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  color: #2b2f2d;
+  font-size: clamp(22px, 3.2vw, 32px);
+  font-weight: 700;
+  text-align: center; /* 🔹 centrado */
 }
 
 .eventos-grid {
+  max-width: 1200px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  gap: 18px;
 }
 
-.evento-card {
+/* Anchor como tarjeta visual */
+.evento-card,
+.evento-card:visited {
   position: relative;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 300px;
-  color: white;
-  border-radius: 12px;
+  display: flex;                  /* 🔹 Para manejar bien la altura */
+  align-items: flex-end;          /* texto al pie */
+  min-height: 300px;
+  border-radius: 14px;
   overflow: hidden;
+  color: #fff;
   text-decoration: none;
-  transition: transform 0.3s ease;
-  background-color: #000; /* para que no quede blanco de fondo si hay bordes */
+  background-color: #000;
+  box-shadow: 0 8px 26px rgba(0,0,0,.12);
+  transform: translateZ(0);
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 
+.evento-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.evento-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.55) 80%);
+  z-index: 1;
+}
 
 .evento-card:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
+  box-shadow: 0 10px 32px rgba(0,0,0,.16);
 }
 
+/* Info al pie */
 .evento-card .info {
-  position: absolute;
-  bottom: 0;
+  position: relative;
+  z-index: 2;
   width: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-  padding: 20px;
+  padding: 16px;
   text-align: left;
 }
-
 .evento-card .info h3 {
-  margin: 0;
-  font-size: 1.2rem;
+  margin: 0 0 8px;
+  font-size: clamp(16px, 2.4vw, 20px);
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0,0,0,.35);
+}
+.evento-card .fecha {
+  font-size: 14px;
+  opacity: .9;
 }
 
-.evento-card .info .fecha {
-  margin-top: 5px;
-  font-size: 0.95rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.evento-card:hover .fecha {
-  opacity: 1;
-}
-
-
+/* Responsive */
 @media (max-width: 768px) {
-  .eventos-villa h2 {
-    font-size: 1.5rem;
-  }
+  .evento-card { min-height: 240px; border-radius: 12px }
+}
+@media (max-width: 480px) {
+  .evento-card { min-height: 210px }
+}
 
-  .eventos-grid {
-    grid-template-columns: 1fr;
-  }
 
-  .evento-card {
-    height: 240px;
-    border-radius: 10px;
-  }
+/* ====== DESTACADOS ====== */
+#destacados{
+  max-width:1600px;
+  margin:40px auto;
+  padding:0 16px;
+}
 
-  .evento-card .info {
-    padding: 16px;
-  }
+#destacados h2{
+  font-family:"Bebas Neue", Poppins, sans-serif;
+  font-size:clamp(24px,4vw,36px);
+  color:#6B7B53; /* oliva Happy Host */
+  margin:0 0 20px;
+  letter-spacing:.5px;
+  text-align:center;
+}
 
-  .evento-card .info h3 {
-    font-size: 1.1rem;
-  }
+.destacados-grid{
+  display:grid;
+  gap:5px;
+  grid-template-columns:repeat(auto-fill,minmax(860px,1fr)); /* 🔧 ANCHURA base: subí/bajá el 260px */
+}
 
-  .evento-card .info .fecha {
-    font-size: 0.9rem;
+#destacados .card{
+  position:relative;
+  overflow:hidden;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.12);
+  text-decoration:none;
+  color:inherit;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+#destacados .card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(0,0,0,.16);
+}
+
+#destacados .carousel{
+  position:relative;
+  width:100%;
+  height:520px;   /* 🔧 ALTURA base: aumentá acá (ej 280px, 300px) */
+  overflow:hidden;
+}
+
+#destacados .carousel img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+#destacados .nombre-alojamiento{
+  position:absolute;
+  inset:auto 0 0 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 14px;
+  background:#6B7B53;
+  color:#fff;
+  font-weight:600;
+  letter-spacing:.2px;
+}
+
+#destacados .nombre-alojamiento .capacidad{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-weight:600;
+}
+
+#destacados .nombre-alojamiento .capacidad img{
+  width:16px;
+  height:16px;
+  filter:brightness(0) invert(1);
+}
+
+/* Badge copa */
+#destacados .badge-copa{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:32px;
+  height:32px;
+  z-index:5;
+}
+#destacados .badge-copa img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* 🔧 ESCRITORIO */
+@media (min-width: 1024px){
+  .destacados-grid{
+    grid-template-columns:repeat(4, minmax(0,1fr)); /* 🔧 Nº de columnas: probá con 3 para más ancho */
+    gap:20px;
+  }
+  #destacados .carousel{
+    height:300px;   /* 🔧 ALTURA escritorio: subila a 320px, 340px... */
   }
 }
 
-@media (max-width: 480px) {
-  .evento-card {
-    height: 200px;
-  }
-
-  .evento-card .info {
-    padding: 12px;
-  }
-
-  .evento-card .info h3 {
-    font-size: 1rem;
-  }
-
-  .evento-card .info .fecha {
-    font-size: 0.8rem;
+@media (min-width: 1280px){
+  #destacados{ max-width:1600px; }
+  #destacados .carousel{
+    height:620px;   /* 🔧 ALTURA pantallas grandes */
   }
 }

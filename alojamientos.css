@@ -197,3 +197,19 @@ body{
   color: var(--hh-olive-700);
   font-weight: 600;
 }
+
+
+.badge-copa {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  width: 32px;
+  height: 32px;
+}
+
+.badge-copa img {
+  width: 100%;
+  height: auto;
+  display: block;
+}

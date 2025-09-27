@@ -152,22 +152,38 @@ document.addEventListener("DOMContentLoaded", async function () {
   mostrarGrupo(actual);
   setInterval(siguienteGrupo, 7000);
 
-  // ==========================
-  // VIDEOS ACTIVIDADES
-  // ==========================
-  document.querySelectorAll('.video-actividad video').forEach(video => {
-    video.pause();
+ // VIDEOS ACTIVIDADES — play on hover (desktop) / click-tap (mobile)
+(function initActividadVideos() {
+  const cards = document.querySelectorAll('.video-actividad');
+  if (!cards.length) return;
 
-    video.addEventListener('mouseenter', () => {
-      video.play();
-    });
+  cards.forEach(card => {
+    const video = card.querySelector('video');
+    if (!video) return;
 
-    video.addEventListener('mouseleave', () => {
-      video.pause();
-      video.currentTime = 0;
-    });
+    // Asegurar que NO arranquen solos aunque el HTML se olvide
+    video.autoplay = false;
+    video.loop = false;
+    video.removeAttribute('autoplay');
+    video.removeAttribute('loop');
+    video.preload = 'metadata';
+    try { video.pause(); video.currentTime = 0; } catch {}
+
+    const play = () => { video.play().catch(() => {}); };
+    const stop = () => { video.pause(); video.currentTime = 0; };
+
+    // Desktop: hover en el contenedor (no en el video) por si el overlay está encima
+    card.addEventListener('mouseenter', play);
+    card.addEventListener('mouseleave', stop);
+
+    // Soporte simple para touch/click
+    card.addEventListener('click', () => {
+      if (video.paused) play(); else stop();
+    }, { passive: true });
   });
-});
+})();
+
+
 
 
 
