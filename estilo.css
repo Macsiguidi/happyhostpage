@@ -29,6 +29,8 @@ body{
   min-height:100dvh;
 }
 
+
+
 /* ===== Hero centrado ===== */
 .pantalla-inicial{
   min-height:100dvh;
@@ -112,7 +114,7 @@ body{
 
 /* ====== Mobile ====== */
 @media (max-width: 768px){
-  .logo-inicial img{ width:200px; max-width:70vw; }
+  .logo-inicial img{ width:300px; max-width:70vw; }
 
   .botones-inicio{ gap:16px; }
 
@@ -130,4 +132,31 @@ body{
 /* ====== XL/Desktops grandes ====== */
 @media (min-width: 1280px){
   .btn-inicio{ font-size:1.4rem; padding:18px 42px; }
+}
+
+
+
+
+
+
+/* Fondo en video */
+.video-fondo {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: -1; /* detrás de todo */
+}
+
+.video-fondo video {
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  filter: brightness(0.75); /* baja luz para que resalten logo/botones */
+}
+
+/* Asegurar que el contenido quede arriba */
+.pantalla-inicial {
+  position: relative;
+  z-index: 2;
 }

@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Alquileres vacacionales en Villa La Angostura | Patagonia Argentina | Happy Host</title>
-<meta name="description" content="Casas y departamentos en alquiler en Villa La Angostura. Descubrí la Patagonia Argentina con alojamientos únicos rodeados de montañas, lagos y naturaleza.">
-<meta name="keywords" content="Villa La Angostura, Patagonia Argentina, alquiler vacacional, alquiler temporal, casas en el sur, turismo en la Patagonia, cabañas Neuquén, alojamiento en la montaña, casas con vista al lago, Happy Host, alquiler turístico, sur argentino, naturaleza, aventura, descanso, vacaciones en la Patagonia, alquileres turísticos en Argentina, casas en la Patagonia, departamentos turísticos Villa La Angostura">
-<meta name="author" content="Happy Host Patagonia">
-
+  <meta name="description" content="Casas y departamentos en alquiler en Villa La Angostura. Descubrí la Patagonia Argentina con alojamientos únicos rodeados de montañas, lagos y naturaleza.">
+  <meta name="keywords" content="Villa La Angostura, Patagonia Argentina, alquiler vacacional, alquiler temporal, casas en el sur, turismo en la Patagonia, cabañas Neuquén, alojamiento en la montaña, casas con vista al lago, Happy Host, alquiler turístico, sur argentino, naturaleza, aventura, descanso, vacaciones en la Patagonia, alquileres turísticos en Argentina, casas en la Patagonia, departamentos turísticos Villa La Angostura">
+  <meta name="author" content="Happy Host Patagonia">
 
   <link rel="icon" type="image/png" href="logos/happyhost.png" sizes="128x128">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -22,27 +21,33 @@
   <meta property="og:type" content="website">
 
   <script>
-if (location.hostname === 'happyhostpatagonia.com.ar') {
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1812973002649828');
-  fbq('track', 'PageView');
-}
-</script>
-
+  if (location.hostname === 'happyhostpatagonia.com.ar') {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1812973002649828');
+    fbq('track', 'PageView');
+  }
+  </script>
 </head>
-
-
 
 <body>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></noscript>
 
+  <!-- 🎥 Video de fondo 
+  <div class="video-fondo">
+    <video autoplay muted loop playsinline>
+      <source src="videos/video2.mp4" type="video/mp4">
+      Tu navegador no soporta videos en HTML5.
+    </video>
+  </div>-->
+
+  <!-- Contenido principal -->
   <section class="pantalla-inicial">
     <div class="logo-inicial">
       <img src="logos/happy host.png" alt="Happy Host Patagonia">
@@ -53,25 +58,19 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
     </div>
   </section>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (localStorage.getItem("reservaExitosa") === "true") {
+        const cartel = document.getElementById("cartel-reserva");
+        cartel.style.display = "block";
 
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-  if (localStorage.getItem("reservaExitosa") === "true") {
-    const cartel = document.getElementById("cartel-reserva");
-    cartel.style.display = "block";
-
-    setTimeout(() => {
-      cartel.style.display = "none";
-      localStorage.removeItem("reservaExitosa");  // Limpiamos para que no aparezca siempre
-    }, 5000);
-  }
-});
-
-
-</script>
-
-
+        setTimeout(() => {
+          cartel.style.display = "none";
+          localStorage.removeItem("reservaExitosa"); 
+        }, 5000);
+      }
+    });
+  </script>
 </body>
 </html>
+
