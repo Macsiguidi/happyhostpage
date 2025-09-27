@@ -113,17 +113,29 @@
             <button class="lightbox__nav lightbox__nav--next" aria-label="Siguiente">&#10095;</button>
           </div>
 
-          <aside class="info servicios">
-            <h3>Servicios</h3>
-            <div class="iconos-servicios">
+
+
+          <!-- Servicios -->
+           <aside class="info servicios" aria-labelledby="servicios-titulo">
+  <div class="servicios-header">
+    <h3 id="servicios-titulo">Servicios</h3>
+    <button class="servicios-toggle"
+            type="button"
+            aria-label="Mostrar/ocultar servicios"
+            aria-controls="lista-servicios"
+            aria-expanded="false">▼</button>
+  </div>
+
+  <div class="iconos-servicios" id="lista-servicios">
+    
               <div><img src="iconos/persona.png" alt="Capacidad 3 personas"><span>3 pax</span></div>
               <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
               <div><img src="iconos/cocina.png" alt="Cocina equipada"><span>Cocina</span></div>
               <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
               <div><img src="iconos/sabanas y toallas.png" alt="Ropa blanca incluida"><span>Blancos</span></div>
               <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
-            </div>
-          </aside>
+  </div>
+</aside>
         </div>
 
         <!-- Motor de reservas -->

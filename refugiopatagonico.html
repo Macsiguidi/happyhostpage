@@ -101,18 +101,29 @@
             <button class="flecha der" type="button" aria-label="Ver fotos siguientes">&#10095;</button>
           </div>
 
-          <aside class="info servicios">
-            <h3>Servicios</h3>
-            <div class="iconos-servicios">
-              <div><img src="iconos/persona.png" alt="Capacidad"><span>9 pax</span></div>
+
+          <!--servicios-->
+
+        <aside class="info servicios" aria-labelledby="servicios-titulo">
+  <div class="servicios-header">
+    <h3 id="servicios-titulo">Servicios</h3>
+    <button class="servicios-toggle"
+            type="button"
+            aria-label="Mostrar/ocultar servicios"
+            aria-controls="lista-servicios"
+            aria-expanded="false">▼</button>
+  </div>
+
+  <div class="iconos-servicios" id="lista-servicios">
+    <div><img src="iconos/persona.png" alt="Capacidad"><span>9 pax</span></div>
               <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
               <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
               <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
               <div><img src="iconos/sabanas y toallas.png" alt="Sábanas"><span>Blancos</span></div>
               <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
               <div><img src="iconos/parrilla.png" alt="Parrilla"><span>Parrilla</span></div>
-            </div>
-          </aside>
+  </div>
+</aside>
         </div>
 
         <!-- Lightbox -->
