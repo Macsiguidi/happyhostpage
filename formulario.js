@@ -373,3 +373,47 @@ window.addEventListener('DOMContentLoaded', () => {
     };
   }
 }); // ← cierre DOMContentLoaded
+
+
+// ====== Modal Términos & Condiciones ======
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const link   = $('verTerminos');          // <a id="verTerminos">...
+  const modal  = $('modal-terminos');       // <div id="modal-terminos" class="modal">...
+  const closeX = modal ? modal.querySelector('.cerrar') : null;
+
+  if (!link || !modal) return; // si no existen, no hacemos nada
+
+  function openModal() {
+    modal.style.display = 'block';
+    modal.setAttribute('aria-hidden', 'false');
+    // Evita scroll de fondo
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
+
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal();
+  });
+
+  closeX && closeX.addEventListener('click', closeModal);
+
+  // Cerrar al clickear overlay (fuera del contenido)
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Cerrar con ESC
+  document.addEventListener('keydown', (e) => {
+    const visible = modal.style.display === 'block';
+    if (e.key === 'Escape' && visible) closeModal();
+  });
+})();
