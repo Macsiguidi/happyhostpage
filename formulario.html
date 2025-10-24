@@ -19,6 +19,23 @@
   <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/logos/happyhost.png">
   <meta property="og:url" content="https://www.happyhostpatagonia.com.ar">
   <meta property="og:type" content="website">
+
+  <!-- === Estilos aviso de pago (suave HH) === -->
+  <style>
+    .hh-pago-nota{
+      margin-top:14px; border:1px solid #e3e3e3; border-radius:12px;
+      background:#fafaf7; padding:14px 16px; font-size:14px; line-height:1.45;
+    }
+    .hh-pago-nota b{ color:#5f6b46; }
+    .hh-pago-nota .hh-title{
+      display:flex; align-items:center; gap:8px; font-weight:600; margin:0 0 6px;
+      color:#5f6b46; font-size:15px;
+    }
+    .hh-pago-nota .hh-title svg{ width:18px; height:18px; flex:0 0 18px; }
+    .hh-pago-nota ul{ margin:8px 0 0 18px; padding:0; }
+    .hh-pago-nota li{ margin:4px 0; }
+    .hh-pago-nota .hh-small{ margin-top:8px; font-size:12.5px; color:#666; }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -188,6 +205,22 @@
             </ul>
           </div>
         </div>
+
+        <!-- === AVISO: Cómo se realiza el pago (Versión Detallada) === -->
+        <section class="hh-pago-nota" aria-label="Información de pago y tipo de cambio">
+          <div class="hh-title">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="#5f6b46" stroke-width="1.5"></circle>
+              <path d="M12 8.5h.01M11 11.5h2v5h-2z" stroke="#5f6b46" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+            Cómo se realiza el pago
+          </div>
+          <ul>
+            <li><b>Seña:</b> Podés pagar en <b>USD</b> o <b>ARS</b>. Si es en ARS, convertimos al <b>dólar blue venta del día del pago</b> (Ámbito Financiero).</li>
+            <li><b>Saldo al ingresar:</b> Podés pagar en <b>USD</b> o <b>ARS</b>. Si es en ARS, aplicamos el <b>dólar blue venta del día del ingreso</b> (Ámbito Financiero).</li>
+          </ul>
+          <div class="hh-small">El tipo de cambio se toma en el momento efectivo de cada pago (seña e ingreso). Si abonás todo en USD, no hay conversión.</div>
+        </section>
       </aside>
     </div>
   </main>
@@ -283,6 +316,27 @@ window.addEventListener('load', () => {
 });
 </script>
 
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const notaPago = document.querySelector('.hh-pago-nota');
+  if (!notaPago) return;
+
+  // Buscamos texto del precio
+  const precioEl = document.getElementById('precioReserva') || document.getElementById('precioFinal');
+  if (!precioEl) return;
+
+  const texto = (precioEl.textContent || '').toUpperCase();
+
+  // Si incluye "USD" o "$USD" → mostrar. Si no, ocultar.
+  if (texto.includes('USD')) {
+    notaPago.style.display = 'block';
+  } else {
+    notaPago.style.display = 'none';
+  }
+});
+</script>
+
 
 </body>
 </html>
+
