@@ -446,7 +446,7 @@
   // ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
   function setCurrencyAndCalculate(fechaCheckinStr) {
     const fecha  = parseYMDLocal(fechaCheckinStr);
-    const limite = parseYMDLocal('2025-12-20');
+    const limite = parseYMDLocal('2026-02-28');
     if (fecha) {
       currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
       currSelect.style.display = 'none';
