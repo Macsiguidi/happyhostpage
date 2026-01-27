@@ -527,8 +527,8 @@
 
       // Descuentos por estadía
       let discountRate = 0;
-      if (noches >= 10 && noches <= 5) discountRate = 0.05;
-      else if (noches >= 15 && noches <= 15) discountRate = 0.10;
+      if (noches >= 5 && noches <= 10) discountRate = 0.05;
+      else if (noches >= 11 && noches <= 15) discountRate = 0.10;
 
       const descuento = Math.round(totalSinDesc * discountRate);
       const totalConDesc = totalSinDesc - descuento;
