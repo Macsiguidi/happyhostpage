@@ -316,7 +316,7 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
   }
 
   const periodStart = new Date().toISOString().split('T')[0];
-  const periodEnd   = '2026-04-30';
+  const periodEnd   = '2026-10-31';
 
   try {
     const response = await axios.get(`${BASE_URL}/v1/availability/${propertyId}`, {
