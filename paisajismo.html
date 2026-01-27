@@ -521,10 +521,10 @@
       const totalSinDesc = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
       const extraMoneda  = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
 
-      // Descuentos por estadía
+     // Descuentos por estadía
       let discountRate = 0;
-      if (noches >= 10 && noches <= 5) discountRate = 0.05;
-      else if (noches >= 15 && noches <= 14) discountRate = 0.10;
+      if (noches >= 5 && noches <= 10) discountRate = 0.05;
+      else if (noches >= 11 && noches <= 15) discountRate = 0.10;
 
       const descuento = Math.round(totalSinDesc * discountRate);
       const totalConDesc = totalSinDesc - descuento;
