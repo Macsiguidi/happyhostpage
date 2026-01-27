@@ -307,7 +307,7 @@
     const ROOM_ID  = 668503; // Calafate6
 
 
-  const fechaLimite = new Date('2026-04-30');
+  const fechaLimite = new Date('2026-10-31');
   const params    = new URLSearchParams(window.location.search);
   const checkin   = params.get("checkin");
   const checkout  = params.get("checkout");
@@ -544,8 +544,8 @@
 
       // Descuentos por estadía
       let discountRate = 0;
-      if (noches >= 10 && noches <= 14) discountRate = 0.05;
-      else if (noches >= 15 && noches <= 25) discountRate = 0.10;
+      if (noches >= 10 && noches <= 5) discountRate = 0.05;
+      else if (noches >= 15 && noches <= 14) discountRate = 0.10;
 
       const descuento = Math.round(totalSinDesc * discountRate);
       const totalConDesc = totalSinDesc - descuento;
