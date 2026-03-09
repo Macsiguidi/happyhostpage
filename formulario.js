@@ -124,7 +124,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const cupones = {
     "OTOÑO2026": {
       porcentaje: 15,
-      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo","lasnilidas","gurisa"],
+      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7"],
       desde: new Date("2026-03-09"),
       hasta: new Date("2026-05-31")
     },
