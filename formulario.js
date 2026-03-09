@@ -122,11 +122,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ---------- cupones ----------
   const cupones = {
-    "HAPPYINVIERNO": {
+    "OTOÑO2026": {
       porcentaje: 15,
-      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo"],
-      desde: new Date("2025-06-01"),
-      hasta: new Date("2025-09-30")
+      alojamientos: ["calafate1","calafate2","calafate3","calafate4","calafate5","calafate6","calafate7","paisajismo","lasnilidas","gurisa"],
+      desde: new Date("2026-03-09"),
+      hasta: new Date("2026-05-31")
     },
     "PRIMAVERA2025": {
       porcentaje: 20,
