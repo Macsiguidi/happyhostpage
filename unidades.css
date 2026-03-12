@@ -387,3 +387,122 @@ a:hover{text-decoration:underline}
   }
 }
 
+
+.promo-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.promo-popup-overlay.active {
+  display: flex;
+}
+
+.promo-popup {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: #f7f1e8;
+  border-radius: 18px;
+  padding: 28px 22px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  font-family: 'Poppins', sans-serif;
+  animation: popupFadeUp 0.35s ease;
+}
+
+.promo-badge {
+  display: inline-block;
+  background: #6b7a46;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.promo-popup h2 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  color: #2f3a24;
+}
+
+.promo-text {
+  margin: 0 0 18px;
+  color: #4e4e4e;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.promo-code-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #fff;
+  border: 2px dashed #6b7a46;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+#promoCode {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2f3a24;
+  letter-spacing: 1px;
+}
+
+.copy-btn {
+  background: #6b7a46;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.copy-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.promo-note {
+  font-size: 13px;
+  color: #7a7a7a;
+  margin: 0;
+}
+
+.promo-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #7b7b7b;
+}
+
+@keyframes popupFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

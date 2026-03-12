@@ -430,10 +430,10 @@
   });
   currSelect.addEventListener('change', calculate);
 
-  // ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
+  // ARS hasta 20/12/2025 inclusive; USD desde 01/06/2026
   function setCurrencyAndCalculate(fechaCheckinStr) {
     const fecha  = parseYMDLocal(fechaCheckinStr);
-    const limite = parseYMDLocal('2026-04-30');
+    const limite = parseYMDLocal('2026-05-31');
     if (fecha) {
       currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
       currSelect.style.display = 'none';

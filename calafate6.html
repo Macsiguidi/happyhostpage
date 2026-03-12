@@ -218,6 +218,29 @@
     </div>
   </main>
 
+  <!-- POPUP DESCUENTO OTOÑO -->
+<div id="promoPopup" class="promo-popup-overlay" aria-hidden="true">
+  <div class="promo-popup">
+    <button class="promo-close" id="closePromoPopup" aria-label="Cerrar popup">×</button>
+
+    <div class="promo-badge">15% OFF</div>
+
+    <h2>Promo Otoño Happy Host</h2>
+    <p class="promo-text">
+      Aprovechá un <strong>15% de descuento</strong> para reservas en
+      <strong>marzo, abril y mayo</strong>.
+    </p>
+    <p class="promo-note">Ingresá este código al momento de reservar.</p>
+
+    <div class="promo-code-box">
+      <span id="promoCode">OTOÑO2026</span>
+      <button id="copyPromoCode" class="copy-btn">Copiar código</button>
+    </div>
+
+    <p class="promo-note">Válido en alojamientos seleccionados.</p>
+  </div>
+</div>
+
   <footer class="footer" role="contentinfo">
     <small>© Happy Host Patagonia</small>
   </footer>
@@ -657,7 +680,65 @@
   });
 </script>
 
+<!-- 4) pop up descuento -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const popup = document.getElementById("promoPopup");
+    const closeBtn = document.getElementById("closePromoPopup");
+    const copyBtn = document.getElementById("copyPromoCode");
+    const promoCode = document.getElementById("promoCode");
 
+    // clave única para que aparezca solo una vez
+    const popupSeenKey = "promo_otono_2026_seen";
+
+    // mostrar popup solo si no lo vio antes
+    if (!localStorage.getItem(popupSeenKey) && popup) {
+      setTimeout(() => {
+        popup.classList.add("active");
+        popup.setAttribute("aria-hidden", "false");
+      }, 900);
+    }
+
+    // cerrar popup y guardar que ya se mostró
+    function closePopup() {
+      popup.classList.remove("active");
+      popup.setAttribute("aria-hidden", "true");
+      localStorage.setItem(popupSeenKey, "true");
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closePopup);
+    }
+
+    if (popup) {
+      popup.addEventListener("click", function (e) {
+        if (e.target === popup) {
+          closePopup();
+        }
+      });
+    }
+
+    if (copyBtn && promoCode) {
+      copyBtn.addEventListener("click", async function () {
+        try {
+          await navigator.clipboard.writeText(promoCode.textContent.trim());
+          copyBtn.textContent = "¡Copiado!";
+
+          setTimeout(() => {
+            closePopup();
+          }, 600);
+
+        } catch (error) {
+          copyBtn.textContent = "No se pudo copiar";
+
+          setTimeout(() => {
+            copyBtn.textContent = "Copiar código";
+          }, 1800);
+        }
+      });
+    }
+  });
+</script>
   <!-- (si usás lógica extra de volver) -->
   <script src="volver.js" defer></script>
 </body>
