@@ -306,6 +306,9 @@
     });
   </script>
 
+  <!-- whatsapp js  -->
+ <script src="whatsapp.js"></script>
+
  <!-- 3) Motor de reservas (con extras, descuentos y precio apilado, como calafate2) -->
   <script>
   'use strict';
@@ -553,7 +556,8 @@
       // Descuentos por estadía
       let discountRate = 0;
       if (noches >= 5 && noches <= 10) discountRate = 0.05;
-      else if (noches >= 11 && noches <= 15) discountRate = 0.10;
+      else if (noches >= 11 && noches <= 19) discountRate = 0.10;
+      else if (noches >= 20) discountRate = 0.35;
 
       const descuento = Math.round(totalSinDesc * discountRate);
       const totalConDesc = totalSinDesc - descuento;
