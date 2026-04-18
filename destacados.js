@@ -205,15 +205,7 @@ const propiedades = [
 // DESCUENTO CALAFATE
 // =======================
 
-const destacadosConDescuento = new Set([
-  "calafate1",
-  "calafate2",
-  "calafate3",
-  "calafate4",
-  "calafate5",
-  "calafate6",
-  "calafate7"
-]);
+const destacadosConDescuento = new Set([]);
 
 // =======================
 // COPA (SIN CALAFATE)
