@@ -14,6 +14,11 @@ const PORT        = process.env.PORT || 3000;
 const API_KEY     = 'tQF5BDMXbeN/vkKMRZiWKwM461gD8wL16EtUbwboi1OayWd3VZ24FMNKAuCF+3+m';
 const BASE_URL    = 'https://api.lodgify.com';
 
+// 🏷️ Motor de promociones (HappyHost.Propietarios)
+// Configurar PROMO_API_BASE con la URL de la app en producción (ej. Render)
+const PROMO_API_BASE = process.env.PROMO_API_BASE || 'https://propietarios-happy-host.onrender.com';
+const PROMO_API_KEY  = process.env.PROMO_API_KEY  || 'dev-happyhost-promo-2026';
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname)); // sirve tus .html/.js/.css desde localhost:3000
@@ -54,6 +59,28 @@ const nombrePropiedades = {
   677269: 'Koi Quetrihue',
   677286: 'Mi Tiempo',
   677289: 'Refugio Patagónico'
+};
+
+// 🏷️ Mapeo slug → datos para el motor de promociones
+// propName: nombre exacto como está guardado en la app de propietarios
+// family:   familia (PropertyFamily enum en la app .NET)
+const promoMeta = {
+  calafate1:       { propName: 'Calafate 1',      family: 'Calafate'        },
+  calafate2:       { propName: 'Calafate 2',      family: 'Calafate'        },
+  calafate3:       { propName: 'Calafate 3',      family: 'Calafate'        },
+  calafate4:       { propName: 'Calafate 4',      family: 'Calafate'        },
+  calafate5:       { propName: 'Calafate 5',      family: 'Calafate'        },
+  calafate6:       { propName: 'Calafate 6',      family: 'Calafate'        },
+  calafate7:       { propName: 'Calafate 7',      family: 'Calafate'        },
+  cds4:            { propName: 'Cruz del Sur 4',  family: 'CruzDelSur'      },
+  cds5:            { propName: 'Cruz del Sur 5',  family: 'CruzDelSur'      },
+  nilidas:         { propName: 'Nilidas',         family: 'Nilidas'         },
+  gurisa:          { propName: 'Gurisa',          family: 'Gurisa'          },
+  paisajismo:      { propName: 'Paisajismo',      family: 'Paisajismo'      },
+  puertomargarita: { propName: 'Margarita',       family: 'PuertoMargarita' },
+  casitamirador:   { propName: 'Casita Mirador',  family: 'CasitaMirador'   },
+  picuen1:         { propName: 'Picuén 1',        family: 'Picuen'          },
+  picuen2:         { propName: 'Picuén 2',        family: 'Picuen'          },
 };
 
 /* ===========================
@@ -547,6 +574,112 @@ Comentarios: ${comm || '—'}`;
   }
 });
 
+
+// ════════════════════════════════════════════════════════════════════════════
+// 🏷️  PROXY — Motor de Promociones (HappyHost.Propietarios)
+//
+//  GET  /api/promos-activas/:unidad  → lista promos activas para esa propiedad
+//  POST /api/evaluar-promo           → evalúa descuento para una reserva concreta
+//
+//  En producción configurar en las env vars de Render:
+//    PROMO_API_BASE = URL de la app .NET  (ej. https://propietarios-happy-host.onrender.com)
+//    PROMO_API_KEY  = clave configurada en appsettings de la app .NET
+// ════════════════════════════════════════════════════════════════════════════
+
+// Cabecera común a todas las llamadas al motor de promos
+const promoHeaders = {
+  'X-Api-Key'   : PROMO_API_KEY,
+  'Content-Type': 'application/json'
+};
+
+// Helper: retorna un resultado "sin descuento" cuando el motor no está disponible
+const noPromo = (basePrice) => ({
+  basePrice    : basePrice || 0,
+  totalDiscount: 0,
+  finalPrice   : basePrice || 0,
+  applied      : [],
+  rejected     : []
+});
+
+// 🟢 GET /api/promos-activas/:unidad
+// Devuelve la lista de promos activas/programadas que aplican a esta propiedad.
+// El cliente (promos.js en la web) la usa para poblar el popup de promo.
+app.get('/api/promos-activas/:unidad', async (req, res) => {
+  const meta = promoMeta[req.params.unidad];
+  if (!meta) return res.json([]);           // unidad desconocida → sin promos
+
+  try {
+    const resp = await axios.get(`${PROMO_API_BASE}/api/promotions`, {
+      headers: promoHeaders,
+      timeout: 6000
+    });
+
+    const todas = resp.data || [];
+
+    // Filtrar las que aplican a esta propiedad o son globales
+    const filtradas = todas.filter(p => {
+      if (p.scopeMode === 'all') return true;
+      if (p.scopeMode === 'group') {
+        // ScopeFamily viene como string del enum (ej. "1" o "Calafate")
+        const famStr = (p.scopeFamily || '').toString().toLowerCase();
+        return famStr === meta.family.toLowerCase() || famStr === String(familyInt(meta.family));
+      }
+      if (p.scopeMode === 'properties') {
+        return (p.properties || []).some(
+          n => n.toLowerCase() === meta.propName.toLowerCase()
+        );
+      }
+      return false;
+    });
+
+    res.json(filtradas);
+  } catch (e) {
+    console.warn('⚠️  promos-activas: motor no disponible —', e.message);
+    res.json([]);    // fallback silencioso: no hay promos
+  }
+});
+
+// 🟢 POST /api/evaluar-promo
+// Body: { unidad, familia?, checkin, checkout, guests, basePrice }
+// Retorna el resultado de EvaluationResult del motor .NET.
+app.post('/api/evaluar-promo', async (req, res) => {
+  const { unidad, checkin, checkout, guests, basePrice } = req.body;
+
+  const meta = promoMeta[unidad] || {
+    propName: unidad || '',
+    family  : req.body.familia || ''
+  };
+
+  try {
+    const resp = await axios.post(`${PROMO_API_BASE}/api/promotions/evaluate`, {
+      propertyName  : meta.propName,
+      propertyFamily: meta.family,
+      checkIn       : checkin,
+      checkOut      : checkout,
+      guests        : guests  || 2,
+      basePrice     : basePrice || 0,
+      bookingDate   : new Date().toISOString()
+    }, {
+      headers: promoHeaders,
+      timeout: 8000
+    });
+
+    res.json(resp.data);
+  } catch (e) {
+    console.warn('⚠️  evaluar-promo: motor no disponible —', e.message);
+    res.json(noPromo(basePrice));  // fallback: precio sin descuento, no rompe la página
+  }
+});
+
+// Convierte el nombre del enum PropertyFamily al int (para comparar con scopeFamily numérico)
+function familyInt(name) {
+  const map = {
+    Calafate: 1, CruzDelSur: 2, Nilidas: 3, Gurisa: 4, Paisajismo: 5,
+    KoiQuetrihue: 6, Oasis: 7, RefugioPatagonico: 8, MiTiempo: 9,
+    PuertoMargarita: 10, CasitaMirador: 11, Picuen: 12
+  };
+  return map[name] || 0;
+}
 
 // Iniciar servidor
 app.listen(PORT, () =>

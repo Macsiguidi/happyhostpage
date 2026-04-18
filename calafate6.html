@@ -326,8 +326,11 @@
   <!-- 3) Motor de reservas (extras, descuentos, breakdown y total apilado) -->
  <script>
   'use strict';
- const HOUSE_ID = 601712; // Calafate6
-    const ROOM_ID  = 668503; // Calafate6
+ 
+  const HOUSE_ID    = 601712;
+  const ROOM_ID     = 668503;
+  const PROP_KEY    = 'calafate6';
+  const PROP_FAMILY = 'Calafate'; // Calafate6
 
 
   const fechaLimite = new Date('2026-10-31');
@@ -566,16 +569,16 @@
       const totalSinDesc = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
       const extraMoneda  = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
 
-      // Descuentos por estadía
-      let discountRate = 0;
-      if (noches >= 5 && noches <= 10) discountRate = 0.05;
-      else if (noches >= 11 && noches <= 15) discountRate = 0.10;
-
-      const descuento = Math.round(totalSinDesc * discountRate);
+      // Descuento dinamico desde el motor de promociones
+      const { descuentoUSD, label: discountLabel } =
+        (window.hhPromos)
+          ? await hhPromos.evaluar(PROP_KEY, PROP_FAMILY, startValue, endValue, guests, totalUSD)
+          : { descuentoUSD: 0, label: 'Descuento' };
+      const descuento    = Math.round(descuentoUSD * (moneda === 'USD' ? 1 : factorARS));
       const totalConDesc = totalSinDesc - descuento;
 
       // Cabecera total
-      const totalStack = (discountRate > 0)
+      const totalStack = (descuento > 0)
         ? `<div class="price-stack">
              <div class="old-price old-price--big">${fmt(totalSinDesc)} ${moneda}</div>
              <div class="new-price">${fmt(totalConDesc)} ${moneda}</div>
@@ -597,11 +600,11 @@
         ? `<li class="bd-extra"><span>Extra huésped (${extraQty} x ${noches} noches)</span><span>+ ${fmt(extraMoneda)} ${moneda}</span></li>`
         : '';
 
-      const descHtml = (discountRate > 0)
-        ? `<li class="bd-discount"><span>Descuento (${Math.round(discountRate*100)}%)</span><span>− ${fmt(descuento)} ${moneda}</span></li>`
+      const descHtml = (descuento > 0)
+        ? `<li class="bd-discount"><span>${discountLabel}</span><span>− ${fmt(descuento)} ${moneda}</span></li>`
         : '';
 
-      const subtotalHtml = `<li class="bd-subtotal"><span>Subtotal</span><span>${fmt(discountRate>0? totalConDesc : totalSinDesc)} ${moneda}</span></li>`;
+      const subtotalHtml = `<li class="bd-subtotal"><span>Subtotal</span><span>${fmt(descuento>0? totalConDesc : totalSinDesc)} ${moneda}</span></li>`;
 
       const breakdownHtml = `
         <div class="price-breakdown">
@@ -627,7 +630,7 @@
       });
 
       // CTA (usa total con descuento si aplica)
-      const totalParaCobrar = (discountRate > 0) ? totalConDesc : totalSinDesc;
+      const totalParaCobrar = (descuento > 0) ? totalConDesc : totalSinDesc;
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
         const qs = new URLSearchParams({
@@ -638,7 +641,7 @@
           numberOfGuests: guests,
           totalPrice: totalParaCobrar,
           currency: moneda,
-          discountRate
+          descuentoUSD
         }).toString();
         window.location.href = `formulario.html?${qs}`;
       };
@@ -683,63 +686,11 @@
 <!-- whatsapp js  -->
  <script src="whatsapp.js"></script>
  
-<!-- 4) pop up descuento -->
+<!-- 4) Popup de promos dinamico -->
+<script src="promos.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const popup = document.getElementById("promoPopup");
-    const closeBtn = document.getElementById("closePromoPopup");
-    const copyBtn = document.getElementById("copyPromoCode");
-    const promoCode = document.getElementById("promoCode");
-
-    // clave única para que aparezca solo una vez
-    const popupSeenKey = "promo_otono_2026_seen";
-
-    // mostrar popup solo si no lo vio antes
-    if (!localStorage.getItem(popupSeenKey) && popup) {
-      setTimeout(() => {
-        popup.classList.add("active");
-        popup.setAttribute("aria-hidden", "false");
-      }, 900);
-    }
-
-    // cerrar popup y guardar que ya se mostró
-    function closePopup() {
-      popup.classList.remove("active");
-      popup.setAttribute("aria-hidden", "true");
-      localStorage.setItem(popupSeenKey, "true");
-    }
-
-    if (closeBtn) {
-      closeBtn.addEventListener("click", closePopup);
-    }
-
-    if (popup) {
-      popup.addEventListener("click", function (e) {
-        if (e.target === popup) {
-          closePopup();
-        }
-      });
-    }
-
-    if (copyBtn && promoCode) {
-      copyBtn.addEventListener("click", async function () {
-        try {
-          await navigator.clipboard.writeText(promoCode.textContent.trim());
-          copyBtn.textContent = "¡Copiado!";
-
-          setTimeout(() => {
-            closePopup();
-          }, 600);
-
-        } catch (error) {
-          copyBtn.textContent = "No se pudo copiar";
-
-          setTimeout(() => {
-            copyBtn.textContent = "Copiar código";
-          }, 1800);
-        }
-      });
-    }
+  document.addEventListener('DOMContentLoaded', function() {
+    hhPromos.initPopup(PROP_KEY, PROP_FAMILY);
   });
 </script>
   <!-- (si usás lógica extra de volver) -->
