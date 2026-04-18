@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
   <!-- Meta base -->
   <meta charset="UTF-8" />
@@ -21,12 +21,49 @@
   <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/paisajismo/paisajismo1.jpg">
   <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/paisajismo.html">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_AR" />
 
   <!-- Flatpickr CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   <!-- CSS del sitio -->
   <link rel="stylesheet" href="unidades.css">
+
+  <meta name="geo.region" content="AR-Q" />
+  <meta name="geo.placename" content="Villa La Angostura, Neuquén" />
+  <meta name="geo.position" content="-40.7731;-71.6469" />
+  <meta name="ICBM" content="-40.7731, -71.6469" />
+
+  <!-- VacationRental JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VacationRental",
+    "name": "Paisajismo",
+    "description": "Paisajismo es un departamento moderno a 50 m de la avenida principal de Villa La Angostura. Ideal para 2 o 3 personas, con vista al Cerro Bayo y todo el confort de Happy Host Patagonia.",
+    "url": "https://www.happyhostpatagonia.com.ar/paisajismo.html",
+    "image": "https://www.happyhostpatagonia.com.ar/imagenes/paisajismo/1.jpg",
+    "occupancy": { "@type": "QuantitativeValue", "maxValue": 3 },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Villa La Angostura",
+      "addressRegion": "Neuquén",
+      "postalCode": "8407",
+      "addressCountry": "AR"
+    },
+    "amenityFeature": [
+      {"@type": "LocationFeatureSpecification", "name": "WiFi", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Estacionamiento", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Parrilla", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Calefacción", "value": true}
+    ],
+    "containedInPlace": {
+      "@type": "LocalBusiness",
+      "name": "Happy Host Patagonia",
+      "url": "https://www.happyhostpatagonia.com.ar/"
+    }
+  }
+  </script>
 
   <!-- Lightbox mínimo (por si tu CSS no lo tiene) -->
   <style>
@@ -49,6 +86,17 @@
     .bd-subtotal{font-weight:600}
     .bd-toggle{width:100%;border:1px solid #e5e5e5;border-radius:.6rem;background:#f7f7f7;padding:.5rem .75rem;cursor:pointer}
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.happyhostpatagonia.com.ar/"},
+      {"@type":"ListItem","position":2,"name":"Alojamientos","item":"https://www.happyhostpatagonia.com.ar/alojamientos.html"},
+      {"@type":"ListItem","position":3,"name":"Paisajismo","item":"https://www.happyhostpatagonia.com.ar/paisajismo.html"}
+    ]
+  }
+  </script>
 </head>
 
 <body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
   <!-- Meta base -->
   <meta charset="UTF-8" />
@@ -26,6 +26,7 @@
   <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/nilidas/nilidas1.jpg" />
   <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/nilidas.html" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_AR" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Flatpickr CSS -->
@@ -45,23 +46,50 @@
     }
   </script>
 
-  <!-- JSON-LD básico -->
+  <meta name="geo.region" content="AR-Q" />
+  <meta name="geo.placename" content="Villa La Angostura, Neuquén" />
+  <meta name="geo.position" content="-40.7731;-71.6469" />
+  <meta name="ICBM" content="-40.7731, -71.6469" />
+
+  <!-- VacationRental JSON-LD -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"LodgingBusiness",
-    "name":"Las Nilidas",
-    "image":["https://www.happyhostpatagonia.com.ar/unidades/nilidas/nilidas1.jpg"],
-    "address":{"@type":"PostalAddress","addressLocality":"Villa La Angostura","addressRegion":"Neuquén","addressCountry":"AR"},
-    "description":"Casa acogedora en Las Balsas con salamandra, 2 dormitorios y parrilla.",
-    "amenityFeature":[
-      {"@type":"LocationFeatureSpecification","name":"WiFi","value":true},
-      {"@type":"LocationFeatureSpecification","name":"Cocina","value":true},
-      {"@type":"LocationFeatureSpecification","name":"Estacionamiento","value":true},
-      {"@type":"LocationFeatureSpecification","name":"Parrilla","value":true}
+    "@context": "https://schema.org",
+    "@type": "VacationRental",
+    "name": "Las Nilidas",
+    "description": "Las Nilidas es una casa cálida en el barrio Las Balsas de Villa La Angostura. Rodeada de bosque y montaña, con salamandra, vista única y todo el confort para 4 personas.",
+    "url": "https://www.happyhostpatagonia.com.ar/nilidas.html",
+    "image": "https://www.happyhostpatagonia.com.ar/imagenes/nilidas/1.jpg",
+    "occupancy": { "@type": "QuantitativeValue", "maxValue": 4 },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Villa La Angostura",
+      "addressRegion": "Neuquén",
+      "postalCode": "8407",
+      "addressCountry": "AR"
+    },
+    "amenityFeature": [
+      {"@type": "LocationFeatureSpecification", "name": "WiFi", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Estacionamiento", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Parrilla", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Calefacción", "value": true}
     ],
-    "url":"https://www.happyhostpatagonia.com.ar/nilidas.html",
-    "petsAllowed":"No"
+    "containedInPlace": {
+      "@type": "LocalBusiness",
+      "name": "Happy Host Patagonia",
+      "url": "https://www.happyhostpatagonia.com.ar/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.happyhostpatagonia.com.ar/"},
+      {"@type":"ListItem","position":2,"name":"Alojamientos","item":"https://www.happyhostpatagonia.com.ar/alojamientos.html"},
+      {"@type":"ListItem","position":3,"name":"Las Nilidas","item":"https://www.happyhostpatagonia.com.ar/nilidas.html"}
+    ]
   }
   </script>
 </head>
