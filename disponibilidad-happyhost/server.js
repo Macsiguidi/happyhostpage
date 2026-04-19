@@ -242,27 +242,51 @@ app.get('/test-pushover', async (_req, res) => {
   res.json({ ok: true });
 });
 
-// 💱 REGLAS DE MONEDA — proxy al backend .NET
+// 💱 REGLAS DE MONEDA — proxy al backend .NET con caché en memoria
 // GET /api/config-moneda
-// Devuelve las reglas ARS/USD configuradas en el panel de propietarios.
-// El frontend cachea este resultado 30 minutos para no re-consultarlo en cada interacción.
+// Si el panel admin está durmiendo (Render free tier), usa la última respuesta
+// correcta cacheada en lugar de un fallback estático.
+let _monedaCache    = null;
+let _monedaCacheAt  = 0;
+const MONEDA_TTL_MS = 15 * 60 * 1000; // 15 min en servidor
+
+async function fetchMonedaRules() {
+  const r = await axios.get(`${PROMO_API_BASE}/api/currency-rules`, {
+    headers: { 'X-Api-Key': PROMO_API_KEY },
+    timeout: 10000
+  });
+  _monedaCache   = r.data;
+  _monedaCacheAt = Date.now();
+  console.log(`💱 config-moneda: ${r.data.length} reglas cargadas desde el admin`);
+  return r.data;
+}
+
 app.get('/api/config-moneda', async (_req, res) => {
-  try {
-    const r = await axios.get(
-      `${PROMO_API_BASE}/api/currency-rules`,
-      {
-        headers: { 'X-Api-Key': PROMO_API_KEY },
-        timeout: 8000
-      }
-    );
-    // Agregar header de caché para el navegador (30 min)
+  const age = Date.now() - _monedaCacheAt;
+
+  // Caché del servidor fresca → responder sin llamar al admin
+  if (_monedaCache && age < MONEDA_TTL_MS) {
     res.set('Cache-Control', 'public, max-age=1800');
-    res.json(r.data);
+    return res.json(_monedaCache);
+  }
+
+  try {
+    const data = await fetchMonedaRules();
+    res.set('Cache-Control', 'public, max-age=1800');
+    res.json(data);
   } catch (e) {
     console.error('⛔ config-moneda:', e.response?.data || e.message);
-    // Fallback: regla por defecto (ARS hasta mayo 2026, luego USD)
+
+    // Si hay caché antigua (aunque vencida), usarla — el admin estaba durmiendo
+    if (_monedaCache) {
+      console.warn('⚠️ config-moneda: admin no responde, usando caché anterior');
+      res.set('Cache-Control', 'public, max-age=60'); // retry rápido
+      return res.json(_monedaCache);
+    }
+
+    // Sin caché nunca: fallback hasta 2027 para no caer en USD inesperadamente
     res.json([
-      { id: 0, from: '2025-01-01', to: '2026-05-31', currency: 'ARS', fxRate: 1600,
+      { id: 0, from: '2025-01-01', to: '2027-12-31', currency: 'ARS', fxRate: 1600,
         propertySlugs: null, priority: 10, notes: 'Fallback por defecto' }
     ]);
   }
