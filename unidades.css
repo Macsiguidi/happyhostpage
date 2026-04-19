@@ -253,25 +253,88 @@ a:hover{text-decoration:underline}
 .flatpickr-day.inRange{background:rgba(107,123,83,.18)}
 .flatpickr-day.disabled{opacity:.35}
 
+/* Eliminar gaps entre días: cada celda ocupa exactamente 1/7 del ancho */
+.flatpickr-calendar .dayContainer{
+  justify-content:flex-start !important;
+  padding:0 !important;
+}
+.flatpickr-calendar .flatpickr-day{
+  flex:0 0 calc(100% / 7) !important;
+  max-width:calc(100% / 7) !important;
+  margin:0 !important;
+  height:38px !important;
+  line-height:38px !important;
+}
+
 /* Que ningún contenedor recorte el calendario */
 .reserva,.motor-reservas-fijo,.detalle-alojamiento,.fondo-blur{overflow:visible !important}
 
-/* ===== Disponibilidad visual ===== */
-/* Días disponibles (no seleccionados) con fondo suave */
-.flatpickr-day.hh-available:not(.selected):not(.inRange):not(.disabled){
-  background:#EEF4E8;
-  border-color:transparent;
+/* ===== hhCalendario: disponibilidad visual ===== */
+
+/* Base compartida: cuadrado flush, sin borde (el border ocupa 1px → línea blanca) */
+.flatpickr-day.hhcal-ocupado,
+.flatpickr-day.hhcal-checkin,
+.flatpickr-day.hhcal-checkout {
+  border: none !important;
+  border-radius: 0 !important;
+  opacity: 1 !important;
+  overflow: hidden;
 }
-/* Borde “válido para check-out” (día previo a ocupado) */
-.flatpickr-day.hh-edge-co:not(.selected){
-  box-shadow: inset 0 0 0 2px rgba(107,123,83,.7);
-  border-radius:8px;
+
+/* Días ocupados: verde sólido, texto blanco */
+.flatpickr-day.hhcal-ocupado {
+  background: var(--hh-olive) !important;
+  color: #fff !important;
+  cursor: default !important;
 }
-/* Borde “válido para check-in” (día posterior a ocupado) */
-.flatpickr-day.hh-edge-ci:not(.selected){
-  box-shadow: inset 0 0 0 2px rgba(31,122,140,.55);
-  border-radius:8px;
+
+/* Día de CHECK-IN: huéspedes llegan
+   Diagonal /: triángulo inf-izq crema (libre) / triángulo sup-der verde (ocupado) */
+.flatpickr-day.hhcal-checkin {
+  background: linear-gradient(45deg, var(--hh-sand) 50%, var(--hh-olive) 50%) !important;
+  color: var(--hh-ink) !important;
+  cursor: pointer !important;
 }
+.flatpickr-day.hhcal-checkin:hover { opacity: 0.82 !important; }
+
+/* Día de CHECK-OUT: huéspedes salen
+   Diagonal /: triángulo inf-izq verde (ocupado) / triángulo sup-der crema (libre)
+   → Ahora SELECCIONABLE como check-in de reserva siguiente */
+.flatpickr-day.hhcal-checkout {
+  background: linear-gradient(45deg, var(--hh-olive) 50%, var(--hh-sand) 50%) !important;
+  color: var(--hh-ink) !important;
+  cursor: pointer !important;
+}
+
+/* Leyenda ─────────────────────────────────────────────────────── */
+.hhcal-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 16px;
+  padding: 8px 12px 10px;
+  font-size: 10.5px;
+  color: var(--hh-muted);
+  border-top: 1px solid var(--hh-border);
+  font-family: Poppins, system-ui, sans-serif;
+}
+.hhcal-ley-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.hhcal-ley-dot {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,.12);
+  flex-shrink: 0;
+}
+.hhcal-ley-dot.ocupado    { background: var(--hh-olive); border-color: var(--hh-olive); }
+.hhcal-ley-dot.checkinout { background: linear-gradient(to right, var(--hh-olive) 50%, var(--hh-sand) 50%); }
+.hhcal-ley-dot.disponible { background: var(--hh-sand); }
 
 /* ---------- Mobile tweaks ---------- */
 @media(max-width:959px){

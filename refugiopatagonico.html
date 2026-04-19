@@ -418,6 +418,7 @@
         }),
         date => date < hoy || date > fechaLimite
       ]);
+      if (window.hhCalendario) window.hhCalendario.aplicarClases(picker, rangos);
     } catch (e) {
       console.error('No se pudieron cargar fechas ocupadas:', e.message);
     }
@@ -637,6 +638,7 @@
 </script>
 
   <script src="volver.js" defer></script>
+  <script src="calendario.js" defer></script>
 
   <script>
   /* Preservar fechas de busqueda en boton 'Explorar todos' */

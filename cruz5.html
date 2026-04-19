@@ -414,6 +414,7 @@ async function loadDisabledDates(picker) {
       }),
       date => date < hoy || date > fechaLimite
     ]);
+    if (window.hhCalendario) window.hhCalendario.aplicarClases(picker, rangos);
   } catch (e) {
     console.error('No se pudieron cargar fechas ocupadas:', e.message);
   }
@@ -637,6 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script src="volver.js" defer></script>
+<script src="calendario.js" defer></script>
 
   <!-- Ver mas alojamientos -->
   <section class="mas-alojamientos-cta">

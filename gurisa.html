@@ -456,6 +456,7 @@
         }),
         date => date < hoy || date > fechaLimite
       ]);
+      if (window.hhCalendario) window.hhCalendario.aplicarClases(picker, rangos);
     } catch (e) {
       console.error('No se pudieron cargar fechas ocupadas:', e.message);
     }
@@ -703,6 +704,7 @@
 
   <!-- (si usás lógica extra de volver) -->
   <script src="volver.js" defer></script>
+  <script src="calendario.js" defer></script>
 
 <!-- Popup de promos dinamico -->
 <div id="promoPopup" class="promo-popup-overlay" aria-hidden="true">
