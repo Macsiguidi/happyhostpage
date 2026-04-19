@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── CON fechas: verificar disponibilidad ─────────────────────────
   if (loading) loading.style.display = 'flex';
 
-  const { moneda, factorARS } = detectarMoneda(checkin);
+  const { moneda, factorARS } = await detectarMoneda(checkin);
   const noches = Math.round((parseYMD(checkout) - parseYMD(checkin)) / 86400000);
 
   // Intentar caché (válido 3 min)
