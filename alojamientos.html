@@ -88,6 +88,22 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
     </nav>
   </header>
 
+  <!-- Buscador de disponibilidad -->
+  <div class="buscador-filtro">
+    <form id="form-filtro">
+      <input type="text" id="rango-filtro" placeholder="📅 Llegada → Salida" readonly aria-label="Rango de fechas">
+      <div class="selector-pax" role="group" aria-label="Cantidad de huéspedes">
+        <button type="button" id="menos-pax" aria-label="Quitar huésped">−</button>
+        <span id="cant-pax">Huéspedes</span>
+        <button type="button" id="mas-pax" aria-label="Agregar huésped">+</button>
+        <input type="hidden" id="pax-value" value="0">
+      </div>
+      <button type="submit">Buscar disponibilidad</button>
+    </form>
+  </div>
+
+  <!-- Banner de resultados (se activa al buscar) -->
+  <div id="banner-busqueda" class="banner-busqueda" role="status" aria-live="polite" style="display:none"></div>
 
   <div id="loading-disponibilidad" class="pantalla-carga">
   <div class="spinner"></div>
@@ -492,11 +508,116 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
   </div>
 </section>
 
-<!-- whatsapp js  -->
- <script src="whatsapp.js"></script>
+  <!-- Footer -->
+  <footer class="footer-aloj">
+    <div class="footer-aloj-inner">
+      <a href="viajero.html">
+        <img src="logos/happy host.png" alt="Happy Host Patagonia" class="logo-footer">
+      </a>
+      <div class="footer-aloj-info">
+        <p>Villa La Angostura, Neuquén, Argentina</p>
+        <p><a href="mailto:happyhostpatagonia@gmail.com">happyhostpatagonia@gmail.com</a></p>
+        <p><a href="https://wa.me/5492944700773">+54 9 294 470-0773</a></p>
+      </div>
+      <div class="footer-aloj-redes">
+        <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener" aria-label="Instagram">
+          <img src="logos/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <img src="logos/whatsapp.png" alt="WhatsApp">
+        </a>
+      </div>
+    </div>
+    <div class="footer-aloj-bottom">
+      <p>&copy; 2025 Happy Host Patagonia · Tu alquiler en la Patagonia</p>
+    </div>
+  </footer>
 
-<script src="alojamientos.js" defer></script>
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+  <!-- whatsapp js  -->
+  <script src="whatsapp.js"></script>
+
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- Buscador (depende de flatpickr, debe ir antes de alojamientos.js) -->
+  <script>
+  (function () {
+    var fp = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var input = document.getElementById('rango-filtro');
+      if (input && window.flatpickr) {
+        fp = flatpickr(input, {
+          mode: 'range',
+          dateFormat: 'Y-m-d',
+          locale: { rangeSeparator: ' a ' },
+          minDate: 'today',
+          showMonths: window.innerWidth <= 768 ? 1 : 2,
+          disableMobile: true
+        });
+      }
+
+      // Precargar fechas/pax desde URL params
+      var params = new URLSearchParams(window.location.search);
+      var ci = params.get('checkin');
+      var co = params.get('checkout');
+      var hu = parseInt(params.get('huespedes') || '0', 10);
+      if (ci && co && fp) { try { fp.setDate([ci, co]); } catch (e) {} }
+      if (hu > 0) {
+        document.getElementById('pax-value').value = hu;
+        document.getElementById('cant-pax').textContent =
+          hu + ' huésped' + (hu > 1 ? 'es' : '');
+      }
+
+      // Botones +/- huéspedes
+      document.getElementById('menos-pax').addEventListener('click', function () {
+        var el = document.getElementById('pax-value');
+        var n  = parseInt(el.value) || 0;
+        n = n > 1 ? n - 1 : 0;
+        el.value = n;
+        document.getElementById('cant-pax').textContent =
+          n > 0 ? (n + ' huésped' + (n > 1 ? 'es' : '')) : 'Huéspedes';
+      });
+      document.getElementById('mas-pax').addEventListener('click', function () {
+        var el = document.getElementById('pax-value');
+        var n  = parseInt(el.value) || 0;
+        if (n < 15) n++;
+        el.value = n;
+        document.getElementById('cant-pax').textContent =
+          n + ' huésped' + (n > 1 ? 'es' : '');
+      });
+
+      // Submit: redirigir con parámetros
+      document.getElementById('form-filtro').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var partes = (input.value || '').split(' a ');
+        var ci2 = (partes[0] || '').trim();
+        var co2 = (partes[1] || '').trim();
+        var hu2 = parseInt(document.getElementById('pax-value').value) || 0;
+
+        if (!ci2 || !co2) {
+          alert('Por favor seleccioná un rango de fechas (llegada y salida).');
+          return;
+        }
+
+        // Limpiar caché para forzar nueva consulta
+        localStorage.removeItem('disponibles');
+        localStorage.removeItem('disponibles_expira');
+
+        var p2 = new URLSearchParams();
+        p2.set('checkin', ci2);
+        p2.set('checkout', co2);
+        if (hu2 > 0) p2.set('huespedes', String(hu2));
+        window.location.href = 'alojamientos.html?' + p2.toString();
+      });
+    });
+  })();
+  </script>
+
+  <script src="alojamientos.js"></script>
 
 </body>
 </html>

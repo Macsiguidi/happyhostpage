@@ -242,6 +242,32 @@ app.get('/test-pushover', async (_req, res) => {
   res.json({ ok: true });
 });
 
+// 💱 REGLAS DE MONEDA — proxy al backend .NET
+// GET /api/config-moneda
+// Devuelve las reglas ARS/USD configuradas en el panel de propietarios.
+// El frontend cachea este resultado 30 minutos para no re-consultarlo en cada interacción.
+app.get('/api/config-moneda', async (_req, res) => {
+  try {
+    const r = await axios.get(
+      `${PROMO_API_BASE}/api/currency-rules`,
+      {
+        headers: { 'X-Api-Key': PROMO_API_KEY },
+        timeout: 8000
+      }
+    );
+    // Agregar header de caché para el navegador (30 min)
+    res.set('Cache-Control', 'public, max-age=1800');
+    res.json(r.data);
+  } catch (e) {
+    console.error('⛔ config-moneda:', e.response?.data || e.message);
+    // Fallback: regla por defecto (ARS hasta mayo 2026, luego USD)
+    res.json([
+      { id: 0, from: '2025-01-01', to: '2026-05-31', currency: 'ARS', fxRate: 1600,
+        propertySlugs: null, priority: 10, notes: 'Fallback por defecto' }
+    ]);
+  }
+});
+
 /* ===========================
    Endpoints
    =========================== */

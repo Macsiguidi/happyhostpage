@@ -269,7 +269,27 @@
   </div>
 </div>
 
+    <!-- Ver mas alojamientos -->
+  <section class="mas-alojamientos-cta">
+    <a href="alojamientos.html" class="btn-mas-aloj">&larr; Explorar todos los alojamientos</a>
+  </section>
+
   <footer class="footer" role="contentinfo">
+    <div class="footer-unidad">
+      <div class="footer-unidad-links">
+        <a href="viajero.html">Inicio</a>
+        <a href="alojamientos.html">Alojamientos</a>
+        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener">Contacto</a>
+      </div>
+      <div class="footer-unidad-redes">
+        <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener" aria-label="Instagram">
+          <img src="logos/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <img src="logos/whatsapp.png" alt="WhatsApp">
+        </a>
+      </div>
+    </div>
     <small>© Happy Host Patagonia</small>
   </footer>
 
@@ -350,6 +370,9 @@
       }));
     });
   </script>
+
+    <!-- Motor de moneda configurable -->
+  <script src="moneda.js"></script>
 
   <!-- 3) Motor de reservas (extras, descuentos, breakdown y total apilado) -->
  <script>
@@ -487,17 +510,13 @@
   currSelect.addEventListener('change', calculate);
 
   // ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
-  function setCurrencyAndCalculate(fechaCheckinStr) {
-    const fecha  = parseYMDLocal(fechaCheckinStr);
-    const limite = parseYMDLocal('2026-05-31');
-    if (fecha) {
-      currSelect.value = (fecha <= limite) ? 'ARS' : 'USD';
-      currSelect.style.display = 'none';
-      currSelect.disabled = true;
-    } else {
-      currSelect.style.display = 'block';
-      currSelect.disabled = false;
-    }
+    async function setCurrencyAndCalculate(fechaCheckinStr) {
+    // Moneda configurable desde el panel admin (moneda.js)
+    const { moneda, factorARS } = await window.hhMoneda.detectar(fechaCheckinStr, PROP_KEY);
+    currSelect.value    = moneda;
+    window._factorARS   = factorARS;   // usado por calculate()
+    currSelect.style.display  = 'none';
+    currSelect.disabled = true;
     calculate();
   }
 
@@ -558,11 +577,7 @@
 
       // Conversión ARS por check-in
       const fechaCheckin = parseYMDLocal(startValue);
-      let factorARS = 1400;
-      if (fechaCheckin >= parseYMDLocal('2025-05-01') && fechaCheckin <= parseYMDLocal('2025-06-30')) factorARS = 1250;
-      else if (fechaCheckin >= parseYMDLocal('2025-07-01') && fechaCheckin <= parseYMDLocal('2026-03-15')) factorARS = 1600;
-      else if (fechaCheckin >= parseYMDLocal('2026-03-16') && fechaCheckin <= parseYMDLocal('2026-04-30')) factorARS = 1650;
-      else if (fechaCheckin >= parseYMDLocal('2026-05-01') && fechaCheckin <= parseYMDLocal('2026-05-31')) factorARS = 1700;
+      const factorARS = window._factorARS || 1400;
 
       // Base por noche + breakdown
       let baseUSD = 0;
@@ -723,5 +738,25 @@
 </script>
   <!-- (si usás lógica extra de volver) -->
   <script src="volver.js" defer></script>
+
+  <script>
+  /* Preservar fechas de busqueda en boton 'Explorar todos' */
+  (function() {
+    var p = new URLSearchParams(window.location.search);
+    var ci = p.get('checkin')  || localStorage.getItem('checkin');
+    var co = p.get('checkout') || localStorage.getItem('checkout');
+    var hu = p.get('huespedes')|| localStorage.getItem('huespedes');
+    if (ci && co) {
+      var q = new URLSearchParams();
+      q.set('checkin', ci); q.set('checkout', co);
+      if (hu && hu !== '0') q.set('huespedes', hu);
+      var href = 'alojamientos.html?' + q.toString();
+      var btn = document.querySelector('.btn-mas-aloj');
+      if (btn) btn.href = href;
+      var btnV = document.getElementById('btnVolver');
+      if (btnV) btnV.href = href;
+    }
+  })();
+  </script>
 </body>
 </html>

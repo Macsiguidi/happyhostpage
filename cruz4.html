@@ -443,24 +443,14 @@ guestsInput.addEventListener('input', () => {
 currSelect.addEventListener('change', calculate);
 
 // Moneda: ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
-function setCurrencyAndCalculate(fechaCheckinStr) {
-  const fecha  = parseYMDLocal(fechaCheckinStr);
-  const limite = parseYMDLocal('2025-12-20');
-  if (fecha) { currSelect.value = (fecha <= limite) ? 'ARS' : 'USD'; currSelect.style.display = 'none'; currSelect.disabled = true; }
-  else { currSelect.style.display = 'block'; currSelect.disabled = false; }
-  calculate();
-}
-
-function hayCruceConFechasOcupadas(checkin, checkout) {
-  const ci = (checkin instanceof Date) ? checkin : parseYMDLocal(checkin);
-  const co = (checkout instanceof Date) ? checkout : parseYMDLocal(checkout);
-  if (!ci || !co) return true;
-  const ci0 = ymdLocal(ci), co0 = ymdLocal(co);
-  return fechasOcupadas.some(({ from, to }) => {
-    const inicio = parseYMDLocal(from), fin = parseYMDLocal(to);
-    if (!inicio || !fin) return false;
-    const i0 = ymdLocal(inicio), f0 = ymdLocal(fin);
-    return ((ci0 > i0 && ci0 < f0) || (co0 > i0 && co0 < f0) || (ci0 <= i0 && co0 >= f0));
+  async function setCurrencyAndCalculate(fechaCheckinStr) {
+    // Moneda configurable desde el panel admin (moneda.js)
+    const { moneda, factorARS } = await window.hhMoneda.detectar(fechaCheckinStr, PROP_KEY);
+    currSelect.value    = moneda;
+    window._factorARS   = factorARS;   // usado por calculate()
+    currSelect.style.display  = 'none';
+    currSelect.disabled = true;
+    calculate();
   });
 }
 
@@ -506,10 +496,7 @@ async function calculate() {
 
     // Conversión ARS por check-in
     const fechaCheckin = parseYMDLocal(startValue);
-    let factorARS = 1400;
-    if (fechaCheckin >= parseYMDLocal('2025-05-01') && fechaCheckin <= parseYMDLocal('2025-06-30')) factorARS = 1250;
-    else if (fechaCheckin >= parseYMDLocal('2025-07-01') && fechaCheckin <= parseYMDLocal('2025-10-31')) factorARS = 1550;
-    else if (fechaCheckin >= parseYMDLocal('2025-11-01') && fechaCheckin <= parseYMDLocal('2025-12-20')) factorARS = 1580;
+    const factorARS = window._factorARS || 1400;
 
     // Base + breakdown (ci .. co-1)
     let baseUSD = 0;
@@ -634,5 +621,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   <script src="volver.js" defer></script>
-</body>
+
+  <!-- Ver mas alojamientos -->
+  <section class="mas-alojamientos-cta">
+    <a href="alojamientos.html" class="btn-mas-aloj">&larr; Explorar todos los alojamientos</a>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-unidad">
+      <div class="footer-unidad-links">
+        <a href="viajero.html">Inicio</a>
+        <a href="alojamientos.html">Alojamientos</a>
+        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener">Contacto</a>
+      </div>
+      <div class="footer-unidad-redes">
+        <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener" aria-label="Instagram">
+          <img src="logos/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <img src="logos/whatsapp.png" alt="WhatsApp">
+        </a>
+      </div>
+    </div>
+    <small>© Happy Host Patagonia</small>
+  </footer>
+
+  <script>
+  /* Preservar fechas de busqueda en boton 'Explorar todos' */
+  (function() {
+    var p = new URLSearchParams(window.location.search);
+    var ci = p.get('checkin')  || localStorage.getItem('checkin');
+    var co = p.get('checkout') || localStorage.getItem('checkout');
+    var hu = p.get('huespedes')|| localStorage.getItem('huespedes');
+    if (ci && co) {
+      var q = new URLSearchParams();
+      q.set('checkin', ci); q.set('checkout', co);
+      if (hu && hu !== '0') q.set('huespedes', hu);
+      var href = 'alojamientos.html?' + q.toString();
+      var btn = document.querySelector('.btn-mas-aloj');
+      if (btn) btn.href = href;
+      var btnV = document.getElementById('btnVolver');
+      if (btnV) btnV.href = href;
+    }
+  })();
+  </script>
+  <!-- Motor de moneda configurable -->
+  <script src="moneda.js"></script>
+
+  </body>
 </html>

@@ -1,137 +1,224 @@
+/* =====================================================================
+   alojamientos.js — búsqueda + disponibilidad + precios en tarjetas
+   ===================================================================== */
+'use strict';
+
+const API = 'https://disponibilidad-happy-host-patagonia.onrender.com';
+
+// ── Datos de propiedades (houseId, roomId, capacidad máx) ─────────────
+const PROPS = {
+  calafate1:        { houseId: 601552, roomId: 668343, pax: 6 },
+  calafate2:        { houseId: 601707, roomId: 668498, pax: 4 },
+  calafate3:        { houseId: 601708, roomId: 668499, pax: 6 },
+  calafate4:        { houseId: 601710, roomId: 668501, pax: 6 },
+  calafate5:        { houseId: 601711, roomId: 668502, pax: 4 },
+  calafate6:        { houseId: 601712, roomId: 668503, pax: 6 },
+  calafate7:        { houseId: 601713, roomId: 668504, pax: 4 },
+  cruzdelsur4:      { houseId: 601717, roomId: 668508, pax: 2 },
+  cruzdelsur5:      { houseId: 601714, roomId: 668505, pax: 2 },
+  nilidas:          { houseId: 601719, roomId: 668510, pax: 4 },
+  gurisa:           { houseId: 648950, roomId: 715936,  pax: 7 },
+  paisajismo:       { houseId: 601720, roomId: 668511, pax: 3 },
+  mitiempo:         { houseId: 677286, roomId: 744262, pax: 3 },
+  refugiopatagonico:{ houseId: 677289, roomId: 744265, pax: 8 },
+};
+
+// ── Helpers de fecha ──────────────────────────────────────────────────
+function parseYMD(s) {
+  if (!s) return null;
+  const [y, m, d] = s.split('-').map(Number);
+  return isNaN(y) ? null : new Date(y, m - 1, d);
+}
+function addDay(dateStr) {
+  const d = parseYMD(dateStr);
+  d.setDate(d.getDate() + 1);
+  return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+}
+function fmtFecha(s) {
+  const d = parseYMD(s);
+  if (!d) return s;
+  return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' });
+}
+function fmt(n) {
+  return n.toLocaleString('es-AR', { maximumFractionDigits: 0 });
+}
+
+// ── Moneda y factor ARS — usa moneda.js si está disponible ───────────
+async function detectarMoneda(checkinStr) {
+  if (window.hhMoneda) {
+    try { return await window.hhMoneda.detectar(checkinStr, null); } catch {}
+  }
+  // Fallback local (por si moneda.js no cargó)
+  const fecha = parseYMD(checkinStr);
+  if (!fecha) return { moneda: 'USD', factorARS: 1 };
+  const limite = new Date(2026, 4, 31);
+  if (fecha > limite) return { moneda: 'USD', factorARS: 1 };
+  let factorARS = 1600;
+  if (fecha >= new Date(2025, 4, 1) && fecha <= new Date(2025, 5, 30)) factorARS = 1250;
+  return { moneda: 'ARS', factorARS };
+}
+
+// ── Slideshow en hover ────────────────────────────────────────────────
 const intervalos = new Map();
 
 function iniciarSlideshow(card) {
   const slides = card.querySelectorAll('.slide');
   if (slides.length <= 1) return;
-
-  let index = 0;
+  let idx = 0;
   intervalos.set(card, setInterval(() => {
-    slides[index].classList.remove('active');
-    index = (index + 1) % slides.length;
-    slides[index].classList.add('active');
+    slides[idx].classList.remove('active');
+    idx = (idx + 1) % slides.length;
+    slides[idx].classList.add('active');
   }, 2000));
 }
 
 function detenerSlideshow(card) {
   clearInterval(intervalos.get(card));
   intervalos.delete(card);
-
-  const slides = card.querySelectorAll('.slide');
-  slides.forEach((slide, i) => {
-    slide.classList.remove('active');
-    if (i === 0) slide.classList.add('active');
+  card.querySelectorAll('.slide').forEach((s, i) => {
+    s.classList.remove('active');
+    if (i === 0) s.classList.add('active');
   });
 }
 
-// Redirección con parámetros
+// ── Redirección con parámetros (para click en tarjeta) ───────────────
 function redirigirConParametros(pagina) {
-  const checkin = localStorage.getItem('checkin');
-  const checkout = localStorage.getItem('checkout');
-  const huespedes = localStorage.getItem('huespedes');
-  const params = new URLSearchParams();
-
-  if (checkin) params.append('checkin', checkin);
-  if (checkout) params.append('checkout', checkout);
-  if (huespedes) params.append('huespedes', huespedes);
-
-  window.location.href = pagina + (params.toString() ? '?' + params.toString() : '');
+  const ci = localStorage.getItem('checkin');
+  const co = localStorage.getItem('checkout');
+  const hu = localStorage.getItem('huespedes');
+  const p  = new URLSearchParams();
+  if (ci) p.append('checkin',   ci);
+  if (co) p.append('checkout',  co);
+  if (hu) p.append('huespedes', hu);
+  window.location.href = pagina + (p.toString() ? '?' + p.toString() : '');
 }
 
-// Mezclar cards al cargar
-document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.querySelector('.grid-alojamientos');
-  if (!grid) return;
+// ── Limpiar búsqueda (botón en banner) ────────────────────────────────
+function limpiarBusqueda() {
+  ['checkin','checkout','huespedes','disponibles','disponibles_expira']
+    .forEach(k => localStorage.removeItem(k));
+  window.location.href = 'alojamientos.html';
+}
 
-  const cards = Array.from(grid.children);
-  const cardsMezcladas = cards.sort(() => Math.random() - 0.5);
-  cardsMezcladas.forEach(card => grid.appendChild(card));
-});
-
-// =======================
-// PROCESAR Y FILTRAR
-// =======================
+// ── MAIN ──────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  const params = new URLSearchParams(window.location.search);
-  const checkin = params.get('checkin');
-  const checkout = params.get('checkout');
-  const huespedes = parseInt(params.get('huespedes') || '1', 10);
 
-  if (checkin) localStorage.setItem('checkin', checkin);
-  if (checkout) localStorage.setItem('checkout', checkout);
-  if (huespedes) localStorage.setItem('huespedes', huespedes);
+  const urlParams = new URLSearchParams(window.location.search);
+  const checkin   = urlParams.get('checkin')  || '';
+  const checkout  = urlParams.get('checkout') || '';
+  const huespedes = parseInt(urlParams.get('huespedes') || '0', 10);
 
-  const capacities = {
-    calafate1: 6,
-    calafate2: 4,
-    calafate3: 6,
-    calafate4: 6,
-    calafate5: 4,
-    calafate6: 6,
-    calafate7: 4,
-    cruzdelsur4: 2,
-    cruzdelsur5: 2,
-    nilidas: 4,
-    gurisa: 7,
-    paisajismo: 3,
-    koiquetrihue: 3,
-    mitiempo: 3,
-    refugiopatagonico: 8 
-  };
-
-  const mapNombreAId = {
-    calafate1: 601552,
-    calafate2: 601707,
-    calafate3: 601708,
-    calafate4: 601710,
-    calafate5: 601711,
-    calafate6: 601712,
-    calafate7: 601713,
-    cruzdelsur4: 601717,
-    cruzdelsur5: 601714,
-    nilidas: 601719,
-    gurisa: 648950,
-    paisajismo: 601720,
-    koiquetrihue: 677269,
-    mitiempo: 677286,
-    refugiopatagonico: 677289
-  };
+  // Persistir en localStorage para que la página de propiedad los use
+  if (checkin)       localStorage.setItem('checkin',   checkin);
+  if (checkout)      localStorage.setItem('checkout',  checkout);
+  if (huespedes > 0) localStorage.setItem('huespedes', String(huespedes));
 
   const loading = document.getElementById('loading-disponibilidad');
-  const contenedor = document.getElementById('listado-alojamientos');
-  const cards = document.querySelectorAll('.card[data-nombre]');
+  const banner  = document.getElementById('banner-busqueda');
+  const cards   = Array.from(document.querySelectorAll('.card[data-nombre]'));
 
-  if (loading) loading.style.display = 'flex';
+  // Mezclar tarjetas aleatoriamente
+  const grid = document.querySelector('.grid-alojamientos');
+  if (grid) cards.sort(() => Math.random() - 0.5).forEach(c => grid.appendChild(c));
 
-  // 🕒 Esperar a que haya datos válidos en localStorage (máx 1.5s)
-  let disponibles = null;
-  let intentos = 0;
-  while (!disponibles && intentos < 15) {
-    const cache = localStorage.getItem("disponibles");
-    if (cache) disponibles = JSON.parse(cache);
-    else await new Promise(r => setTimeout(r, 100)); // espera 100ms
-    intentos++;
+  // ── SIN fechas: mostrar todo (filtrar por pax si se indicó) ──────
+  if (!checkin || !checkout) {
+    cards.forEach(card => {
+      const p = PROPS[card.dataset.nombre];
+      card.style.display = (!huespedes || !p || p.pax >= huespedes) ? 'block' : 'none';
+    });
+    if (loading) loading.style.display = 'none';
+    return;
   }
 
-  // Obtenemos solo los IDs de propiedades disponibles
-  const idsDisponibles = disponibles ? disponibles.map(p => p.id) : [];
+  // ── CON fechas: verificar disponibilidad ─────────────────────────
+  if (loading) loading.style.display = 'flex';
 
-  cards.forEach(card => {
-    const nombre = card.dataset.nombre;
-    const id = mapNombreAId[nombre];
-    const capacidadOk = huespedes <= (capacities[nombre] || 0);
-    const estaDisponible = idsDisponibles.includes(id);
+  const { moneda, factorARS } = detectarMoneda(checkin);
+  const noches = Math.round((parseYMD(checkout) - parseYMD(checkin)) / 86400000);
 
-    // Lógica final de visibilidad
-    if ((!checkin || !checkout || !disponibles) && capacidadOk) {
-      card.style.display = 'block';
-    } else if (estaDisponible && capacidadOk) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
+  // Intentar caché (válido 3 min)
+  let disponiblesIds = null;
+  const expira = parseInt(localStorage.getItem('disponibles_expira') || '0', 10);
+  if (expira > Date.now()) {
+    try {
+      const cached = localStorage.getItem('disponibles');
+      if (cached) disponiblesIds = JSON.parse(cached).map(p => p.id);
+    } catch {}
+  }
+
+  if (!disponiblesIds) {
+    try {
+      const r    = await fetch(`${API}/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
+      const data = await r.json();
+      disponiblesIds = (data.disponibles || []).map(p => p.id);
+      localStorage.setItem('disponibles',         JSON.stringify(data.disponibles || []));
+      localStorage.setItem('disponibles_expira',  String(Date.now() + 3 * 60 * 1000));
+    } catch (e) {
+      console.warn('⚠️ disponibilidad no disponible:', e.message);
+      disponiblesIds = [];
     }
+  }
+
+  // Aplicar visibilidad por disponibilidad + capacidad
+  let visibles = 0;
+  cards.forEach(card => {
+    const p    = PROPS[card.dataset.nombre];
+    const capOk  = !huespedes || !p || p.pax >= huespedes;
+    const dispOk = p && disponiblesIds.includes(p.houseId);
+    if (capOk && dispOk) { card.style.display = 'block'; visibles++; }
+    else                  { card.style.display = 'none'; }
   });
 
-  if (loading) loading.style.display = 'none';
-  if (contenedor) contenedor.style.display = 'flex';
-});
+  // Mostrar banner de resultados
+  if (banner) {
+    const huTxt = huespedes > 0
+      ? ` · ${huespedes} huésped${huespedes > 1 ? 'es' : ''}`
+      : '';
+    banner.innerHTML = `
+      <span class="banner-texto">
+        <strong>${visibles}</strong> propiedad${visibles !== 1 ? 'es' : ''} disponible${visibles !== 1 ? 's' : ''}
+        · <strong>${noches} noche${noches !== 1 ? 's' : ''}</strong>
+        · <strong>${fmtFecha(checkin)}</strong> → <strong>${fmtFecha(checkout)}</strong>${huTxt}
+      </span>
+      <button class="banner-limpiar" onclick="limpiarBusqueda()">✕ Nueva búsqueda</button>`;
+    banner.style.display = 'flex';
+  }
 
+  if (loading) loading.style.display = 'none';
+
+  // ── Precios reales desde Lodgify (en paralelo, solo para disponibles) ──
+  const mañana = addDay(checkin);
+  const disponiblesCards = cards.filter(c => c.style.display !== 'none');
+
+  await Promise.allSettled(disponiblesCards.map(async card => {
+    const slug = card.dataset.nombre;
+    const p    = PROPS[slug];
+    if (!p) return;
+
+    try {
+      const url = `${API}/api/precios-diarios?start=${checkin}&end=${mañana}&houseId=${p.houseId}&roomId=${p.roomId}`;
+      const r   = await fetch(url);
+      if (!r.ok) return;
+      const { dias = [] } = await r.json();
+      if (!dias.length || !dias[0].prices?.length) return;
+
+      const tarifa = dias[0].prices[0].price_per_day;
+      if (!tarifa) return;
+
+      const precioFmt = moneda === 'USD'
+        ? `USD ${fmt(Math.round(tarifa))}`
+        : `$${fmt(Math.round(tarifa * factorARS))}`;
+
+      // Crear o actualizar el badge de precio
+      let el = card.querySelector('.card-price');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'card-price';
+        const nameEl = card.querySelector('.nombre-alojamiento');
+        if (nameEl) nameEl.appendChild(el);
+      }
+      el.textContent = `desde ${precioFmt}/noche`;
+    } catch { /* silently skip */ }
+  }));
+});

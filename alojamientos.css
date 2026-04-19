@@ -293,3 +293,174 @@ body{
     height: 26px;
   }
 }
+
+/* ── Buscador de disponibilidad ──────────────────────────────────── */
+.buscador-filtro {
+  background: #fff;
+  border-bottom: 1px solid var(--hh-border);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+}
+.buscador-filtro form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-width: 720px;
+  width: 100%;
+}
+.buscador-filtro input[type="text"] {
+  flex: 1;
+  min-width: 180px;
+  padding: 9px 14px;
+  border: 1.5px solid var(--hh-border);
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: .9rem;
+  outline: none;
+  background: var(--hh-sand);
+  cursor: pointer;
+}
+.buscador-filtro input[type="text"]:focus {
+  border-color: var(--hh-olive);
+}
+.selector-pax {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--hh-sand);
+  border: 1.5px solid var(--hh-border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  white-space: nowrap;
+}
+.selector-pax button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--hh-olive);
+  padding: 2px 6px;
+  line-height: 1;
+}
+.selector-pax span {
+  font-family: 'Poppins', sans-serif;
+  font-size: .9rem;
+  min-width: 88px;
+  text-align: center;
+  color: var(--hh-ink);
+}
+.buscador-filtro button[type="submit"] {
+  background: var(--hh-olive);
+  color: #fff;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.buscador-filtro button[type="submit"]:hover {
+  background: var(--hh-olive-700);
+}
+
+/* ── Banner de resultados ─────────────────────────────────────────── */
+.banner-busqueda {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--hh-olive);
+  color: #fff;
+  padding: 10px 24px;
+  font-family: 'Poppins', sans-serif;
+  font-size: .88rem;
+}
+.banner-texto { flex: 1; }
+.banner-limpiar {
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: .83rem;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.banner-limpiar:hover { background: rgba(255,255,255,.3); }
+
+/* ── Precio en tarjeta ───────────────────────────────────────────── */
+.nombre-alojamiento {
+  flex-wrap: wrap;
+}
+.card-price {
+  flex: 0 0 100%;
+  font-size: .75rem;
+  font-weight: 400;
+  color: rgba(255,255,255,.92);
+  text-align: center;
+  margin-top: 4px;
+  letter-spacing: .01em;
+}
+
+/* ── Footer de alojamientos ──────────────────────────────────────── */
+.footer-aloj {
+  background: #2b2b2b;
+  color: #ccc;
+  padding: 32px 24px 16px;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 20px;
+}
+.footer-aloj-inner {
+  max-width: 900px;
+  margin: 0 auto 16px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-aloj img.logo-footer {
+  width: 120px;
+  filter: brightness(0) invert(1);
+  opacity: .75;
+}
+.footer-aloj-info {
+  font-size: .85rem;
+  line-height: 1.7;
+}
+.footer-aloj-info a { color: #ccc; text-decoration: none; }
+.footer-aloj-info a:hover { color: #fff; }
+.footer-aloj-redes { display: flex; gap: 14px; align-items: center; }
+.footer-aloj-redes img {
+  width: 26px;
+  filter: brightness(0) invert(1);
+  opacity: .65;
+  transition: opacity .2s;
+}
+.footer-aloj-redes img:hover { opacity: 1; }
+.footer-aloj-bottom {
+  max-width: 900px;
+  margin: 0 auto;
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 12px;
+  text-align: center;
+  font-size: .78rem;
+  color: rgba(255,255,255,.35);
+}
+
+/* ── Mobile responsivo nuevos bloques ────────────────────────────── */
+@media (max-width: 600px) {
+  .buscador-filtro form { gap: 6px; }
+  .buscador-filtro input[type="text"] { min-width: unset; width: 100%; }
+  .selector-pax { width: 100%; justify-content: space-between; }
+  .buscador-filtro button[type="submit"] { width: 100%; }
+  .banner-busqueda { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 16px; }
+  .footer-aloj-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
