@@ -304,8 +304,10 @@
 <script>
 'use strict';
 // IDs (Mi Tiempo)
-const HOUSE_ID = 677286;
-const ROOM_ID  = 744262;
+const HOUSE_ID    = 677286;
+const ROOM_ID     = 744262;
+const PROP_KEY    = 'mitiempo';
+const PROP_FAMILY = 'MiTiempo';
 
 // Helpers fechas locales
 function parseYMDLocal(s) {
@@ -347,7 +349,7 @@ const contador    = document.getElementById('contador');
 
 let cantidad = parseInt(huespedes) || 1;
 const hoy = new Date(); hoy.setHours(0,0,0,0);
-const fechaLimite = new Date('2026-04-30');
+const fechaLimite = new Date('2027-12-31');
 
 // 🔧 CAMBIO #3: precargo inputs ANTES de crear flatpickr (para que tome los valores)
 if (checkin)  startInput.value = checkin;
@@ -440,18 +442,13 @@ guestsInput.addEventListener('input', () => {
 currSelect.addEventListener('change', calculate);
 
 // Moneda: ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
-  async function setCurrencyAndCalculate(fechaCheckinStr) {
-    // Moneda configurable desde el panel admin (moneda.js)
-    const { moneda, factorARS } = await window.hhMoneda.detectar(fechaCheckinStr, PROP_KEY);
-    currSelect.value    = moneda;
-    window._factorARS   = factorARS;   // usado por calculate()
-    currSelect.style.display  = 'none';
-    currSelect.disabled = true;
-    calculate();
-  } else {
-    currSelect.style.display = 'block';
-    currSelect.disabled = false;
-  }
+async function setCurrencyAndCalculate(fechaCheckinStr) {
+  // Moneda configurable desde el panel admin (moneda.js)
+  const { moneda, factorARS } = await window.hhMoneda.detectar(fechaCheckinStr, PROP_KEY);
+  currSelect.value    = moneda;
+  window._factorARS   = factorARS;   // usado por calculate()
+  currSelect.style.display  = 'none';
+  currSelect.disabled = true;
   calculate();
 }
 

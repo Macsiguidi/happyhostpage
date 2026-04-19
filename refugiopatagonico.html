@@ -317,8 +317,10 @@
   <script>
   'use strict';
   // IDs Refugio Patagónico
-  const HOUSE_ID = 677289;
-  const ROOM_ID  = 744265;
+  const HOUSE_ID    = 677289;
+  const ROOM_ID     = 744265;
+  const PROP_KEY    = 'refugiopatagonico';
+  const PROP_FAMILY = 'RefugioPatagonico';
 
   // ===== URL params =====
   const params    = new URLSearchParams(window.location.search);
@@ -354,7 +356,7 @@
 
   let cantidad = parseInt(huespedes) || 1;
   const hoy = new Date(); hoy.setHours(0,0,0,0);
-  const fechaLimite = new Date('2026-04-30');
+  const fechaLimite = new Date('2027-12-31');
 
   // 🔧 CAMBIO #3: precargar inputs ANTES de crear Flatpickr (evita que pise valores)
   if (checkin)  startInput.value = checkin;

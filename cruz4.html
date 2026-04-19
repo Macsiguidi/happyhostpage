@@ -310,8 +310,10 @@
 'use strict';
 
 // IDs de propiedad
-const HOUSE_ID = 601717;
-const ROOM_ID  = 668508;
+const HOUSE_ID    = 601717;
+const ROOM_ID     = 668508;
+const PROP_KEY    = 'cruzdelsur4';
+const PROP_FAMILY = 'CruzDelSur';
 
 // Helpers fechas locales
 function parseYMDLocal(s) {
@@ -443,15 +445,14 @@ guestsInput.addEventListener('input', () => {
 currSelect.addEventListener('change', calculate);
 
 // Moneda: ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
-  async function setCurrencyAndCalculate(fechaCheckinStr) {
-    // Moneda configurable desde el panel admin (moneda.js)
-    const { moneda, factorARS } = await window.hhMoneda.detectar(fechaCheckinStr, PROP_KEY);
-    currSelect.value    = moneda;
-    window._factorARS   = factorARS;   // usado por calculate()
-    currSelect.style.display  = 'none';
-    currSelect.disabled = true;
-    calculate();
-  });
+async function setCurrencyAndCalculate(fechaCheckinStr) {
+  // Moneda configurable desde el panel admin (moneda.js)
+  const { moneda, factorARS } = await window.hhMoneda.detectar(fechaCheckinStr, PROP_KEY);
+  currSelect.value    = moneda;
+  window._factorARS   = factorARS;   // usado por calculate()
+  currSelect.style.display  = 'none';
+  currSelect.disabled = true;
+  calculate();
 }
 
 // Ajuste estacional +USD 20/noche (03/09/2025–20/12/2025)
