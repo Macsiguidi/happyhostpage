@@ -90,12 +90,14 @@ function redirigirConParametros(pagina) {
   if (ci) p.append('checkin',   ci);
   if (co) p.append('checkout',  co);
   if (hu) p.append('huespedes', hu);
+  // Indica a la propiedad que venimos del buscador → botón Volver reconstruye la búsqueda
+  if (ci && co) localStorage.setItem('busqueda_desde_buscador', 'true');
   window.location.href = pagina + (p.toString() ? '?' + p.toString() : '');
 }
 
 // ── Limpiar búsqueda (botón en banner) ────────────────────────────────
 function limpiarBusqueda() {
-  ['checkin','checkout','huespedes','disponibles','disponibles_expira']
+  ['checkin','checkout','huespedes','disponibles','disponibles_expira','busqueda_desde_buscador']
     .forEach(k => localStorage.removeItem(k));
   window.location.href = 'alojamientos.html';
 }
