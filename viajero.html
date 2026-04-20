@@ -104,6 +104,9 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
   </div>
 </section>
 
+  <!-- Long-stay promo card (populated by promos.js) -->
+  <div id="hhLongStayCard" style="display:none"></div>
+
   <div class="contenido-hero">
     <form class="buscador" id="form-busqueda">
       <input type="text" id="rango-fechas" class="placeholder-fechas" placeholder="Llegada → Salida" readonly>
@@ -351,6 +354,12 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
 <script src="viajero.js"></script>
 <!-- Cargá el JS al final de la página -->
 <script src="destacados.js?v=1.0.0"></script>
+<script src="promos.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.hhPromos) hhPromos.initViajeroPromos();
+  });
+</script>
 </body>
 </html>
 

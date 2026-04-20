@@ -516,6 +516,11 @@ a:hover{text-decoration:underline}
 }
 
 
+/* ═══════════════════════════════════════════════════════
+   PROMO POPUP — sistema de promociones Happy Host
+   ═══════════════════════════════════════════════════════ */
+
+/* — Overlay — */
 .promo-popup-overlay {
   position: fixed;
   inset: 0;
@@ -525,114 +530,225 @@ a:hover{text-decoration:underline}
   justify-content: center;
   z-index: 9999;
   padding: 20px;
+  backdrop-filter: blur(3px);
 }
+.promo-popup-overlay.active { display: flex; }
 
-.promo-popup-overlay.active {
-  display: flex;
-}
-
+/* — Card base — */
 .promo-popup {
   position: relative;
   width: 100%;
-  max-width: 420px;
-  background: #f7f1e8;
-  border-radius: 18px;
-  padding: 28px 22px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  background: var(--hh-sand);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.30);
   font-family: 'Poppins', sans-serif;
-  animation: popupFadeUp 0.35s ease;
+  animation: popupFadeUp 0.38s cubic-bezier(.22,.68,0,1.2);
+  text-align: center;
 }
 
-.promo-badge {
-  display: inline-block;
-  background: #6b7a46;
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  margin-bottom: 14px;
-}
-
-.promo-popup h2 {
-  margin: 0 0 10px;
-  font-size: 28px;
-  color: #2f3a24;
-}
-
-.promo-text {
-  margin: 0 0 18px;
-  color: #4e4e4e;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-.promo-code-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  background: #fff;
-  border: 2px dashed #6b7a46;
-  border-radius: 14px;
-  padding: 12px 14px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-}
-
-#promoCode {
-  font-size: 20px;
-  font-weight: 700;
-  color: #2f3a24;
-  letter-spacing: 1px;
-}
-
-.copy-btn {
-  background: #6b7a46;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.copy-btn:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
-}
-
-.promo-note {
-  font-size: 13px;
-  color: #7a7a7a;
-  margin: 0;
-}
-
+/* — Close button — */
 .promo-close {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  background: transparent;
+  top: 12px;
+  right: 14px;
+  z-index: 10;
+  background: rgba(255,255,255,.35);
   border: none;
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
-  color: #7b7b7b;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+}
+.promo-close:hover { background: rgba(255,255,255,.55); }
+
+/* — Body — */
+.promo-body {
+  padding: 20px 24px 24px;
+}
+.promo-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--hh-ink);
+  line-height: 1.3;
+}
+.promo-text {
+  margin: 0 0 12px;
+  color: var(--hh-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.promo-auto {
+  margin: 0;
+  font-size: 12px;
+  color: var(--hh-olive);
+  font-weight: 600;
 }
 
+/* ───────────────────────────────────────────────────────
+   HERO: Free nights  (4 ✕ 3)
+   ─────────────────────────────────────────────────────── */
+.promo-hero--fn {
+  background: linear-gradient(135deg, var(--hh-olive) 0%, var(--hh-olive-700) 100%);
+  padding: 32px 24px 24px;
+  color: #fff;
+}
+.promo-fn-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  line-height: 1;
+}
+.promo-fn-n,
+.promo-fn-p {
+  font-family: 'Bebas Neue', 'Poppins', sans-serif;
+  font-size: 88px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  color: #fff;
+}
+.promo-fn-eq {
+  font-size: 40px;
+  font-weight: 300;
+  opacity: .7;
+  margin-bottom: 8px;
+}
+.promo-fn-sub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: .85;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────
+   HERO: Percentage  (circle)
+   ─────────────────────────────────────────────────────── */
+.promo-hero--pct {
+  background: linear-gradient(135deg, #4a6535 0%, var(--hh-olive) 100%);
+  padding: 30px 24px 24px;
+  display: flex;
+  justify-content: center;
+}
+.promo-pct-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18);
+}
+.promo-pct-val {
+  font-family: 'Bebas Neue', 'Poppins', sans-serif;
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--hh-olive);
+  letter-spacing: -1px;
+}
+.promo-pct-sym {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--hh-olive);
+  margin-top: -6px;
+}
+.promo-pct-off {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--hh-muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ───────────────────────────────────────────────────────
+   HERO: Fixed amount  (USD X)
+   ─────────────────────────────────────────────────────── */
+.promo-hero--fixed {
+  background: linear-gradient(135deg, #7a6040 0%, #b58863 100%);
+  padding: 30px 24px 24px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.promo-fixed-val {
+  font-family: 'Bebas Neue', 'Poppins', sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.promo-fixed-off {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: .85;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────
+   HERO: Default (fallback)
+   ─────────────────────────────────────────────────────── */
+.promo-hero--default {
+  background: linear-gradient(135deg, var(--hh-olive) 0%, var(--hh-olive-700) 100%);
+  padding: 30px 24px;
+  display: flex;
+  justify-content: center;
+}
+.promo-default-badge {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #fff;
+}
+
+/* — Animation — */
 @keyframes popupFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(22px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* — Mobile — */
+@media (max-width: 480px) {
+  .promo-popup { max-width: 95vw; }
+  .promo-fn-n, .promo-fn-p { font-size: 68px; }
+  .promo-pct-circle { width: 110px; height: 110px; }
+  .promo-pct-val { font-size: 44px; }
+  .promo-fixed-val { font-size: 44px; }
+}
+
+/* ── Estadía larga: badge en resumen de reserva ─────────────────────── */
+.booking-summary .hh-ls-notice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(90deg, rgba(107,123,83,.12) 0%, rgba(107,123,83,.06) 100%);
+  border-left: 3px solid var(--hh-olive);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--hh-olive-700);
+  margin: 4px 0;
+  list-style: none;
+}
+.booking-summary .hh-ls-notice strong {
+  color: var(--hh-olive);
 }
 
 /* WHATSAPP  */
