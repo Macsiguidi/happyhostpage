@@ -458,6 +458,20 @@ async function setCurrencyAndCalculate(fechaCheckinStr) {
   calculate();
 }
 
+// Verificar cruce con fechas ocupadas
+function hayCruceConFechasOcupadas(checkin, checkout) {
+  const ci = (checkin instanceof Date) ? checkin : parseYMDLocal(checkin);
+  const co = (checkout instanceof Date) ? checkout : parseYMDLocal(checkout);
+  if (!ci || !co) return true;
+  const ci0 = ymdLocal(ci), co0 = ymdLocal(co);
+  return fechasOcupadas.some(({ from, to }) => {
+    const inicio = parseYMDLocal(from), fin = parseYMDLocal(to);
+    if (!inicio || !fin) return false;
+    const i0 = ymdLocal(inicio), f0 = ymdLocal(fin);
+    return ((ci0 > i0 && ci0 < f0) || (co0 > i0 && co0 < f0) || (ci0 <= i0 && co0 >= f0));
+  });
+}
+
 // Ajuste estacional +USD 20/noche (03/09/2025–20/12/2025)
 const AJUSTE_USD_POR_NOCHE = 20;
 const AJ_DESDE = parseYMDLocal('2025-09-03');
