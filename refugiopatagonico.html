@@ -1,342 +1,420 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="es-AR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Refugio Patagónico | Alquiler turístico en Villa La Angostura - Happy Host</title>
-  <meta name="description" content="Refugio Patagónico: casa amplia y equipada en Villa La Angostura. Ideal para grupos y familias (hasta 9 pax). Jardín, parrilla y todas las comodidades." />
-  <meta name="keywords" content="Refugio Patagónico, alojamiento turístico Villa La Angostura, alquiler vacacional Patagonia, casa grande 9 personas, parrilla, jardín, Happy Host Patagonia, Nahuel Huapi, Cerro Bayo, Lago Correntoso, familias, grupos, casa equipada, estacionamiento, calefacción, wifi" />
+
+  <title>Refugio Patagónico | Casa grande para grupos en Villa La Angostura - Happy Host Patagonia</title>
+  <meta name="description" content="Refugio Patagónico: casa amplia para grupos de hasta 9 personas en Villa La Angostura. Jardín con parrilla, living espacioso y todo el confort patagónico.">
   <meta name="author" content="Happy Host Patagonia" />
+  <link rel="canonical" href="https://www.happyhostpatagonia.com.ar/refugiopatagonico.html" />
 
-  <!-- Pixel -->
-  <script>
-  if (location.hostname === 'happyhostpatagonia.com.ar') {
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)n=f._fbq;
-    n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
-    t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','1812973002649828'); fbq('track','PageView');
-  }
-  </script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+  <link rel="dns-prefetch" href="https://connect.facebook.net" />
 
-  <!-- Icono y fuentes -->
-  <link rel="icon" type="image/png" sizes="128x128" href="logos/happyhost.png">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="128x128" href="logos/happyhost.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Refugio Patagónico en Villa La Angostura | Happy Host Patagonia">
-  <meta property="og:description" content="Casa amplia hasta 9 personas con jardín y parrilla. Ideal familias y grupos.">
-  <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/refugio/refugio2.jpg">
-  <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/refugiopatagonico.html">
-  <meta property="og:type" content="website">
+  <meta property="og:title" content="Refugio Patagónico en Villa La Angostura | Happy Host Patagonia" />
+  <meta property="og:description" content="Casa amplia para grupos de hasta 9 personas. Jardín con parrilla y todo el confort patagónico en Villa La Angostura." />
+  <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/unidades/refugio/refugio2.jpg" />
+  <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/refugiopatagonico.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_AR" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Flatpickr -->
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="unidades-nuevo.css" />
 
-  <!-- Estilos del sitio -->
-  <link rel="stylesheet" href="unidades.css">
+  <meta name="geo.region" content="AR-Q" />
+  <meta name="geo.placename" content="Villa La Angostura, Neuquén" />
+  <meta name="geo.position" content="-40.7731;-71.6469" />
+  <meta name="ICBM" content="-40.7731, -71.6469" />
 
-  <!-- Estilos mínimos para el lightbox (autónomo) -->
-  <style>
-    .lightbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:9999}
-    .lightbox[hidden]{display:none}
-    .lightbox__img{max-width:min(92vw,1600px);max-height:88vh;border-radius:8px}
-    .lightbox__btn{position:absolute;top:50%;transform:translateY(-50%);font-size:32px;background:rgba(255,255,255,.15);border:0;color:#fff;width:48px;height:72px;border-radius:8px;cursor:pointer}
-    .lightbox__btn:hover{background:rgba(255,255,255,.25)}
-    .lightbox__prev{left:16px}
-    .lightbox__next{right:16px}
-    .lightbox__close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.2);border:0;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer}
-    .miniaturas img.activa{outline:3px solid #fff;border-radius:6px}
-    .imagen-principal img{cursor:zoom-in}
-  </style>
+  <script>
+    if (location.hostname === 'happyhostpatagonia.com.ar') {
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init','1812973002649828'); fbq('track','PageView');
+    }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VacationRental",
+    "name": "Refugio Patagónico",
+    "description": "Refugio Patagónico: casa amplia para grupos de hasta 9 personas en Villa La Angostura. Jardín con parrilla, living espacioso y todo el confort patagónico.",
+    "url": "https://www.happyhostpatagonia.com.ar/refugiopatagonico.html",
+    "image": "https://www.happyhostpatagonia.com.ar/unidades/refugio/refugio2.jpg",
+    "occupancy": { "@type": "QuantitativeValue", "maxValue": 9 },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Del Radal 514",
+      "addressLocality": "Villa La Angostura",
+      "addressRegion": "Neuquén",
+      "postalCode": "8407",
+      "addressCountry": "AR"
+    },
+    "amenityFeature": [
+      {"@type": "LocationFeatureSpecification", "name": "WiFi", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Estacionamiento", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Parrilla", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Calefacción", "value": true}
+    ],
+    "containedInPlace": {
+      "@type": "LocalBusiness",
+      "name": "Happy Host Patagonia",
+      "url": "https://www.happyhostpatagonia.com.ar/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.happyhostpatagonia.com.ar/"},
+      {"@type":"ListItem","position":2,"name":"Alojamientos","item":"https://www.happyhostpatagonia.com.ar/alojamientos.html"},
+      {"@type":"ListItem","position":3,"name":"Refugio Patagónico","item":"https://www.happyhostpatagonia.com.ar/refugiopatagonico.html"}
+    ]
+  }
+  </script>
 </head>
 
 <body>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1" alt=""></noscript>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1" alt=""></noscript>
 
-  <header class="header">
-    <div class="barra-menu">
-      <div class="logo">
-        <img src="logos/happy host.png" alt="Logo Happy Host" href="index.html">
-      </div>
-      <h1 class="titulo-header">REFUGIO PATAGÓNICO</h1>
-      <div class="volver">
-        <a href="#" id="btnVolver" class="boton-volver">← Volver a alojamientos</a>
-      </div>
+  <!-- ══ HEADER ══════════════════════════════════════════════ -->
+  <header class="header-aloj" role="banner">
+    <div class="header-inner">
+      <a class="logo-aloj" href="viajero.html" aria-label="Ir al inicio">
+        <img src="logos/logo-horizontal.png" alt="Happy Host Patagonia" />
+      </a>
+      <ul class="menu-aloj">
+        <li><a href="viajero.html">Inicio</a></li>
+        <li><a href="alojamientos.html" class="activo">Alojamientos</a></li>
+        <li><a href="viajero.html#contacto">Contacto</a></li>
+        <li class="menu-volver"><a href="#" id="btnVolver">← Volver</a></li>
+      </ul>
     </div>
   </header>
 
-  <main id="main" tabindex="-1">
-    <div class="fondo-blur">
-      <section class="detalle-alojamiento">
-        <div class="imagen-principal">
-          <img id="foto-principal" src="unidades/refugio/refugio2.jpg" alt="Refugio Patagónico - Foto principal">
-
-          <div class="miniaturas-container">
-            <button class="flecha izq" type="button" aria-label="Ver fotos anteriores">&#10094;</button>
-            <div class="miniaturas" id="miniaturas-scroll">
-              <img src="unidades/refugio/refugio2.jpg"  alt="Refugio - living">
-              <img src="unidades/refugio/refugio1.jpg"  alt="Refugio - exterior">
-              <img src="unidades/refugio/refugio3.jpg"  alt="Refugio - cocina">
-              <img src="unidades/refugio/refugio4.jpg"  alt="Refugio - comedor">
-              <img src="unidades/refugio/refugio5.jpg"  alt="Refugio - dormitorio">
-              <img src="unidades/refugio/refugio6.jpg"  alt="Refugio - dormitorio">
-              <img src="unidades/refugio/refugio7.jpg"  alt="Refugio - baño">
-              <img src="unidades/refugio/refugio8.jpg"  alt="Refugio - jardín">
-              <img src="unidades/refugio/refugio9.jpg"  alt="Refugio - vista">
-              <img src="unidades/refugio/refugio10.jpg" alt="Refugio - detalles">
-              <img src="unidades/refugio/refugio11.jpg" alt="Refugio - ambiente">
-              <img src="unidades/refugio/refugio12.jpg" alt="Refugio - ambiente">
-              <img src="unidades/refugio/refugio13.jpg" alt="Refugio - ambiente">
-              <img src="unidades/refugio/refugio14.jpg" alt="Refugio - ambiente">
-              <img src="unidades/refugio/refugio15.jpg" alt="Refugio - ambiente">
-              <img src="unidades/refugio/refugio16.jpg" alt="Refugio - ambiente">
-              <img src="unidades/refugio/refugio17.jpg" alt="Refugio - ambiente">
-            </div>
-            <button class="flecha der" type="button" aria-label="Ver fotos siguientes">&#10095;</button>
-          </div>
-
-
-          <!--servicios-->
-
-        <aside class="info servicios" aria-labelledby="servicios-titulo">
-  <div class="servicios-header">
-    <h3 id="servicios-titulo">Servicios</h3>
-    <button class="servicios-toggle"
-            type="button"
-            aria-label="Mostrar/ocultar servicios"
-            aria-controls="lista-servicios"
-            aria-expanded="false">▼</button>
-  </div>
-
-  <div class="iconos-servicios" id="lista-servicios">
-    <div><img src="iconos/persona.png" alt="Capacidad"><span>9 pax</span></div>
-              <div><img src="iconos/wifi.png" alt="WiFi"><span>WiFi</span></div>
-              <div><img src="iconos/cocina.png" alt="Cocina"><span>Cocina</span></div>
-              <div><img src="iconos/estacionamiento.png" alt="Estacionamiento"><span>Estacionamiento</span></div>
-              <div><img src="iconos/sabanas y toallas.png" alt="Sábanas"><span>Blancos</span></div>
-              <div><img src="iconos/calefaccion.png" alt="Calefacción"><span>Calefacción</span></div>
-              <div><img src="iconos/parrilla.png" alt="Parrilla"><span>Parrilla</span></div>
-  </div>
-</aside>
+  <!-- ══ GALERÍA ═════════════════════════════════════════════ -->
+  <section class="unidad-galeria" aria-label="Galería de fotos">
+    <div class="galeria-grid">
+      <div class="galeria-main">
+        <img src="unidades/refugio/refugio2.jpg" alt="Refugio Patagónico — Vista principal" loading="eager" fetchpriority="high">
+      </div>
+      <div class="galeria-thumbs">
+        <img src="unidades/refugio/refugio1.jpg" alt="Frente de la casa" loading="lazy">
+        <img src="unidades/refugio/refugio3.jpg" alt="Living" loading="lazy">
+        <img src="unidades/refugio/refugio4.jpg" alt="Cocina" loading="lazy">
+        <div class="galeria-ver-mas">
+          <img src="unidades/refugio/refugio5.jpg" alt="Dormitorio" loading="lazy">
+          <button class="btn-ver-fotos" type="button">📷 Ver todas las fotos (17)</button>
         </div>
-
-        <!-- Lightbox -->
-        <div id="lightbox" class="lightbox" hidden aria-modal="true" role="dialog">
-          <button class="lightbox__close" type="button" aria-label="Cerrar (Esc)">×</button>
-          <button class="lightbox__btn lightbox__prev" type="button" aria-label="Anterior">‹</button>
-          <img class="lightbox__img" id="lightboxImg" src="" alt="Vista ampliada">
-          <button class="lightbox__btn lightbox__next" type="button" aria-label="Siguiente">›</button>
-        </div>
-
-        <!-- Motor de reservas -->
-        <div class="motor-reservas-fijo" role="region" aria-label="Reserva">
-          <div class="reserva">
-            <div class="dates" role="group" aria-label="Seleccionar fechas">
-              <div class="date-field" id="df-start">
-                <input type="text" id="start" placeholder="Check in" aria-label="Fecha de check in" readonly>
-              </div>
-              <div class="date-field" id="df-end">
-                <input type="text" id="end" placeholder="Check out" aria-label="Fecha de check out" readonly>
-              </div>
-            </div>
-
-            <!-- Huéspedes -->
-            <input type="hidden" id="guests" value="1">
-            <div class="huespedes-control" role="group" aria-label="Cantidad de huéspedes">
-              <button id="menos" type="button" aria-label="Quitar huésped">−</button>
-              <span id="contador" aria-live="polite">1 huésped</span>
-              <button id="mas" type="button" aria-label="Agregar huésped">+</button>
-            </div>
-
-            <!-- Moneda (auto) -->
-            <label for="currency" class="sr-only">Moneda</label>
-            <select id="currency" style="display:none;">
-              <option value="USD">USD</option>
-              <option value="ARS">ARS</option>
-            </select>
-
-            <button id="btnReservar" disabled>Reservar ahora</button>
-            <div id="resultado" aria-live="polite"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="contenido-info">
-        <article class="info descripcion">
-          <h3>Descripción</h3>
-          <p><strong>Refugio Patagónico</strong> es una casa amplia y súper cómoda en <strong>Lomas del Correntoso</strong>, ideal para grupos y familias de <strong>hasta 9 huéspedes</strong>. Gran <strong>jardín</strong>, <strong>parrilla</strong> y un entorno residencial muy tranquilo, a minutos del centro.</p>
-
-          <p>Cuenta con <strong>3 dormitorios</strong>, <strong>playroom</strong>, <strong>2 baños completos</strong> y amplias áreas sociales (cocina, comedor y living). Está <strong>totalmente equipada</strong>: <strong>Wi-Fi</strong>, Smart TV con cable, <strong>calefacción por radiadores</strong>, cocina completa (heladera con freezer, microondas, tostadora, pava eléctrica, cafetera y vajilla), <strong>lavadero</strong> con lavarropas y <strong>estacionamiento techado</strong>. Además, dispone de <strong>grupo electrógeno</strong> y ropa blanca (sábanas y toallas).</p>
-
-          <p><strong>Distribución de camas</strong></p>
-          <ul>
-            <li><strong>Suite principal:</strong> sommier queen</li>
-            <li><strong>Dormitorio doble:</strong> 2 sommiers de 1 plaza (unibles)</li>
-            <li><strong>Dormitorio triple:</strong> 3 camas de 1 plaza</li>
-            <li><strong>Playroom:</strong> diván con carrito (1 plaza)</li>
-          </ul>
-
-          <p><strong>Ubicación</strong>: a 1 km de <em>Playa Puerto Elma</em> (Nahuel Huapi), a 2 km de la playa del <em>Lago Correntoso</em> y a 2,3 km del centro. <strong>Check in / Check out AUTÓNOMO</strong>.</p>
-        </article>
-
-        <aside class="info mapa">
-          <h3>Ubicación</h3>
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d534.3297589829551!2d-71.66095246481596!3d-40.74826388349344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9610c0ae96279b4f%3A0x47d8330a716bf7a3!2sDel%20Radal%20514%2C%20Q8407%20Neuqu%C3%A9n!5e0!3m2!1ses!2sar!4v1757526183914!5m2!1ses!2sar"
-                  allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-          <div class="redes-contacto" aria-label="Contacto">
-            <a class="red" href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp Happy Host">
-              <img src="logos/whatsapp.png" alt="WhatsApp">
-            </a>
-            <a class="red" href="https://www.instagram.com/hhpatagonia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="Instagram Happy Host">
-              <img src="logos/instagram.png" alt="Instagram">
-            </a>
-            <a class="red" href="https://x.com/hhpatagonia?s=21&t=UH7im4Y6WJT3722TpA05Iw" target="_blank" rel="noopener" aria-label="X Happy Host">
-              <img src="logos/twitter.png" alt="X">
-            </a>
-          </div>
-        </aside>
-      </section>
+      </div>
     </div>
-  </main>
-
-    <!-- Ver mas alojamientos -->
-  <section class="mas-alojamientos-cta">
-    <a href="alojamientos.html" class="btn-mas-aloj">&larr; Explorar todos los alojamientos</a>
   </section>
 
-  <footer class="footer" role="contentinfo">
-    <div class="footer-unidad">
-      <div class="footer-unidad-links">
+  <!-- ══ LIGHTBOX ════════════════════════════════════════════ -->
+  <div id="lightbox" class="lb-overlay" aria-hidden="true" role="dialog" aria-label="Galería ampliada">
+    <button class="lb-close" id="lb-close" aria-label="Cerrar">×</button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Foto anterior">&#10094;</button>
+    <div class="lb-content">
+      <img id="lb-img" src="" alt="Foto ampliada">
+      <div class="lb-counter" id="lb-counter">1 / 17</div>
+    </div>
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Foto siguiente">&#10095;</button>
+  </div>
+
+  <!-- ══ CONTENIDO PRINCIPAL ═════════════════════════════════ -->
+  <div class="unidad-contenido">
+
+    <!-- ── Columna izquierda ── -->
+    <div class="unidad-izq">
+
+      <div class="unidad-titulo-bloque">
+        <p class="unidad-breadcrumb">
+          <a href="alojamientos.html">Alojamientos</a>
+          <span> / </span>
+          <a href="alojamientos.html">Refugio Patagónico</a>
+          <span> / </span>
+          Refugio Patagónico
+        </p>
+        <h1 class="unidad-h1">Refugio Patagónico</h1>
+        <div class="unidad-meta">
+          <span class="unidad-badge">Refugio Patagónico</span>
+          <span class="unidad-meta-item">
+            <img src="iconos/persona.png" alt="" class="meta-icon"> 4 / 8 personas
+          </span>
+          <span class="unidad-meta-item">📍 Villa La Angostura, Neuquén</span>
+        </div>
+        <hr class="unidad-divider">
+      </div>
+
+      <div class="unidad-desc">
+        <img src="iconos/recomendado.png" alt="Recomendado" class="unidad-award-badge">
+        <h2>Sobre esta propiedad</h2>
+        <p><strong>Refugio Patagónico</strong> es una casa amplia y confortable pensada para grupos y familias de hasta <strong>9 personas</strong> en Villa La Angostura. Múltiples dormitorios, living espacioso y todo lo necesario para una estadía cómoda en plena Patagonia.</p>
+        <p>Cuenta con <strong>jardín con parrilla</strong>, cocina completamente equipada, calefacción y estacionamiento propio. La opción perfecta para celebraciones, reuniones familiares o grupos de amigos que quieren disfrutar juntos la experiencia patagónica.</p>
+        <p><strong>Check in / Check out AUTÓNOMO.</strong></p>
+      </div>
+
+      <div class="unidad-amenities">
+        <h2>Lo que incluye</h2>
+        <div class="amenities-grid">
+          <div class="amenity-item">
+            <img src="iconos/wifi.png" alt="WiFi" class="amenity-icon-img">
+            <span class="amenity-label">WiFi</span>
+          </div>
+          <div class="amenity-item">
+            <img src="iconos/cocina.png" alt="Cocina" class="amenity-icon-img">
+            <span class="amenity-label">Cocina equipada</span>
+          </div>
+          <div class="amenity-item">
+            <img src="iconos/estacionamiento.png" alt="Estacionamiento" class="amenity-icon-img">
+            <span class="amenity-label">Estacionamiento</span>
+          </div>
+          <div class="amenity-item">
+            <img src="iconos/parrilla.png" alt="Parrilla" class="amenity-icon-img">
+            <span class="amenity-label">Parrilla</span>
+          </div>
+          <div class="amenity-item">
+            <img src="iconos/calefaccion.png" alt="Calefacción" class="amenity-icon-img">
+            <span class="amenity-label">Calefacción</span>
+          </div>
+          <div class="amenity-item">
+            <img src="iconos/blancos.png" alt="Ropa blanca" class="amenity-icon-img">
+            <span class="amenity-label">Ropa blanca</span>
+          </div>
+          <div class="amenity-item">
+            <img src="iconos/lavarropas.svg" alt="Lavarropas" class="amenity-icon-img">
+            <span class="amenity-label">Lavarropas</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="unidad-divider">
+
+      <div class="unidad-mapa">
+        <h2>Ubicación</h2>
+        <iframe
+          title="Mapa de ubicación Refugio Patagónico"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.7576939531978!2d-71.6442629!3d-40.767353799999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9610bf72a7017f6f%3A0x9ef3462a406290df!2sDel%20Radal%20514!5e0!3m2!1ses!2sar!4v1745444579700!5m2!1ses!2sar"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <p class="mapa-nota">📍 Del Radal 514, Villa La Angostura · Check in / check out autónomo</p>
+      </div>
+
+    </div><!-- /unidad-izq -->
+
+    <!-- ── Columna derecha — Booking ── -->
+    <div class="unidad-booking">
+      <div class="booking-card" data-house-id="677289" data-room-id="744265">
+
+        <div class="booking-precio precio-oculto">
+          <span class="booking-desde">desde</span>
+          <span class="booking-monto">ARS 110.000</span>
+          <span class="booking-noche">/ noche</span>
+        </div>
+
+        <div class="booking-fechas">
+          <div class="bf-col" id="df-start">
+            <label for="start">LLEGADA</label>
+            <input type="text" id="start" placeholder="Seleccionar" aria-label="Fecha de check in" readonly />
+          </div>
+          <div class="bf-div"></div>
+          <div class="bf-col" id="df-end">
+            <label for="end">SALIDA</label>
+            <input type="text" id="end" placeholder="Seleccionar" aria-label="Fecha de check out" readonly />
+          </div>
+        </div>
+
+        <input type="hidden" id="guests" value="1" />
+        <div class="booking-huespedes">
+          <label>HUÉSPEDES</label>
+          <div class="bh-control" role="group" aria-label="Cantidad de huéspedes">
+            <button id="menos" class="bh-btn" type="button" aria-label="Quitar huésped">−</button>
+            <span id="contador" aria-live="polite">1 huésped</span>
+            <button id="mas" class="bh-btn" type="button" aria-label="Agregar huésped">+</button>
+          </div>
+        </div>
+
+        <label for="currency" class="sr-only">Moneda</label>
+        <select id="currency" style="display:none;">
+          <option value="USD">USD</option>
+          <option value="ARS">ARS</option>
+        </select>
+
+        <button id="btnReservar" class="booking-btn" disabled>Reservar ahora</button>
+        <div id="resultado" aria-live="polite" class="booking-resultado"></div>
+        <p class="booking-nota">No se cobra hasta confirmar</p>
+      </div>
+
+      <a href="https://wa.me/5492944700773?text=Hola!%20Me%20interesa%20Refugio%20Patag%C3%B3nico.%20%C2%BFTienen%20disponibilidad%3F"
+         class="booking-btn-wa" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Contactar por WhatsApp
+      </a>
+    </div><!-- /unidad-booking -->
+
+  </div><!-- /unidad-contenido -->
+
+  <!-- ══ CTA EXPLORAR ════════════════════════════════════════ -->
+  <section class="unidad-explorar">
+    <a href="alojamientos.html" class="btn-explorar btn-mas-aloj">← Explorar todos los alojamientos</a>
+  </section>
+
+  <!-- ══ FOOTER SIMPLE ═══════════════════════════════════════ -->
+  <footer class="footer-simple" role="contentinfo">
+    <div class="footer-simple-inner">
+      <img src="logos/logo-horizontal.png" alt="Happy Host Patagonia" class="footer-simple-logo">
+      <div class="footer-simple-links">
         <a href="viajero.html">Inicio</a>
         <a href="alojamientos.html">Alojamientos</a>
-        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener">Contacto</a>
+        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener">Instagram</a>
       </div>
-      <div class="footer-unidad-redes">
-        <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener" aria-label="Instagram">
-          <img src="logos/instagram.png" alt="Instagram">
-        </a>
-        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener" aria-label="WhatsApp">
-          <img src="logos/whatsapp.png" alt="WhatsApp">
-        </a>
-      </div>
+      <span class="footer-simple-copy">© 2025 Happy Host Patagonia</span>
     </div>
-    <small>© Happy Host Patagonia</small>
   </footer>
 
-  <!-- ========== GALERÍA + LIGHTBOX ========== -->
+  <!-- ══ WHATSAPP FLOTANTE ════════════════════════════════════ -->
+  <a href="https://wa.me/5492944700773" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="#fff">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <!-- ══ POPUP DESCUENTO ══════════════════════════════════════ -->
+  <div id="promoPopup" class="promo-popup-overlay" aria-hidden="true">
+    <div class="promo-popup">
+      <button class="promo-close" id="closePromoPopup" aria-label="Cerrar popup">×</button>
+      <div class="promo-badge">15% OFF</div>
+      <h2>Promo Otoño Happy Host</h2>
+      <p class="promo-text">Aprovechá un <strong>15% de descuento</strong> para reservas en <strong>marzo, abril y mayo</strong>.</p>
+      <p class="promo-note">Ingresá este código al momento de reservar.</p>
+      <div class="promo-code-box">
+        <span id="promoCode">OTOÑO2026</span>
+        <button id="copyPromoCode" class="copy-btn">Copiar código</button>
+      </div>
+      <p class="promo-note">Válido en alojamientos seleccionados.</p>
+    </div>
+  </div>
+
+  <!-- ══ SCRIPTS ══════════════════════════════════════════════ -->
+
+  <!-- 1) Flatpickr -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- 2) Lightbox (nueva galería) -->
   <script>
-  'use strict';
-  window.addEventListener('load', () => {
-    const scrollContainer = document.getElementById('miniaturas-scroll');
-    const flechaIzq = document.querySelector('.flecha.izq');
-    const flechaDer = document.querySelector('.flecha.der');
-    const principal = document.getElementById('foto-principal');
-    const thumbs = Array.from(scrollContainer?.querySelectorAll('img') || []);
+  (function () {
+    const FOTOS = [
+      'unidades/refugio/refugio2.jpg',
+      'unidades/refugio/refugio1.jpg',
+      'unidades/refugio/refugio3.jpg',
+      'unidades/refugio/refugio4.jpg',
+      'unidades/refugio/refugio5.jpg',
+      'unidades/refugio/refugio6.jpg',
+      'unidades/refugio/refugio7.jpg',
+      'unidades/refugio/refugio8.jpg',
+      'unidades/refugio/refugio9.jpg',
+      'unidades/refugio/refugio10.jpg',
+      'unidades/refugio/refugio11.jpg',
+      'unidades/refugio/refugio12.jpg',
+      'unidades/refugio/refugio13.jpg',
+      'unidades/refugio/refugio14.jpg',
+      'unidades/refugio/refugio15.jpg',
+      'unidades/refugio/refugio16.jpg',
+      'unidades/refugio/refugio17.jpg',
+    ];
+    let current = 0;
+    const lb       = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lb-img');
+    const lbCount  = document.getElementById('lb-counter');
+    const btnClose = document.getElementById('lb-close');
+    const btnPrev  = document.getElementById('lb-prev');
+    const btnNext  = document.getElementById('lb-next');
 
-    // Scroll flechas
-    const desplazar = (px) => scrollContainer?.scrollBy({ left: px, behavior: 'smooth' });
-    flechaIzq?.addEventListener('click', () => desplazar(-150));
-    flechaDer?.addEventListener('click', () => desplazar(150));
-
-    // Estado de imagen actual
-    let currentIndex = 0;
-    const syncIndexFromSrc = () => {
-      const idx = thumbs.findIndex(t => t.src === principal.src);
-      currentIndex = (idx >= 0 ? idx : 0);
-      thumbs.forEach(t => t.classList.remove('activa'));
-      if (thumbs[currentIndex]) thumbs[currentIndex].classList.add('activa');
-    };
-    syncIndexFromSrc();
-
-    // Click en miniaturas
-    thumbs.forEach((mini, i) => {
-      mini.addEventListener('click', () => {
-        principal.src = mini.src;
-        currentIndex = i;
-        thumbs.forEach(t => t.classList.remove('activa'));
-        mini.classList.add('activa');
-      });
-    });
-
-    // -------- Lightbox --------
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lightboxImg');
-    const btnClose = lb.querySelector('.lightbox__close');
-    const btnPrev  = lb.querySelector('.lightbox__prev');
-    const btnNext  = lb.querySelector('.lightbox__next');
-
-    function openLightbox(index){
-      if (!thumbs.length) return;
-      currentIndex = (index ?? 0);
-      lbImg.src = thumbs[currentIndex].src;
-      lb.removeAttribute('hidden');
+    function openAt(i) {
+      current = ((i % FOTOS.length) + FOTOS.length) % FOTOS.length;
+      lbImg.src = FOTOS[current];
+      lbCount.textContent = (current + 1) + ' / ' + FOTOS.length;
+      lb.classList.add('is-open');
+      lb.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
     }
-    function closeLightbox(){
-      lb.setAttribute('hidden','');
+    function close() {
+      lb.classList.remove('is-open');
+      lb.setAttribute('aria-hidden', 'true');
+      lbImg.src = '';
       document.body.style.overflow = '';
     }
-    function show(delta){
-      if (!thumbs.length) return;
-      currentIndex = (currentIndex + delta + thumbs.length) % thumbs.length;
-      lbImg.src = thumbs[currentIndex].src;
-      principal.src = thumbs[currentIndex].src;
-      thumbs.forEach(t => t.classList.remove('activa'));
-      thumbs[currentIndex].classList.add('activa');
-    }
 
-    // Abrir al click en principal
-    principal?.addEventListener('click', () => openLightbox(currentIndex));
-    // Abrir al click en miniatura (zoom directo)
-    thumbs.forEach((mini, i) => mini.addEventListener('dblclick', () => openLightbox(i)));
+    btnClose.addEventListener('click', close);
+    btnPrev.addEventListener('click', function () { openAt(current - 1); });
+    btnNext.addEventListener('click', function () { openAt(current + 1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
 
-    // Controles
-    btnClose.addEventListener('click', closeLightbox);
-    btnPrev .addEventListener('click', () => show(-1));
-    btnNext .addEventListener('click', () => show(+1));
-
-    // Cerrar con fondo / ESC, navegar con flechas
-    lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', (e) => {
-      if (lb.hasAttribute('hidden')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') show(-1);
-      if (e.key === 'ArrowRight') show(+1);
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'Escape')     close();
+      if (e.key === 'ArrowLeft')  openAt(current - 1);
+      if (e.key === 'ArrowRight') openAt(current + 1);
     });
-  });
+
+    window.addEventListener('load', function () {
+      var mainImg = document.querySelector('.galeria-main img');
+      if (mainImg) mainImg.addEventListener('click', function () { openAt(0); });
+
+      document.querySelectorAll('.galeria-thumbs img').forEach(function (img, i) {
+        img.addEventListener('click', function () { openAt(i + 1); });
+        img.style.cursor = 'pointer';
+      });
+
+      var btnVerFotos = document.querySelector('.btn-ver-fotos');
+      if (btnVerFotos) btnVerFotos.addEventListener('click', function () { openAt(0); });
+    });
+  })();
   </script>
 
-  <!-- Motor de moneda configurable -->
+  <!-- 3) WhatsApp -->
+  <script src="whatsapp.js"></script>
+
+  <!-- 4) Motor de moneda -->
   <script src="moneda.js"></script>
 
-  <!-- ========== MOTOR DE RESERVAS (SIN DESCUENTOS) ========== -->
+  <!-- 5) Motor de reservas -->
   <script>
   'use strict';
-  // IDs Refugio Patagónico
+
   const HOUSE_ID    = 677289;
   const ROOM_ID     = 744265;
   const PROP_KEY    = 'refugiopatagonico';
   const PROP_FAMILY = 'RefugioPatagonico';
 
-  // ===== URL params =====
+  const fechaLimite = new Date('2026-10-31');
   const params    = new URLSearchParams(window.location.search);
   const checkin   = params.get("checkin");
   const checkout  = params.get("checkout");
   const huespedes = params.get("huespedes");
-  // 🔧 CAMBIO #1: detectar si llegaron ambas fechas por URL para no resetear el checkout
   const hasDatesFromURL = !!(checkin && checkout);
 
-  // ===== Helpers fechas (local, sin TZ) =====
+  localStorage.removeItem("checkin");
+  localStorage.removeItem("checkout");
+  localStorage.removeItem("huespedes");
+
   function parseYMDLocal(s) {
     if (!s) return null;
-    // 🔧 CAMBIO #2: aceptar también dd/mm/yyyy además de yyyy-mm-dd
     if (s.includes('-')) { const [y,m,d] = s.split('-').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
     if (s.includes('/')) { const [d,m,y] = s.split('/').map(Number); if (!isNaN(y)&&!isNaN(m)&&!isNaN(d)) return new Date(y,m-1,d); }
     const t = new Date(s); if (!isNaN(t.getTime())) return new Date(t.getFullYear(), t.getMonth(), t.getDate());
@@ -346,7 +424,6 @@
   function fmtLocal(d){ const dd=String(d.getDate()).padStart(2,'0'); const mm=String(d.getMonth()+1).padStart(2,'0'); return `${dd}/${mm}/${d.getFullYear()}`; }
   const fmt = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
-  // ===== DOM =====
   const startInput  = document.getElementById('start');
   const endInput    = document.getElementById('end');
   const guestsInput = document.getElementById('guests');
@@ -356,25 +433,24 @@
   const menosBtn    = document.getElementById('menos');
   const masBtn      = document.getElementById('mas');
   const contador    = document.getElementById('contador');
+  const precioBox   = document.querySelector('.booking-precio');
+  const precioOriginalHTML = precioBox ? precioBox.innerHTML : '';
+  function resetPrecioBox() { if (precioBox) { precioBox.innerHTML = precioOriginalHTML; precioBox.classList.add('precio-oculto'); } }
 
   let cantidad = parseInt(huespedes) || 1;
   const hoy = new Date(); hoy.setHours(0,0,0,0);
-  const fechaLimite = new Date('2027-12-31');
 
-  // 🔧 CAMBIO #3: precargar inputs ANTES de crear Flatpickr (evita que pise valores)
   if (checkin)  startInput.value = checkin;
   if (checkout) endInput.value   = checkout;
   if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
   actualizarContador();
 
-  // ===== Flatpickr =====
   const startPicker = flatpickr(startInput, {
     altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
     defaultDate: checkin || null, minDate: hoy, maxDate: fechaLimite,
     disableMobile: true,
     onChange: (selectedDates) => {
       if (selectedDates[0]) {
-        // 🔧 CAMBIO #4: si ambas fechas venían por URL o ya hay checkout cargado, NO lo borres ni abras el otro picker
         if (!hasDatesFromURL && !endInput.value) {
           endPicker.setDate(null);
           endPicker.jumpToDate(selectedDates[0]);
@@ -387,14 +463,11 @@
       }
     }
   });
-
   const endPicker = flatpickr(endInput, {
     altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
     defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
     disableMobile: true, onChange: calculate
   });
-
-  // Empuje UX sólo si no venía todo desde URL
   startPicker.config.onChange.push((selectedDates) => {
     if (selectedDates[0] && !hasDatesFromURL && !endInput.value) {
       endPicker.setDate(null);
@@ -403,7 +476,6 @@
     }
   });
 
-  // ===== Fechas ocupadas =====
   let fechasOcupadas = [];
   async function loadDisabledDates(picker) {
     try {
@@ -411,12 +483,11 @@
       if (!resp.ok) throw new Error(await resp.text());
       const rangos = await resp.json();
       fechasOcupadas = rangos;
-
       picker.set('disable', [
         ...rangos.map(r => {
           const from = parseYMDLocal(r.from);
           const to   = parseYMDLocal(r.to);
-          if (from) from.setDate(from.getDate() + 1); // habilitar check-in
+          if (from) from.setDate(from.getDate() + 1);
           return { from, to };
         }),
         date => date < hoy || date > fechaLimite
@@ -426,16 +497,14 @@
       console.error('No se pudieron cargar fechas ocupadas:', e.message);
     }
   }
-  [startPicker, endPicker].forEach(p => {
-    p.config.onReady.push(() => loadDisabledDates(p));
-    p.config.onMonthChange.push(() => loadDisabledDates(p));
-    p.config.onOpen.push(() => loadDisabledDates(p));
+  [startPicker, endPicker].forEach(picker => {
+    picker.config.onReady.push(() => loadDisabledDates(picker));
+    picker.config.onMonthChange.push(() => loadDisabledDates(picker));
+    picker.config.onOpen.push(() => loadDisabledDates(picker));
   });
 
-  // 🔧 CAMBIO #5: primer cálculo DESPUÉS de crear los pickers
   if (checkin) setCurrencyAndCalculate(checkin); else calculate();
 
-  // ===== Huéspedes (máx. 9) =====
   function actualizarContador() {
     contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
     guestsInput.value = cantidad;
@@ -443,17 +512,16 @@
   menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
   masBtn.addEventListener('click', () => { if (cantidad < 9) { cantidad++; actualizarContador(); calculate(); } });
   guestsInput.addEventListener('input', () => {
-    let v = parseInt(guestsInput.value) || 1; if (v < 1) v = 1; if (v > 9) v = 9;
+    let v = parseInt(guestsInput.value) || 1;
+    if (v < 1) v = 1; if (v > 9) v = 9;
     cantidad = v; actualizarContador(); calculate();
   });
   currSelect.addEventListener('change', calculate);
 
-  // Moneda auto: ARS hasta 20/12/2025 inclusive; USD desde 21/12/2025
-    async function setCurrencyAndCalculate(fechaCheckinStr) {
-    // Moneda configurable desde el panel admin (moneda.js)
+  async function setCurrencyAndCalculate(fechaCheckinStr) {
     const { moneda, factorARS } = await window.hhMoneda.detectar(fechaCheckinStr, PROP_KEY);
     currSelect.value    = moneda;
-    window._factorARS   = factorARS;   // usado por calculate()
+    window._factorARS   = factorARS;
     currSelect.style.display  = 'none';
     currSelect.disabled = true;
     calculate();
@@ -472,7 +540,6 @@
     });
   }
 
-  // Ajuste estacional +USD 20/noche (03/09/2025–20/12/2025)
   const AJUSTE_USD_POR_NOCHE = 20;
   const AJ_DESDE = parseYMDLocal('2025-09-03');
   const AJ_HASTA = parseYMDLocal('2025-12-20');
@@ -481,8 +548,8 @@
     return x >= ymdLocal(AJ_DESDE) && x <= ymdLocal(AJ_HASTA);
   };
 
-  // ===== Calcular (sin descuentos por cantidad de noches) =====
   async function calculate() {
+    resetPrecioBox();
     const startValue = startInput.value;
     const endValue   = endInput.value;
     const guests     = +guestsInput.value;
@@ -495,7 +562,7 @@
     if (!sd || !ed) { resDiv.textContent = 'Fechas inválidas.'; reservarBtn.disabled = true; return; }
     if (ed <= sd)   { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
 
-    const MAX_GUESTS = 9, FREE_GUESTS = 4;  // extra desde 5º
+    const MAX_GUESTS = 9, FREE_GUESTS = 4;
     if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
     if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
 
@@ -510,14 +577,13 @@
       const { dias = [], extras = [] } = await resp.json();
       if (dias.length === 0) { resDiv.textContent = 'No hay precios para estas fechas.'; return; }
 
-      const minStay = dias.map(d => Math.min(...d.prices.map(p => p.min_stay))).reduce((a,b)=>Math.min(a,b), Infinity);
+      const minStay = dias
+        .map(d => Math.min(...d.prices.map(p => p.min_stay)))
+        .reduce((a, b) => Math.min(a, b), Infinity);
       if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
 
-      // Conversión ARS por fecha de check-in
-      const fechaCheckin = parseYMDLocal(startValue);
       const factorARS = window._factorARS || 1400;
 
-      // Base + desglose por noche
       let baseUSD = 0;
       const breakdownNoches = [];
       const startLocal = ymdLocal(sd);
@@ -525,36 +591,44 @@
       for (let i = 0; i < noches; i++) {
         const d = dias[i];
         const tarifa = d.prices.find(x => noches >= x.min_stay && noches <= x.max_stay)
-                     || d.prices.reduce((a,b)=> (a.min_stay < b.min_stay ? a : b));
-
+                     || d.prices.reduce((a, b) => (a.min_stay < b.min_stay ? a : b));
         const fechaNoche = new Date(startLocal);
         fechaNoche.setDate(startLocal.getDate() + i);
-
         const usd = enRangoAjuste(fechaNoche)
           ? (tarifa.price_per_day + AJUSTE_USD_POR_NOCHE)
           : tarifa.price_per_day;
-
         baseUSD += usd;
-
         const montoMoneda = (moneda === 'USD') ? Math.round(usd) : Math.round(usd * factorARS);
         breakdownNoches.push({ fecha: new Date(fechaNoche), montoMoneda });
       }
 
-      // Extra huésped > 4
-      const extraUnit = extras?.[0]?.price_per_day ?? 14;
+      const extraUnit = extras[0]?.price_per_day || 12;
       const extraQty  = Math.max(0, guests - FREE_GUESTS);
       const extraUSD  = extraQty * extraUnit * noches;
+      const totalUSD  = baseUSD + extraUSD;
 
-      const totalUSD     = baseUSD + extraUSD;
-      const totalMoneda  = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
+      const totalSinDesc = (moneda === 'USD') ? Math.round(totalUSD) : Math.round(totalUSD * factorARS);
       const extraMoneda  = (moneda === 'USD') ? Math.round(extraUSD) : Math.round(extraUSD * factorARS);
 
-      // Resumen (sin descuentos por noches)
-      const headerHtml = `
+      const { descuentoUSD, label: discountLabel } =
+        (window.hhPromos)
+          ? await hhPromos.evaluar(PROP_KEY, PROP_FAMILY, startValue, endValue, guests, totalUSD)
+          : { descuentoUSD: 0, label: 'Descuento' };
+      const descuento    = Math.round(descuentoUSD * (moneda === 'USD' ? 1 : factorARS));
+      const totalConDesc = totalSinDesc - descuento;
+
+      const totalStack = (descuento > 0)
+        ? `<div class="price-stack">
+             <div class="old-price old-price--big">${fmt(totalSinDesc)} ${moneda}</div>
+             <div class="new-price">${fmt(totalConDesc)} ${moneda}</div>
+           </div>`
+        : `<span class="price-current">${fmt(totalSinDesc)} ${moneda}</span>`;
+
+      const detalle = `
         <ul class="booking-summary">
           <li>Noches: ${noches}</li>
           <li>Huéspedes: ${guests}</li>
-          <li class="total-line"><strong>Total estadía:</strong> <span class="price-current">${fmt(totalMoneda)} ${moneda}</span></li>
+          <li class="total-line"><strong>Total estadía:</strong> ${totalStack}</li>
         </ul>`;
 
       const itemsNoches = breakdownNoches.map(it =>
@@ -564,42 +638,39 @@
       const extraHtml = (extraQty > 0)
         ? `<li class="bd-extra"><span>Extra huésped (${extraQty} x ${noches} noches)</span><span>+ ${fmt(extraMoneda)} ${moneda}</span></li>`
         : '';
-
-      const subtotalHtml = `<li class="bd-subtotal"><span>Subtotal</span><span>${fmt(totalMoneda)} ${moneda}</span></li>`;
+      const descHtml = (descuento > 0)
+        ? `<li class="bd-discount"><span>${discountLabel}</span><span>− ${fmt(descuento)} ${moneda}</span></li>`
+        : '';
+      const subtotalHtml = `<li class="bd-subtotal"><span>Subtotal</span><span>${fmt(descuento>0? totalConDesc : totalSinDesc)} ${moneda}</span></li>`;
 
       const breakdownHtml = `
         <div class="price-breakdown">
-          <button class="bd-toggle" type="button" aria-expanded="false" aria-controls="bd-list">Ver detalle de precios</button>
-          <ul id="bd-list" class="bd-list" hidden>
-            ${itemsNoches}
-            ${extraHtml}
-            ${subtotalHtml}
+          <button class="bd-toggle" type="button" aria-expanded="true" aria-controls="bd-list">Ocultar detalle de precios</button>
+          <ul id="bd-list" class="bd-list">
+            ${itemsNoches}${extraHtml}${descHtml}${subtotalHtml}
           </ul>
         </div>`;
 
-      resDiv.innerHTML = headerHtml + breakdownHtml;
+      resDiv.innerHTML = detalle + breakdownHtml;
 
-      // Toggle desglose
       const toggle = resDiv.querySelector('.bd-toggle');
-      const list = resDiv.querySelector('#bd-list');
+      const list   = resDiv.querySelector('#bd-list');
       toggle?.addEventListener('click', () => {
         const expanded = toggle.getAttribute('aria-expanded') === 'true';
         toggle.setAttribute('aria-expanded', String(!expanded));
         if (expanded) { list.hidden = true; toggle.textContent = 'Ver detalle de precios'; }
-        else { list.hidden = false; toggle.textContent = 'Ocultar detalle de precios'; }
+        else           { list.hidden = false; toggle.textContent = 'Ocultar detalle de precios'; }
       });
 
-      // CTA
+      const totalParaCobrar = (descuento > 0) ? totalConDesc : totalSinDesc;
+      if (precioBox) { precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalParaCobrar)}</span><span class="booking-noche"> total</span>`; precioBox.classList.remove('precio-oculto'); }
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
         const qs = new URLSearchParams({
-          propertyId: HOUSE_ID,
-          roomTypeId: ROOM_ID,
-          checkInDate: startValue,
-          checkOutDate: endValue,
-          numberOfGuests: guests,
-          totalPrice: totalMoneda,
-          currency: moneda
+          propertyId: HOUSE_ID, roomTypeId: ROOM_ID,
+          checkInDate: startValue, checkOutDate: endValue,
+          numberOfGuests: guests, totalPrice: totalParaCobrar,
+          currency: moneda, descuentoUSD
         }).toString();
         window.location.href = `formulario.html?${qs}`;
       };
@@ -610,25 +681,18 @@
     }
   }
 
-  // ← Volver
+  // Volver
   document.addEventListener("DOMContentLoaded", () => {
     const btnVolver = document.getElementById("btnVolver");
     if (!btnVolver) return;
-
     btnVolver.addEventListener("click", (e) => {
       e.preventDefault();
-
       const desdeBuscador = localStorage.getItem("busqueda_desde_buscador") === "true";
       const checkinVal  = (document.getElementById('start')?.value || "").trim();
       const checkoutVal = (document.getElementById('end')?.value || "").trim();
       const guestsVal   = (document.getElementById('guests')?.value || "").trim();
-
       if (desdeBuscador && checkinVal && checkoutVal && guestsVal) {
-        const qs = new URLSearchParams({
-          checkin: checkinVal,
-          checkout: checkoutVal,
-          huespedes: guestsVal
-        }).toString();
+        const qs = new URLSearchParams({ checkin: checkinVal, checkout: checkoutVal, huespedes: guestsVal }).toString();
         window.location.href = `alojamientos.html?${qs}`;
       } else {
         localStorage.removeItem("checkin");
@@ -638,18 +702,26 @@
       }
     });
   });
-</script>
+  </script>
+
+  <!-- 6) Promos dinámicas -->
+  <script src="promos.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      hhPromos.initPopup(PROP_KEY, PROP_FAMILY);
+    });
+  </script>
 
   <script src="volver.js" defer></script>
   <script src="calendario.js" defer></script>
 
+  <!-- Preservar fechas en botón explorar -->
   <script>
-  /* Preservar fechas de busqueda en boton 'Explorar todos' */
   (function() {
-    var p = new URLSearchParams(window.location.search);
-    var ci = p.get('checkin')  || localStorage.getItem('checkin');
-    var co = p.get('checkout') || localStorage.getItem('checkout');
-    var hu = p.get('huespedes')|| localStorage.getItem('huespedes');
+    var p  = new URLSearchParams(window.location.search);
+    var ci = p.get('checkin')   || localStorage.getItem('checkin');
+    var co = p.get('checkout')  || localStorage.getItem('checkout');
+    var hu = p.get('huespedes') || localStorage.getItem('huespedes');
     if (ci && co) {
       var q = new URLSearchParams();
       q.set('checkin', ci); q.set('checkout', co);
@@ -663,5 +735,7 @@
   })();
   </script>
 
-  </body>
+<script src="badges.js"></script>
+</body>
 </html>
+
