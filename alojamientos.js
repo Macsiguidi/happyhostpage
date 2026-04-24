@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const banner  = document.getElementById('banner-busqueda');
   const cards   = Array.from(document.querySelectorAll('.card[data-nombre]'));
 
-  // Mezclar tarjetas aleatoriamente
+  // Mezclar tarjetas aleatoriamente (preserva el orden visual fresco en cada visita)
   const grid = document.querySelector('.grid-alojamientos');
   if (grid) cards.sort(() => Math.random() - 0.5).forEach(c => grid.appendChild(c));
 
@@ -127,8 +127,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!checkin || !checkout) {
     cards.forEach(card => {
       const p = PROPS[card.dataset.nombre];
-      card.style.display = (!huespedes || !p || p.pax >= huespedes) ? 'block' : 'none';
+      const capOk = !huespedes || (p && p.pax >= huespedes);
+      card.classList.toggle('pax-hidden', !capOk);
     });
+    // Ordenar por capacidad ascendente cuando se indicaron huéspedes
+    if (huespedes > 0 && grid) {
+      cards
+        .filter(c => !c.classList.contains('pax-hidden'))
+        .sort((a, b) => {
+          const pa = (PROPS[a.dataset.nombre]?.pax) ?? 99;
+          const pb = (PROPS[b.dataset.nombre]?.pax) ?? 99;
+          return pa - pb;
+        })
+        .forEach(c => grid.appendChild(c));
+    }
     if (loading) loading.style.display = 'none';
     return;
   }
@@ -162,14 +174,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Aplicar visibilidad por disponibilidad + capacidad
+  // Aplicar visibilidad por disponibilidad + capacidad (usando clase para evitar conflicto con CSS !important)
   let visibles = 0;
   cards.forEach(card => {
-    const p    = PROPS[card.dataset.nombre];
-    const capOk  = !huespedes || !p || p.pax >= huespedes;
+    const p      = PROPS[card.dataset.nombre];
+    const capOk  = !huespedes || (p && p.pax >= huespedes);
     const dispOk = p && disponiblesIds.includes(p.houseId);
-    if (capOk && dispOk) { card.style.display = 'block'; visibles++; }
-    else                  { card.style.display = 'none'; }
+    const mostrar = capOk && dispOk;
+    card.classList.toggle('pax-hidden', !mostrar);
+    if (mostrar) visibles++;
   });
 
   // Mostrar banner de resultados
@@ -189,9 +202,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (loading) loading.style.display = 'none';
 
+  // Ordenar las tarjetas visibles por capacidad ascendente cuando se indicaron huéspedes
+  if (huespedes > 0 && grid) {
+    cards
+      .filter(c => !c.classList.contains('pax-hidden'))
+      .sort((a, b) => {
+        const pa = (PROPS[a.dataset.nombre]?.pax) ?? 99;
+        const pb = (PROPS[b.dataset.nombre]?.pax) ?? 99;
+        return pa - pb;
+      })
+      .forEach(c => grid.appendChild(c));
+  }
+
   // ── Precios reales desde Lodgify (en paralelo, solo para disponibles) ──
   const mañana = addDay(checkin);
-  const disponiblesCards = cards.filter(c => c.style.display !== 'none');
+  const disponiblesCards = cards.filter(c => !c.classList.contains('pax-hidden'));
 
   await Promise.allSettled(disponiblesCards.map(async card => {
     const slug = card.dataset.nombre;
@@ -210,17 +235,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const precioFmt = moneda === 'USD'
         ? `USD ${fmt(Math.round(tarifa))}`
-        : `$${fmt(Math.round(tarifa * factorARS))}`;
+        : `ARS ${fmt(Math.round(tarifa * factorARS))}`;
 
-      // Crear o actualizar el badge de precio
-      let el = card.querySelector('.card-price');
-      if (!el) {
-        el = document.createElement('div');
-        el.className = 'card-price';
-        const nameEl = card.querySelector('.nombre-alojamiento');
-        if (nameEl) nameEl.appendChild(el);
+      // Actualizar el elemento de precio en la card-info
+      const precioEl = card.querySelector('.card-precio-label');
+      if (precioEl) {
+        precioEl.innerHTML = `desde ${precioFmt} <span class="card-noche">/noche</span>`;
       }
-      el.textContent = `desde ${precioFmt}/noche`;
     } catch { /* silently skip */ }
   }));
 });

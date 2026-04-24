@@ -189,17 +189,18 @@
       container.innerHTML = _buildLongStayCard(p);
       container.style.display = 'block';
 
-      var closeBtn = container.querySelector('.ls-card-close');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function () {
+      function cerrarCard() {
+        container.style.transition = 'opacity .5s';
+        container.style.opacity = '0';
+        setTimeout(function () {
           container.style.display = 'none';
-          localStorage.setItem(seenKey, '1');
-        });
+          container.style.opacity = '';
+        }, 500);
       }
 
-      /* Mostrar la card solo si no fue cerrada antes */
-      if (localStorage.getItem(seenKey)) {
-        container.style.display = 'none';
+      var closeBtn = container.querySelector('.ls-card-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', cerrarCard);
       }
     } catch (_) { /* silencioso */ }
   }
@@ -281,7 +282,9 @@
     var pct    = p.longStayValue     || 0;
     return '<div class="ls-card">' +
              '<button class="ls-card-close" aria-label="Cerrar">×</button>' +
-             '<div class="ls-card-icon">🌿</div>' +
+             '<div class="ls-card-img-wrap">' +
+               '<img src="iconos/oferta-especial.png" alt="Oferta especial" class="ls-card-oferta-img">' +
+             '</div>' +
              '<div class="ls-card-content">' +
                '<p class="ls-card-title">Estadía larga · <strong>' + pct + '% de descuento</strong></p>' +
                '<p class="ls-card-text">Reservas de <strong>' + nights + ' noches o más</strong> ' +

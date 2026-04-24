@@ -21,15 +21,44 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (window.flatpickr) {
       const isMobile = window.innerWidth <= 768;
 
+      const displayLlegada = document.getElementById("display-llegada");
+      const displaySalida  = document.getElementById("display-salida");
+
+      function formatFecha(d) {
+        return d.toLocaleDateString("es-AR", { day: "2-digit", month: "short" });
+      }
+
       const fp = flatpickr(dateInput, {
         mode: "range",
         dateFormat: "Y-m-d",
-        // Forzamos separador para no depender de la locale externa
         locale: { rangeSeparator: " a " },
         minDate: "today",
         showMonths: isMobile ? 1 : 2,
-        disableMobile: true
+        disableMobile: true,
+        onChange: function(selectedDates) {
+          if (!displayLlegada || !displaySalida) return;
+          if (selectedDates.length >= 1) {
+            displayLlegada.textContent = formatFecha(selectedDates[0]);
+            displayLlegada.classList.add("tiene-valor");
+          } else {
+            displayLlegada.textContent = "Agregar fecha";
+            displayLlegada.classList.remove("tiene-valor");
+          }
+          if (selectedDates.length >= 2) {
+            displaySalida.textContent = formatFecha(selectedDates[1]);
+            displaySalida.classList.add("tiene-valor");
+          } else {
+            displaySalida.textContent = "Agregar fecha";
+            displaySalida.classList.remove("tiene-valor");
+          }
+        }
       });
+
+      // Click en la sección de fechas → abrir flatpickr
+      const fechasTrigger = document.getElementById("buscador-fechas-trigger");
+      if (fechasTrigger && fp) {
+        fechasTrigger.addEventListener("click", function() { fp.open(); });
+      }
 
       // Tomamos el separador real que esté usando la instancia por si cambia
       try {
@@ -70,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Inicial
     if (inputHuespedes.value === "0") {
-      cantidadSpan.textContent = "Huéspedes";
+      cantidadSpan.textContent = "Agregar";
       cantidadSpan.classList.add("placeholder");
     }
   }
@@ -78,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   function actualizarHuespedes(cant) {
     inputHuespedes.value = cant;
     if (cant === 0) {
-      cantidadSpan.textContent = "Huéspedes";
+      cantidadSpan.textContent = "Agregar";
       cantidadSpan.classList.add("placeholder");
     } else {
       cantidadSpan.textContent = cant;

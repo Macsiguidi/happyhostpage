@@ -468,3 +468,227 @@ body{
   .banner-busqueda { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 16px; }
   .footer-aloj-inner { flex-direction: column; align-items: center; gap: 20px; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   REDISEÑO — nuevos bloques
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --olive: #6B7D5C;
+  --dark:  #2F3E2F;
+  --terra: #C97A5A;
+  --terra-lt: #E6B399;
+  --cream: #F5F3EF;
+}
+
+body { font-family: 'Inter', 'Poppins', sans-serif; }
+
+/* ── HEADER ───────────────────────────────────────────── */
+.header-aloj {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--dark);
+  padding: 0 48px; height: 72px;
+  display: flex; align-items: center;
+}
+.header-inner {
+  width: 100%; max-width: 1300px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo-aloj img { height: 48px; width: auto; display: block; filter: brightness(0) invert(1); }
+.menu-aloj { list-style: none; display: flex; align-items: center; gap: 36px; }
+.menu-aloj a {
+  color: rgba(255,255,255,.8); text-decoration: none;
+  font-family: 'Inter', sans-serif; font-size: .85rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase; transition: color .2s;
+}
+.menu-aloj a:hover, .menu-aloj a.activo { color: #fff; }
+
+/* ── HERO MINI ────────────────────────────────────────── */
+.hero-aloj {
+  background: var(--dark); padding: 48px 48px 44px; text-align: center;
+}
+.hero-aloj-eyebrow {
+  font-size: .78rem; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--terra-lt); margin-bottom: 10px;
+}
+.hero-aloj-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; color: #fff;
+}
+
+/* ── BUSCADOR ─────────────────────────────────────────── */
+.buscador-aloj-wrap {
+  background: var(--dark); padding: 0 48px 32px;
+  display: flex; justify-content: center;
+}
+.buscador-aloj {
+  background: #fff; border-radius: 16px;
+  display: flex; align-items: center;
+  padding: 6px 6px 6px 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  max-width: 860px; width: 100%; overflow: hidden;
+}
+.baloj-col { flex: 1; padding: 12px 20px; cursor: pointer; border-radius: 12px; transition: background .15s; }
+.baloj-col:hover { background: #f5f3ef; }
+.baloj-fechas { display: flex; align-items: center; position: relative; }
+.baloj-subcol { flex: 1; padding: 4px 10px; }
+.baloj-vline { width: 1px; height: 32px; background: #e0ddd6; flex-shrink: 0; }
+.baloj-label { display: block; font-size: .65rem; font-weight: 700; letter-spacing: .1em; color: #999; margin-bottom: 3px; }
+.baloj-val { display: block; font-size: .9rem; color: #aaa; font-weight: 500; white-space: nowrap; }
+.baloj-val.tiene-valor { color: #1E2B1E; }
+.rango-fechas-hidden { position: absolute; bottom: 0; left: 0; width: 100%; height: 0; opacity: 0; pointer-events: none; border: none; }
+.baloj-sep { width: 1px; height: 36px; background: #e0ddd6; flex-shrink: 0; }
+.baloj-huespedes { display: flex; flex-direction: column; min-width: 160px; }
+.baloj-pax { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.baloj-pax-btn {
+  width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid #ccc;
+  background: transparent; font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: #222;
+  transition: border-color .2s, color .2s;
+}
+.baloj-pax-btn:hover { border-color: var(--olive); color: var(--olive); }
+.baloj-pax-val { font-size: .9rem; font-weight: 500; min-width: 44px; text-align: center; color: #aaa; }
+.baloj-btn {
+  flex-shrink: 0; background: var(--olive); color: #fff; border: none;
+  border-radius: 12px; padding: 14px 26px; font-family: 'Inter', sans-serif;
+  font-size: .88rem; font-weight: 600; cursor: pointer;
+  margin: 4px 4px 4px 8px; transition: background .2s; white-space: nowrap;
+}
+.baloj-btn:hover { background: var(--dark); }
+
+/* ── FILTROS CATEGORÍA ────────────────────────────────── */
+.filtros-categoria {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  padding: 28px 48px 0;
+}
+.filtro-btn {
+  background: transparent; border: 1.5px solid #ccc; border-radius: 24px;
+  padding: 8px 20px; font-family: 'Inter', sans-serif; font-size: .82rem;
+  font-weight: 500; cursor: pointer; color: #666; transition: all .2s;
+}
+.filtro-btn:hover { border-color: var(--olive); color: var(--olive); }
+.filtro-btn.activo { background: var(--olive); border-color: var(--olive); color: #fff; }
+
+/* ── CARD — nuevo layout ──────────────────────────────── */
+.card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(47,62,47,.07);
+  transition: transform .25s, box-shadow .25s;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(47,62,47,.14); }
+.card .carousel { width: 100%; aspect-ratio: 4/3; height: auto !important; flex-shrink: 0; }
+
+/* Badge logo top-right */
+.card-badge-logo {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 5 !important;
+  width: 200px !important;
+  height: auto !important;
+  object-fit: unset !important;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.2));
+}
+
+/* Filtro categoría y capacidad — ocultar cards */
+.card.cat-hidden,
+.card.pax-hidden {
+  display: none !important;
+}
+
+/* Badge categoría bottom-left */
+.card-cat-badge {
+  position: absolute; bottom: 12px; left: 12px; z-index: 4;
+  background: rgba(47,62,47,.72); backdrop-filter: blur(6px);
+  color: #fff; font-family: 'Inter', sans-serif; font-size: .72rem;
+  font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 20px;
+}
+
+/* Card info section below image */
+.card-info {
+  padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1;
+}
+.card-top {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
+}
+.card-titulo {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; color: #1E2B1E;
+}
+.card-pax {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .78rem; color: #888; font-family: 'Inter', sans-serif; white-space: nowrap;
+}
+.card-pax img { width: 14px; height: 14px; opacity: .5; filter: brightness(0); }
+.card-desc { font-size: .82rem; color: var(--olive); line-height: 1.55; margin-bottom: 10px; flex: 1; }
+.card-amenity-icons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.card-amenity-icons img { width: 16px; height: 16px; object-fit: contain; opacity: .55; filter: brightness(0); }
+.card-footer-row {
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid rgba(47,62,47,.08); padding-top: 12px;
+}
+.card-precio-label {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: .92rem; font-weight: 700; color: #1E2B1E;
+}
+.card-noche { font-size: .78rem; font-weight: 400; color: #999; }
+.card-ver { font-size: .8rem; font-weight: 600; color: var(--olive); }
+
+/* ── GRID ajuste ──────────────────────────────────────── */
+.grid-alojamientos {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 24px !important;
+  padding: 24px 48px 80px !important;
+  max-width: 1300px !important;
+}
+.seccion-alojamientos { max-width: 1300px; margin: 0 auto; }
+
+/* ── FOOTER NUEVO ─────────────────────────────────────── */
+.footer-nuevo {
+  background: var(--dark); color: rgba(255,255,255,.75);
+  padding: 56px 48px 32px; text-align: center;
+}
+.footer-nuevo-contenido {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  align-items: flex-start; gap: 32px 64px;
+}
+.footer-nuevo-logo img { height: 80px; width: auto; filter: brightness(0) invert(1); }
+.footer-nuevo-info { font-family: 'Inter', sans-serif; font-size: .85rem; line-height: 2; }
+.footer-nuevo-info a { color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+.footer-nuevo-info a:hover { color: #fff; }
+.footer-nuevo-redes { display: flex; gap: 16px; align-items: center; }
+.footer-nuevo-redes img {
+  height: 32px; width: auto; filter: brightness(0) invert(1);
+  opacity: .7; transition: opacity .2s, transform .2s;
+}
+.footer-nuevo-redes img:hover { opacity: 1; transform: scale(1.1); }
+.footer-nuevo-nav {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px;
+  margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.08);
+}
+.footer-nuevo-nav a {
+  color: rgba(255,255,255,.55); text-decoration: none;
+  font-size: .85rem; font-family: 'Inter', sans-serif; transition: color .2s;
+}
+.footer-nuevo-nav a:hover { color: #fff; }
+.footer-nuevo-bottom { margin-top: 20px; font-size: .78rem; color: rgba(255,255,255,.28); }
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .grid-alojamientos { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 768px) {
+  .header-aloj { padding: 0 20px; }
+  .menu-aloj { display: none; }
+  .hero-aloj, .buscador-aloj-wrap { padding-left: 20px; padding-right: 20px; }
+  .buscador-aloj { flex-direction: column; align-items: stretch; padding: 8px; }
+  .baloj-sep { display: none; }
+  .baloj-btn { margin: 4px 0 0; width: 100%; }
+  .filtros-categoria { padding-left: 16px; padding-right: 16px; }
+  .grid-alojamientos { grid-template-columns: 1fr !important; padding: 16px !important; }
+  .footer-nuevo { padding: 40px 20px 24px; }
+}

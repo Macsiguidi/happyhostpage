@@ -1,349 +1,434 @@
-/* =========================================================
-   Happy Host — Formulario de reserva (alineado con unidades.css)
-   ========================================================= */
-/* ===============================
-   Happy Host - Estilo e-commerce (Oct 2025)
-   =============================== */
+/* ═══════════════════════════════════════════════════════════
+   formulario.css — diseño alineado con unidades-nuevo.css
+   ═══════════════════════════════════════════════════════════ */
 
-/* ---------- Variables ---------- */
-:root{
-  --logo-size: 90px;
-  --service-icon-size: 36px;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  --title-font: "Bebas Neue", Poppins, sans-serif;
-  --title-size: clamp(22px, 4vw, 34px);
-  --title-weight: 700;
-
-  --social-chip-size: 40px;
-  --social-icon-size: 20px;
-
-  --hh-olive:#6B7B53;
-  --hh-olive-700:#566344;
-  --hh-sand:#F5F2EA;
-  --hh-ink:#222;
-  --hh-muted:#67707a;
-  --hh-border:#e7e3d9;
-  --hh-card:#fff;
-  --hh-accent:#1f7a8c;
-
-  --radius:16px;
-  --radius-sm:10px;
-  --shadow:0 8px 30px rgba(0,0,0,.08);
-  --shadow-sm:0 4px 18px rgba(0,0,0,.08);
-
-  --fs-xl: clamp(22px, 4vw, 28px);
-  --fs-lg: clamp(18px, 2.6vw, 20px);
-  --fs-md: 16px;
-  --fs-sm: 14px;
+:root {
+  --olive:  #6B7D5C;
+  --dark:   #2F3E2F;
+  --cream:  #F5F3EF;
+  --ink:    #1E2B1E;
+  --border: rgba(47,62,47,.12);
+  --radius: 18px;
+  --shadow: 0 4px 28px rgba(47,62,47,.10);
 }
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{
-  font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color:var(--hh-ink);
-  background:var(--hh-sand);
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(rgba(245,243,239,0.85), rgba(245,243,239,0.85)),
+              url('iconos/casitas.png') center / 400px auto repeat;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ---------- Header ---------- */
-.header{
-  position:sticky; top:0; z-index:50;
-  background:rgba(255,255,255,.95);
-  backdrop-filter:saturate(150%) blur(6px);
-  border-bottom:1px solid var(--hh-border);
-}
-.barra-menu{
-  max-width:1200px; margin:0 auto; padding:10px 16px;
-  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px;
-}
-.logo{justify-self:start; display:inline-flex; align-items:center}
-.logo img{height:var(--logo-size,90px); width:auto}
-.titulo-header{
-  font-family:"Bebas Neue", Poppins, sans-serif;
-  font-size:clamp(22px, 4vw, 34px);
-  font-weight:700;
-  color:var(--hh-olive);
-  margin:0; justify-self:center; text-align:center;
-  text-transform:uppercase; letter-spacing:.4px;
-}
-.volver{justify-self:end}
-.boton-volver{
-  display:inline-flex; gap:6px; align-items:center;
-  padding:8px 12px; border:1px solid var(--hh-border);
-  border-radius:999px; background:#fff; color:var(--hh-ink);
-  text-decoration:none; transition:.2s;
-}
-.boton-volver:hover{background:var(--hh-sand)}
-
-/* ---------- Layout ---------- */
-.container{
-  max-width:1200px; margin:20px auto; padding:0 16px;
-  display:grid; grid-template-columns:2fr 1fr; gap:20px;
-}
-@media(max-width:960px){
-  .container{grid-template-columns:1fr; gap:16px}
+/* ── HEADER ──────────────────────────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--dark);
+  padding: 0 48px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  border-bottom: none;
+  backdrop-filter: none;
 }
 
-/* ---------- Card base ---------- */
-.card{
-  background:var(--hh-card,#fff);
-  border:1px solid var(--hh-border);
-  border-radius:var(--radius,16px);
-  box-shadow:var(--shadow,0 8px 30px rgba(0,0,0,.08));
+.barra-menu {
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* ---------- Formulario ---------- */
-.formulario-reserva{
-  background:var(--hh-card,#fff);
-  border:1px solid var(--hh-border);
-  border-radius:var(--radius,16px);
-  box-shadow:var(--shadow,0 8px 30px rgba(0,0,0,.08));
-  padding:20px;
-}
-.formulario-reserva h2{
-  margin:0 0 10px;
-  color:var(--hh-olive);
-  font-size:clamp(18px,2.2vw,20px);
-}
-.formulario-reserva label{
-  display:block; margin:10px 0 6px; font-weight:600; color:var(--hh-ink);
-}
-.formulario-reserva input,
-.formulario-reserva textarea,
-.formulario-reserva select{
-  width:100%; height:46px;
-  border:1px solid var(--hh-border);
-  border-radius:12px;
-  padding:10px 14px; font-size:16px; background:#fff;
-}
-.formulario-reserva textarea{min-height:110px; resize:vertical}
-
-/* Grupo cupón */
-.cupon-row{
-  display:flex; gap:10px; align-items:center; margin-top:10px;
-}
-#cuponDescuento{
-  flex:1;
-  height:44px;
-  border:1px solid var(--hh-border);
-  border-radius:12px; padding:0 12px; background:#fff;
-}
-#aplicarCupon{
-  height:44px; padding:0 14px; border:1px solid var(--hh-border);
-  border-radius:12px; background:#e8f0e6; color:#1f3b2a; font-weight:700;
-  cursor:pointer; transition:.2s;
-}
-#aplicarCupon:hover{ background:#dbe8d6 }
-
-/* Términos */
-.terminos{
-  display:flex; align-items:center; gap:10px; margin:12px 0 8px;
-  background:#faf9f5; border:1px solid var(--hh-border);
-  padding:10px 12px; border-radius:12px;
-}
-.terminos input[type="checkbox"]{ width:18px; height:18px; margin:0 }
-.terminos label{ color:#3D4D55 }
-.terminos a{ color:var(--hh-accent); text-decoration:underline }
-.terminos a:hover{ text-decoration:none }
-
-/* Aviso */
-.aviso-contacto{
-  font-size:14px; color:#3D4D55; background:#EEF1F2;
-  padding:8px 12px; border-radius:10px; text-align:center; margin-bottom:12px;
+.logo img {
+  height: 80px;
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(1);
 }
 
-/* CTA */
-#botonReservar{
-  width:100%; height:48px; border:0; border-radius:12px; cursor:pointer;
-  background:var(--hh-olive); color:#fff; font-weight:700; font-size:16px;
-  letter-spacing:.3px; box-shadow:var(--shadow);
-  transition:background .2s ease;
-}
-#botonReservar:hover{ background:var(--hh-olive-700) }
-#botonReservar:disabled{ background:#c7c9c3; cursor:not-allowed; opacity:.85 }
-
-/* ---------- Resumen ---------- */
-.resumen-reserva{
-  background:var(--hh-card,#fff);
-  border:1px solid var(--hh-border);
-  border-radius:var(--radius,16px);
-  box-shadow:var(--shadow,0 8px 30px rgba(0,0,0,.08));
-  padding:20px;
-  align-self:start;
-}
-.resumen-reserva h2{
-  margin:0 0 10px;
-  color:var(--hh-olive);
-  font-size:clamp(18px,2.2vw,20px);
-}
-.info-reserva img{
-  width:100%; border-radius:12px; margin-bottom:10px;
-  aspect-ratio:16/9; object-fit:cover;
+.titulo-header {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
-/* ===== Líneas de datos/importe ===== */
-.info-reserva p{
-  margin:6px 0;
-  display:flex;
-  align-items:baseline;
-  gap:6px;
-  justify-content:space-between;   /* deja el título a la izq y los importes a la derecha */
+.volver { flex-shrink: 0; }
+
+.boton-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.85);
+  text-decoration: none;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: color .2s, border-color .2s;
+  border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 999px;
+  padding: 12px 28px;
 }
-.info-reserva strong{
-  color:#2b2f2d;
-  margin-right:auto;               /* empuja todo lo que sigue hacia la derecha */
+.boton-volver:hover { color: #fff; border-color: rgba(255,255,255,.7); }
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.fondo-blur {
+  max-width: 1160px;
+  margin: 40px auto;
+  padding: 0 24px 80px;
 }
 
-/* ---------- Precios ---------- */
-#precioReserva{
-  font-size:1rem;
-  font-weight:600;
-  color:#2b2f2d;
-  margin-left:8px;
-}
-/* --- Forzar un único renglón de Total --- */
-.summary .price-stack,
-#priceStack {
-  display: none !important;   /* oculta el stack viejo (el duplicado) */
-}
-
-/* Ajustes de la línea "Total" (estética imagen 2) */
-#precioReserva.tachado{
-  text-decoration: line-through;
-  color:#c03a3a;
-  font-size:0.9rem;
-  font-weight:500;
-  margin-right:8px;
-}
-
-.precio-descuento{
-  font-weight:700;
-  font-size:1.1rem;
-  color:#566344; /* oliva oscuro */
-}
-
-#descuentoLabel{ font-size:0.9rem; color:var(--hh-muted); margin:6px 0 10px }
-#seniaReserva{
-  font-weight:600;
-  font-size:0.95rem;
-  color:#2b2f2d;
-}
-
-/* === Alineación y dígitos tabulares en importes (como imagen 1) === */
-.info-reserva #precioReserva,
-.info-reserva #precioConDescuento,
-.info-reserva #seniaReserva,
-#precioTachado,
-#precioFinal{
-  font-variant-numeric: tabular-nums; /* dígitos con ancho fijo */
-  letter-spacing:.2px;
-  text-align:right;
-}
-
-/* === Price stack para descuentos (tachado arriba, nuevo abajo) === */
-.price-stack{
-  display:grid;
-  gap:2px;
-  justify-items:end;     /* alinea la columna de importes a la derecha */
-}
-.price-stack .old-price--big{
-  text-decoration:line-through;
-  opacity:.55;
-  font-weight:600;
-}
-.price-stack .new-price{
-  font-weight:700;
-  font-size:1.1rem;
-}
-
-/* ---------- Modal ---------- */
-.modal{
-  display:none; position:fixed; inset:0; z-index:1000;
-  background:rgba(0,0,0,.6);
-  justify-content:center; align-items:center;
-}
-.modal-contenido{
-  background:#fff; border:1px solid var(--hh-border);
-  border-radius:12px; max-width:700px; width:92%;
-  max-height:80vh; overflow:auto; padding:18px; box-shadow:var(--shadow);
-}
-.modal-contenido h2, .modal-contenido h3{ margin:0 0 10px; color:var(--hh-olive) }
-.modal-contenido p{ margin:8px 0; color:var(--hh-ink) }
-.cerrar{ float:right; font-size:28px; line-height:1; cursor:pointer; border:0; background:transparent; color:#333 }
-
-/* ---------- Responsive ---------- */
-@media(max-width:768px){
-  .barra-menu .volver .boton-volver{
-    width:44px;height:44px;padding:0;border-radius:999px;
-    display:inline-flex;align-items:center;justify-content:center;
-    font-size:0; white-space:nowrap;
-  }
-  .barra-menu .volver .boton-volver::before{
-    content:"←"; font-size:20px; line-height:1; color:#2e412c;
-  }
-  .formulario-reserva, .resumen-reserva{ padding:14px }
-  .info-reserva img{ max-height:220px; object-fit:cover }
-  .cupon-row{ flex-direction:column; align-items:stretch }
-  #aplicarCupon{ width:100% }
-}
-
-/* ---------- Teléfono ---------- */
-.telefono-row{
+.container--grid {
   display: grid;
-  grid-template-columns: 160px 1fr;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .container--grid { grid-template-columns: 1fr; }
+}
+
+/* ── CARDS ───────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 36px;
+}
+
+/* ── FORMULARIO ──────────────────────────────────────────── */
+.formulario-reserva h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.formulario-reserva label {
+  display: block;
+  font-size: .73rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: #999;
+  margin-bottom: 7px;
+  margin-top: 18px;
+}
+.formulario-reserva label:first-of-type { margin-top: 0; }
+
+.formulario-reserva input[type="text"],
+.formulario-reserva input[type="email"],
+.formulario-reserva textarea {
+  width: 100%;
+  height: 50px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: .92rem;
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+  color: var(--ink);
+  transition: border-color .2s;
+}
+.formulario-reserva input:focus,
+.formulario-reserva textarea:focus { outline: none; border-color: var(--olive); }
+.formulario-reserva textarea {
+  height: auto;
+  min-height: 112px;
+  padding: 14px 16px;
+  resize: vertical;
+}
+
+/* ── TELÉFONO ─────────────────────────────────────────────── */
+.telefono-row {
+  display: grid;
+  grid-template-columns: 148px 1fr;
   gap: 10px;
 }
-#telefonoPais, #telefonoNumero{
-  height: 46px;
-  border: 1px solid var(--hh-border);
+#telefonoPais, #telefonoNumero {
+  height: 50px;
+  border: 1.5px solid var(--border);
   border-radius: 12px;
-  padding: 0 12px;
+  padding: 0 14px;
+  font-size: .92rem;
+  font-family: 'Inter', sans-serif;
   background: #fff;
-  font-size: 16px;
+  color: var(--ink);
 }
-@media (max-width: 600px){
-  .telefono-row{ grid-template-columns: 1fr; }
+#telefonoPais:focus, #telefonoNumero:focus { outline: none; border-color: var(--olive); }
+@media (max-width: 500px) { .telefono-row { grid-template-columns: 1fr; } }
+
+/* ── CUPÓN ────────────────────────────────────────────────── */
+.cupon-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 18px;
+}
+#cuponDescuento {
+  flex: 1;
+  height: 50px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: .92rem;
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+  color: var(--ink);
+}
+#aplicarCupon {
+  height: 50px;
+  padding: 0 22px;
+  border: 1.5px solid var(--olive);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--olive);
+  font-weight: 700;
+  font-size: .85rem;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background .2s, color .2s;
+  white-space: nowrap;
+}
+#aplicarCupon:hover { background: var(--olive); color: #fff; }
+
+/* ── TÉRMINOS ─────────────────────────────────────────────── */
+.terminos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+}
+.terminos input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--olive);
+}
+.terminos label {
+  font-size: .88rem;
+  font-weight: 400;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.terminos a { color: var(--olive); text-decoration: underline; }
+.terminos a:hover { text-decoration: none; }
+
+/* ── AVISO ────────────────────────────────────────────────── */
+.aviso-contacto {
+  font-size: .82rem;
+  color: #666;
+  background: var(--cream);
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 14px;
+  margin-bottom: 18px;
 }
 
+/* ── BOTÓN SUBMIT ─────────────────────────────────────────── */
+#botonReservar {
+  width: 100%;
+  height: 54px;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  background: var(--olive);
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: .04em;
+  transition: background .2s;
+}
+#botonReservar:hover { background: #556349; }
+#botonReservar:disabled { background: #c5c9be; cursor: not-allowed; }
 
-/* WHATSAPP  */
+/* ── RESUMEN ──────────────────────────────────────────────── */
+.resumen-reserva { align-self: start; }
+
+.resumen-reserva h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.info-reserva img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.info-reserva h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.info-reserva p {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: .88rem;
+  color: #555;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.info-reserva p:last-of-type { border-bottom: none; }
+
+.info-reserva strong {
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+#precioReserva, #seniaReserva,
+#fechasReserva, #huespedesReserva {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  text-align: right;
+  margin-left: auto;
+}
+
+#precioReserva.tachado {
+  text-decoration: line-through;
+  color: #b03030;
+  font-size: .85rem;
+  font-weight: 500;
+}
+.precio-descuento {
+  font-weight: 700;
+  color: var(--olive);
+  font-variant-numeric: tabular-nums;
+}
+
+#descuentoLabel { font-size: .82rem; color: #888; margin: 6px 0 10px; }
+
+.price-stack { display: none !important; }
+
+/* ── PAGO INFO ────────────────────────────────────────────── */
+.hh-pago-nota {
+  margin-top: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--cream);
+  padding: 16px 18px;
+  font-size: .82rem;
+  line-height: 1.55;
+}
+.hh-pago-nota b { color: var(--olive); }
+.hh-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink);
+  font-size: .88rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.hh-title svg { width: 18px; height: 18px; flex-shrink: 0; }
+.hh-pago-nota ul { margin: 4px 0 0 16px; padding: 0; }
+.hh-pago-nota li { margin: 5px 0; }
+.hh-small { margin-top: 10px; font-size: .76rem; color: #888; }
+
+/* ── MODAL ────────────────────────────────────────────────── */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,.5);
+  justify-content: center;
+  align-items: center;
+}
+.modal-contenido {
+  background: #fff;
+  border-radius: var(--radius);
+  max-width: 680px;
+  width: 92%;
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 36px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.18);
+}
+.modal-contenido h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.modal-contenido h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .95rem;
+  color: var(--olive);
+  margin: 16px 0 6px;
+}
+.modal-contenido p { font-size: .88rem; color: #444; margin: 6px 0; line-height: 1.6; }
+.cerrar {
+  float: right;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: #aaa;
+}
+.cerrar:hover { color: var(--ink); }
+
+/* ── WHATSAPP ─────────────────────────────────────────────── */
 .whatsapp-float {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 58px;
-  height: 58px;
-  background-color: #25D366;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 18px rgba(0,0,0,.22);
   z-index: 9999;
-  transition: transform 0.2s ease;
+  transition: transform .2s;
 }
+.whatsapp-float:hover { transform: scale(1.1); }
+.whatsapp-float svg { width: 28px; height: 28px; }
 
-.whatsapp-float:hover {
-  transform: scale(1.1);
-}
-
-.whatsapp-float svg {
-  width: 30px;
-  height: 30px;
-}
-
+/* ── MOBILE ───────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .whatsapp-float {
-    width: 52px;
-    height: 52px;
-    bottom: 15px;
-    right: 15px;
-  }
-
-  .whatsapp-float svg {
-    width: 26px;
-    height: 26px;
-  }
+  .header { padding: 0 16px; }
+  .titulo-header { font-size: .8rem; }
+  .fondo-blur { margin: 20px auto; padding: 0 12px 60px; }
+  .card { padding: 20px; }
+  .cupon-row { flex-direction: column; align-items: stretch; }
+  #aplicarCupon { width: 100%; }
 }
