@@ -130,8 +130,40 @@
     }, { passive: true });
   }
 
+  /* ══════════════════════════════════════════════════════
+     3. SWIPE EN LIGHTBOX
+  ══════════════════════════════════════════════════════ */
+  function initLightboxSwipe() {
+    const lb      = document.getElementById('lightbox');
+    const btnPrev = document.getElementById('lb-prev');
+    const btnNext = document.getElementById('lb-next');
+    if (!lb || !btnPrev || !btnNext) return;
+
+    let startX = 0;
+    let startY = 0;
+
+    lb.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    lb.addEventListener('touchend', function (e) {
+      const dx = startX - e.changedTouches[0].clientX;
+      const dy = startY - e.changedTouches[0].clientY;
+      // Solo swipe horizontal (ignorar scroll vertical)
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+        if (dx > 0) {
+          btnNext.click(); // swipe izquierda → siguiente foto
+        } else {
+          btnPrev.click(); // swipe derecha → foto anterior
+        }
+      }
+    }, { passive: true });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initHamburger();
     initMobileGallery();
+    initLightboxSwipe();
   });
 })();
