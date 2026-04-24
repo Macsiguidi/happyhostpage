@@ -577,6 +577,46 @@ body {
   border-color: var(--olive) !important;
 }
 
+/* ── LEYENDA CALENDARIO ──────────────────────────────── */
+.hhcal-leyenda {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px 6px;
+  font-size: .7rem;
+  font-family: 'Inter', sans-serif;
+  color: #666;
+  flex-wrap: wrap;
+  border-top: 1px solid #f0ede8;
+  margin-top: 6px;
+}
+.hhcal-ley-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.hhcal-ley-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.hhcal-ley-dot.ocupado {
+  background: #c8d8b8;
+  border: 1.5px solid #b0c49a;
+}
+.hhcal-ley-dot.checkinout {
+  background: linear-gradient(90deg, #c8d8b8 50%, #fff 50%);
+  border: 1.5px solid #b0c49a;
+}
+.hhcal-ley-dot.disponible {
+  background: #fff;
+  border: 1.5px solid #ccc;
+}
+
 /* ── EXPLORE / FOOTER ────────────────────────────────── */
 .unidad-explorar {
   max-width: 1300px;

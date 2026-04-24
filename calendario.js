@@ -77,8 +77,8 @@
     const ley = document.createElement('div');
     ley.className = 'hhcal-leyenda';
     ley.innerHTML =
-      '<span class="hhcal-ley-item"><span class="hhcal-ley-dot ocupado"></span>Ocupado</span>' +
-      '<span class="hhcal-ley-item"><span class="hhcal-ley-dot checkinout"></span>Check in / Check out</span>' +
+      '<span class="hhcal-ley-item"><span class="hhcal-ley-dot ocupado"></span>No disponible</span>' +
+      '<span class="hhcal-ley-item"><span class="hhcal-ley-dot checkinout"></span>Entrada / Salida posible</span>' +
       '<span class="hhcal-ley-item"><span class="hhcal-ley-dot disponible"></span>Disponible</span>';
     cal.appendChild(ley);
   }
