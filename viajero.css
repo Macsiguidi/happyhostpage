@@ -1311,6 +1311,19 @@ body {
 
   .footer { padding: 40px 20px 24px; }
   .footer-info { flex-direction: column; gap: 8px; }
+
+  /* ── Popup promo (ls-card) en móvil ── */
+  .ls-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 40px 16px 14px;
+  }
+  .ls-card-img-wrap { align-self: center; }
+  .ls-card-oferta-img { width: 72px; }
+  .ls-card-title { font-size: 13px; }
+  .ls-card-text  { font-size: 12px; margin-bottom: 10px; }
+  .ls-card-cta   { font-size: 12px; padding: 7px 14px; }
 }
 
 @media (min-width: 600px) and (max-width: 1023px) {
