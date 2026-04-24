@@ -425,7 +425,7 @@
   const contador    = document.getElementById('contador');
   const precioBox   = document.querySelector('.booking-precio');
   const precioOriginalHTML = precioBox ? precioBox.innerHTML : '';
-  function resetPrecioBox() { if (precioBox) precioBox.innerHTML = precioOriginalHTML; }
+  function resetPrecioBox() { if (precioBox) { precioBox.innerHTML = precioOriginalHTML; precioBox.classList.add('precio-oculto'); } }
 
   let cantidad = parseInt(huespedes) || 1;
   const hoy = new Date(); hoy.setHours(0,0,0,0);
@@ -653,7 +653,7 @@
       });
 
       const totalParaCobrar = (descuento > 0) ? totalConDesc : totalSinDesc;
-      if (precioBox) precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalParaCobrar)}</span><span class="booking-noche"> total</span>`;
+      if (precioBox) { precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalParaCobrar)}</span><span class="booking-noche"> total</span>`; precioBox.classList.remove('precio-oculto'); }
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
         const qs = new URLSearchParams({
