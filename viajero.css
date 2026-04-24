@@ -1304,7 +1304,10 @@ body {
   #destacados .carousel { height: 220px; }
 
   .comentarios-section { padding: 56px 16px; }
-  .contenedor-comentarios { height: auto; min-height: 600px; }
+  /* En móvil cambiar de absolute+opacity a display:none/grid para altura automática */
+  .contenedor-comentarios { height: auto; overflow: visible; }
+  .grupo-comentarios { position: relative; opacity: 1; display: none; }
+  .grupo-comentarios.active { display: grid; z-index: auto; }
 
   .footer { padding: 40px 20px 24px; }
   .footer-info { flex-direction: column; gap: 8px; }

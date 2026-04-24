@@ -684,6 +684,7 @@ body { font-family: 'Inter', 'Poppins', sans-serif; }
 @media (max-width: 768px) {
   .header-aloj { padding: 0 20px; }
   .menu-aloj { display: none; }
+  .hamburger-btn { display: flex; }
   .hero-aloj, .buscador-aloj-wrap { padding-left: 20px; padding-right: 20px; }
   .buscador-aloj { flex-direction: column; align-items: stretch; padding: 8px; }
   .baloj-sep { display: none; }
@@ -691,4 +692,65 @@ body { font-family: 'Inter', 'Poppins', sans-serif; }
   .filtros-categoria { padding-left: 16px; padding-right: 16px; }
   .grid-alojamientos { grid-template-columns: 1fr !important; padding: 16px !important; }
   .footer-nuevo { padding: 40px 20px 24px; }
+}
+
+/* ── HAMBURGER BUTTON (alojamientos) ─────────────────────────────────────── */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform .25s, opacity .25s;
+}
+.hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.open span:nth-child(2) { opacity: 0; }
+.hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── MOBILE MENU OVERLAY (alojamientos) ──────────────────────────────────── */
+.mob-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0,0,0,0.55);
+}
+.mob-menu-overlay.open { display: block; }
+.mob-menu-nav {
+  position: absolute;
+  top: 0; right: 0;
+  width: 72%;
+  max-width: 280px;
+  height: 100%;
+  background: #2F3E2F;
+  padding: 72px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mob-menu-nav li { list-style: none; }
+.mob-menu-nav a {
+  display: block;
+  padding: 15px 0;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,.1);
 }
