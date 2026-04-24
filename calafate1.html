@@ -158,7 +158,6 @@
       </div>
 
       <div class="unidad-desc">
-        <img src="iconos/elegido-por-huespedes.png" alt="Elegido por huéspedes" class="unidad-award-badge">
         <h2>Sobre esta propiedad</h2>
         <p><strong>Calafate 1</strong> es tu base perfecta en Villa La Angostura. A solo <strong>500 m de la Avenida Principal</strong>, estás lo suficientemente cerca para recorrer el pueblo caminando y lo bastante apartado para disfrutar de la tranquilidad patagónica.</p>
         <p>En planta alta, dos <strong>dormitorios dobles</strong> configurables (matrimonial o twin). En planta baja, un <strong>sillón cama para dos</strong> amplía la capacidad total a <strong>6 huéspedes</strong>. La <strong>losa radiante</strong> asegura confort parejo en todos los ambientes. La cocina completamente equipada y el <strong>jardín con parrilla</strong> te invitan a disfrutar como en casa.</p>
@@ -426,7 +425,7 @@
   const contador    = document.getElementById('contador');
   const precioBox   = document.querySelector('.booking-precio');
   const precioOriginalHTML = precioBox ? precioBox.innerHTML : '';
-  function resetPrecioBox() { if (precioBox) { precioBox.innerHTML = precioOriginalHTML; precioBox.classList.add('precio-oculto'); } }
+  function resetPrecioBox() { if (precioBox) precioBox.innerHTML = precioOriginalHTML; }
 
   let cantidad = parseInt(huespedes) || 1;
   const hoy = new Date(); hoy.setHours(0,0,0,0);
@@ -654,7 +653,7 @@
       });
 
       const totalParaCobrar = (descuento > 0) ? totalConDesc : totalSinDesc;
-      if (precioBox) { precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalParaCobrar)}</span><span class="booking-noche"> total</span>`; precioBox.classList.remove('precio-oculto'); }
+      if (precioBox) precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalParaCobrar)}</span><span class="booking-noche"> total</span>`;
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
         const qs = new URLSearchParams({
@@ -726,7 +725,5 @@
   })();
   </script>
 
-<script src="badges.js"></script>
 </body>
 </html>
-
