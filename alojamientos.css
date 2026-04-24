@@ -684,7 +684,7 @@ body { font-family: 'Inter', 'Poppins', sans-serif; }
 @media (max-width: 768px) {
   .header-aloj { padding: 0 20px; }
   .menu-aloj { display: none; }
-  .hamburger-btn { display: flex; }
+  .hamburger-btn { display: flex !important; }
   .hero-aloj, .buscador-aloj-wrap { padding-left: 20px; padding-right: 20px; }
   .buscador-aloj { flex-direction: column; align-items: stretch; padding: 8px; }
   .baloj-sep { display: none; }

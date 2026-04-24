@@ -22,9 +22,10 @@
     btn.innerHTML = '<span></span><span></span><span></span>';
     headerInner.appendChild(btn);
 
-    /* Overlay lateral */
+    /* Overlay lateral — siempre oculto por JS (no depende solo del CSS) */
     const overlay = document.createElement('div');
     overlay.className = 'mob-menu-overlay';
+    overlay.style.display = 'none'; // garantizado por inline style
     const nav = document.createElement('nav');
     nav.className = 'mob-menu-nav';
     nav.innerHTML = menuOrig.innerHTML;
@@ -32,12 +33,14 @@
     document.body.appendChild(overlay);
 
     function openMenu() {
+      overlay.style.display = 'block';
       overlay.classList.add('open');
       btn.classList.add('open');
       btn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
     function closeMenu() {
+      overlay.style.display = 'none';
       overlay.classList.remove('open');
       btn.classList.remove('open');
       btn.setAttribute('aria-expanded', 'false');

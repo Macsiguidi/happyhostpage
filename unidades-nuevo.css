@@ -870,10 +870,10 @@ body {
   .amenities-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-simple-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
   /* Hamburger visible */
-  .hamburger-btn { display: flex; }
+  .hamburger-btn { display: flex !important; }
   /* Flechas de galería visibles */
-  .gal-mob-btn { display: flex; }
-  .gal-mob-counter { display: block; }
+  .gal-mob-btn { display: flex !important; }
+  .gal-mob-counter { display: block !important; }
 }
 
 /* ── HAMBURGER BUTTON ────────────────────────────────────────────────────── */
