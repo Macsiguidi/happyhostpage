@@ -10,7 +10,7 @@
 (function () {
   'use strict';
 
-  const API_URL    = 'https://acceso.happyhostpatagonia.com.ar/api/badges';
+  const API_URL    = 'https://propietarios-happy-host.onrender.com/api/badges';
   const ICONS_BASE = 'iconos/';
 
   // Slugs HTML → slug de la API (cuando difieren)
