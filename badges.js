@@ -102,17 +102,21 @@
     }
   }
 
-  // ── Main ──────────────────────────────────────────────────────────────────
-  async function applyBadges() {
-    let badges;
-    try {
-      const resp = await fetch(API_URL);
-      if (!resp.ok) return;
-      badges = await resp.json();
-    } catch (_) {
-      return; // Silencioso — el website funciona sin badges si la API no responde
+  // ── Main — con reintentos para Render free tier (cold start ~30s) ───────────
+  async function fetchBadgesWithRetry(maxAttempts, delayMs) {
+    for (let i = 0; i < maxAttempts; i++) {
+      try {
+        const resp = await fetch(API_URL, { signal: AbortSignal.timeout(15000) });
+        if (resp.ok) return await resp.json();
+      } catch (_) { /* continuar con el siguiente intento */ }
+      if (i < maxAttempts - 1) await new Promise(r => setTimeout(r, delayMs));
     }
+    return null;
+  }
 
+  async function applyBadges() {
+    const badges = await fetchBadgesWithRetry(3, 8000);
+    if (!badges) return; // API no responde — badges no se muestran (silencioso)
     updateCards(badges);
     updateDestacados(badges);
     updateUnitPage(badges);
