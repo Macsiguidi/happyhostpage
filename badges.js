@@ -107,16 +107,24 @@
     for (let i = 0; i < maxAttempts; i++) {
       try {
         const resp = await fetch(API_URL, { signal: AbortSignal.timeout(15000) });
-        if (resp.ok) return await resp.json();
-      } catch (_) { /* continuar con el siguiente intento */ }
+        if (resp.ok) {
+          const data = await resp.json();
+          console.log('[badges.js] API OK →', JSON.stringify(data));
+          return data;
+        }
+        console.warn('[badges.js] intento', i + 1, '→ HTTP', resp.status);
+      } catch (err) {
+        console.warn('[badges.js] intento', i + 1, '→ error:', err.message || err);
+      }
       if (i < maxAttempts - 1) await new Promise(r => setTimeout(r, delayMs));
     }
+    console.error('[badges.js] No se pudo obtener badges de la API después de', maxAttempts, 'intentos.');
     return null;
   }
 
   async function applyBadges() {
     const badges = await fetchBadgesWithRetry(3, 8000);
-    if (!badges) return; // API no responde — badges no se muestran (silencioso)
+    if (!badges) return;
     updateCards(badges);
     updateDestacados(badges);
     updateUnitPage(badges);
