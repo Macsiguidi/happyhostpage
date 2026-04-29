@@ -5,216 +5,130 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Propietarios | Happy Host Patagonia — Más ingreso, menos estrés</title>
   <meta name="description" content="Administramos tu propiedad en Villa La Angostura con gestión cercana, pricing inteligente y atención 24/7. Dos planes: Central de Reservas y 100% Happy." />
-  <!-- Vinculá tu CSS final (ver más abajo) -->
-  <link rel="stylesheet" href="propietarios.css" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Propietarios | Happy Host Patagonia — Más ingreso, menos estrés" />
+  <link rel="canonical" href="https://www.happyhostpatagonia.com.ar/propietarios.html" />
+  <meta property="og:title" content="Propietarios | Happy Host Patagonia" />
   <meta property="og:description" content="Administramos tu propiedad en Villa La Angostura con gestión cercana, pricing inteligente y atención 24/7." />
   <meta property="og:image" content="https://www.happyhostpatagonia.com.ar/logos/happyhost.png" />
-  <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/propietarios.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:locale" content="es_AR" />
-
-  <link rel="canonical" href="https://www.happyhostpatagonia.com.ar/propietarios.html" />
-
-  <link rel="alternate" hreflang="es-AR" href="https://www.happyhostpatagonia.com.ar/propietarios.html" />
-  <link rel="alternate" hreflang="pt-BR" href="https://www.happyhostpatagonia.com.ar/propietarios-pt.html" />
-  <link rel="alternate" hreflang="en" href="https://www.happyhostpatagonia.com.ar/propietarios-en.html" />
-  <link rel="alternate" hreflang="x-default" href="https://www.happyhostpatagonia.com.ar/propietarios.html" />
-
-  <meta name="geo.region" content="AR-Q" />
-  <meta name="geo.placename" content="Villa La Angostura, Neuquén" />
-  <meta name="geo.position" content="-40.7731;-71.6469" />
-  <meta name="ICBM" content="-40.7731, -71.6469" />
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Propietarios - Happy Host Patagonia",
-    "description": "Servicio de gestion de alquileres vacacionales para propietarios en Villa La Angostura.",
-    "url": "https://www.happyhostpatagonia.com.ar/propietarios.html",
-    "inLanguage": "es-AR",
-    "provider": {"@type": "LocalBusiness","name": "Happy Host Patagonia","url": "https://www.happyhostpatagonia.com.ar/"}
-  }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="propietarios.css" />
 </head>
 <body>
 
-  <!-- HEADER con logo -->
-<header class="hh-header">
+<!-- ════════════════════════════════════════
+     HEADER
+     ════════════════════════════════════════ -->
+<header class="hh-header" id="hh-header">
   <div class="wrap hh-header__row">
+
     <div class="brand">
-      <a href="index.html" class="logo-link">
-        <img src="/logos/happy host.png" alt="Happy Host Patagonia"/>
+      <a href="index.html">
+        <img src="logos/logo2.png" alt="Happy Host Patagonia" />
       </a>
     </div>
-    <div class="head-cta">
-      <a href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20hablar%20de%20mi%20propiedad" target="_blank" rel="noopener">
-        Conversemos
+
+    <ul class="nav-links" role="list">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#planes">Planes</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20hablar%20de%20mi%20propiedad"
+         target="_blank" rel="noopener"
+         class="btn btn-primary btn-sm" style="display:none" id="btnNavWa">
+        WhatsApp
       </a>
+      <a href="#contacto" class="btn btn-primary btn-sm" id="btnNavCta">Evaluación gratis</a>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+
   </div>
 </header>
 
-
-  <!-- Sticky CTA (aparece al scrollear) -->
-  <div id="hh-sticky-cta" class="hh-sticky-cta" hidden>
-    <div class="hh-sticky-cta__wrap">
-      <span class="hh-sticky-cta__title">¿Hablamos de tu propiedad?</span>
-      <div>
-        <a id="ctaStickyWhatsapp" class="btn btn-primary" href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20una%20evaluaci%C3%B3n%20de%20mi%20propiedad" target="_blank" rel="noopener">Conversemos</a>
-        <a id="ctaStickyAgenda" class="btn btn-outline" href="#contacto">Agendar llamada</a>
-      </div>
-    </div>
+<!-- Mobile drawer -->
+<nav class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <a href="#servicios"     class="drawer-link" data-close>Servicios</a>
+  <a href="#como-funciona" class="drawer-link" data-close>Cómo funciona</a>
+  <a href="#planes"        class="drawer-link" data-close>Planes</a>
+  <a href="#contacto"      class="drawer-link" data-close>Contacto</a>
+  <div class="drawer-cta">
+    <a href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20hablar%20de%20mi%20propiedad"
+       class="btn btn-primary" target="_blank" rel="noopener" style="width:100%;justify-content:center">
+       Conversemos por WhatsApp
+    </a>
   </div>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap grid-2">
+
+<!-- ════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════ -->
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div class="hero__inner">
+
       <div>
-        <h1>Más ingreso, menos estrés: administramos tu alojamiento de punta a punta.</h1>
-        <p class="lead">Tu propiedad, tus reglas. Nosotros la potenciamos con gestión cercana, pricing inteligente y atención 24/7.</p>
+        <div class="hero-badge">+16 unidades · 4 años Superhost en Airbnb</div>
 
-        <!-- Chips con color -->
+        <h1>Más ingreso,<br><em>menos estrés.</em></h1>
+
+        <p class="hero__lead">
+          Administramos tu alojamiento de punta a punta en Villa La Angostura:
+          reservas, precios, huéspedes y operación. Vos cobrás. Nosotros nos ocupamos de todo.
+        </p>
+
         <div class="chips">
-          <span class="chip chip--accent">4+ años Superhost</span>
-          <span class="chip">Reportes mensuales</span>
-          <span class="chip">Transparencia total</span>
-          <span class="chip">Atención 24/7</span>
+          <span class="chip chip--terra">⭐ Superhost certificado</span>
+          <span class="chip">📊 Reportes mensuales</span>
+          <span class="chip">🔒 Transparencia total</span>
+          <span class="chip">📱 Atención 24/7</span>
         </div>
 
         <div class="cta-row">
-          <a class="btn btn-primary" id="ctaHeroWhatsapp" href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20que%20eval%C3%BAen%20mi%20propiedad" target="_blank" rel="noopener">Conversemos por WhatsApp</a>
-          <a class="btn btn-outline" id="ctaHeroAgenda" href="#contacto">Quiero una evaluación gratis</a>
+          <a class="btn btn-terra btn-lg"
+             href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20que%20eval%C3%BAen%20mi%20propiedad"
+             target="_blank" rel="noopener">
+            Conversemos por WhatsApp
+          </a>
+          <a class="btn btn-outline-w btn-lg" href="#contacto">
+            Quiero una evaluación gratis
+          </a>
         </div>
       </div>
 
-   <div class="wrap">
-    <div class="card">
-      <h2 class="title">Quiénes somos?</h2>
-
-      <p>
-        En <strong>Happy Host</strong> entendemos que entregar las llaves de tu propiedad es mucho más que un acuerdo: es un acto de confianza.
-      </p>
-      <p>
-        Por eso, nuestra misión no es solo gestionar alquileres turísticos. Es acompañarte, potenciar tus ingresos y cuidar tu propiedad como si fuera nuestra.
-      </p>
-      <p>
-        Somos un equipo local con mirada global. Conocemos a fondo el negocio, las plataformas y, sobre todo, lo que necesitan los huéspedes para volver… y los propietarios para estar tranquilos.
-      </p>
-      <p>
-        Publicamos, posicionamos, ajustamos tarifas estratégicamente, recibimos, resolvemos y estamos siempre.
-      </p>
-      <p>
-        No creemos en la administración genérica. Creemos en una gestión personalizada, cercana y con resultados reales.
-      </p>
-      <p>
-        <strong>100% Happy</strong> no es solo un lema: es nuestra forma de trabajar.
-      </p>
-    </div>
-  </div>
-  </section>
-
-
-
-    <!-- POR QUÉ ELEGIR HH -->
-  <section class="section">
-    <div class="wrap">
-      <h2 class="title">¿Por qué elegir Happy Host?</h2>
-      <div class="grid-2">
-        <div class="card feature">
-          <div class="ico">📊</div>
+      <!-- Trust card — solo desktop -->
+      <div class="hero__card">
+        <div class="hero__card-title">Resultados reales</div>
+        <div class="hero__stats">
           <div>
-            <h3>Más ingreso sin estrés</h3>
-            <p>Pricing dinámico + ocupación optimizada para mejorar tus números sin que te ocupes del día a día.</p>
+            <div class="hero__stat-val">+16</div>
+            <div class="hero__stat-lbl">unidades gestionadas</div>
+          </div>
+          <div>
+            <div class="hero__stat-val">4+</div>
+            <div class="hero__stat-lbl">años Superhost Airbnb</div>
+          </div>
+          <div>
+            <div class="hero__stat-val">90%</div>
+            <div class="hero__stat-lbl">ocupación temporada alta</div>
+          </div>
+          <div>
+            <div class="hero__stat-val">100%</div>
+            <div class="hero__stat-lbl">reportes transparentes</div>
           </div>
         </div>
-        <div class="card feature">
-          <div class="ico">🧭</div>
-          <div>
-            <h3>Anuncios que venden</h3>
-            <p>Fotos pro, descripciones claras y posicionamiento en Airbnb/Booking para destacar en la búsqueda.</p>
-          </div>
-        </div>
-        <div class="card feature">
-          <div class="ico">🛠️</div>
-          <div>
-            <h3>Operación 24/7</h3>
-            <p>Check-in/out, limpieza y mantenimiento coordinados. Huéspedes felices, propiedad cuidada.</p>
-          </div>
-        </div>
-        <div class="card feature">
-          <div class="ico">📈</div>
-          <div>
-            <h3>Transparencia total</h3>
-            <p>Reporte mensual con ocupación, tarifa media e ingresos netos. Decisiones con datos.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CÓMO TRABAJAMOS -->
-  <section class="section">
-    <div class="wrap">
-      <h2 class="title">Cómo trabajamos</h2>
-      <ol class="hh-steps">
-        <li><strong>Evaluación gratuita</strong><br><span class="muted">Potencial, tarifas y calendario.</span></li>
-        <li><strong>Puesta a punto</strong><br><span class="muted">Homestaging y fotografía profesional.</span></li>
-        <li><strong>Publicación & pricing</strong><br><span class="muted">Anuncios perfectos + precios dinámicos.</span></li>
-        <li><strong>Operación 24/7</strong><br><span class="muted">Check-in/out, limpieza y mantenimiento.</span></li>
-        <li><strong>Reporte mensual</strong><br><span class="muted">Métricas y mejoras continuas.</span></li>
-      </ol>
-    </div>
-  </section>
-
-<!-- Propiedades que confían en Happy Host -->
-<section class="section">
-  <div class="wrap">
-    <h2 class="title">Propiedades que confían en Happy Host</h2>
-    <div class="grid-3">
-      
-      <!-- Casas Calafate -->
-      <div class="card">
-        <img src="/unidades/casa1/casa1_img1.jpg" alt="Casas Calafate">
-        <h3>Casas Calafate (complejo de 7 unidades)</h3>
-      </div>
-
-      <!-- Las Nilidas -->
-      <div class="card">
-        <img src="/unidades/nilidas/nilidas1.jpg" alt="Las Nilidas">
-        <h3>Las Nilidas</h3>
-      </div>
-
-      <!-- Cruz del Sur -->
-      <div class="card">
-        <img src="/unidades/cds4/cds4_1.jpg" alt="Cruz del Sur">
-        <h3>Cruz del Sur</h3>
-      </div>
-
-      <!-- Paisajismo -->
-      <div class="card">
-        <img src="/unidades/paisajismo/paisajismo1.jpg" alt="Paisajismo">
-        <h3>Paisajismo</h3>
-      </div>
-
-      <!-- Gurisa -->
-      <div class="card">
-        <img src="/unidades/gurisa/gurisa1.jpg" alt="Gurisa">
-        <h3>Gurisa</h3>
-      </div>
-
-      <!-- Refugio Patagónico -->
-      <div class="card">
-        <img src="/unidades/refugio/refugio2.jpg" alt="Refugio Patagónico">
-        <h3>Refugio Patagónico</h3>
-      </div>
-
-      <!-- Mi Tiempo -->
-      <div class="card">
-        <img src="unidades/mitiempo/tiempo3.jpg" alt="Mi Tiempo">
-        <h3>Mi Tiempo</h3>
+        <ul class="hero__checklist">
+          <li>Airbnb, Booking y canales directos</li>
+          <li>Pricing dinámico por temporada</li>
+          <li>Atención a huéspedes 24/7</li>
+          <li>Reporte mensual con ingresos netos</li>
+        </ul>
       </div>
 
     </div>
@@ -222,352 +136,466 @@
 </section>
 
 
-
-
-    <!-- PLANES (2 en línea) -->
-  <section class="section" id="planes">
-    <div class="wrap">
-      <h2 class="title">Elegí el plan que va con vos</h2>
-
-      <div class="planes">
-        <!-- CENTRAL DE RESERVAS -->
-        <article class="plan-card">
-          <header class="plan-header">
-            <h3 class="plan-title">Central de Reservas</h3>
-            <span class="plan-note">Gestión de anuncios & precios</span>
-          </header>
-          <p class="muted lead-sm">
-            Ideal si <strong>no vivís en Villa La Angostura</strong> y necesitás alguien que gestione tus anuncios, <strong>tome reservas</strong>, ajuste <strong>precios</strong> y mantenga todo en orden.
-          </p>
-          <ul class="plan-list">
-            <li>Publicación y optimización en Airbnb/Booking</li>
-            <li>Gestión de reservas y calendario unificado</li>
-            <li>Atención 24/7 a consultas y huéspedes</li>
-            <li>Pricing dinámico por temporada y demanda</li>
-            <li>Reporte mensual de ocupación e ingresos</li>
-            <li class="off">Operación en sitio (check-in/out, limpieza, mantenimiento)</li>
-            <li class="off">Marketing avanzado (redes, ads, landing personalizada)</li>
-          </ul>
-          <div class="plan-cta">
-            <a id="ctaPlanCentral" class="btn btn-primary" target="_blank" rel="noopener"
-               href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20me%20interesa%20el%20plan%20Central%20de%20Reservas">Me interesa</a>
-            <a class="btn btn-outline" href="#contacto">Quiero una evaluación</a>
-          </div>
-        </article>
-
-        <!-- 100% HAPPY (FELIZ + 100) -->
-        <article class="plan-card plan-card--featured">
-          <span class="ribbon">Más elegido</span>
-          <header class="plan-header">
-            <h3 class="plan-title">100% Happy</h3>
-            <span class="plan-note">Operación + Marketing para crecer</span>
-          </header>
-          <p class="muted lead-sm">
-            Unimos <strong>operación completa</strong> con <strong>marketing</strong> para maximizar ocupación e ingreso. Te olvidás del día a día, pero con <strong>control real</strong>.
-          </p>
-          <ul class="plan-list">
-            <li>Todo lo de Central de Reservas</li>
-            <li>Check-in/out, limpieza y mantenimiento coordinados</li>
-            <li>Fotografía profesional & homestaging</li>
-            <li>Landing de la propiedad + contenido en redes</li>
-            <li>Gestión de anuncios + community management</li>
-            <li>Meta Ads / campañas estacionales</li>
-            <li>Optimización SEO & copy</li>
-          </ul>
-          <div class="plan-cta">
-            <a id="ctaPlanFull" class="btn btn-primary" target="_blank" rel="noopener"
-               href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20saber%20m%C3%A1s%20del%20plan%20100%25%20Happy">Me interesa</a>
-            <a class="btn btn-outline" href="#contacto">Quiero una evaluación</a>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-
-<!-- FORMULARIO -->
-<section class="section" id="contacto">
+<!-- ════════════════════════════════════════
+     TRUST STRIP
+     ════════════════════════════════════════ -->
+<div class="trust-strip">
   <div class="wrap">
-    <h2 class="title">Conversemos sobre tu propiedad</h2>
+    <div class="trust-strip__inner">
+      <div class="trust-item"><span class="trust-item__val">+16</span><span class="trust-item__lbl">Unidades</span></div>
+      <div class="trust-item"><span class="trust-item__val">4 años</span><span class="trust-item__lbl">Superhost</span></div>
+      <div class="trust-item"><span class="trust-item__val">Airbnb + Booking</span><span class="trust-item__lbl">Plataformas</span></div>
+      <div class="trust-item"><span class="trust-item__val">24 / 7</span><span class="trust-item__lbl">Atención</span></div>
+      <div class="trust-item"><span class="trust-item__val">100%</span><span class="trust-item__lbl">Transparencia</span></div>
+    </div>
+  </div>
+</div>
 
-    <form id="form-propietario" class="card form-card" novalidate>
-      <div class="grid-2">
-        <div>
-          <label>Nombre</label>
-          <input type="text" name="nombre" required />
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="email" name="email" required />
-        </div>
-      </div>
 
-      <div class="grid-2">
-        <div>
-          <label>Teléfono</label>
-          <input type="tel" name="telefono" required />
-        </div>
-
-        <div class="grid-2">
-          <div class="picker">
-            <label>Día</label>
-            <input type="text" id="campo-dia" name="dia" class="picker-input" placeholder="Elegí un día (lun–vie)" readonly required />
-            <div id="dp-dia" class="datepicker" hidden></div>
-            <small id="hint-dia" class="muted" style="display:block;margin-top:6px"></small>
-          </div>
-
-          <div class="picker">
-            <label>Hora</label>
-            <input type="text" id="campo-hora" name="hora" class="picker-input" placeholder="Elegí una hora (09–19)" readonly required />
-            <div id="tp-hora" class="timepicker" hidden></div>
-            <small id="hint-hora" class="muted" style="display:block;margin-top:6px"></small>
-          </div>
-        </div>
-      </div>
-
-      <fieldset>
-        <legend class="visually-hidden">Elegí un plan</legend>
-        <div class="opciones-plan">
-          <input class="visually-hidden" type="radio" name="plan" id="plan_central" value="Central de Reservas" />
-          <label class="opcion-plan btn" for="plan_central">Central de Reservas</label>
-
-          <input class="visually-hidden" type="radio" name="plan" id="plan_full" value="100% Happy" />
-          <label class="opcion-plan btn" for="plan_full">100% Happy</label>
-        </div>
-      </fieldset>
+<!-- ════════════════════════════════════════
+     QUIÉNES SOMOS
+     ════════════════════════════════════════ -->
+<section class="quienes section" id="nosotros">
+  <div class="wrap">
+    <div class="quienes__inner">
 
       <div>
-        <label>Mensaje</label>
-        <textarea name="mensaje" rows="4"></textarea>
+        <span class="eyebrow">Quiénes somos</span>
+        <blockquote class="quienes__quote">
+          Entregar las llaves de tu propiedad es un acto de confianza.<br>
+          <em>Nosotros lo tomamos muy en serio.</em>
+        </blockquote>
+        <p class="quienes__text">Somos un equipo local con mirada global. Conocemos a fondo el negocio, las plataformas y lo que necesitan los huéspedes para volver, y los propietarios para estar tranquilos.</p>
+        <p class="quienes__text">No creemos en la administración genérica. Creemos en una gestión personalizada, cercana y con resultados reales. <strong>100% Happy no es solo un lema: es nuestra forma de trabajar.</strong></p>
+        <div style="margin-top:24px">
+          <a href="#contacto" class="btn btn-outline">Hablar con el equipo</a>
+        </div>
       </div>
 
-      <div class="cta-row">
-        <button type="submit" class="btn btn-primary">Enviar</button>
-        <a class="btn btn-outline" id="ctaFormWhatsapp" target="_blank" rel="noopener"
-           href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20hablar%20de%20mi%20propiedad">WhatsApp rápido</a>
+      <div class="quienes__vals">
+        <div class="val-item">
+          <div class="val-item__icon">🤝</div>
+          <div>
+            <div class="val-item__title">Gestión de confianza</div>
+            <div class="val-item__desc">Tu propiedad la cuidamos como si fuera nuestra. Reportes claros y comunicación directa siempre.</div>
+          </div>
+        </div>
+        <div class="val-item">
+          <div class="val-item__icon">📍</div>
+          <div>
+            <div class="val-item__title">Equipo 100% local</div>
+            <div class="val-item__desc">Vivimos en Villa La Angostura. Conocemos el mercado, la temporada y a los huéspedes.</div>
+          </div>
+        </div>
+        <div class="val-item">
+          <div class="val-item__icon">📈</div>
+          <div>
+            <div class="val-item__title">Resultados reales</div>
+            <div class="val-item__desc">Pricing inteligente + presencia digital = más reservas, mejor tarifa, más ingreso neto.</div>
+          </div>
+        </div>
+        <div class="val-item">
+          <div class="val-item__icon">🔒</div>
+          <div>
+            <div class="val-item__title">Sin letra chica</div>
+            <div class="val-item__desc">Comisión clara, reporte mensual detallado. Sabés exactamente qué cobra cada parte.</div>
+          </div>
+        </div>
       </div>
-    </form>
 
-    <!-- Mensaje flotante -->
-    <div id="mensaje-flotante" class="card toast" role="status" aria-live="polite">
-      <p id="texto-mensaje" class="toast-text"></p>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">© Happy Host Patagonia — Villa La Angostura, Neuquén</div>
+
+<!-- ════════════════════════════════════════
+     SERVICIOS / FEATURES
+     ════════════════════════════════════════ -->
+<section class="features section" id="servicios">
+  <div class="wrap">
+    <span class="eyebrow">Nuestros servicios</span>
+    <h2 class="sec-title">Todo lo que necesitás en un solo equipo</h2>
+    <p class="sec-sub">Nos ocupamos de cada detalle para que vos solo te preocupes de disfrutar los resultados.</p>
+
+    <div class="g4">
+      <div class="feat-card">
+        <div class="feat-card__ico">📊</div>
+        <h3 class="feat-card__title">Más ingreso sin estrés</h3>
+        <p class="feat-card__desc">Pricing dinámico y ocupación optimizada para mejorar tus números sin que te ocupes del día a día.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card__ico">🏆</div>
+        <h3 class="feat-card__title">Anuncios que venden</h3>
+        <p class="feat-card__desc">Fotos pro, descripciones perfectas y posicionamiento en Airbnb/Booking para que te vean primero.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card__ico">🛠️</div>
+        <h3 class="feat-card__title">Operación 24/7</h3>
+        <p class="feat-card__desc">Check-in/out, limpieza y mantenimiento coordinados. Huéspedes felices, propiedad cuidada.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card__ico">📋</div>
+        <h3 class="feat-card__title">Transparencia total</h3>
+        <p class="feat-card__desc">Reporte mensual con ocupación, tarifa media e ingresos netos. Decisiones con datos reales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     MOUNTAINS CTA
+     ════════════════════════════════════════ -->
+<section class="mtn-cta">
+  <div class="wrap">
+    <div class="mtn-cta__inner">
+      <span class="mtn-cta__eyebrow">Sin compromisos</span>
+      <h2>Tu propiedad trabajando<br><em>mientras vos descansás.</em></h2>
+      <p>Nos ocupamos de todo: desde publicar el anuncio perfecto hasta coordinar la limpieza después del último huésped. Vos abrís el reporte mensual y ves los resultados.</p>
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn btn-terra btn-lg"
+           href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20una%20evaluaci%C3%B3n%20de%20mi%20propiedad"
+           target="_blank" rel="noopener">Quiero una evaluación gratis</a>
+        <a class="btn btn-ghost" href="#planes">Ver planes →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     CÓMO TRABAJAMOS
+     ════════════════════════════════════════ -->
+<section class="steps section" id="como-funciona">
+  <div class="wrap">
+    <span class="eyebrow">Cómo trabajamos</span>
+    <h2 class="sec-title">5 pasos para hacer rendir tu propiedad</h2>
+    <p class="sec-sub">Un proceso simple y claro desde el primer contacto hasta los reportes mensuales.</p>
+
+    <ol class="hh-steps">
+      <li>
+        <strong>Evaluación gratuita</strong>
+        <span>Analizamos potencial, tarifas y calendario de tu propiedad sin cargo.</span>
+      </li>
+      <li>
+        <strong>Puesta a punto</strong>
+        <span>Homestaging y fotografía profesional para el mejor primer impacto.</span>
+      </li>
+      <li>
+        <strong>Publicación &amp; pricing</strong>
+        <span>Anuncios perfectos + precios dinámicos por temporada y demanda.</span>
+      </li>
+      <li>
+        <strong>Operación 24/7</strong>
+        <span>Check-in/out, limpieza y mantenimiento coordinados en todo momento.</span>
+      </li>
+      <li>
+        <strong>Reporte mensual</strong>
+        <span>Métricas claras, ingresos netos y sugerencias de mejora continua.</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     PLANES
+     ════════════════════════════════════════ -->
+<section class="planes-sec section" id="planes">
+  <div class="wrap">
+    <span class="eyebrow">Nuestros planes</span>
+    <h2 class="sec-title">Elegí el plan que va con vos</h2>
+    <p class="sec-sub">Dos opciones diseñadas para distintas realidades. Las dos con el mismo nivel de compromiso y transparencia.</p>
+
+    <div class="planes">
+
+      <article class="plan-card">
+        <div class="plan-header">
+          <h3 class="plan-title">Central de Reservas</h3>
+          <div class="plan-note">Gestión de anuncios &amp; precios</div>
+        </div>
+        <p class="plan-desc">Ideal si <strong>no vivís en Villa La Angostura</strong> y necesitás alguien que gestione tus anuncios, tome reservas, ajuste precios y mantenga todo en orden.</p>
+        <ul class="plan-list">
+          <li>Publicación y optimización en Airbnb/Booking</li>
+          <li>Gestión de reservas y calendario unificado</li>
+          <li>Atención 24/7 a consultas y huéspedes</li>
+          <li>Pricing dinámico por temporada y demanda</li>
+          <li>Reporte mensual de ocupación e ingresos</li>
+          <li class="off">Operación en sitio (check-in/out, limpieza)</li>
+          <li class="off">Marketing avanzado (redes, ads, landing)</li>
+        </ul>
+        <div class="plan-cta">
+          <a class="btn btn-primary"
+             href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20me%20interesa%20el%20plan%20Central%20de%20Reservas"
+             target="_blank" rel="noopener">Me interesa</a>
+          <a class="btn btn-outline" href="#contacto">Evaluación gratis</a>
+        </div>
+      </article>
+
+      <article class="plan-card plan-card--feat">
+        <span class="ribbon">Más elegido</span>
+        <div class="plan-header">
+          <h3 class="plan-title">100% Happy</h3>
+          <div class="plan-note">Operación completa + Marketing</div>
+        </div>
+        <p class="plan-desc">Unimos <strong>operación completa</strong> con <strong>marketing</strong> para maximizar ocupación e ingreso. Te olvidás del día a día, pero con <strong>control real</strong>.</p>
+        <ul class="plan-list">
+          <li>Todo lo de Central de Reservas</li>
+          <li>Check-in/out, limpieza y mantenimiento</li>
+          <li>Fotografía profesional &amp; homestaging</li>
+          <li>Landing de la propiedad + redes sociales</li>
+          <li>Gestión de anuncios + community management</li>
+          <li>Meta Ads / campañas estacionales</li>
+          <li>Optimización SEO &amp; copy</li>
+        </ul>
+        <div class="plan-cta">
+          <a class="btn btn-primary"
+             href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20saber%20m%C3%A1s%20del%20plan%20100%25%20Happy"
+             target="_blank" rel="noopener">Me interesa</a>
+          <a class="btn btn-outline" href="#contacto">Evaluación gratis</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     FAQ
+     ════════════════════════════════════════ -->
+<section class="faq-sec section">
+  <div class="wrap">
+    <span class="eyebrow">Preguntas frecuentes</span>
+    <h2 class="sec-title">Respondemos tus dudas</h2>
+    <p class="sec-sub" style="margin-bottom:36px">Todo lo que querés saber antes de dar el paso.</p>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Cuánto cobran por la gestión?
+          <span class="faq-q__icon">+</span>
+        </button>
+        <div class="faq-a">
+          Trabajamos con una comisión sobre las reservas efectivas, sin costos fijos mensuales. El porcentaje varía según el plan y la propiedad. Te lo explicamos todo en la evaluación inicial, sin letra chica.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Qué pasa si quiero usar mi propiedad yo mismo?
+          <span class="faq-q__icon">+</span>
+        </button>
+        <div class="faq-a">
+          Ningún problema. Vos tenés control total de tu calendario. Bloqueás las fechas que quieras y listo. Siempre coordinamos con anticipación para que todo fluya.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Cómo recibo el dinero de las reservas?
+          <span class="faq-q__icon">+</span>
+        </button>
+        <div class="faq-a">
+          Te liquidamos mensualmente con un reporte detallado de cada reserva: huésped, noches, tarifa cobrada, comisión y neto para vos. Transferencia directa a tu cuenta.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Necesito que mi propiedad esté en perfectas condiciones para empezar?
+          <span class="faq-q__icon">+</span>
+        </button>
+        <div class="faq-a">
+          No necesariamente. Parte de nuestro servicio es ayudarte a hacer la puesta a punto. Te asesoramos sobre qué mejoras tienen más impacto y coordinamos todo.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Manejan el tema de los daños o problemas con huéspedes?
+          <span class="faq-q__icon">+</span>
+        </button>
+        <div class="faq-a">
+          Sí. Ante cualquier incidencia gestionamos la comunicación directamente con el huésped y con la plataforma para resolverlo de la mejor forma. Siempre te mantenemos informado de cualquier novedad.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     CONTACTO
+     ════════════════════════════════════════ -->
+<section class="contacto section" id="contacto">
+  <div class="wrap">
+    <div class="contacto__inner">
+
+      <div>
+        <span class="eyebrow">Contacto</span>
+        <h2 class="sec-title" style="margin-bottom:14px">Conversemos sin compromiso</h2>
+        <p class="contacto__sub">
+          Completá el formulario y te contactamos para darte una evaluación gratuita de tu propiedad. O si preferís la vía rápida, escribinos directo por WhatsApp.
+        </p>
+
+        <a class="contacto__wa"
+           href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20hablar%20de%20mi%20propiedad"
+           target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Escribinos por WhatsApp
+        </a>
+
+        <div class="contacto__detail">
+          <div class="contacto__detail-item">
+            <div class="contacto__detail-icon">📧</div>
+            <a href="mailto:happyhostpatagonia@gmail.com">happyhostpatagonia@gmail.com</a>
+          </div>
+          <div class="contacto__detail-item">
+            <div class="contacto__detail-icon">📍</div>
+            <span>Villa La Angostura, Neuquén, Patagonia</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="form-propietario" class="form-card" novalidate>
+
+        <div class="form-row-2">
+          <div>
+            <label for="f-nombre">Nombre</label>
+            <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre" required />
+            <div class="form-msg" id="msg-nombre">Ingresá tu nombre</div>
+          </div>
+          <div>
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" name="email" placeholder="hola@email.com" required />
+            <div class="form-msg" id="msg-email">Email inválido</div>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div>
+            <label for="f-tel">Teléfono</label>
+            <input type="tel" id="f-tel" name="telefono" placeholder="+54 9 294..." required />
+          </div>
+          <div class="form-row-2">
+            <div class="picker">
+              <label>Día</label>
+              <input type="text" id="campo-dia" name="dia" class="picker-input"
+                     placeholder="lun – vie" readonly required />
+              <div id="dp-dia" class="datepicker" hidden></div>
+              <small id="hint-dia" style="font-size:.7rem;color:var(--muted);display:block;margin-top:4px"></small>
+            </div>
+            <div class="picker">
+              <label>Hora</label>
+              <input type="text" id="campo-hora" name="hora" class="picker-input"
+                     placeholder="09 – 19" readonly required />
+              <div id="tp-hora" class="timepicker" hidden></div>
+              <small id="hint-hora" style="font-size:.7rem;color:var(--muted);display:block;margin-top:4px"></small>
+            </div>
+          </div>
+        </div>
+
+        <fieldset>
+          <span class="fieldset-label">Plan de interés</span>
+          <div class="opciones-plan">
+            <input class="visually-hidden" type="radio" name="plan" id="plan_central" value="Central de Reservas" />
+            <label class="opcion-plan" for="plan_central">Central de Reservas</label>
+            <input class="visually-hidden" type="radio" name="plan" id="plan_full" value="100% Happy" />
+            <label class="opcion-plan" for="plan_full">100% Happy</label>
+          </div>
+        </fieldset>
+
+        <div>
+          <label for="f-msg">Mensaje (opcional)</label>
+          <textarea id="f-msg" name="mensaje" rows="3" placeholder="Contanos sobre tu propiedad..."></textarea>
+        </div>
+
+        <div class="cta-row">
+          <button type="submit" class="btn btn-primary btn-lg" id="btn-submit">
+            Enviar consulta
+          </button>
+          <a class="btn btn-outline"
+             href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20hablar%20de%20mi%20propiedad"
+             target="_blank" rel="noopener">WhatsApp directo</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════ -->
+<footer class="hh-footer">
+  <div class="wrap">
+    <div class="hh-footer__grid">
+      <div>
+        <div class="hh-footer__logo">
+          <img src="logos/logo2.png" alt="Happy Host Patagonia" />
+        </div>
+        <p class="hh-footer__tagline">Gestión profesional de alquileres vacacionales en Villa La Angostura, Patagonia Argentina.</p>
+      </div>
+      <div>
+        <div class="hh-footer__col-title">Navegación</div>
+        <ul class="hh-footer__links">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="alojamientos.html">Alojamientos</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#planes">Planes</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="hh-footer__col-title">Contacto</div>
+        <ul class="hh-footer__links">
+          <li>
+            <a href="https://wa.me/5492944700773" target="_blank" rel="noopener">
+              📱 +54 9 294 470-0773
+            </a>
+          </li>
+          <li>
+            <a href="mailto:happyhostpatagonia@gmail.com">
+              ✉️ happyhostpatagonia@gmail.com
+            </a>
+          </li>
+          <li style="color:rgba(255,255,255,.38);font-size:.82rem;margin-top:4px">
+            Villa La Angostura, Neuquén
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="hh-footer__bottom">
+      <span>© 2025 Happy Host Patagonia — Todos los derechos reservados</span>
+      <span class="hh-footer__badge">⭐ 4+ años Superhost</span>
+    </div>
+  </div>
 </footer>
 
 
-<!-- SCRIPTS -->
-<script>
-/* Sticky CTA */
-(function(){
-  const sticky = document.getElementById('hh-sticky-cta');
-  if (!sticky) return;
-  let shown=false;
-  const onScroll=()=>{
-    const y = window.scrollY || document.documentElement.scrollTop;
-    if (y>420 && !shown){ sticky.hidden=false; shown=true; }
-    if (y<=420 && shown){ sticky.hidden=true; shown=false; }
-  };
-  document.addEventListener('scroll', onScroll, {passive:true});
-})();
+<!-- ════════════════════════════════════════
+     WHATSAPP FLOTANTE
+     ════════════════════════════════════════ -->
+<a class="wa-float" id="waFloat"
+   href="https://wa.me/5492944700773?text=Hola%20Maxi%2C%20quiero%20hablar%20de%20mi%20propiedad"
+   target="_blank" rel="noopener" aria-label="Abrir WhatsApp">
+  <span class="wa-float__tooltip">¿Hablamos de tu propiedad?</span>
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
 
-/* Radios por label + estado visual */
-(function(){
-  const labels=document.querySelectorAll('.opcion-plan.btn');
-  labels.forEach(l=>{
-    l.addEventListener('click', ()=>{
-      const id=l.getAttribute('for');
-      const input=document.getElementById(id);
-      if(input) input.checked=true;
-      labels.forEach(x=>x.classList.remove('selected'));
-      l.classList.add('selected');
-    });
-  });
-})();
+<!-- Toast -->
+<div id="mensaje-flotante" class="toast" role="status" aria-live="polite">
+  <p id="texto-mensaje" style="margin:0"></p>
+</div>
 
-/* ==== Datepicker (lun–vie) + Timepicker (09–19 por hora) ==== */
-(function(){
-  const inpDia = document.getElementById('campo-dia');
-  const dp = document.getElementById('dp-dia');
-  const hintDia = document.getElementById('hint-dia');
-
-  const inpHora = document.getElementById('campo-hora');
-  const tp = document.getElementById('tp-hora');
-  const hintHora = document.getElementById('hint-hora');
-
-  if(!inpDia || !dp || !inpHora || !tp) return;
-
-  // utilidades
-  const fmt = (d)=> d.toISOString().slice(0,10);
-  const fromISO = (iso)=> new Date(iso+'T00:00:00');
-  const isWeekend = (d)=> [0,6].includes(d.getDay());
-  const today = new Date(); today.setHours(0,0,0,0);
-
-  // ------ DATEPICKER ------
-  let view = new Date(); view.setDate(1); // mes visible
-
-  function renderDatepicker(){
-    dp.innerHTML = '';
-    const head = document.createElement('div');
-    head.className = 'dp-header';
-    const month = view.toLocaleDateString('es-AR',{month:'long', year:'numeric'});
-    head.innerHTML = `<strong style="text-transform:capitalize">${month}</strong>
-      <div class="dp-nav">
-        <button type="button" class="dp-btn" data-nav="-1">‹</button>
-        <button type="button" class="dp-btn" data-nav="1">›</button>
-      </div>`;
-    dp.appendChild(head);
-
-    const grid = document.createElement('div');
-    grid.className = 'dp-grid';
-    const wds = ['LU','MA','MI','JU','VI','SA','DO'];
-    wds.forEach(w=>{ const c=document.createElement('div'); c.className='dp-cell dp-wd'; c.textContent=w; grid.appendChild(c); });
-
-    const firstDay = (view.getDay()+6)%7; // lunes=0
-    const daysInMonth = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
-
-    for(let i=0;i<firstDay;i++){ const e=document.createElement('div'); e.className='dp-cell'; grid.appendChild(e); }
-
-    for(let d=1; d<=daysInMonth; d++){
-      const date = new Date(view.getFullYear(), view.getMonth(), d);
-      const cell = document.createElement('button');
-      cell.type='button';
-      cell.className='dp-cell dp-day';
-      cell.textContent = String(d);
-      if(isWeekend(date) || date < today){ cell.classList.add('is-disabled'); }
-      if(fmt(date)===fmt(today)) cell.classList.add('is-today');
-      cell.addEventListener('click', ()=>{
-        if(cell.classList.contains('is-disabled')) return;
-        inpDia.value = date.toLocaleDateString('es-AR');
-        hintDia.textContent = '';
-        closeAll();
-      });
-      grid.appendChild(cell);
-    }
-    dp.appendChild(grid);
-
-    dp.querySelectorAll('.dp-btn').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        view.setMonth(view.getMonth() + Number(b.dataset.nav));
-        renderDatepicker();
-      });
-    });
-  }
-
-  function openDate(){ renderDatepicker(); dp.hidden=false; tp.hidden=true; }
-  function openTime(){ renderTimepicker(); tp.hidden=false; dp.hidden=true; }
-  function closeAll(){ dp.hidden=true; tp.hidden=true; }
-
-  inpDia.addEventListener('click', openDate);
-
-  // ------ TIMEPICKER ------
-  function renderTimepicker(){
-    tp.innerHTML='';
-    for(let h=9; h<=19; h++){
-      const label = (h<10?'0':'')+h+':00';
-      const item = document.createElement('button');
-      item.type='button';
-      item.className='tp-item';
-      item.textContent = label;
-      item.addEventListener('click', ()=>{
-        inpHora.value = label;
-        hintHora.textContent='';
-        closeAll();
-      });
-      tp.appendChild(item);
-    }
-  }
-  inpHora.addEventListener('click', openTime);
-
-  // cerrar al clickear afuera
-  document.addEventListener('click', (e)=>{
-    if(e.target.closest('.picker') || e.target.closest('.datepicker') || e.target.closest('.timepicker')) return;
-    closeAll();
-  });
-
-  // defaults
-  if(!inpHora.value) inpHora.value='09:00';
-})();
-
-/* Envío formulario (con validaciones) */
-const form=document.getElementById('form-propietario');
-if(form){
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-
-    const dia = form.dia.value;    // viene formateado local (es-AR)
-    const hora = form.hora.value;
-
-    // convertir "dd/mm/aaaa" a ISO para validar día
-    const m = dia.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-    if(!m){ alert('Elegí un día hábil (lun–vie).'); return; }
-    const iso = `${m[3]}-${m[2]}-${m[1]}`;
-    const d = new Date(iso+'T00:00:00');
-    if([0,6].includes(d.getDay()) || d < new Date().setHours(0,0,0,0)){
-      alert('Elegí un día hábil (lun–vie).');
-      return;
-    }
-    if(hora < '09:00' || hora > '19:00'){
-      alert('El horario debe ser entre 09:00 y 19:00.');
-      return;
-    }
-
-    const datos={
-      nombre:form.nombre.value,
-      email:form.email.value,
-      telefono:form.telefono.value,
-      dia: iso,           // envío en ISO (aaaa-mm-dd)
-      hora: hora,
-      plan:(document.querySelector('input[name="plan"]:checked')?.value||''),
-      mensaje:form.mensaje.value
-    };
-
-    try{
-      const res=await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/enviar-formulario-propietario',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(datos)
-      });
-      const json=await res.json();
-      if(json.status==='Notificación enviada'){
-        flash('✅ Gracias por escribirnos, nos vamos a comunicar con vos muy pronto 🙌');
-        form.reset();
-        document.querySelectorAll('.opcion-plan').forEach(l=>l.classList.remove('selected'));
-      }else{
-        alert('Error al enviar el formulario.'); console.error(json);
-      }
-    }catch(err){ console.error(err); alert('Ocurrió un error, intentá más tarde.'); }
-  });
-}
-
-function flash(texto){
-  const box=document.getElementById('mensaje-flotante');
-  const p=document.getElementById('texto-mensaje');
-  p.textContent=texto; box.classList.add('mostrar');
-  setTimeout(()=>{ box.classList.remove('mostrar'); }, 3200);
-}
-
-/* Fade-in suave */
-(function(){
-  const els=[...document.querySelectorAll('.card,.title,.plan-card,.testi')];
-  els.forEach(el=>{ el.style.opacity=.001; el.style.transform='translateY(8px)'; });
-  const io=new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.style.transition='opacity .5s ease, transform .5s ease';
-        e.target.style.opacity=1; e.target.style.transform='none';
-        io.unobserve(e.target);
-      }
-    });
-  },{threshold:.12});
-  els.forEach(el=>io.observe(el));
-})();
-</script>
-
-
+<script src="propietarios.js"></script>
 </body>
 </html>
