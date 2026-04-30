@@ -179,10 +179,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   // CARRUSEL DE COMENTARIOS
   // ==========================
-  const grupos = document.querySelectorAll(".grupo-comentarios");
   let actual = 0;
 
   function mostrarGrupo(index) {
+    // Re-query cada vez para incluir grupos dinámicos cargados por resenas-viajero.js
+    const grupos = document.querySelectorAll(".grupo-comentarios");
     grupos.forEach((grupo, i) => {
       grupo.classList.remove("active");
       if (i === index) grupo.classList.add("active");
@@ -190,6 +191,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function siguienteGrupo() {
+    const grupos = document.querySelectorAll(".grupo-comentarios");
     actual = (actual + 1) % grupos.length;
     mostrarGrupo(actual);
   }
