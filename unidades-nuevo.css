@@ -860,9 +860,14 @@ body {
   .header-aloj { padding: 0 20px; height: 60px; }
   .menu-aloj { display: none; }
   .unidad-galeria { padding: 16px 16px 0; }
-  .galeria-grid { grid-template-columns: 1fr; height: auto; }
-  .galeria-thumbs { display: none; }
+  .galeria-grid { grid-template-columns: 1fr; height: auto; position: relative; }
   .galeria-main { height: 280px; grid-row: span 1; position: relative; }
+  /* Ocultar los thumbnails pero mantener el botón "Ver todas las fotos" visible */
+  .galeria-thumbs { display: block; position: absolute; bottom: 0; right: 0; background: none; pointer-events: none; }
+  .galeria-thumbs > img { display: none; }
+  .galeria-ver-mas { position: static; overflow: visible; background: none; pointer-events: none; width: auto; height: auto; }
+  .galeria-ver-mas > img { display: none; }
+  .btn-ver-fotos { position: absolute; bottom: 12px; right: 12px; pointer-events: auto; display: inline-flex; z-index: 5; }
   .unidad-contenido { padding: 24px 16px 48px; }
   /* Motor de reservas primero, info después */
   .unidad-booking { order: -1; }
