@@ -118,7 +118,9 @@ body {
 .galeria-thumbs {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 8px;
+  height: 100%;
 }
 
 .galeria-thumbs img,
@@ -137,6 +139,7 @@ body {
 .galeria-ver-mas {
   position: relative;
   overflow: hidden;
+  min-height: 0;   /* evita que el contenido estire la celda del grid */
 }
 
 .btn-ver-fotos {
