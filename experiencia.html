@@ -28,7 +28,6 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--cream);
       color: var(--text);
       min-height: 100vh;
     }
@@ -41,15 +40,27 @@
       align-items: center;
       justify-content: center;
     }
-    .hh-header img { height: 44px; filter: brightness(0) invert(1); }
+    .hh-header img { height: 52px; width: auto; }
 
     /* ── Hero ── */
     .hero {
+      position: relative;
       background: linear-gradient(135deg, var(--dark) 0%, var(--olive) 100%);
       color: #fff;
       text-align: center;
-      padding: 48px 24px 40px;
+      padding: 52px 24px 48px;
+      overflow: hidden;
     }
+    /* Montañas como fondo decorativo */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('logos/montanas.png') center bottom / cover no-repeat;
+      opacity: .18;
+      pointer-events: none;
+    }
+    .hero > * { position: relative; z-index: 1; }
     .hero h1 {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(1.6rem, 4vw, 2.4rem);
@@ -63,12 +74,23 @@
       max-width: 680px;
       margin: -24px auto 60px;
       padding: 0 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── Fondo con iconitos en la sección crema ── */
+    body {
+      background-color: var(--cream);
+      background-image: url('logos/iconitos.png');
+      background-repeat: repeat;
+      background-size: 320px auto;
+      background-attachment: fixed;
     }
 
     .card {
-      background: #fff;
+      background: rgba(255,255,255,.97);
       border-radius: 20px;
-      box-shadow: 0 8px 40px rgba(0,0,0,.10);
+      box-shadow: 0 8px 40px rgba(0,0,0,.12);
       padding: 36px 40px;
     }
     @media (max-width: 600px) { .card { padding: 24px 18px; } }
