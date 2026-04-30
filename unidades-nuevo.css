@@ -861,13 +861,27 @@ body {
   .menu-aloj { display: none; }
   .unidad-galeria { padding: 16px 16px 0; }
   .galeria-grid { grid-template-columns: 1fr; height: auto; position: relative; }
-  .galeria-main { height: 280px; grid-row: span 1; position: relative; }
-  /* Ocultar los thumbnails pero mantener el botón "Ver todas las fotos" visible */
-  .galeria-thumbs { display: block; position: absolute; bottom: 0; right: 0; background: none; pointer-events: none; }
+  .galeria-main { height: 280px; grid-row: span 1; }
+  /* Superponer galeria-thumbs sobre galeria-main para mostrar solo el botón */
+  .galeria-thumbs {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 280px;
+    background: none;
+    pointer-events: none;
+    z-index: 5;
+  }
   .galeria-thumbs > img { display: none; }
-  .galeria-ver-mas { position: static; overflow: visible; background: none; pointer-events: none; width: auto; height: auto; }
+  .galeria-ver-mas {
+    position: absolute;
+    bottom: 12px; right: 12px;
+    width: auto; height: auto;
+    overflow: visible;
+    background: none;
+    pointer-events: none;
+  }
   .galeria-ver-mas > img { display: none; }
-  .btn-ver-fotos { position: absolute; bottom: 12px; right: 12px; pointer-events: auto; display: inline-flex; z-index: 5; }
+  .btn-ver-fotos { position: static; display: inline-flex; pointer-events: auto; }
   .unidad-contenido { padding: 24px 16px 48px; }
   /* Motor de reservas primero, info después */
   .unidad-booking { order: -1; }
