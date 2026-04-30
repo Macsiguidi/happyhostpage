@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contanos tu experiencia | Happy Host Patagonia</title>
+  <meta name="description" content="Compartí tu experiencia en Happy Host Patagonia. Tu opinión nos ayuda a mejorar.">
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" type="image/png" sizes="128x128" href="logos/happyhost.png">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --olive:      #6B7D5C;
+      --olive-d:    #556349;
+      --olive-soft: #eef3e9;
+      --dark:       #2F3E2F;
+      --cream:      #F5F3EF;
+      --terra:      #C97A5A;
+      --terra-d:    #a85e40;
+      --text:       #2F3E2F;
+      --muted:      #6a7a6a;
+      --border:     #dedad3;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .hh-header {
+      background: var(--dark);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hh-header img { height: 44px; filter: brightness(0) invert(1); }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--olive) 100%);
+      color: #fff;
+      text-align: center;
+      padding: 48px 24px 40px;
+    }
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .hero p { font-size: 1rem; opacity: .85; max-width: 480px; margin: 0 auto; }
+
+    /* ── Form wrapper ── */
+    .form-wrap {
+      max-width: 680px;
+      margin: -24px auto 60px;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.10);
+      padding: 36px 40px;
+    }
+    @media (max-width: 600px) { .card { padding: 24px 18px; } }
+
+    .section-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 28px 0 12px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ── Fields ── */
+    label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: .9rem;
+      color: var(--text);
+      background: #fafaf8;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--olive);
+      box-shadow: 0 0 0 3px rgba(107,125,92,.15);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 90px; }
+
+    .field { margin-bottom: 18px; }
+
+    /* ── Row de 2 columnas ── */
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 500px) { .row-2 { grid-template-columns: 1fr; } }
+
+    /* ── Star rating ── */
+    .star-group { display: flex; flex-direction: column; gap: 14px; }
+    .star-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .star-label {
+      font-size: .88rem;
+      font-weight: 500;
+      color: var(--text);
+      min-width: 120px;
+    }
+    .stars {
+      display: flex;
+      gap: 4px;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+    .stars input { display: none; }
+    .stars label {
+      font-size: 1.8rem;
+      color: #ddd;
+      cursor: pointer;
+      transition: color .15s;
+      margin: 0;
+      line-height: 1;
+    }
+    .stars input:checked ~ label,
+    .stars label:hover,
+    .stars label:hover ~ label { color: #f5a623; }
+
+    /* ── Private note ── */
+    .private-note {
+      background: #fff8f0;
+      border: 1.5px solid #f0d9c5;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: .8rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .private-note .lock { font-size: 1rem; flex-shrink: 0; }
+
+    /* ── Submit ── */
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: var(--olive);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover  { background: var(--olive-d); }
+    .btn-submit:active { transform: scale(.98); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* ── Success / Error states ── */
+    .toast {
+      display: none;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: .9rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .toast.success { display: block; background: #eef3e9; color: var(--dark); border: 1.5px solid #c1d4b0; }
+    .toast.error   { display: block; background: #fdecea; color: #c0392b; border: 1.5px solid #f5b7b1; }
+
+    /* ── Footer ── */
+    .hh-footer {
+      background: var(--dark);
+      color: rgba(255,255,255,.55);
+      text-align: center;
+      padding: 20px 16px;
+      font-size: .78rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="hh-header">
+    <a href="index.html">
+      <img src="logos/logo2.png" alt="Happy Host Patagonia">
+    </a>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>¿Cómo fue tu experiencia?</h1>
+    <p>Tu opinión nos ayuda a mejorar y a otros viajeros a elegir mejor.</p>
+  </div>
+
+  <!-- Form -->
+  <div class="form-wrap">
+    <div class="card">
+
+      <div id="toast" class="toast"></div>
+
+      <form id="formResena" novalidate>
+
+        <!-- Propiedad + Nombre -->
+        <p class="section-title">Sobre tu estadía</p>
+
+        <div class="row-2">
+          <div class="field">
+            <label for="propiedad">Alojamiento *</label>
+            <select id="propiedad" name="propiedad" required>
+              <option value="">Seleccioná...</option>
+              <optgroup label="Casas Calafate">
+                <option value="calafate1">Casa Calafate 1</option>
+                <option value="calafate2">Casa Calafate 2</option>
+                <option value="calafate3">Casa Calafate 3</option>
+                <option value="calafate4">Casa Calafate 4</option>
+                <option value="calafate5">Casa Calafate 5</option>
+                <option value="calafate6">Casa Calafate 6</option>
+                <option value="calafate7">Casa Calafate 7</option>
+              </optgroup>
+              <optgroup label="Cruz del Sur">
+                <option value="cruz4">Cruz del Sur 4</option>
+                <option value="cruz5">Cruz del Sur 5</option>
+              </optgroup>
+              <optgroup label="Otras propiedades">
+                <option value="nilidas">Nílidas</option>
+                <option value="gurisa">Gurisa</option>
+                <option value="paisajismo">Paisajismo</option>
+                <option value="refugiopatagonico">Refugio Patagónico</option>
+                <option value="mitiempo">Mi Tiempo</option>
+                <option value="koi">Koi Quetrihue</option>
+                <option value="oasis">Oasis</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="via">¿Cómo reservaste? *</label>
+            <select id="via" name="via" required>
+              <option value="Directa">Directo</option>
+              <option value="Airbnb">Airbnb</option>
+              <option value="Booking">Booking</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="nombre">Tu nombre *</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Ej: Pablo" required maxlength="160">
+        </div>
+
+        <!-- Estrellas -->
+        <p class="section-title">Tu calificación</p>
+
+        <div class="star-group">
+
+          <div class="star-row">
+            <span class="star-label">💬 Comunicación</span>
+            <div class="stars" id="stars-comunicacion">
+              <input type="radio" name="comunicacion" id="com5" value="5"><label for="com5">★</label>
+              <input type="radio" name="comunicacion" id="com4" value="4"><label for="com4">★</label>
+              <input type="radio" name="comunicacion" id="com3" value="3"><label for="com3">★</label>
+              <input type="radio" name="comunicacion" id="com2" value="2"><label for="com2">★</label>
+              <input type="radio" name="comunicacion" id="com1" value="1"><label for="com1">★</label>
+            </div>
+          </div>
+
+          <div class="star-row">
+            <span class="star-label">🧹 Limpieza</span>
+            <div class="stars" id="stars-limpieza">
+              <input type="radio" name="limpieza" id="lim5" value="5"><label for="lim5">★</label>
+              <input type="radio" name="limpieza" id="lim4" value="4"><label for="lim4">★</label>
+              <input type="radio" name="limpieza" id="lim3" value="3"><label for="lim3">★</label>
+              <input type="radio" name="limpieza" id="lim2" value="2"><label for="lim2">★</label>
+              <input type="radio" name="limpieza" id="lim1" value="1"><label for="lim1">★</label>
+            </div>
+          </div>
+
+          <div class="star-row">
+            <span class="star-label">📍 Lugar</span>
+            <div class="stars" id="stars-lugar">
+              <input type="radio" name="lugar" id="lug5" value="5"><label for="lug5">★</label>
+              <input type="radio" name="lugar" id="lug4" value="4"><label for="lug4">★</label>
+              <input type="radio" name="lugar" id="lug3" value="3"><label for="lug3">★</label>
+              <input type="radio" name="lugar" id="lug2" value="2"><label for="lug2">★</label>
+              <input type="radio" name="lugar" id="lug1" value="1"><label for="lug1">★</label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Reseña pública -->
+        <p class="section-title" style="margin-top:28px">Tu reseña</p>
+
+        <div class="field">
+          <label for="resena-publica">Reseña pública <span style="font-weight:400;color:var(--muted)">(aparece en la web si la aprobamos)</span></label>
+          <textarea id="resena-publica" name="resenaPublica" placeholder="Contanos cómo fue la estadía, qué destacarías, qué mejorarías..." maxlength="2000"></textarea>
+        </div>
+
+        <div class="private-note">
+          <span class="lock">🔒</span>
+          <span>El comentario privado solo lo lee el equipo de Happy Host. Nunca se publica.</span>
+        </div>
+
+        <div class="field">
+          <label for="resena-privada">Comentario privado <span style="font-weight:400;color:var(--muted)">(solo para nosotros)</span></label>
+          <textarea id="resena-privada" name="resenaPrivada" placeholder="¿Hay algo que quieras contarnos de forma privada? Cualquier sugerencia, problema o detalle que no quieras publicar." maxlength="2000"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          Enviar mi experiencia
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="hh-footer">
+    © 2025 Happy Host Patagonia · Villa La Angostura
+  </footer>
+
+<script>
+(function () {
+  const API = 'https://propietarios-happy-host.onrender.com/api/reviews';
+  const form   = document.getElementById('formResena');
+  const btn    = document.getElementById('btnSubmit');
+  const toast  = document.getElementById('toast');
+
+  function showToast(msg, type) {
+    toast.textContent = msg;
+    toast.className   = 'toast ' + type;
+    toast.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function getStars(name) {
+    const checked = document.querySelector('input[name="' + name + '"]:checked');
+    return checked ? parseInt(checked.value) : 0;
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const propiedad = document.getElementById('propiedad').value;
+    const nombre    = document.getElementById('nombre').value.trim();
+    const via       = document.getElementById('via').value;
+    const com       = getStars('comunicacion');
+    const lim       = getStars('limpieza');
+    const lug       = getStars('lugar');
+
+    // Validaciones
+    if (!propiedad) { showToast('Por favor elegí un alojamiento.', 'error'); return; }
+    if (!nombre)    { showToast('Por favor ingresá tu nombre.', 'error'); return; }
+    if (!com || !lim || !lug) {
+      showToast('Por favor calificá las tres categorías con estrellas.', 'error');
+      return;
+    }
+
+    const payload = {
+      propertySlug:      propiedad,
+      guestName:         nombre,
+      via:               via,
+      comunicacionStars: com,
+      limpiezaStars:     lim,
+      lugarStars:        lug,
+      resenaPublica:  document.getElementById('resena-publica').value.trim() || null,
+      resenaPrivada:  document.getElementById('resena-privada').value.trim() || null,
+    };
+
+    btn.disabled     = true;
+    btn.textContent  = 'Enviando...';
+
+    try {
+      const res = await fetch(API, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error('Error ' + res.status);
+
+      // Éxito: ocultar form, mostrar mensaje
+      form.innerHTML = '';
+      showToast('¡Muchas gracias! Tu experiencia fue enviada. La revisaremos y pronto aparecerá en la web. 🙏', 'success');
+
+    } catch (err) {
+      showToast('Hubo un problema al enviar. Intentá de nuevo en unos minutos.', 'error');
+      btn.disabled    = false;
+      btn.textContent = 'Enviar mi experiencia';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
