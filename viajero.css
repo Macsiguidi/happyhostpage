@@ -309,6 +309,8 @@ body {
   font-weight: 500;
   color: var(--dark);
   min-width: 48px;
+  text-align: center;
+  display: inline-block;
 }
 
 .selector-huespedes span.placeholder { color: #b0b8b0; font-weight: 400; }
