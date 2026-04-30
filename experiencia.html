@@ -438,9 +438,12 @@
 
       if (!res.ok) throw new Error('Error ' + res.status);
 
-      // Éxito: ocultar form, mostrar mensaje
+      // Éxito: ocultar form, mostrar mensaje y redirigir
       form.innerHTML = '';
       showToast('¡Muchas gracias! Tu experiencia fue enviada. La revisaremos y pronto aparecerá en la web. 🙏', 'success');
+      setTimeout(function () {
+        window.location.href = 'viajero.html';
+      }, 3500);
 
     } catch (err) {
       showToast('Hubo un problema al enviar. Intentá de nuevo en unos minutos.', 'error');
