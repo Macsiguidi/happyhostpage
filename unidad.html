@@ -316,12 +316,12 @@
       lbIdx = ((i % FOTOS.length) + FOTOS.length) % FOTOS.length;
       lbImg.src = FOTOS[lbIdx];
       lbCtr.textContent = `${lbIdx + 1} / ${FOTOS.length}`;
-      lb.classList.add('active');
+      lb.classList.add('is-open');
       lb.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
     }
     function lbClose2() {
-      lb.classList.remove('active');
+      lb.classList.remove('is-open');
       lb.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     }
