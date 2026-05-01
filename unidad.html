@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cargando propiedad… | Happy Host Patagonia</title>
+  <meta name="description" content="Alojamiento en Villa La Angostura, Patagonia Argentina. Happy Host Patagonia.">
+  <link rel="icon" type="image/png" href="logos/logo2.png" sizes="128x128" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="unidades-nuevo.css" />
+  <style>
+    /* ── Loading state ── */
+    .unidad-loading {
+      min-height: 60vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px; color: #6B7D5C;
+      font-family: 'Inter', sans-serif;
+    }
+    .unidad-loading-spinner {
+      width: 40px; height: 40px;
+      border: 3px solid #e8e4de;
+      border-top-color: #6B7D5C;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .unidad-error {
+      min-height: 60vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; text-align: center;
+      font-family: 'Inter', sans-serif; color: #2F3E2F;
+      padding: 32px;
+    }
+    .unidad-error h2 { font-size: 1.4rem; margin: 0; }
+    .unidad-error p  { color: #6a7a6a; margin: 0; }
+    .unidad-error a  { color: #6B7D5C; font-weight: 600; }
+
+    /* ── Galería dinámica ── */
+    .galeria-dynamic-single .galeria-main { grid-column: span 2; }
+  </style>
+</head>
+
+<body>
+  <!-- ══ HEADER ══════════════════════════════════════════════ -->
+  <header class="header-aloj" role="banner">
+    <div class="header-inner">
+      <a class="logo-aloj" href="viajero.html" aria-label="Ir al inicio">
+        <img src="logos/logo-horizontal.png" alt="Happy Host Patagonia" />
+      </a>
+      <ul class="menu-aloj">
+        <li><a href="viajero.html">Inicio</a></li>
+        <li><a href="alojamientos.html" class="activo">Alojamientos</a></li>
+        <li><a href="viajero.html#contacto">Contacto</a></li>
+        <li class="menu-volver"><a href="#" id="btnVolver">← Volver</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ══ CONTENIDO DINÁMICO ═══════════════════════════════ -->
+  <div id="unidad-root">
+    <div class="unidad-loading">
+      <div class="unidad-loading-spinner"></div>
+      <span>Cargando propiedad…</span>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER SIMPLE ═══════════════════════════════════════ -->
+  <footer class="footer-simple" role="contentinfo">
+    <div class="footer-simple-inner">
+      <img src="logos/logo-horizontal.png" alt="Happy Host Patagonia" class="footer-simple-logo">
+      <div class="footer-simple-links">
+        <a href="viajero.html">Inicio</a>
+        <a href="alojamientos.html">Alojamientos</a>
+        <a href="https://wa.me/5492944700773" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <span class="footer-simple-copy">© 2025 Happy Host Patagonia</span>
+    </div>
+  </footer>
+
+  <!-- ══ WHATSAPP FLOTANTE ════════════════════════════════════ -->
+  <a href="https://wa.me/5492944700773" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="#fff">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <!-- ══ SCRIPTS ══════════════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="whatsapp.js"></script>
+  <script src="moneda.js"></script>
+
+  <script>
+  (async function () {
+    const API_PROP = 'https://propietarios-happy-host.onrender.com/api/properties';
+    const root     = document.getElementById('unidad-root');
+
+    // ── Leer slug del parámetro ?slug= ───────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const slug   = (params.get('slug') || '').toLowerCase().trim();
+
+    function showError(msg) {
+      root.innerHTML = `
+        <div class="unidad-error">
+          <h2>😔 Propiedad no encontrada</h2>
+          <p>${msg}</p>
+          <a href="alojamientos.html">← Ver todos los alojamientos</a>
+        </div>`;
+    }
+
+    if (!slug) { showError('No se indicó ninguna propiedad.'); return; }
+
+    // ── Fetch de datos ───────────────────────────────────────────────────────
+    let p;
+    try {
+      const res = await fetch(`${API_PROP}/${encodeURIComponent(slug)}`);
+      if (!res.ok) { showError('No encontramos esa propiedad.'); return; }
+      p = await res.json();
+    } catch {
+      showError('Error de conexión. Intentá de nuevo más tarde.');
+      return;
+    }
+
+    // ── Actualizar título y meta ─────────────────────────────────────────────
+    document.title = `${p.nombre} | Villa La Angostura - Happy Host Patagonia`;
+    document.querySelector('meta[name="description"]').content =
+      `${p.descripcionCorta || p.nombre} | Happy Host Patagonia. Alquiler vacacional en Villa La Angostura, Patagonia.`;
+
+    const imgs = p.images && p.images.length ? p.images : ['logos/happyhost.png'];
+
+    // ── Galería HTML ─────────────────────────────────────────────────────────
+    const mainImg   = imgs[0];
+    const thumb1    = imgs[1] || imgs[0];
+    const thumb2    = imgs[2] || imgs[0];
+    const thumb3    = imgs[3] || imgs[0];
+    const thumb4    = imgs[4] || imgs[0];
+    const totalFotos = imgs.length;
+
+    const galariaHtml = `
+      <section class="unidad-galeria" aria-label="Galería de fotos">
+        <div class="galeria-grid${imgs.length === 1 ? ' galeria-dynamic-single' : ''}">
+          <div class="galeria-main">
+            <img src="${mainImg}" alt="${p.nombre} — Vista principal" loading="eager" fetchpriority="high">
+          </div>
+          ${imgs.length > 1 ? `
+          <div class="galeria-thumbs">
+            <img src="${thumb1}" alt="Foto 2" loading="lazy">
+            <img src="${thumb2}" alt="Foto 3" loading="lazy">
+            <img src="${thumb3}" alt="Foto 4" loading="lazy">
+            <div class="galeria-ver-mas">
+              <img src="${thumb4}" alt="Foto 5" loading="lazy">
+              <button class="btn-ver-fotos" type="button" id="btnVerFotos">
+                📷 Ver todas las fotos (${totalFotos})
+              </button>
+            </div>
+          </div>` : ''}
+        </div>
+      </section>
+
+      <div id="lightbox" class="lb-overlay" aria-hidden="true" role="dialog" aria-label="Galería ampliada">
+        <button class="lb-close" id="lb-close" aria-label="Cerrar">×</button>
+        <button class="lb-nav lb-prev" id="lb-prev" aria-label="Foto anterior">&#10094;</button>
+        <div class="lb-content">
+          <img id="lb-img" src="" alt="Foto ampliada">
+          <div class="lb-counter" id="lb-counter">1 / ${totalFotos}</div>
+        </div>
+        <button class="lb-nav lb-next" id="lb-next" aria-label="Foto siguiente">&#10095;</button>
+      </div>`;
+
+    // ── Amenidades HTML ──────────────────────────────────────────────────────
+    const amenidadesHtml = (p.amenidades || []).map(a => `
+      <div class="amenity-item">
+        <img src="${a.icon}" alt="${a.label}" class="amenity-icon-img">
+        <span class="amenity-label">${a.label}</span>
+      </div>`).join('');
+
+    // ── Descripción larga ────────────────────────────────────────────────────
+    const descLarga = p.descripcionLarga
+      ? p.descripcionLarga
+      : `<p>${p.descripcionCorta || ''}</p>`;
+
+    // ── Render del contenido completo ────────────────────────────────────────
+    root.innerHTML = `
+      ${galariaHtml}
+
+      <div class="unidad-contenido">
+        <!-- ── Columna izquierda ── -->
+        <div class="unidad-izq">
+          <div class="unidad-titulo-bloque">
+            <p class="unidad-breadcrumb">
+              <a href="alojamientos.html">Alojamientos</a>
+              <span> / </span>
+              <a href="alojamientos.html">${p.nombre}</a>
+              <span> / </span>
+              ${p.nombre}
+            </p>
+            <h1 class="unidad-h1">${p.nombre}</h1>
+            <div class="unidad-meta">
+              <span class="unidad-badge">${p.nombre}</span>
+              <span class="unidad-meta-item">
+                <img src="iconos/persona.png" alt="" class="meta-icon"> hasta ${p.personas} personas
+              </span>
+              <span class="unidad-meta-item">📍 Villa La Angostura, Neuquén</span>
+            </div>
+            <hr class="unidad-divider">
+          </div>
+
+          <div class="unidad-desc">
+            <h2>Sobre esta propiedad</h2>
+            ${descLarga}
+          </div>
+
+          ${amenidadesHtml ? `
+          <div class="unidad-amenities">
+            <h2>Lo que incluye</h2>
+            <div class="amenities-grid">${amenidadesHtml}</div>
+          </div>` : ''}
+
+          <hr class="unidad-divider">
+
+          <div class="unidad-mapa">
+            <h2>Ubicación</h2>
+            ${p.mapaUrl ? `
+            <iframe
+              title="Mapa de ${p.nombre}"
+              src="${p.mapaUrl}"
+              allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>` : ''}
+            <p class="mapa-nota">📍 Villa La Angostura · Check in ${p.checkinHora || '14:00'} / Check out ${p.checkoutHora || '10:00'}</p>
+          </div>
+        </div>
+
+        <!-- ── Columna derecha — Booking ── -->
+        <div class="unidad-booking">
+          <div class="booking-card" data-house-id="${p.lodgifyHouseId}" data-room-id="${p.lodgifyRoomId}">
+            <div class="booking-precio precio-oculto">
+              <span class="booking-desde">desde</span>
+              <span class="booking-monto">—</span>
+              <span class="booking-noche">/ noche</span>
+            </div>
+            <div class="booking-fechas">
+              <div class="bf-col" id="df-start">
+                <label for="start">LLEGADA</label>
+                <input type="text" id="start" placeholder="Seleccionar" aria-label="Fecha de check in" readonly />
+              </div>
+              <div class="bf-div"></div>
+              <div class="bf-col" id="df-end">
+                <label for="end">SALIDA</label>
+                <input type="text" id="end" placeholder="Seleccionar" aria-label="Fecha de check out" readonly />
+              </div>
+            </div>
+            <input type="hidden" id="guests" value="1" />
+            <div class="booking-huespedes">
+              <label>HUÉSPEDES</label>
+              <div class="bh-control" role="group" aria-label="Cantidad de huéspedes">
+                <button id="menos" class="bh-btn" type="button" aria-label="Quitar huésped">−</button>
+                <span id="contador" aria-live="polite">1 huésped</span>
+                <button id="mas" class="bh-btn" type="button" aria-label="Agregar huésped">+</button>
+              </div>
+            </div>
+            <label for="currency" class="sr-only">Moneda</label>
+            <select id="currency" style="display:none;">
+              <option value="USD">USD</option>
+              <option value="ARS">ARS</option>
+            </select>
+            <button id="btnReservar" class="booking-btn" disabled>Reservar ahora</button>
+            <div id="resultado" aria-live="polite" class="booking-resultado"></div>
+            <p class="booking-nota">No se cobra hasta confirmar</p>
+          </div>
+
+          <a href="https://wa.me/5492944700773?text=Hola!%20Me%20interesa%20${encodeURIComponent(p.nombre)}.%20%C2%BFTienen%20disponibilidad%3F"
+             class="booking-btn-wa" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Contactar por WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <section class="unidad-explorar">
+        <a href="alojamientos.html" class="btn-explorar btn-mas-aloj">← Explorar todos los alojamientos</a>
+      </section>`;
+
+    // ── Botón volver ─────────────────────────────────────────────────────────
+    const btnVolver = document.getElementById('btnVolver');
+    if (btnVolver) {
+      const ci = localStorage.getItem('checkin');
+      const co = localStorage.getItem('checkout');
+      const hu = localStorage.getItem('huespedes');
+      let backUrl = 'alojamientos.html';
+      if (ci && co) {
+        const p2 = new URLSearchParams();
+        p2.append('checkin', ci); p2.append('checkout', co);
+        if (hu) p2.append('huespedes', hu);
+        backUrl = 'alojamientos.html?' + p2.toString();
+      }
+      btnVolver.href = backUrl;
+    }
+
+    // ── Lightbox ─────────────────────────────────────────────────────────────
+    const FOTOS = imgs;
+    let lbIdx = 0;
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lb-img');
+    const lbCtr   = document.getElementById('lb-counter');
+    const lbClose = document.getElementById('lb-close');
+    const lbPrev  = document.getElementById('lb-prev');
+    const lbNext  = document.getElementById('lb-next');
+
+    function lbOpen(i) {
+      lbIdx = ((i % FOTOS.length) + FOTOS.length) % FOTOS.length;
+      lbImg.src = FOTOS[lbIdx];
+      lbCtr.textContent = `${lbIdx + 1} / ${FOTOS.length}`;
+      lb.classList.add('active');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function lbClose2() {
+      lb.classList.remove('active');
+      lb.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    if (lbClose) lbClose.addEventListener('click', lbClose2);
+    if (lbPrev)  lbPrev.addEventListener('click', () => lbOpen(lbIdx - 1));
+    if (lbNext)  lbNext.addEventListener('click', () => lbOpen(lbIdx + 1));
+    lb?.addEventListener('click', e => { if (e.target === lb) lbClose2(); });
+    document.addEventListener('keydown', e => {
+      if (!lb?.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft')  lbOpen(lbIdx - 1);
+      if (e.key === 'ArrowRight') lbOpen(lbIdx + 1);
+      if (e.key === 'Escape')     lbClose2();
+    });
+
+    // Abrir lightbox al hacer click en cualquier imagen de la galería
+    document.querySelectorAll('.galeria-main img, .galeria-thumbs img, .galeria-ver-mas img').forEach((img, idx) => {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', () => lbOpen(idx));
+    });
+
+    // Botón "Ver todas las fotos"
+    const btnVerFotos = document.getElementById('btnVerFotos');
+    if (btnVerFotos) btnVerFotos.addEventListener('click', () => lbOpen(0));
+
+    // ── Cargar scripts de reserva ─────────────────────────────────────────────
+    // calendario.js y formulario.js leen data-house-id / data-room-id del .booking-card
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src; s.async = false;
+        s.onload = resolve; s.onerror = reject;
+        document.body.appendChild(s);
+      });
+    }
+
+    try {
+      await loadScript('calendario.js');
+      await loadScript('formulario.js');
+    } catch { /* silencioso */ }
+
+    // Precargar fechas desde localStorage si vienen del buscador
+    const checkin  = localStorage.getItem('checkin');
+    const checkout = localStorage.getItem('checkout');
+    const huespedes = parseInt(localStorage.getItem('huespedes') || '1', 10);
+    if (checkin && checkout) {
+      const startEl = document.getElementById('start');
+      const endEl   = document.getElementById('end');
+      if (startEl) startEl.value = checkin;
+      if (endEl)   endEl.value   = checkout;
+      // Disparar evento para que calendario.js lo procese
+      ['start', 'end'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.dispatchEvent(new Event('change'));
+      });
+    }
+
+  })();
+  </script>
+</body>
+</html>

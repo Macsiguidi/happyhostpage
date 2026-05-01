@@ -245,3 +245,89 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch { /* silently skip */ }
   }));
 });
+
+// ── Propiedades dinámicas desde la API ───────────────────────────────────────
+// Carga las propiedades creadas en el panel de admin (VisibleEnWeb + LodgifyHouseId > 0)
+// y las suma al grid sin tocar las propiedades hardcodeadas existentes.
+(async function loadApiProperties() {
+  try {
+    const res = await fetch('https://propietarios-happy-host.onrender.com/api/properties');
+    if (!res.ok) return;
+    const props = await res.json();
+    if (!props || !props.length) return;
+
+    const grid = document.querySelector('.grid-alojamientos');
+    if (!grid) return;
+
+    // Map de amenidades → icono para las tarjetas
+    const amenIconos = {
+      wifi:             'iconos/wifi.png',
+      estacionamiento:  'iconos/estacionamiento.png',
+      parrilla:         'iconos/parrilla.png',
+      calefaccion:      'iconos/calefaccion.png',
+      cocina:           'iconos/cocina.png',
+      blancos:          'iconos/blancos.png',
+      hogar:            'iconos/hogar.png',
+      lavarropas:       'iconos/lavarropas.svg',
+      lavavajillas:     'iconos/lavavajilla.svg',
+      salamandra:       'iconos/salamandra.png',
+    };
+
+    for (const p of props) {
+      // Saltar si ya existe un card hardcodeado con ese slug
+      if (document.querySelector(`.card[data-nombre="${p.slug}"]`)) continue;
+
+      // Agregar al objeto PROPS para disponibilidad y precio
+      PROPS[p.slug] = { houseId: p.lodgifyHouseId, roomId: p.lodgifyRoomId, pax: p.personas };
+
+      // Armar imágenes del carrusel
+      let imagenes = [];
+      try { imagenes = JSON.parse(p.imagenesJson || '[]'); } catch {}
+      if (!imagenes.length) imagenes = ['logos/happyhost.png'];
+
+      const slidesHtml = imagenes
+        .map((url, i) => `<img src="${url}" class="slide${i === 0 ? ' active' : ''}" alt="${p.nombre}" loading="${i === 0 ? 'eager' : 'lazy'}">`)
+        .join('');
+
+      // Amenidades (máximo 4 iconos en la tarjeta)
+      const amenHtml = (p.amenidades || [])
+        .slice(0, 4)
+        .map(k => {
+          const ico = amenIconos[k] || null;
+          return ico ? `<img src="${ico}" alt="${k}" title="${k}">` : '';
+        })
+        .join('');
+
+      const card = document.createElement('a');
+      card.href = '#';
+      card.className = 'card';
+      card.dataset.nombre = p.slug;
+      card.dataset.cat = 'otros';
+      card.setAttribute('onmouseover', 'iniciarSlideshow(this)');
+      card.setAttribute('onmouseout', 'detenerSlideshow(this)');
+      card.setAttribute('onclick', `redirigirConParametros('unidad.html?slug=${p.slug}'); return false;`);
+
+      card.innerHTML = `
+        <div class="carousel">
+          <div class="overlay"></div>
+          ${slidesHtml}
+          <span class="card-cat-badge">${p.nombre}</span>
+          <div class="nombre-alojamiento" style="display:none">${p.nombre}</div>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <h3 class="card-titulo">${p.nombre}</h3>
+            <span class="card-pax"><img src="iconos/persona.png" alt="">hasta ${p.personas}</span>
+          </div>
+          <p class="card-desc">${p.descripcionCorta || ''}</p>
+          <div class="card-amenity-icons">${amenHtml}</div>
+          <div class="card-footer-row">
+            <span class="card-precio-label">Consultá disponibilidad</span>
+            <span class="card-ver">Ver →</span>
+          </div>
+        </div>`;
+
+      grid.appendChild(card);
+    }
+  } catch { /* fallo silencioso */ }
+})();
