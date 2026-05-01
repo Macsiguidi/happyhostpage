@@ -358,26 +358,27 @@
       });
     }
 
-    try {
-      await loadScript('calendario.js');
-      await loadScript('formulario.js');
-    } catch { /* silencioso */ }
-
     // Precargar fechas desde localStorage si vienen del buscador
     const checkin  = localStorage.getItem('checkin');
     const checkout = localStorage.getItem('checkout');
-    const huespedes = parseInt(localStorage.getItem('huespedes') || '1', 10);
     if (checkin && checkout) {
-      const startEl = document.getElementById('start');
-      const endEl   = document.getElementById('end');
-      if (startEl) startEl.value = checkin;
-      if (endEl)   endEl.value   = checkout;
-      // Disparar evento para que calendario.js lo procese
-      ['start', 'end'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.dispatchEvent(new Event('change'));
-      });
+      const sp = new URLSearchParams(window.location.search);
+      if (!sp.get('checkin')) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('checkin',   checkin);
+        url.searchParams.set('checkout',  checkout);
+        url.searchParams.set('huespedes', localStorage.getItem('huespedes') || '1');
+        window.history.replaceState(null, '', url.toString());
+      }
     }
+
+    // Cargar motor de reservas (calendario.js + moneda.js + booking-widget.js)
+    try {
+      await loadScript('calendario.js');
+      await loadScript('moneda.js');
+      await loadScript('promos.js');
+      await loadScript('booking-widget.js');
+    } catch (e) { console.warn('booking-widget no cargó:', e); }
 
   })();
   </script>
