@@ -10,8 +10,9 @@
   const card = document.querySelector('.booking-card');
   if (!card) return;
 
-  const HOUSE_ID  = parseInt(card.dataset.houseId, 10) || 0;
-  const ROOM_ID   = parseInt(card.dataset.roomId,  10) || 0;
+  const HOUSE_ID   = parseInt(card.dataset.houseId,  10) || 0;
+  const ROOM_ID    = parseInt(card.dataset.roomId,   10) || 0;
+  const MAX_GUESTS = parseInt(card.dataset.personas, 10) || 10;
   const USA_LODGIFY = HOUSE_ID > 0 && ROOM_ID > 0;
 
   // Slug desde URL
@@ -79,9 +80,11 @@
 
   // ── inicializar huéspedes ─────────────────────────────────────────────────
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
-  let cantidad = parseInt(huespedes) || 1;
+  let cantidad = Math.min(parseInt(huespedes) || 1, MAX_GUESTS);
   if (contador) contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
   if (guestsInput) guestsInput.value = cantidad;
+  if (menosBtn) menosBtn.disabled = cantidad <= 1;
+  if (masBtn)   masBtn.disabled   = cantidad >= MAX_GUESTS;
   if (checkin)  startInput.value = checkin;
   if (checkout) endInput.value   = checkout;
 
@@ -148,9 +151,11 @@
   function actualizarContador() {
     if (contador) contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
     if (guestsInput) guestsInput.value = cantidad;
+    if (menosBtn) menosBtn.disabled = cantidad <= 1;
+    if (masBtn)   masBtn.disabled   = cantidad >= MAX_GUESTS;
   }
-  menosBtn?.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
-  masBtn?.addEventListener('click',   () => { if (cantidad < 10) { cantidad++; actualizarContador(); calculate(); } });
+  menosBtn?.addEventListener('click', () => { if (cantidad > 1)          { cantidad--; actualizarContador(); calculate(); } });
+  masBtn?.addEventListener('click',   () => { if (cantidad < MAX_GUESTS) { cantidad++; actualizarContador(); calculate(); } });
   currSelect?.addEventListener('change', calculate);
 
   // ── moneda ────────────────────────────────────────────────────────────────
