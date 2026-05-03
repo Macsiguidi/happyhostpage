@@ -1,6 +1,7 @@
 /* =======================================================================
    booking-widget.js — Motor de reservas para unidad.html (propiedades dinámicas)
-   Lee data-house-id y data-room-id del .booking-card
+   - Si houseId > 0 → usa Lodgify (disponibilidad + precios)
+   - Si houseId = 0 → usa el sistema de propietarios (disponibilidad + precios)
    Requiere: flatpickr (ya cargado en <head>), calendario.js, moneda.js (opcional)
    ======================================================================= */
 (function () {
@@ -9,12 +10,17 @@
   const card = document.querySelector('.booking-card');
   if (!card) return;
 
-  const HOUSE_ID = parseInt(card.dataset.houseId, 10);
-  const ROOM_ID  = parseInt(card.dataset.roomId,  10);
-  if (!HOUSE_ID || !ROOM_ID) return;
+  const HOUSE_ID  = parseInt(card.dataset.houseId, 10) || 0;
+  const ROOM_ID   = parseInt(card.dataset.roomId,  10) || 0;
+  const USA_LODGIFY = HOUSE_ID > 0 && ROOM_ID > 0;
 
-  // Slug desde URL para el endpoint de ocupados
+  // Slug desde URL
   const PROP_KEY = new URLSearchParams(window.location.search).get('slug') || '';
+  if (!PROP_KEY) return;
+
+  // URLs según fuente de datos
+  const API_SISTEMA = 'https://propietarios-happy-host.onrender.com';
+  const API_DISP    = 'https://disponibilidad-happy-host-patagonia.onrender.com';
 
   // Fecha límite: 18 meses desde hoy
   const fechaLimite = new Date();
@@ -107,9 +113,12 @@
   // ── disponibilidad ────────────────────────────────────────────────────────
   let fechasOcupadas = [];
   async function loadDisabledDates(picker) {
-    if (!PROP_KEY) return;
     try {
-      const resp = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/${PROP_KEY}`);
+      const url = USA_LODGIFY
+        ? `${API_DISP}/api/ocupados/${PROP_KEY}`
+        : `${API_SISTEMA}/api/properties/${PROP_KEY}/ocupados`;
+
+      const resp = await fetch(url);
       if (!resp.ok) return;
       const rangos = await resp.json();
       fechasOcupadas = rangos;
@@ -189,10 +198,23 @@
     reservarBtn.disabled = true;
 
     try {
-      const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
-      const resp = await fetch(url);
-      if (!resp.ok) throw new Error(await resp.text());
-      const { dias = [], extras = [] } = await resp.json();
+      let dias = [], extras = [], huespedesIncluidos = 4;
+
+      if (USA_LODGIFY) {
+        const url  = `${API_DISP}/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(await resp.text());
+        ({ dias = [], extras = [] } = await resp.json());
+      } else {
+        const url  = `${API_SISTEMA}/api/properties/${PROP_KEY}/precio?checkin=${startValue}&checkout=${endValue}&huespedes=${guests}`;
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(await resp.text());
+        const data = await resp.json();
+        dias               = data.dias   ?? [];
+        extras             = data.extras ?? [];
+        huespedesIncluidos = data.huespedesIncluidos ?? 4;
+      }
+
       if (dias.length === 0) { if (resDiv) resDiv.textContent = 'No hay precios para estas fechas.'; return; }
 
       const minStay = dias
@@ -200,8 +222,8 @@
         .reduce((a, b) => Math.min(a, b), Infinity);
       if (noches < minStay) { if (resDiv) resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
 
-      const factorARS = window._factorARS || 1400;
-      const FREE_GUESTS = 4;
+      const factorARS  = window._factorARS || 1400;
+      const FREE_GUESTS = huespedesIncluidos;
 
       let baseUSD = 0;
       const breakdownNoches = [];
