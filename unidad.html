@@ -91,9 +91,7 @@
   </a>
 
   <!-- ══ SCRIPTS ══════════════════════════════════════════════ -->
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="whatsapp.js"></script>
-  <script src="moneda.js"></script>
 
   <script>
   (async function () {
@@ -373,13 +371,13 @@
       }
     }
 
-    // Cargar motor de reservas (calendario.js + moneda.js + booking-widget.js)
+    // Cargar motor de reservas — cada script opcional no bloquea los siguientes
+    await loadScript('calendario.js').catch(e => console.warn('calendario.js no cargó:', e));
+    await loadScript('moneda.js').catch(e => console.warn('moneda.js no cargó:', e));
+    await loadScript('promos.js').catch(e => console.warn('promos.js no cargó:', e));
     try {
-      await loadScript('calendario.js');
-      await loadScript('moneda.js');
-      await loadScript('promos.js');
       await loadScript('booking-widget.js');
-    } catch (e) { console.warn('booking-widget no cargó:', e); }
+    } catch (e) { console.warn('booking-widget.js no cargó:', e); }
 
   })();
   </script>
