@@ -600,7 +600,7 @@ body { font-family: 'Inter', 'Poppins', sans-serif; }
   top: 10px !important;
   right: 10px !important;
   z-index: 5 !important;
-  width: 130px !important;
+  width: 160px !important;
   height: auto !important;
   object-fit: unset !important;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,.2));
