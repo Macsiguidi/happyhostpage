@@ -2,6 +2,9 @@
 localStorage.removeItem("checkin");
 localStorage.removeItem("checkout");
 localStorage.removeItem("huespedes");
+localStorage.removeItem("adultos");
+localStorage.removeItem("ninos");
+localStorage.removeItem("bebes");
 localStorage.removeItem("disponibles");
 localStorage.removeItem("disponibles_expira");
 
@@ -73,46 +76,23 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   // ==========================
-  // HUÉSPEDES
+  // HUÉSPEDES (dropdown Adultos / Niños / Bebés)
   // ==========================
-  const cantidadSpan = document.getElementById("cantidad");
   const inputHuespedes = document.getElementById("huespedes");
-  const btnMas = document.getElementById("mas");
-  const btnMenos = document.getElementById("menos");
+  let _adultos = 1, _ninos = 0, _bebes = 0;
 
-  if (btnMas && btnMenos && cantidadSpan && inputHuespedes) {
-    btnMas.onclick = () => {
-      let cant = parseInt(inputHuespedes.value) || 0;
-      if (cant < 15) cant++;
-      actualizarHuespedes(cant);
-    };
-
-    btnMenos.onclick = () => {
-      let cant = parseInt(inputHuespedes.value) || 0;
-      if (cant > 1) {
-        cant--;
-        actualizarHuespedes(cant);
-      } else {
-        actualizarHuespedes(0);
+  const huContainer = document.querySelector('.viajero-hu-container');
+  if (huContainer && window.HH && window.HH.HuespedesSelector) {
+    new window.HH.HuespedesSelector({
+      container: huContainer,
+      maxGuests: 15,
+      adultos: 1, ninos: 0, bebes: 0,
+      modal: true,
+      onChange: function (v) {
+        _adultos = v.adultos; _ninos = v.ninos; _bebes = v.bebes;
+        if (inputHuespedes) inputHuespedes.value = v.total;
       }
-    };
-
-    // Inicial
-    if (inputHuespedes.value === "0") {
-      cantidadSpan.textContent = "Agregar";
-      cantidadSpan.classList.add("placeholder");
-    }
-  }
-
-  function actualizarHuespedes(cant) {
-    inputHuespedes.value = cant;
-    if (cant === 0) {
-      cantidadSpan.textContent = "Agregar";
-      cantidadSpan.classList.add("placeholder");
-    } else {
-      cantidadSpan.textContent = cant;
-      cantidadSpan.classList.remove("placeholder");
-    }
+    });
   }
 
   // ==========================
@@ -127,38 +107,34 @@ document.addEventListener("DOMContentLoaded", async function () {
       const rango = (dateInput?.value || "").split(rangoSeparator);
       const checkin = rango[0]?.trim();
       const checkout = rango[1]?.trim();
-      const huespedes = inputHuespedes.value;
-
-      console.log("🧪 Rango seleccionado:", dateInput?.value);
-      console.log("✅ Checkin:", checkin);
-      console.log("✅ Checkout:", checkout);
-      console.log("✅ Huéspedes:", huespedes);
+      const huespedes = _adultos + _ninos;  // total para capacidad (bebés no cuentan)
 
       if (!checkin || !checkout) {
         alert("Por favor seleccioná un rango de fechas completo.");
         return;
       }
 
-      localStorage.setItem("checkin", checkin);
-      localStorage.setItem("checkout", checkout);
-      localStorage.setItem("huespedes", huespedes);
+      localStorage.setItem("checkin",   checkin);
+      localStorage.setItem("checkout",  checkout);
+      localStorage.setItem("huespedes", String(huespedes));
+      localStorage.setItem("adultos",   String(_adultos));
+      localStorage.setItem("ninos",     String(_ninos));
+      localStorage.setItem("bebes",     String(_bebes));
       localStorage.setItem("busqueda_desde_buscador", "true");
 
       try {
         const response = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
         const data = await response.json();
-        console.log("📦 Disponibles prefetch:", data.disponibles);
 
-        localStorage.setItem("disponibles", JSON.stringify(data.disponibles));
+        localStorage.setItem("disponibles",        JSON.stringify(data.disponibles));
         localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3);
 
-        // 🔒 Espera breve para garantizar que se guarde bien antes de redirigir
         await new Promise(resolve => setTimeout(resolve, 200));
       } catch (error) {
         console.warn("⚠️ No se pudo prefetch disponibilidad", error);
       }
 
-      window.location.href = `alojamientos.html?checkin=${checkin}&checkout=${checkout}&huespedes=${huespedes}`;
+      window.location.href = `alojamientos.html?checkin=${checkin}&checkout=${checkout}&huespedes=${huespedes}&adultos=${_adultos}&ninos=${_ninos}&bebes=${_bebes}`;
     });
   }
 
@@ -171,6 +147,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       localStorage.removeItem("checkin");
       localStorage.removeItem("checkout");
       localStorage.removeItem("huespedes");
+      localStorage.removeItem("adultos");
+      localStorage.removeItem("ninos");
+      localStorage.removeItem("bebes");
       localStorage.removeItem("disponibles");
       localStorage.removeItem("disponibles_expira");
     });

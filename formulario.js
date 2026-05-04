@@ -24,6 +24,11 @@ window.addEventListener('DOMContentLoaded', () => {
   let totalPrice     = params.get('totalPrice');
   let currencyParam  = (params.get('currency') || '').toUpperCase(); // USD o ARS
 
+  // Desglose de huéspedes (del selector dropdown)
+  const adultos = parseInt(params.get('adultos') || numberOfGuests || '1', 10) || 1;
+  const ninos   = parseInt(params.get('ninos')   || '0', 10) || 0;
+  const bebes   = parseInt(params.get('bebes')   || '0', 10) || 0;
+
   // Map visual de moneda (usamos ARS, no "ARG")
   const displayCurrency = (currencyParam === 'USD') ? 'USD' : 'ARS';
 
@@ -58,7 +63,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ---------- resumen (columna derecha) ----------
   setText('fechasReserva', (checkInDate && checkOutDate) ? `${checkInDate} → ${checkOutDate}` : '');
-  setText('huespedesReserva', numberOfGuests || '');
+  // Mostrar desglose de huéspedes si hay datos, o el total genérico
+  const resumenHuespedes = (() => {
+    const parts = [];
+    if (adultos) parts.push(adultos + (adultos > 1 ? ' adultos' : ' adulto'));
+    if (ninos)   parts.push(ninos   + (ninos   > 1 ? ' niños'   : ' niño'));
+    if (bebes)   parts.push(bebes   + (bebes   > 1 ? ' bebés'   : ' bebé'));
+    return parts.length ? parts.join(', ') : (numberOfGuests || '');
+  })();
+  setText('huespedesReserva', resumenHuespedes);
 
   // ---------- mapeos ----------
   const nombreMap = {
@@ -254,6 +267,18 @@ window.addEventListener('DOMContentLoaded', () => {
                           || totalSpan?.textContent?.trim()
                           || '');
 
+          const resumenHuespedesLodgify = (() => {
+            const p = [];
+            if (adultos) p.push(adultos + (adultos > 1 ? ' adultos' : ' adulto'));
+            if (ninos)   p.push(ninos   + (ninos   > 1 ? ' niños'   : ' niño'));
+            if (bebes)   p.push(bebes   + (bebes   > 1 ? ' bebés'   : ' bebé'));
+            return p.length ? p.join(', ') : (numberOfGuestsOk + ' huéspedes');
+          })();
+          const comentarioFinal = [
+            resumenHuespedesLodgify,
+            comentarios
+          ].filter(Boolean).join(' | ');
+
           const payload = {
             source_text: 'Reserva web Happy Host',
             arrival:     checkInDate,
@@ -263,8 +288,8 @@ window.addEventListener('DOMContentLoaded', () => {
             rooms: [{
               room_type_id: Number(roomTypeIdOk) || 668510,
               units: 1,
-              adults: Number(numberOfGuestsOk) || 2,
-              children: 0
+              adults:   adultos,
+              children: ninos
             }],
             guest: {
               name: nombreCompleto,
@@ -276,7 +301,7 @@ window.addEventListener('DOMContentLoaded', () => {
             _total_ui: totalUI,
             _senia_ui: seniaSpan?.textContent || '',
             _cupon:    cuponInfo || '',
-            _comments: comentarios
+            _comments: comentarioFinal
           };
 
           const idKey = (window.crypto && crypto.randomUUID)
@@ -329,6 +354,9 @@ window.addEventListener('DOMContentLoaded', () => {
               checkin:   checkInDate,
               checkout:  checkOutDate,
               huespedes: Number(numberOfGuestsOk) || 1,
+              adultos:   adultos,
+              ninos:     ninos,
+              bebes:     bebes,
             })
           });
 

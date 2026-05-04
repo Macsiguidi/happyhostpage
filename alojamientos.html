@@ -11,6 +11,7 @@
 
 
   <link rel="stylesheet" href="alojamientos.css">
+  <link rel="stylesheet" href="huespedes.css">
   <link rel="icon" type="image/png" href="logos/logo2.png" sizes="128x128">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -118,12 +119,8 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
       <div class="baloj-sep"></div>
       <div class="baloj-col baloj-huespedes">
         <span class="baloj-label">HUÉSPEDES</span>
-        <div class="baloj-pax">
-          <button type="button" id="menos-pax" class="baloj-pax-btn" aria-label="Quitar huésped">−</button>
-          <span class="baloj-pax-val" id="cant-pax">Agregar</span>
-          <button type="button" id="mas-pax" class="baloj-pax-btn" aria-label="Agregar huésped">+</button>
-          <input type="hidden" id="pax-value" value="0">
-        </div>
+        <div class="aloj-hu-container"></div>
+        <input type="hidden" id="pax-value" value="1">
       </div>
       <button type="submit" class="baloj-btn">Buscar disponibilidad</button>
     </form>
@@ -604,33 +601,32 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
       var params = new URLSearchParams(window.location.search);
       var ci = params.get('checkin');
       var co = params.get('checkout');
-      var hu = parseInt(params.get('huespedes') || '0', 10);
+      // Usar desglose si viene (adultos/ninos/bebes). Si no hay desglose, partir de 1 adulto.
+      var initAdultos = parseInt(params.get('adultos') || '1', 10) || 1;
+      var initNinos   = parseInt(params.get('ninos')   || '0', 10) || 0;
+      var initBebes   = parseInt(params.get('bebes')   || '0', 10) || 0;
       if (ci && co && fp) {
-        try {
-          fp.setDate([ci, co]);
-        } catch (e) {}
-      }
-      if (hu > 0) {
-        document.getElementById('pax-value').value = hu;
-        document.getElementById('cant-pax').textContent = hu + ' huésped' + (hu > 1 ? 'es' : '');
+        try { fp.setDate([ci, co]); } catch (e) {}
       }
 
-      // Botones +/- huéspedes
-      document.getElementById('menos-pax').addEventListener('click', function () {
-        var el = document.getElementById('pax-value');
-        var n  = parseInt(el.value) || 0;
-        n = n > 1 ? n - 1 : 0;
-        el.value = n;
-        document.getElementById('cant-pax').textContent =
-          n > 0 ? (n + ' huésped' + (n > 1 ? 'es' : '')) : 'Agregar';
-      });
-      document.getElementById('mas-pax').addEventListener('click', function () {
-        var el = document.getElementById('pax-value');
-        var n  = parseInt(el.value) || 0;
-        if (n < 15) n++;
-        el.value = n;
-        document.getElementById('cant-pax').textContent = n + ' huésped' + (n > 1 ? 'es' : '');
-      });
+      // Montar selector de huéspedes
+      var _aloj_adultos = initAdultos, _aloj_ninos = initNinos, _aloj_bebes = initBebes;
+      var alojHuCont = document.querySelector('.aloj-hu-container');
+      if (alojHuCont && window.HH && window.HH.HuespedesSelector) {
+        new window.HH.HuespedesSelector({
+          container: alojHuCont,
+          maxGuests: 15,
+          adultos: initAdultos, ninos: initNinos, bebes: initBebes,
+          modal: true,
+          onChange: function (v) {
+            _aloj_adultos = v.adultos; _aloj_ninos = v.ninos; _aloj_bebes = v.bebes;
+            var paxEl = document.getElementById('pax-value');
+            if (paxEl) paxEl.value = v.total;
+          }
+        });
+      }
+      var paxEl = document.getElementById('pax-value');
+      if (paxEl) paxEl.value = initAdultos + initNinos;
 
       // Submit: redirigir con parámetros
       document.getElementById('form-filtro').addEventListener('submit', function (e) {
@@ -638,7 +634,6 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
         var partes = (input.value || '').split(' a ');
         var ci2 = (partes[0] || '').trim();
         var co2 = (partes[1] || '').trim();
-        var hu2 = parseInt(document.getElementById('pax-value').value) || 0;
 
         if (!ci2 || !co2) {
           alert('Por favor seleccioná un rango de fechas (llegada y salida).');
@@ -649,9 +644,12 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
         localStorage.removeItem('disponibles_expira');
 
         var p2 = new URLSearchParams();
-        p2.set('checkin', ci2);
+        p2.set('checkin',  ci2);
         p2.set('checkout', co2);
-        if (hu2 > 0) p2.set('huespedes', String(hu2));
+        p2.set('huespedes', String(_aloj_adultos + _aloj_ninos));
+        p2.set('adultos',   String(_aloj_adultos));
+        p2.set('ninos',     String(_aloj_ninos));
+        p2.set('bebes',     String(_aloj_bebes));
         window.location.href = 'alojamientos.html?' + p2.toString();
       });
 
@@ -673,6 +671,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
   </script>
 
   <script src="moneda.js"></script>
+  <script src="huespedes.js"></script>
   <script src="alojamientos.js"></script>
 
 <script src="badges.js"></script>
