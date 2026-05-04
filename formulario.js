@@ -210,7 +210,10 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ---------- submit: crear reserva + redirigir a viajero.html ----------
+  // ---------- submit: crear reserva en sistema propietarios ----------
+  const API_SISTEMA = 'https://propietarios-happy-host.onrender.com';
+  const slug = params.get('slug') || '';
+
   const form = $('formularioReserva');
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -220,62 +223,31 @@ window.addEventListener('DOMContentLoaded', () => {
       if (boton) { boton.disabled = true; boton.textContent = 'Confirmando...'; }
 
       try {
-        const nombreCompleto = ($('nombre')?.value || '').trim();
-        const email          = ($('email')?.value || '').trim();
-        const telefono       = ($('telefono')?.value || '').trim();
-        const comentarios    = ($('comentarios')?.value || '').trim();
+        const nombreCompleto   = ($('nombre')?.value    || '').trim();
+        const email            = ($('email')?.value     || '').trim();
+        const telefono         = ($('telefono')?.value  || '').trim();
+        const numberOfGuestsOk = $('numberOfGuests')?.value || numberOfGuests || '1';
 
-        const propertyIdOk     = $('propertyId')?.value || propertyId || '601719';
-        const roomTypeIdOk     = $('roomTypeId')?.value || roomTypeId || '668510';
-        const numberOfGuestsOk = $('numberOfGuests')?.value || numberOfGuests || '2';
+        if (!nombreCompleto) {
+          await Swal.fire({ icon: 'warning', title: 'Falta el nombre', text: 'Ingresá tu nombre completo.' });
+          return;
+        }
+        if (!slug) {
+          await Swal.fire({ icon: 'error', title: 'Error', text: 'No se identificó la propiedad.' });
+          return;
+        }
 
-        const [first_name, ...rest] = nombreCompleto.split(' ').filter(Boolean);
-        const last_name = rest.join(' ') || '-';
-
-        // Tomamos lo que se ve en UI (ya con ARS/USD y formato es-AR)
-        const totalUI = (descuentoSpan?.textContent?.trim()
-                        || precioFinalStack?.textContent?.trim()
-                        || totalSpan?.textContent?.trim()
-                        || '');
-
-        const payload = {
-          source_text: 'Reserva web Happy Host',
-          arrival:     checkInDate,
-          departure:   checkOutDate,
-          property_id: Number(propertyIdOk) || 601719,
-          status:      'booked',
-          rooms: [{
-            room_type_id: Number(roomTypeIdOk) || 668510,
-            units: 1,
-            adults: Number(numberOfGuestsOk) || 2,
-            children: 0
-          }],
-          guest: {
-            name: nombreCompleto,
-            first_name,
-            last_name,
-            email,
-            phone: telefono
-          },
-          _total_ui: totalUI,
-          _senia_ui: seniaSpan?.textContent || '',
-          _cupon:    cuponInfo || '',
-          _comments: comentarios
-        };
-
-        const API_BASE = 'https://disponibilidad-happy-host-patagonia.onrender.com';
-
-        const idKey = (window.crypto && crypto.randomUUID)
-          ? crypto.randomUUID()
-          : `web-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-
-        const resp = await fetch(`${API_BASE}/api/crear-reserva`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Idempotency-Key': idKey
-          },
-          body: JSON.stringify(payload)
+        const resp = await fetch(`${API_SISTEMA}/api/properties/${slug}/reservar`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre:    nombreCompleto,
+            email:     email,
+            telefono:  telefono,
+            checkin:   checkInDate,
+            checkout:  checkOutDate,
+            huespedes: Number(numberOfGuestsOk) || 1,
+          })
         });
 
         const data = await resp.json().catch(() => ({}));
@@ -285,20 +257,21 @@ window.addEventListener('DOMContentLoaded', () => {
           await Swal.fire({
             icon: 'error',
             title: 'No se pudo confirmar',
-            text: (data && (data.message || data.error)) || 'Intentá nuevamente.'
+            text: (data?.error || data?.message) || 'Intentá nuevamente.'
           });
           return;
         }
 
-        const bookingId = data?.id || data?.booking_id || data?.bookingId || '';
+        const confirmacion = data?.confirmacion || data?.id || '—';
 
         await Swal.fire({
           icon: 'success',
           title: '✅ Reserva confirmada',
-          html: `Tu reserva fue creada con éxito.<br><small>ID: ${bookingId || '—'}</small><br><br>Te redirijo en 5 segundos...`,
-          timer: 5000,
+          html: `Tu reserva fue enviada con éxito.<br><small>Código: <strong>${confirmacion}</strong></small><br><br>Nos pondremos en contacto para coordinar el pago.`,
+          timer: 6000,
           timerProgressBar: true,
-          showConfirmButton: false
+          showConfirmButton: true,
+          confirmButtonText: 'Entendido'
         });
 
         window.location.href = 'viajero.html';
@@ -306,11 +279,10 @@ window.addEventListener('DOMContentLoaded', () => {
         console.error('Error al enviar la reserva:', err);
         await Swal.fire({
           icon: 'error',
-          title: '❌ Error',
-          text: 'Hubo un problema al confirmar la reserva.'
+          title: '❌ Error de conexión',
+          text: 'Hubo un problema al confirmar la reserva. Intentá de nuevo o contactanos por WhatsApp.'
         });
       } finally {
-        const boton = $('botonReservar');
         if (boton) { boton.disabled = false; boton.textContent = 'Confirmar Reserva'; }
       }
     });
