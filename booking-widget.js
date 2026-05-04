@@ -303,19 +303,33 @@
 
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
-        // Leer nombre de la propiedad desde el atributo data o el h1 de la página
         const nombreProp = card.dataset.nombre
           || document.querySelector('.unidad-h1')?.textContent?.trim()
           || '';
-        const qs = new URLSearchParams({
-          slug:          PROP_KEY,
-          nombre:        nombreProp,
-          checkInDate:   startValue,
-          checkOutDate:  endValue,
-          numberOfGuests: guests,
-          totalPrice:    totalFinal,
-          currency:      moneda,
-        }).toString();
+        let qs;
+        if (USA_LODGIFY) {
+          // Propiedad con Lodgify → flujo original (IDs Lodgify → crea en Lodgify)
+          qs = new URLSearchParams({
+            propertyId:     HOUSE_ID,
+            roomTypeId:     ROOM_ID,
+            checkInDate:    startValue,
+            checkOutDate:   endValue,
+            numberOfGuests: guests,
+            totalPrice:     totalFinal,
+            currency:       moneda,
+          }).toString();
+        } else {
+          // Propiedad sin Lodgify → flujo nuevo (slug → crea en sistema propio)
+          qs = new URLSearchParams({
+            slug:           PROP_KEY,
+            nombre:         nombreProp,
+            checkInDate:    startValue,
+            checkOutDate:   endValue,
+            numberOfGuests: guests,
+            totalPrice:     totalFinal,
+            currency:       moneda,
+          }).toString();
+        }
         window.location.href = `formulario.html?${qs}`;
       };
 
