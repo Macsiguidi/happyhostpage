@@ -477,6 +477,16 @@ body {
   flex: 1;
 }
 
+/* Integración HuespedesSelector dentro de la booking card */
+.booking-hu-container .hh-hu { width: 100%; }
+.booking-hu-container .hh-hu__val {
+  font-family: 'Inter', sans-serif;
+  font-size: .92rem;
+  font-weight: 500;
+  color: #2B2B2B;
+}
+.booking-hu-container .hh-hu__chev { color: #6B7B53; }
+
 .booking-btn {
   width: 100%;
   background: var(--olive);
@@ -566,20 +576,35 @@ body {
 .old-price--big { font-size: 1rem; }
 .total-line { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: .95rem; border-top: 1px solid #e0ddd6; margin-top: 8px; padding-top: 8px; }
 
-/* ── FLATPICKR OCUPADOS ──────────────────────────────── */
+/* ── FLATPICKR OCUPADOS — cuadrados unidos ───────────── */
 .flatpickr-day.hhcal-ocupado {
   background: #c8d8b8 !important;
-  border-color: #b0c49a !important;
-  color: var(--ink) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: #4a6630 !important;
   pointer-events: none !important;
+  /* Extiende el fondo 2 px a cada lado para cerrar la brecha entre celdas */
+  box-shadow: 2px 0 0 0 #c8d8b8, -2px 0 0 0 #c8d8b8;
 }
+
+/* Primer día bloqueado: la izquierda queda libre (check-in posible),
+   la derecha entra en la banda — redondeado solo a la izquierda */
 .flatpickr-day.hhcal-checkin {
-  background: linear-gradient(90deg, #fff 50%, #c8d8b8 50%) !important;
-  border-color: var(--olive) !important;
+  background: linear-gradient(90deg, transparent 50%, #c8d8b8 50%) !important;
+  border: none !important;
+  border-radius: 50% 0 0 50% !important;
+  /* extiende solo hacia la derecha para conectar con el día siguiente */
+  box-shadow: 2px 0 0 0 #c8d8b8;
 }
+
+/* Último día bloqueado: la derecha queda libre (check-out posible),
+   la izquierda viene de la banda — redondeado solo a la derecha */
 .flatpickr-day.hhcal-checkout {
-  background: linear-gradient(90deg, #c8d8b8 50%, #fff 50%) !important;
-  border-color: var(--olive) !important;
+  background: linear-gradient(90deg, #c8d8b8 50%, transparent 50%) !important;
+  border: none !important;
+  border-radius: 0 50% 50% 0 !important;
+  /* extiende solo hacia la izquierda para conectar con el día anterior */
+  box-shadow: -2px 0 0 0 #c8d8b8;
 }
 
 /* ── LEYENDA CALENDARIO ──────────────────────────────── */
@@ -603,23 +628,26 @@ body {
   white-space: nowrap;
 }
 .hhcal-ley-dot {
-  width: 13px;
+  width: 22px;
   height: 13px;
-  border-radius: 50%;
+  border-radius: 0;
   flex-shrink: 0;
   display: inline-block;
 }
 .hhcal-ley-dot.ocupado {
   background: #c8d8b8;
-  border: 1.5px solid #b0c49a;
 }
 .hhcal-ley-dot.checkinout {
-  background: linear-gradient(90deg, #c8d8b8 50%, #fff 50%);
-  border: 1.5px solid #b0c49a;
+  background: linear-gradient(90deg, #c8d8b8 50%, transparent 50%);
+  border-radius: 0 4px 4px 0;
+  border: 1px solid #e0ddd6;
+  border-left: none;
 }
 .hhcal-ley-dot.disponible {
   background: #fff;
   border: 1.5px solid #ccc;
+  border-radius: 50%;
+  width: 13px;
 }
 
 /* ── EXPLORE / FOOTER ────────────────────────────────── */

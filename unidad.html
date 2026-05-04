@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <link rel="stylesheet" href="unidades-nuevo.css" />
+  <link rel="stylesheet" href="huespedes.css" />
   <style>
     /* ── Loading state ── */
     .unidad-loading {
@@ -255,11 +256,7 @@
             <input type="hidden" id="guests" value="1" />
             <div class="booking-huespedes">
               <label>HUÉSPEDES</label>
-              <div class="bh-control" role="group" aria-label="Cantidad de huéspedes">
-                <button id="menos" class="bh-btn" type="button" aria-label="Quitar huésped">−</button>
-                <span id="contador" aria-live="polite">1 huésped</span>
-                <button id="mas" class="bh-btn" type="button" aria-label="Agregar huésped">+</button>
-              </div>
+              <div class="booking-hu-container"></div>
             </div>
             <label for="currency" class="sr-only">Moneda</label>
             <select id="currency" style="display:none;">
@@ -291,11 +288,17 @@
       const ci = localStorage.getItem('checkin');
       const co = localStorage.getItem('checkout');
       const hu = localStorage.getItem('huespedes');
+      const adultos = localStorage.getItem('adultos');
+      const ninos   = localStorage.getItem('ninos');
+      const bebes   = localStorage.getItem('bebes');
       let backUrl = 'alojamientos.html';
       if (ci && co) {
         const p2 = new URLSearchParams();
         p2.append('checkin', ci); p2.append('checkout', co);
-        if (hu) p2.append('huespedes', hu);
+        if (hu)     p2.append('huespedes', hu);
+        if (adultos) p2.append('adultos', adultos);
+        if (ninos)   p2.append('ninos',   ninos);
+        if (bebes)   p2.append('bebes',   bebes);
         backUrl = 'alojamientos.html?' + p2.toString();
       }
       btnVolver.href = backUrl;
@@ -357,24 +360,37 @@
       });
     }
 
-    // Precargar fechas desde localStorage si vienen del buscador
-    const checkin  = localStorage.getItem('checkin');
-    const checkout = localStorage.getItem('checkout');
-    if (checkin && checkout) {
-      const sp = new URLSearchParams(window.location.search);
-      if (!sp.get('checkin')) {
-        const url = new URL(window.location.href);
+    // Precargar fechas y huéspedes desde localStorage si vienen del buscador
+    {
+      const sp      = new URLSearchParams(window.location.search);
+      const url     = new URL(window.location.href);
+      let   changed = false;
+
+      const checkin  = localStorage.getItem('checkin');
+      const checkout = localStorage.getItem('checkout');
+      if (checkin && checkout && !sp.get('checkin')) {
         url.searchParams.set('checkin',   checkin);
         url.searchParams.set('checkout',  checkout);
         url.searchParams.set('huespedes', localStorage.getItem('huespedes') || '1');
-        window.history.replaceState(null, '', url.toString());
+        changed = true;
       }
+
+      // Siempre completar el desglose si falta en la URL (aunque checkin ya esté)
+      const lsAdultos = localStorage.getItem('adultos');
+      const lsNinos   = localStorage.getItem('ninos');
+      const lsBebes   = localStorage.getItem('bebes');
+      if (lsAdultos && !sp.get('adultos')) { url.searchParams.set('adultos', lsAdultos); changed = true; }
+      if (lsNinos   && !sp.get('ninos'))   { url.searchParams.set('ninos',   lsNinos);   changed = true; }
+      if (lsBebes   && !sp.get('bebes'))   { url.searchParams.set('bebes',   lsBebes);   changed = true; }
+
+      if (changed) window.history.replaceState(null, '', url.toString());
     }
 
     // Cargar motor de reservas — cada script opcional no bloquea los siguientes
     await loadScript('calendario.js').catch(e => console.warn('calendario.js no cargó:', e));
     await loadScript('moneda.js').catch(e => console.warn('moneda.js no cargó:', e));
     await loadScript('promos.js').catch(e => console.warn('promos.js no cargó:', e));
+    await loadScript('huespedes.js').catch(e => console.warn('huespedes.js no cargó:', e));
     try {
       await loadScript('booking-widget.js');
     } catch (e) { console.warn('booking-widget.js no cargó:', e); }

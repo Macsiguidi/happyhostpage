@@ -83,13 +83,19 @@ function detenerSlideshow(card) {
 
 // ── Redirección con parámetros (para click en tarjeta) ───────────────
 function redirigirConParametros(pagina) {
-  const ci = localStorage.getItem('checkin');
-  const co = localStorage.getItem('checkout');
-  const hu = localStorage.getItem('huespedes');
-  const p  = new URLSearchParams();
+  const ci  = localStorage.getItem('checkin');
+  const co  = localStorage.getItem('checkout');
+  const hu  = localStorage.getItem('huespedes');
+  const a   = localStorage.getItem('adultos');
+  const n   = localStorage.getItem('ninos');
+  const b   = localStorage.getItem('bebes');
+  const p   = new URLSearchParams();
   if (ci) p.append('checkin',   ci);
   if (co) p.append('checkout',  co);
   if (hu) p.append('huespedes', hu);
+  if (a)  p.append('adultos',   a);
+  if (n)  p.append('ninos',     n);
+  if (b)  p.append('bebes',     b);
   // Indica a la propiedad que venimos del buscador → botón Volver reconstruye la búsqueda
   if (ci && co) localStorage.setItem('busqueda_desde_buscador', 'true');
   window.location.href = pagina + (p.toString() ? '?' + p.toString() : '');
@@ -105,15 +111,24 @@ function limpiarBusqueda() {
 // ── MAIN ──────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const checkin   = urlParams.get('checkin')  || '';
-  const checkout  = urlParams.get('checkout') || '';
-  const huespedes = parseInt(urlParams.get('huespedes') || '0', 10);
+  const urlParams  = new URLSearchParams(window.location.search);
+  const checkin    = urlParams.get('checkin')  || '';
+  const checkout   = urlParams.get('checkout') || '';
+  // Bebés no cuentan para capacidad → usar adultos+niños
+  const adultos    = parseInt(urlParams.get('adultos')   || '0', 10);
+  const ninos      = parseInt(urlParams.get('ninos')     || '0', 10);
+  const bebes      = parseInt(urlParams.get('bebes')     || '0', 10);
+  // huespedes = adultos+ninos (retro-compat si viene sin desglose)
+  const huespedesParam = parseInt(urlParams.get('huespedes') || '0', 10);
+  const huespedes  = (adultos + ninos) || huespedesParam;  // total para capacidad
 
   // Persistir en localStorage para que la página de propiedad los use
-  if (checkin)       localStorage.setItem('checkin',   checkin);
-  if (checkout)      localStorage.setItem('checkout',  checkout);
-  if (huespedes > 0) localStorage.setItem('huespedes', String(huespedes));
+  if (checkin)       localStorage.setItem('checkin',    checkin);
+  if (checkout)      localStorage.setItem('checkout',   checkout);
+  if (huespedes > 0) localStorage.setItem('huespedes',  String(huespedes));
+  if (adultos > 0)   localStorage.setItem('adultos',    String(adultos));
+  if (ninos   > 0)   localStorage.setItem('ninos',      String(ninos));
+  if (bebes   > 0)   localStorage.setItem('bebes',      String(bebes));
 
   const loading = document.getElementById('loading-disponibilidad');
   const banner  = document.getElementById('banner-busqueda');
@@ -187,9 +202,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Mostrar banner de resultados
   if (banner) {
-    const huTxt = huespedes > 0
-      ? ` · ${huespedes} huésped${huespedes > 1 ? 'es' : ''}`
-      : '';
+    // Armar texto de huéspedes con desglose completo
+    function resumenPax(a, n, b) {
+      const parts = [];
+      if (a > 0) parts.push(`${a} adulto${a > 1 ? 's' : ''}`);
+      if (n > 0) parts.push(`${n} niño${n > 1 ? 's' : ''}`);
+      if (b > 0) parts.push(`${b} bebé${b > 1 ? 's' : ''}`);
+      return parts.join(', ');
+    }
+    const paxStr  = resumenPax(adultos, ninos, bebes) || (huespedes > 0 ? `${huespedes} huésped${huespedes > 1 ? 'es' : ''}` : '');
+    const huTxt   = paxStr ? ` · ${paxStr}` : '';
     banner.innerHTML = `
       <span class="banner-texto">
         <strong>${visibles}</strong> propiedad${visibles !== 1 ? 'es' : ''} disponible${visibles !== 1 ? 's' : ''}

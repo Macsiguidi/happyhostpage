@@ -1,0 +1,239 @@
+/* =====================================================================
+   huespedes.css — Selector de huéspedes: adultos / niños / bebés
+   Funciona tanto en fondos claros (buscador) como oscuros (booking card)
+   ===================================================================== */
+
+/* ── contenedor relativo ─────────────────────────────────────────── */
+.hh-hu {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+/* ── botón trigger ───────────────────────────────────────────────── */
+.hh-hu__trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  outline: none;
+}
+.hh-hu__trigger:focus-visible {
+  outline: 2px solid var(--hh-olive, #6B7B53);
+  border-radius: 4px;
+}
+
+.hh-hu__val {
+  flex: 1;
+  font-size: .95rem;
+  font-weight: 500;
+  color: var(--hh-text, #2B2B2B);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hh-hu__chev {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--hh-olive, #6B7B53);
+  transition: transform .2s ease;
+}
+.hh-hu__trigger--open .hh-hu__chev {
+  transform: rotate(180deg);
+}
+
+/* ── panel dropdown (modo default) ──────────────────────────────── */
+.hh-hu__panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 290px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.06);
+  z-index: 9999;
+  overflow: hidden;
+  animation: hh-hu-in .18s ease;
+}
+
+@keyframes hh-hu-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── overlay modal (modo modal: true) ───────────────────────────── */
+.hh-hu__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: hh-hu-overlay-in .18s ease;
+}
+.hh-hu__overlay[hidden] { display: none; }
+
+@keyframes hh-hu-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Panel dentro del overlay: resetear posicionamiento absoluto */
+.hh-hu__overlay .hh-hu__panel {
+  position: static;
+  transform: none;
+  left: auto;
+  top: auto;
+  min-width: 320px;
+  max-width: 400px;
+  width: 90vw;
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.22);
+  animation: hh-hu-modal-in .22s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes hh-hu-modal-in {
+  from { opacity: 0; transform: scale(.92) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
+/* ── cabecera del modal ──────────────────────────────────────────── */
+.hh-hu__modal-header {
+  padding: 18px 22px 0;
+}
+.hh-hu__modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2B2B2B;
+  letter-spacing: .01em;
+}
+
+/* ── filas ───────────────────────────────────────────────────────── */
+.hh-hu__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 22px;
+  border-bottom: 1px solid #f2f2f0;
+}
+.hh-hu__row:last-of-type {
+  border-bottom: none;
+}
+
+.hh-hu__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hh-hu__tipo {
+  font-size: .9rem;
+  font-weight: 600;
+  color: #2B2B2B;
+}
+.hh-hu__edad {
+  font-size: .75rem;
+  color: #999;
+}
+
+/* ── contador ────────────────────────────────────────────────────── */
+.hh-hu__cnt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hh-hu__num {
+  min-width: 20px;
+  text-align: center;
+  font-size: .92rem;
+  font-weight: 700;
+  color: #2B2B2B;
+}
+.hh-hu__btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid #d0d0d0;
+  background: none;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  transition: border-color .15s, color .15s, background .15s;
+  flex-shrink: 0;
+}
+.hh-hu__btn:hover:not(:disabled) {
+  border-color: var(--hh-olive, #6B7B53);
+  color: var(--hh-olive, #6B7B53);
+  background: rgba(107, 123, 83, .07);
+}
+.hh-hu__btn:disabled {
+  opacity: .25;
+  cursor: default;
+}
+
+/* ── footer con botón Listo ──────────────────────────────────────── */
+.hh-hu__footer {
+  padding: 10px 22px 18px;
+  display: flex;
+  justify-content: flex-end;
+}
+.hh-hu__done {
+  background: var(--hh-olive, #6B7B53);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 28px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: .03em;
+  transition: background .15s;
+}
+.hh-hu__done:hover {
+  background: var(--hh-olive-dark, #55663F);
+}
+
+/* ── variante oscura (booking card) ─────────────────────────────── */
+.hh-hu--dark .hh-hu__val {
+  color: #f0f0f0;
+}
+.hh-hu--dark .hh-hu__chev {
+  color: rgba(255, 255, 255, .55);
+}
+
+/* ── responsive ─────────────────────────────────────────────────── */
+@media (max-width: 500px) {
+  /* dropdown */
+  .hh-hu__panel {
+    left: 0;
+    right: 0;
+    transform: none;
+    min-width: 0;
+    border-radius: 14px;
+  }
+  @keyframes hh-hu-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* modal */
+  .hh-hu__overlay .hh-hu__panel {
+    min-width: 0;
+    width: 92vw;
+    border-radius: 18px;
+  }
+}

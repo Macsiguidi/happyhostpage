@@ -27,6 +27,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <link rel="stylesheet" href="unidades-nuevo.css" />
+  <link rel="stylesheet" href="huespedes.css" />
 
   <meta name="geo.region" content="AR-Q" />
   <meta name="geo.placename" content="Villa La Angostura, Neuquén" />
@@ -229,11 +230,7 @@
         <input type="hidden" id="guests" value="1" />
         <div class="booking-huespedes">
           <label>HUÉSPEDES</label>
-          <div class="bh-control" role="group" aria-label="Cantidad de huéspedes">
-            <button id="menos" class="bh-btn" type="button" aria-label="Quitar huésped">−</button>
-            <span id="contador" aria-live="polite">1 huésped</span>
-            <button id="mas" class="bh-btn" type="button" aria-label="Agregar huésped">+</button>
-          </div>
+          <div class="booking-hu-container"></div>
         </div>
 
         <label for="currency" class="sr-only">Moneda</label>
@@ -375,6 +372,7 @@
   <script src="whatsapp.js"></script>
 
   <!-- 4) Motor de moneda -->
+  <script src="huespedes.js"></script>
   <script src="moneda.js"></script>
 
   <!-- 5) Motor de reservas -->
@@ -387,15 +385,23 @@
   const PROP_FAMILY = 'CruzDelSur';
 
   const fechaLimite = new Date('2026-10-31');
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
   const params    = new URLSearchParams(window.location.search);
   const checkin   = params.get("checkin");
   const checkout  = params.get("checkout");
   const huespedes = params.get("huespedes");
+  const adultos = parseInt(params.get("adultos") || "1", 10) || 1;
+  const ninos   = parseInt(params.get("ninos")   || "0", 10) || 0;
+  const bebes   = parseInt(params.get("bebes")   || "0", 10) || 0;
+  let _adultos = adultos, _ninos = ninos, _bebes = bebes;
   const hasDatesFromURL = !!(checkin && checkout);
 
   localStorage.removeItem("checkin");
   localStorage.removeItem("checkout");
   localStorage.removeItem("huespedes");
+  localStorage.removeItem("adultos");
+  localStorage.removeItem("ninos");
+  localStorage.removeItem("bebes");
 
   function parseYMDLocal(s) {
     if (!s) return null;
@@ -414,20 +420,31 @@
   const currSelect  = document.getElementById('currency');
   const resDiv      = document.getElementById('resultado');
   const reservarBtn = document.getElementById('btnReservar');
-  const menosBtn    = document.getElementById('menos');
-  const masBtn      = document.getElementById('mas');
-  const contador    = document.getElementById('contador');
   const precioBox   = document.querySelector('.booking-precio');
   const precioOriginalHTML = precioBox ? precioBox.innerHTML : '';
   function resetPrecioBox() { if (precioBox) { precioBox.innerHTML = precioOriginalHTML; precioBox.classList.add('precio-oculto'); } }
 
-  let cantidad = parseInt(huespedes) || 1;
-  const hoy = new Date(); hoy.setHours(0,0,0,0);
-
   if (checkin)  startInput.value = checkin;
   if (checkout) endInput.value   = checkout;
-  if (huespedes) { guestsInput.value = huespedes; cantidad = parseInt(huespedes); }
-  actualizarContador();
+  if (guestsInput) guestsInput.value = _adultos + _ninos;
+
+  const MAX_GUESTS = 2;  // capacidad máxima de la propiedad
+  // Montar selector de huéspedes
+  const huContainer = document.querySelector('.booking-hu-container');
+  let huSelector = null;
+  if (huContainer && window.HH && window.HH.HuespedesSelector) {
+    huSelector = new window.HH.HuespedesSelector({
+      container: huContainer,
+      maxGuests: MAX_GUESTS,
+      adultos: _adultos, ninos: _ninos, bebes: _bebes,
+      dark: false,
+      onChange: function(v) {
+        _adultos = v.adultos; _ninos = v.ninos; _bebes = v.bebes;
+        if (guestsInput) guestsInput.value = v.total;
+        calculate();
+      }
+    });
+  }
 
   const startPicker = flatpickr(startInput, {
     altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
@@ -489,17 +506,6 @@
 
   if (checkin) setCurrencyAndCalculate(checkin); else calculate();
 
-  function actualizarContador() {
-    contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
-    guestsInput.value = cantidad;
-  }
-  menosBtn.addEventListener('click', () => { if (cantidad > 1) { cantidad--; actualizarContador(); calculate(); } });
-  masBtn.addEventListener('click', () => { if (cantidad < 2) { cantidad++; actualizarContador(); calculate(); } });
-  guestsInput.addEventListener('input', () => {
-    let v = parseInt(guestsInput.value) || 1;
-    if (v < 1) v = 1; if (v > 2) v = 2;
-    cantidad = v; actualizarContador(); calculate();
-  });
   currSelect.addEventListener('change', calculate);
 
   async function setCurrencyAndCalculate(fechaCheckinStr) {
@@ -611,7 +617,7 @@
       const detalle = `
         <ul class="booking-summary">
           <li>Noches: ${noches}</li>
-          <li>Huéspedes: ${guests}</li>
+          <li>Huéspedes: ${huSelector ? huSelector.resumen : guests}</li>
           <li class="total-line"><strong>Total estadía:</strong> ${totalStack}</li>
         </ul>`;
 
@@ -653,7 +659,7 @@
         const qs = new URLSearchParams({
           propertyId: HOUSE_ID, roomTypeId: ROOM_ID,
           checkInDate: startValue, checkOutDate: endValue,
-          numberOfGuests: guests, totalPrice: totalParaCobrar,
+          numberOfGuests: guests, adultos: _adultos, ninos: _ninos, bebes: _bebes, totalPrice: totalParaCobrar,
           currency: moneda, descuentoUSD
         }).toString();
         window.location.href = `formulario.html?${qs}`;
@@ -676,12 +682,15 @@
       const checkoutVal = (document.getElementById('end')?.value || "").trim();
       const guestsVal   = (document.getElementById('guests')?.value || "").trim();
       if (desdeBuscador && checkinVal && checkoutVal && guestsVal) {
-        const qs = new URLSearchParams({ checkin: checkinVal, checkout: checkoutVal, huespedes: guestsVal }).toString();
+        const qs = new URLSearchParams({ checkin: checkinVal, checkout: checkoutVal, huespedes: guestsVal, adultos: _adultos, ninos: _ninos, bebes: _bebes }).toString();
         window.location.href = `alojamientos.html?${qs}`;
       } else {
         localStorage.removeItem("checkin");
         localStorage.removeItem("checkout");
         localStorage.removeItem("huespedes");
+  localStorage.removeItem("adultos");
+  localStorage.removeItem("ninos");
+  localStorage.removeItem("bebes");
         window.location.href = "alojamientos.html";
       }
     });
@@ -724,4 +733,5 @@
 <script src="resenas-modal.js"></script>
 </body>
 </html>
+
 

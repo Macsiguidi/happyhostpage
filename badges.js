@@ -106,7 +106,7 @@
   async function fetchBadgesWithRetry(maxAttempts, delayMs) {
     for (let i = 0; i < maxAttempts; i++) {
       try {
-        const resp = await fetch(API_URL, { signal: AbortSignal.timeout(15000) });
+        const resp = await fetch(API_URL, { signal: AbortSignal.timeout(35000) }); // 35s para cubrir cold start
         if (resp.ok) {
           const data = await resp.json();
           console.log('[badges.js] API OK →', JSON.stringify(data));
@@ -123,7 +123,7 @@
   }
 
   async function applyBadges() {
-    const badges = await fetchBadgesWithRetry(3, 8000);
+    const badges = await fetchBadgesWithRetry(4, 5000); // 4 intentos, 5s entre cada uno
     if (!badges) return;
     updateCards(badges);
     updateDestacados(badges);

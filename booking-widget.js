@@ -66,9 +66,6 @@
   const currSelect  = document.getElementById('currency');
   const resDiv      = document.getElementById('resultado');
   const reservarBtn = document.getElementById('btnReservar');
-  const menosBtn    = document.getElementById('menos');
-  const masBtn      = document.getElementById('mas');
-  const contador    = document.getElementById('contador');
   const precioBox   = card.querySelector('.booking-precio');
   const precioOriginalHTML = precioBox ? precioBox.innerHTML : '';
 
@@ -78,15 +75,43 @@
     if (precioBox) { precioBox.innerHTML = precioOriginalHTML; precioBox.classList.add('precio-oculto'); }
   }
 
-  // ── inicializar huéspedes ─────────────────────────────────────────────────
+  // ── selector de huéspedes (adultos / niños / bebés) ───────────────────────
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
-  let cantidad = Math.min(parseInt(huespedes) || 1, MAX_GUESTS);
-  if (contador) contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
-  if (guestsInput) guestsInput.value = cantidad;
-  if (menosBtn) menosBtn.disabled = cantidad <= 1;
-  if (masBtn)   masBtn.disabled   = cantidad >= MAX_GUESTS;
+
+  // Leer valores iniciales desde URL.
+  // Si viene adultos explícito lo usamos; si no hay desglose, arrancamos con 1 adulto
+  // (NO usar el total de huespedes como adultos — evita que "2 adultos + 1 niño" = 3 adultos)
+  const initAdultos = Math.min(parseInt(params.get('adultos')) || 1, MAX_GUESTS);
+  const initNinos   = Math.min(parseInt(params.get('ninos'))   || 0, Math.max(0, MAX_GUESTS - initAdultos));
+  const initBebes   = parseInt(params.get('bebes')) || 0;
+
+  // Pre-cargar fechas ANTES de montar el selector, para que el primer
+  // onChange → calculate() ya las vea y calcule el precio de inmediato
   if (checkin)  startInput.value = checkin;
   if (checkout) endInput.value   = checkout;
+
+  // Montar el selector en el contenedor del booking card
+  const huContainer = card.querySelector('.booking-hu-container');
+  let huSelector = null;
+  let _adultos = initAdultos, _ninos = initNinos, _bebes = initBebes;
+
+  if (guestsInput) guestsInput.value = _adultos + _ninos;
+
+  if (huContainer && window.HH && window.HH.HuespedesSelector) {
+    huSelector = new window.HH.HuespedesSelector({
+      container: huContainer,
+      maxGuests: MAX_GUESTS,
+      adultos:   initAdultos,
+      ninos:     initNinos,
+      bebes:     initBebes,
+      dark:      false,
+      onChange: function (v) {
+        _adultos = v.adultos; _ninos = v.ninos; _bebes = v.bebes;
+        if (guestsInput) guestsInput.value = v.total;
+        calculate();
+      }
+    });
+  }
 
   // ── flatpickr ────────────────────────────────────────────────────────────
   const startPicker = flatpickr(startInput, {
@@ -147,15 +172,6 @@
 
   if (checkin) setCurrencyAndCalculate(checkin); else calculate();
 
-  // ── huéspedes ─────────────────────────────────────────────────────────────
-  function actualizarContador() {
-    if (contador) contador.textContent = cantidad === 1 ? '1 huésped' : `${cantidad} huéspedes`;
-    if (guestsInput) guestsInput.value = cantidad;
-    if (menosBtn) menosBtn.disabled = cantidad <= 1;
-    if (masBtn)   masBtn.disabled   = cantidad >= MAX_GUESTS;
-  }
-  menosBtn?.addEventListener('click', () => { if (cantidad > 1)          { cantidad--; actualizarContador(); calculate(); } });
-  masBtn?.addEventListener('click',   () => { if (cantidad < MAX_GUESTS) { cantidad++; actualizarContador(); calculate(); } });
   currSelect?.addEventListener('change', calculate);
 
   // ── moneda ────────────────────────────────────────────────────────────────
@@ -274,10 +290,11 @@
         ? `<div class="price-stack"><div class="old-price old-price--big">${fmt(totalMoneda)} ${moneda}</div><div class="new-price">${fmt(totalFinal)} ${moneda}</div></div>`
         : `<span class="price-current">${fmt(totalFinal)} ${moneda}</span>`;
 
+      const resumenHuespedes = huSelector ? huSelector.resumen : (guests === 1 ? '1 huésped' : `${guests} huéspedes`);
       if (resDiv) resDiv.innerHTML = `
         <ul class="booking-summary">
           <li>Noches: ${noches}</li>
-          <li>Huéspedes: ${guests}</li>
+          <li>Huéspedes: ${resumenHuespedes}</li>
           <li class="total-line"><strong>Total estadía:</strong> ${totalStack}</li>
         </ul>
         <div class="price-breakdown">
@@ -315,6 +332,9 @@
             checkInDate:    startValue,
             checkOutDate:   endValue,
             numberOfGuests: guests,
+            adultos:        _adultos,
+            ninos:          _ninos,
+            bebes:          _bebes,
             totalPrice:     totalFinal,
             currency:       moneda,
           }).toString();
@@ -326,6 +346,9 @@
             checkInDate:    startValue,
             checkOutDate:   endValue,
             numberOfGuests: guests,
+            adultos:        _adultos,
+            ninos:          _ninos,
+            bebes:          _bebes,
             totalPrice:     totalFinal,
             currency:       moneda,
           }).toString();

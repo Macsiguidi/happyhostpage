@@ -249,15 +249,8 @@ const propiedades = [
 
 const destacadosConDescuento = new Set([]);
 
-// =======================
-// COPA (SIN CALAFATE)
-// =======================
-
-const destacadosConCopa = new Set([
-  "nilidas",
-  "cruz5",
-  "paisajismo"
-]);
+// Copa desactivada
+const destacadosConCopa = new Set([]);
 
 // =======================
 // HELPERS
@@ -335,19 +328,14 @@ function renderDestacados() {
 
         <div class="overlay"></div>
 
-        <div class="badge-destacado">
-          <img src="iconos/destacado.png" alt="Destacado">
+        <!-- Badge del panel admin — badges.js lo muestra/oculta según la config -->
+        <div class="badge-destacado" style="display:none">
+          <img src="" alt="">
         </div>
 
         ${destacadosConDescuento.has(p.slug) ? `
           <div class="badge-descuento">
             <img src="iconos/descuento.png" alt="15% off">
-          </div>
-        ` : ""}
-
-        ${destacadosConCopa.has(p.slug) ? `
-          <div class="badge-copa">
-            <img src="iconos/copa.png" alt="Más elegido">
           </div>
         ` : ""}
 
