@@ -404,7 +404,7 @@
   const PROP_KEY    = 'refugiopatagonico';
   const PROP_FAMILY = 'RefugioPatagonico';
 
-  const fechaLimite = new Date('2026-10-31');
+  let fechaLimite = new Date('2099-12-31');
   const hoy = new Date(); hoy.setHours(0,0,0,0);
   const params    = new URLSearchParams(window.location.search);
   const checkin   = params.get("checkin");
@@ -489,6 +489,18 @@
     defaultDate: checkout || null, minDate: hoy, maxDate: fechaLimite,
     disableMobile: true, onChange: calculate
   });
+  // ── Fetch fechaLimite desde el panel de propietarios ────────────────
+  fetch('https://propietarios-happy-host.onrender.com/api/properties/' + PROP_KEY)
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      if (d && d.reservableHasta) {
+        fechaLimite = new Date(d.reservableHasta + 'T00:00:00');
+        startPicker.set('maxDate', fechaLimite);
+        endPicker.set('maxDate', fechaLimite);
+      }
+    })
+    .catch(function(){});
+
   startPicker.config.onChange.push((selectedDates) => {
     if (selectedDates[0] && !hasDatesFromURL && !endInput.value) {
       endPicker.setDate(null);
