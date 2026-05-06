@@ -63,23 +63,29 @@
     font-weight: 600;
   }
 
+  /* Lista de previews (hasta 3 cards apiladas) */
+  .resenas-preview-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
   /* Preview card */
   .resena-preview-card {
     background: #fff;
     border: 1px solid #e0dbd3;
     border-left: 3px solid #6B7D5C;
     border-radius: 12px;
-    padding: 16px 20px;
-    margin: 0 0 20px;
-    position: relative;
+    padding: 14px 18px;
   }
   .resena-preview-card .rpc-texto {
     font-family: 'Inter', sans-serif;
-    font-size: .9rem;
+    font-size: .88rem;
     color: #2F3E2F;
     line-height: 1.6;
     font-style: italic;
-    margin: 0 0 12px;
+    margin: 0 0 10px;
   }
   .resena-preview-card .rpc-footer {
     display: flex;
@@ -90,17 +96,17 @@
   }
   .resena-preview-card .rpc-autor {
     font-family: 'Inter', sans-serif;
-    font-size: .8rem;
+    font-size: .78rem;
     font-weight: 600;
     color: #4a5a4a;
   }
   .resena-preview-card .rpc-stars {
-    font-size: .78rem;
+    font-size: .76rem;
     color: #f5a623;
     letter-spacing: 1px;
   }
   .resena-preview-card .rpc-mes {
-    font-size: .75rem;
+    font-size: .72rem;
     color: #9aaa9a;
   }
 
@@ -334,44 +340,48 @@
   /* ── Init ─────────────────────────────────────────────────────────────── */
   function init(reviews) {
 
-    // Calcular promedio global
+    // Promedio global
     var totalProm = reviews.reduce(function (acc, r) {
       return acc + parseFloat(calcPromedio(r));
     }, 0);
     var promedioGlobal = (totalProm / reviews.length).toFixed(1);
+    var starsGlobal    = Math.round(parseFloat(promedioGlobal));
 
-    // Elegir preview: la resena con texto mas largo (o la primera)
+    var n     = reviews.length;
+    var label = n === 1 ? '1 estadía' : n + ' estadías';
+
+    // Hasta 3 mas recientes con texto (el API ya las devuelve ordenadas)
     var conTexto = reviews.filter(function (r) {
       return r.resenaPublica && r.resenaPublica.trim().length > 0;
     });
-    var preview = conTexto.length > 0 ? conTexto[0] : null;
+    var previews = conTexto.slice(0, 3);
 
-    /* ── Seccion inline ───────────────────────────────────── */
-    var seccion = document.createElement('div');
-    seccion.className = 'unidad-resenas';
-
-    var n = reviews.length;
-    var label = n === 1 ? '1 estadía' : n + ' estadías';
-
-    // Cuantas estrellas para el promedio global (redondeado)
-    var starsGlobal = Math.round(parseFloat(promedioGlobal));
-
-    var previewHtml = '';
-    if (preview) {
-      var texto = preview.resenaPublica.trim();
-      // Truncar si es muy largo
-      var textoCortado = texto.length > 180 ? texto.slice(0, 177) + '…' : texto;
-      previewHtml =
-        '<div class="resena-preview-card">' +
-          '<p class="rpc-texto">"' + escHtml(textoCortado) + '"</p>' +
-          '<div class="rpc-footer">' +
-            '<span class="rpc-autor">— ' + escHtml(preview.guestName) + '</span>' +
-            '<span class="rpc-stars">' + starsText(Math.round(parseFloat(calcPromedio(preview)))) + '</span>' +
-            '<span class="rpc-mes">' + formatMonth(preview.month) + '</span>' +
-          '</div>' +
-        '</div>';
+    /* ── Cards inline ─────────────────────────────────────── */
+    var cardsHtml = '';
+    if (previews.length > 0) {
+      var items = previews.map(function (r) {
+        var texto = r.resenaPublica.trim();
+        var cortado = texto.length > 200 ? texto.slice(0, 197) + '…' : texto;
+        return (
+          '<div class="resena-preview-card">' +
+            '<p class="rpc-texto">"' + escHtml(cortado) + '"</p>' +
+            '<div class="rpc-footer">' +
+              '<span class="rpc-autor">— ' + escHtml(r.guestName) + '</span>' +
+              '<span class="rpc-stars">' + starsText(Math.round(parseFloat(calcPromedio(r)))) + '</span>' +
+              '<span class="rpc-mes">' + formatMonth(r.month) + '</span>' +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+      cardsHtml = '<div class="resenas-preview-lista">' + items + '</div>';
     }
 
+    // Boton: solo si hay mas de 3 resenas (o siempre para coherencia)
+    var btnHtml = '<button class="btn-ver-resenas">Ver todas las experiencias →</button>';
+
+    /* ── Seccion ──────────────────────────────────────────── */
+    var seccion = document.createElement('div');
+    seccion.className = 'unidad-resenas';
     seccion.innerHTML =
       '<h2>Experiencias</h2>' +
       '<div class="resenas-summary">' +
@@ -381,17 +391,25 @@
           label +
         '</div>' +
       '</div>' +
-      previewHtml +
-      '<button class="btn-ver-resenas">Ver todas las experiencias →</button>';
+      cardsHtml +
+      btnHtml;
 
-    // Insertar despues de .unidad-amenities (antes del hr que precede al mapa)
-    var amenities = document.querySelector('.unidad-amenities');
-    if (amenities) {
-      // Agregar un hr entre amenities y resenas
+    // Insertar DESPUES del mapa (con hr separador)
+    var mapa = document.querySelector('.unidad-mapa');
+    if (mapa) {
       var hr = document.createElement('hr');
       hr.className = 'unidad-divider';
-      amenities.after(hr);
+      mapa.after(hr);
       hr.after(seccion);
+    } else {
+      // Fallback: despues de amenities si no hay mapa
+      var amenities = document.querySelector('.unidad-amenities');
+      if (amenities) {
+        var hr2 = document.createElement('hr');
+        hr2.className = 'unidad-divider';
+        amenities.after(hr2);
+        hr2.after(seccion);
+      }
     }
 
     /* ── Backdrop ─────────────────────────────────────────── */
