@@ -1,7 +1,8 @@
 /**
  * resenas-viajero.js
- * Carga todas las reseñas aprobadas desde la API y las agrega al carrusel
- * de comentarios de viajero.html (debajo de las reseñas estáticas existentes).
+ * Carga las resenas aprobadas desde la API y las integra al carrusel
+ * de index.html, completando el ultimo grupo estatico incompleto antes
+ * de crear nuevos grupos. Siempre grupos de 3.
  */
 (function () {
   var API = 'https://propietarios-happy-host.onrender.com/api/reviews/approved';
@@ -12,17 +13,16 @@
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function starsLabel(n) {
-    return '★ ' + n.toFixed(1);
-  }
-
-  // Calcula promedio y devuelve la etiqueta de plataforma
-  function buildPlataforma(r) {
-    var promedio = ((r.comunicacionStars + r.limpiezaStars + r.lugarStars) / 3.0);
-    var label = '★ ' + promedio.toFixed(1);
-    if (r.via && r.via !== 'Directa') label += ' - ' + r.via;
-    else label += ' - Directa';
-    return label;
+  function buildComentarioDiv(r) {
+    var div = document.createElement('div');
+    div.className = 'comentario';
+    var promedio = (r.comunicacionStars + r.limpiezaStars + r.lugarStars) / 3.0;
+    var via = (r.via && r.via !== 'Directa') ? r.via : 'Directa';
+    div.innerHTML =
+      '<p>"' + escHtml(r.resenaPublica) + '"</p>' +
+      '<div class="autor"><strong>' + escHtml(r.guestName) + '</strong> – ' + escHtml(r.propertyName) + '</div>' +
+      '<span class="plataforma">★ ' + promedio.toFixed(1) + ' - ' + escHtml(via) + '</span>';
+    return div;
   }
 
   fetch(API)
@@ -33,38 +33,43 @@
       var carrusel = document.querySelector('.carrusel-comentarios');
       if (!carrusel) return;
 
-      // Solo mostrar reseñas que tengan texto público
+      // Solo resenas con texto publico
       var conTexto = reviews.filter(function (r) {
         return r.resenaPublica && r.resenaPublica.trim().length > 0;
       });
-
       if (conTexto.length === 0) return;
 
-      // Agrupar de a 3
-      for (var i = 0; i < conTexto.length; i += 3) {
+      var idx = 0; // cursor en conTexto
+
+      // ── Paso 1: completar el ultimo grupo estatico si tiene menos de 3 ──
+      var grupos = carrusel.querySelectorAll('.grupo-comentarios');
+      if (grupos.length > 0) {
+        var ultimoGrupo = grupos[grupos.length - 1];
+        var existentes = ultimoGrupo.querySelectorAll('.comentario').length;
+        var faltan = 3 - existentes;
+
+        while (faltan > 0 && idx < conTexto.length) {
+          ultimoGrupo.appendChild(buildComentarioDiv(conTexto[idx]));
+          idx++;
+          faltan--;
+        }
+      }
+
+      // ── Paso 2: nuevos grupos de a 3 con el resto ───────────────────────
+      while (idx < conTexto.length) {
         var grupo = document.createElement('div');
         grupo.className = 'grupo-comentarios';
 
-        var slice = conTexto.slice(i, i + 3);
-        slice.forEach(function (r) {
-          var div = document.createElement('div');
-          div.className = 'comentario';
-
-          var promedio = (r.comunicacionStars + r.limpiezaStars + r.lugarStars) / 3.0;
-          var via = (r.via && r.via !== 'Directa') ? r.via : 'Directa';
-
-          div.innerHTML =
-            '<p>"' + escHtml(r.resenaPublica) + '"</p>' +
-            '<div class="autor"><strong>' + escHtml(r.guestName) + '</strong> – ' + escHtml(r.propertyName) + '</div>' +
-            '<span class="plataforma">★ ' + promedio.toFixed(1) + ' - ' + escHtml(via) + '</span>';
-
-          grupo.appendChild(div);
-        });
+        var limite = Math.min(idx + 3, conTexto.length);
+        for (var j = idx; j < limite; j++) {
+          grupo.appendChild(buildComentarioDiv(conTexto[j]));
+        }
+        idx = limite;
 
         carrusel.appendChild(grupo);
       }
     })
     .catch(function () {
-      // Fallo silencioso — las reseñas estáticas siguen visibles
+      // Fallo silencioso — las resenas estaticas siguen visibles
     });
 })();
