@@ -159,6 +159,7 @@
             var mc = mCheck.textContent.match(/Noches:\s*(\d+)/);
             if (mc && parseInt(mc[1]) >= _longStayMin) return;
           }
+          overlay.style.display = '';   // limpiar display:none inline
           overlay.classList.add('active');
           overlay.setAttribute('aria-hidden', 'false');
         }, 900);
