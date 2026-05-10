@@ -675,8 +675,21 @@ input.visually-hidden { position: absolute !important; opacity: 0; pointer-event
 }
 @media (min-width: 768px) { .hh-footer__grid { grid-template-columns: 1.5fr 1fr 1fr; } }
 
+.hh-footer__logo {
+  width: 112px;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  background: var(--cream);
+  border-radius: 50%;
+  margin-bottom: 18px;
+  box-shadow: 0 16px 34px rgba(0,0,0,.18);
+}
+
 .hh-footer__logo img {
-  height: 60px; filter: brightness(0) invert(1); margin-bottom: 14px;
+  width: 82px;
+  height: auto;
+  display: block;
 }
 .hh-footer__tagline { font-size: .86rem; color: rgba(255,255,255,.48); line-height: 1.65; max-width: 280px; }
 
