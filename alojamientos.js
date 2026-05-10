@@ -290,8 +290,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       cocina:           'iconos/cocina.png',
       blancos:          'iconos/blancos.png',
       hogar:            'iconos/hogar.png',
-      lavarropas:       'iconos/lavarropas.svg',
-      lavavajillas:     'iconos/lavavajilla.svg',
+      lavarropas:       'iconos/lavarropas.png',
+      lavavajillas:     'iconos/lavavajilla.png',
       salamandra:       'iconos/salamandra.png',
     };
 

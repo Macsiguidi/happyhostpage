@@ -136,7 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const diffTime = Math.abs(checkoutDateObj - checkinDateObj);
   const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24))); // evita 0/NaN
 
-  const { seniaFinal, seniaNoches } = calcularSeniaInteligente(isNaN(totalOriginal) ? 0 : totalOriginal, diffDays);
+  const { seniaFinal } = calcularSeniaInteligente(isNaN(totalOriginal) ? 0 : totalOriginal, diffDays);
   const seniaOriginalNumber = seniaFinal; // para volver atrás si se quita cupón
   if (seniaSpan) seniaSpan.textContent = isNaN(seniaFinal) ? '' : fmtMoney(seniaFinal);
 
@@ -210,8 +210,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const descuento = (totalOriginal * porcentaje) / 100;
         const totalConDescuento = Math.round(totalOriginal - descuento);
 
-        const precioNocheDescuento = totalConDescuento / diffDays;
-        const seniaConDescuento = Math.round(precioNocheDescuento * seniaNoches);
+        const seniaConDescuento = calcularSeniaInteligente(totalConDescuento, diffDays).seniaFinal;
 
         mostrarTotalConDescuento(totalOriginal, totalConDescuento);
         if (labelCupon) { labelCupon.textContent = `Cupón aplicado: ${codigo} (-${porcentaje}%)`; labelCupon.style.color = "green"; }
@@ -400,18 +399,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ---------- utilidades ----------
   function calcularSeniaInteligente(total, diffDays) {
+    if (esPeriodoSeniaCincuenta()) {
+      return {
+        seniaFinal: Math.round((total || 0) * 0.5),
+        seniaNoches: 0,
+        saldoRedondo: Math.round((total || 0) * 0.5)
+      };
+    }
+
     let seniaMinNoches = 1;
     if (diffDays >= 5 && diffDays <= 9) seniaMinNoches = 2;
     else if (diffDays >= 10 && diffDays <= 15) seniaMinNoches = 4;
 
     const precioNoche = diffDays ? (total / diffDays) : 0;
     const seniaMinima = precioNoche * seniaMinNoches;
+    const redondeoSaldo = displayCurrency === 'ARS' ? 50000 : 100;
 
-    let saldoRedondo = Math.floor((total - seniaMinima) / 100) * 100;
+    let saldoRedondo = Math.floor((total - seniaMinima) / redondeoSaldo) * redondeoSaldo;
     let seniaFinal = total - saldoRedondo;
 
     if (seniaFinal < seniaMinima) {
-      saldoRedondo -= 100;
+      saldoRedondo -= redondeoSaldo;
       seniaFinal = total - saldoRedondo;
     }
 
@@ -420,6 +428,13 @@ window.addEventListener('DOMContentLoaded', () => {
       seniaNoches: seniaMinNoches,
       saldoRedondo: Math.round(saldoRedondo || 0)
     };
+  }
+
+  function esPeriodoSeniaCincuenta() {
+    const hoy = new Date();
+    const inicio = new Date(2026, 4, 11, 0, 0, 0, 0);
+    const fin = new Date(2026, 4, 13, 23, 59, 59, 999);
+    return hoy >= inicio && hoy <= fin;
   }
 
   // ---------- CUPÓN GANASTE ----------

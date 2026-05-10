@@ -638,8 +638,8 @@ body { font-family: 'Inter', 'Poppins', sans-serif; }
 }
 .card-pax img { width: 14px; height: 14px; opacity: .5; filter: brightness(0); }
 .card-desc { font-size: .82rem; color: var(--olive); line-height: 1.55; margin-bottom: 10px; flex: 1; }
-.card-amenity-icons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
-.card-amenity-icons img { width: 22px; height: 22px; object-fit: contain; opacity: .7; filter: brightness(0); }
+.card-amenity-icons { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-bottom: 12px; }
+.card-amenity-icons img { width: 24px; height: 24px; object-fit: contain; opacity: .82; display: block; flex: 0 0 24px; }
 .card-footer-row {
   display: flex; align-items: center; justify-content: space-between;
   border-top: 1px solid rgba(47,62,47,.08); padding-top: 12px;

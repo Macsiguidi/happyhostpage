@@ -80,6 +80,18 @@ if (location.hostname === 'happyhostpatagonia.com.ar') {
   <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></noscript>
 
+<div class="hotsale-popup" id="hotsalePopup" aria-hidden="true">
+  <div class="hotsale-popup__backdrop" data-hotsale-close></div>
+  <div class="hotsale-popup__dialog" role="dialog" aria-modal="true" aria-label="Hot Sale Happy Host 20% off">
+    <button class="hotsale-popup__close" type="button" aria-label="Cerrar promoción Hot Sale" data-hotsale-close>×</button>
+    <img src="logos/hotsale-20.png" alt="Hot Sale Happy Host 20% off" class="hotsale-popup__image">
+    <p class="hotsale-popup__text">Reservas para junio / julio / agosto</p>
+    <div class="hotsale-popup__actions">
+      <a href="alojamientos.html" class="hotsale-popup__cta">Ver alojamientos</a>
+    </div>
+  </div>
+</div>
+
  <section class="hero">
   <div class="video-contenedor">
     <video autoplay muted loop playsinline>
@@ -435,6 +447,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
 <!-- Cargá el JS al final de la página -->
 <script src="destacados.js?v=1.1.1"></script>
 <script src="promos.js"></script>
+<script src="hotsale-popup.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     if (window.hhPromos) hhPromos.initViajeroPromos();
