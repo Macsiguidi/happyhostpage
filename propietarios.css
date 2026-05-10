@@ -21,7 +21,7 @@
   --r:    14px;
   --r-sm: 10px;
   --r-lg: 22px;
-  --nav-h: 68px;
+  --nav-h: 96px;
 }
 
 /* ============================================================
@@ -117,7 +117,7 @@ h1,h2,h3,h4 { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--dark); 
    ============================================================ */
 .hh-header {
   position: sticky; top: 0; z-index: 200;
-  background: rgba(255,255,255,.97);
+  background: rgba(245,243,239,.97);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--sh-sm);
   backdrop-filter: blur(10px);
@@ -129,7 +129,12 @@ h1,h2,h3,h4 { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--dark); 
   gap: 24px; height: var(--nav-h);
 }
 
-.brand img { height: clamp(48px,6vw,68px); width: auto; }
+.brand img {
+  width: clamp(230px,25vw,305px);
+  height: 82px;
+  object-fit: cover;
+  object-position: center;
+}
 
 /* Nav central */
 .nav-links {
