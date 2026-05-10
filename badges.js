@@ -25,8 +25,13 @@
   }
 
   // Slug de la página actual (ej: "calafate1", "cruz4")
+  // Para páginas genéricas (unidad.html?slug=xxx) usa el query param.
   function pageSlug() {
     const file = (location.pathname.split('/').pop() || '').replace('.html', '');
+    if (file === 'unidad') {
+      const slug = new URLSearchParams(location.search).get('slug');
+      if (slug) return toApiSlug(slug);
+    }
     return toApiSlug(file);
   }
 
