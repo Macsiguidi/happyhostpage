@@ -654,6 +654,37 @@ const noPromo = (basePrice) => ({
   rejected     : []
 });
 
+function todayArgentinaDate() {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Argentina/Buenos_Aires',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date());
+
+  const byType = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${byType.year}-${byType.month}-${byType.day}`;
+}
+
+function promoBookingDate() {
+  return `${todayArgentinaDate()}T12:00:00.000Z`;
+}
+
+function onlyDate(value) {
+  return value ? String(value).slice(0, 10) : null;
+}
+
+function isInsideBookingWindow(promo) {
+  const today = todayArgentinaDate();
+  const start = onlyDate(promo.bookingWindowStart);
+  const end = onlyDate(promo.bookingWindowEnd);
+
+  if (start && today < start) return false;
+  if (end && today > end) return false;
+
+  return true;
+}
+
 // 🟢 GET /api/promos-activas/:unidad
 // Devuelve la lista de promos activas/programadas que aplican a esta propiedad.
 // El cliente (promos.js en la web) la usa para poblar el popup de promo.
@@ -671,6 +702,8 @@ app.get('/api/promos-activas/:unidad', async (req, res) => {
 
     // Filtrar las que aplican a esta propiedad o son globales
     const filtradas = todas.filter(p => {
+      if (!isInsideBookingWindow(p)) return false;
+
       if (p.scopeMode === 'all') return true;
       if (p.scopeMode === 'group') {
         // ScopeFamily viene como string del enum (ej. "1" o "Calafate")
@@ -711,7 +744,7 @@ app.post('/api/evaluar-promo', async (req, res) => {
       checkOut      : checkout,
       guests        : guests  || 2,
       basePrice     : basePrice || 0,
-      bookingDate   : new Date().toISOString()
+      bookingDate   : promoBookingDate()
     }, {
       headers: promoHeaders,
       timeout: 8000
