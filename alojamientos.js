@@ -195,7 +195,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const p      = PROPS[card.dataset.nombre];
     const capOk  = !huespedes || (p && p.pax >= huespedes);
     const dispOk = p && disponiblesIds.includes(p.houseId);
-    const mostrar = capOk && dispOk;
+    const minStayOk = !(window.hhHotSaleMinStay?.blocksStay(card.dataset.nombre, noches));
+    const mostrar = capOk && dispOk && minStayOk;
     card.classList.toggle('pax-hidden', !mostrar);
     if (mostrar) visibles++;
   });

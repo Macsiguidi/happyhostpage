@@ -382,6 +382,7 @@
   <!-- 4) Motor de moneda -->
   <script src="huespedes.js"></script>
   <script src="moneda.js"></script>
+  <script src="hotsale-minstay.js"></script>
 
   <!-- 5) Motor de reservas -->
   <script>
@@ -590,7 +591,8 @@
       const minStay = dias
         .map(d => Math.min(...d.prices.map(p => p.min_stay)))
         .reduce((a, b) => Math.min(a, b), Infinity);
-      if (noches < minStay) { resDiv.textContent = `La estadía mínima es de ${minStay} noches.`; return; }
+      const effectiveMinStay = window.hhHotSaleMinStay?.getMinStay(PROP_KEY, minStay) || minStay;
+      if (noches < effectiveMinStay) { resDiv.textContent = `La estadía mínima es de ${effectiveMinStay} noches.`; return; }
 
       const factorARS = window._factorARS || 1400;
 
