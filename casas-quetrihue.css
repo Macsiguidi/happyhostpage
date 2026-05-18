@@ -27,6 +27,10 @@ body {
   color: var(--texto);
   background: var(--blanco);
   overflow-x: hidden;
+  hyphens: none;
+  -webkit-hyphens: none;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 /* ============================================================
