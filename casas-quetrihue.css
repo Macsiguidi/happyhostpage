@@ -960,6 +960,12 @@ body {
   .stat-number { font-size: 1.5rem; }
   .stat-label  { font-size: 0.55rem; letter-spacing: 0.14em; }
 
+  /* ── Equipo ── */
+  .seccion-equipo { padding: 40px 16px 60px; }
+  .equipo-grid    { gap: 20px; flex-wrap: nowrap; justify-content: center; }
+  .equipo-foto    { width: 90px; height: 90px; }
+  .equipo-nombre  { font-size: 0.85rem; }
+
   /* ── Intro & Quiénes somos ── */
   .seccion-intro { padding: 72px 24px; }
   .seccion-intro h2 { font-size: clamp(1.5rem, 6vw, 2rem); }
