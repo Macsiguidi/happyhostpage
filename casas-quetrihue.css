@@ -1,0 +1,911 @@
+/* ============================================================
+   CASAS QUETRIHUE — Happy Host Patagonia
+   Propuesta de Administración
+============================================================ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --marron:       #B58863;
+  --marron-dark:  #A17455;
+  --oscuro:       #1D292A;
+  --gris:         #3D4D55;
+  --beige:        #D3C3B9;
+  --beige-claro:  #f4f1ef;
+  --crema:        #fff9f0;
+  --blanco:       #ffffff;
+  --texto:        #2a2a2a;
+  --texto-suave:  #5a5a5a;
+}
+
+body {
+  font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+  color: var(--texto);
+  background: var(--blanco);
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   HEADER / NAV
+============================================================ */
+
+.qh-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  transition: background 0.4s, box-shadow 0.4s;
+  padding: 0 40px;
+}
+
+.qh-header.scrolled {
+  background: rgba(29, 41, 42, 0.96);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+
+.qh-header__row {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.qh-logo img {
+  height: 44px;
+  display: block;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+.qh-nav {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.qh-nav a {
+  text-decoration: none;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+.qh-nav a:hover {
+  color: var(--marron);
+}
+
+.qh-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-nav {
+  background: var(--marron);
+  color: white;
+  text-decoration: none;
+  padding: 10px 24px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: background 0.3s;
+  white-space: nowrap;
+}
+
+.btn-nav:hover {
+  background: var(--marron-dark);
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-back:hover {
+  color: var(--beige);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
+  background: url('casasquetrihue/imagenes quetrihue/1.jpeg') no-repeat center center / cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(29, 41, 42, 0.45) 0%,
+    rgba(29, 41, 42, 0.05) 40%,
+    rgba(29, 41, 42, 0.80) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 40px 100px;
+  max-width: 1000px;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--marron);
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+.hero-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(3.5rem, 9vw, 8.5rem);
+  font-weight: 800;
+  color: var(--blanco);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  margin-bottom: 26px;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--beige);
+}
+
+.hero-subtitle {
+  font-size: clamp(0.72rem, 1.5vw, 0.9rem);
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.hero-scroll span {
+  display: block;
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.5));
+  margin: 0 auto;
+  animation: scrollLine 2.4s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%   { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  50%  { opacity: 1; transform: scaleY(1); transform-origin: top; }
+  100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
+}
+
+/* ============================================================
+   STATS BAR
+============================================================ */
+
+.stats-bar {
+  background: var(--oscuro);
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 30px 60px;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  flex: 1;
+  max-width: 220px;
+}
+
+.stat-item:last-child {
+  border-right: none;
+}
+
+.stat-number {
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--marron);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(211, 195, 185, 0.55);
+}
+
+/* ============================================================
+   INTRO
+============================================================ */
+
+.seccion-intro {
+  padding: 120px 40px;
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--marron);
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.seccion-intro h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--oscuro);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 38px;
+}
+
+.seccion-intro p {
+  font-size: 1.08rem;
+  color: var(--texto-suave);
+  line-height: 1.95;
+  font-weight: 400;
+}
+
+.linea-dorada {
+  width: 48px;
+  height: 3px;
+  background: var(--marron);
+  margin: 44px auto;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   GALERÍA
+============================================================ */
+
+.seccion-galeria {
+  padding: 0 0 90px;
+}
+
+.galeria-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 300px 300px;
+  gap: 5px;
+}
+
+.galeria-grid figure {
+  overflow: hidden;
+  margin: 0;
+}
+
+.galeria-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.galeria-grid figure:hover img {
+  transform: scale(1.05);
+}
+
+.galeria-grid .foto-grande {
+  grid-row: 1 / 3;
+}
+
+/* ============================================================
+   HUÉSPEDES
+============================================================ */
+
+.seccion-huespedes {
+  background: var(--beige-claro);
+  padding: 120px 60px;
+}
+
+.seccion-huespedes .inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: center;
+}
+
+.seccion-huespedes .texto h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  color: var(--oscuro);
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 28px;
+}
+
+.seccion-huespedes .texto p {
+  font-size: 1rem;
+  color: var(--texto-suave);
+  line-height: 1.95;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.imagen-stack {
+  position: relative;
+  height: 540px;
+}
+
+.imagen-stack .foto-principal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.imagen-stack .foto-flotante {
+  position: absolute;
+  bottom: -28px;
+  left: -28px;
+  width: 56%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 6px solid var(--blanco);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================
+   SERVICIOS
+============================================================ */
+
+.seccion-servicios {
+  padding: 120px 40px;
+  background: var(--blanco);
+}
+
+.header-seccion {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 80px;
+}
+
+.header-seccion h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+  color: var(--oscuro);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.grid-servicios {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  background: #e5ddd5;
+}
+
+.servicio-card {
+  background: var(--blanco);
+  padding: 54px 46px;
+  transition: background 0.3s;
+}
+
+.servicio-card:hover {
+  background: var(--beige-claro);
+}
+
+.servicio-icono {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 22px;
+}
+
+.servicio-card h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--oscuro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.servicio-linea {
+  width: 28px;
+  height: 2px;
+  background: var(--marron);
+  margin-bottom: 18px;
+  transition: width 0.35s ease;
+}
+
+.servicio-card:hover .servicio-linea {
+  width: 52px;
+}
+
+.servicio-card p {
+  font-size: 0.93rem;
+  color: var(--texto-suave);
+  line-height: 1.88;
+  font-weight: 400;
+}
+
+/* ============================================================
+   RECEPCIÓN
+============================================================ */
+
+.seccion-recepcion {
+  background: var(--oscuro);
+  padding: 100px 40px;
+  text-align: center;
+}
+
+.seccion-recepcion h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  color: var(--blanco);
+  font-weight: 800;
+  margin-bottom: 70px;
+}
+
+.recepcion-grid {
+  max-width: 920px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.recepcion-item {
+  padding: 44px 36px;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.recepcion-item:last-child {
+  border-right: none;
+}
+
+.recepcion-item .icono {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.recepcion-item h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--marron);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.recepcion-item p {
+  font-size: 0.9rem;
+  color: rgba(211, 195, 185, 0.72);
+  font-weight: 400;
+  line-height: 1.78;
+}
+
+/* ============================================================
+   SISTEMA PROPIETARIOS
+============================================================ */
+
+.seccion-sistema {
+  padding: 120px 60px;
+  background: var(--beige-claro);
+}
+
+.seccion-sistema .inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: center;
+}
+
+.seccion-sistema h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  color: var(--oscuro);
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 22px;
+}
+
+.seccion-sistema p {
+  font-size: 1rem;
+  color: var(--texto-suave);
+  line-height: 1.95;
+  font-weight: 400;
+  margin-bottom: 18px;
+}
+
+.lista-sistema {
+  list-style: none;
+  padding: 0;
+  margin-top: 34px;
+}
+
+.lista-sistema li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 22px;
+  font-size: 0.96rem;
+  color: var(--texto-suave);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.lista-sistema li::before {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  min-width: 7px;
+  background: var(--marron);
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.sistema-imagen-wrap {
+  position: relative;
+  height: 520px;
+}
+
+.sistema-imagen-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.sistema-tag {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  background: var(--marron);
+  color: white;
+  padding: 10px 22px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   AMENITIES
+============================================================ */
+
+.seccion-amenities {
+  padding: 120px 40px;
+  background: var(--blanco);
+}
+
+.amenities-grid {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px;
+  background: #e5ddd5;
+}
+
+.amenity-item {
+  background: var(--blanco);
+  text-align: center;
+  padding: 48px 16px;
+  transition: background 0.3s;
+}
+
+.amenity-item:hover {
+  background: var(--beige-claro);
+}
+
+.amenity-icono {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.amenity-item p {
+  font-size: 0.72rem;
+  color: var(--oscuro);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.amenity-nota {
+  text-align: center;
+  margin-top: 32px;
+  font-size: 0.82rem;
+  color: #999;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ============================================================
+   CTA / FORMULARIO
+============================================================ */
+
+.seccion-cta {
+  background: var(--oscuro);
+  padding: 120px 40px;
+  text-align: center;
+}
+
+.seccion-cta .eyebrow {
+  color: var(--marron);
+}
+
+.seccion-cta h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  color: var(--blanco);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.seccion-cta > p {
+  font-size: 1rem;
+  color: rgba(211, 195, 185, 0.65);
+  margin-bottom: 64px;
+  font-weight: 400;
+}
+
+.form-quetrihue {
+  max-width: 580px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: left;
+}
+
+.campo label {
+  display: block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(211, 195, 185, 0.75);
+  margin-bottom: 9px;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid rgba(211, 195, 185, 0.18);
+  border-radius: 3px;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  transition: border-color 0.3s;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--crema);
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: rgba(211, 195, 185, 0.3);
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--marron);
+}
+
+.btn-enviar {
+  background: var(--marron);
+  color: white;
+  border: none;
+  padding: 18px 54px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.3s;
+  align-self: center;
+  margin-top: 10px;
+}
+
+.btn-enviar:hover {
+  background: var(--marron-dark);
+}
+
+#mensaje-exito {
+  text-align: center;
+  color: var(--marron);
+  font-weight: 600;
+  padding: 22px;
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.footer {
+  background: #111a1b;
+  color: var(--beige);
+  padding: 50px 40px;
+}
+
+.footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-logo img {
+  height: 46px;
+}
+
+.footer-info p {
+  margin: 5px 0;
+  font-size: 0.88rem;
+  color: rgba(211, 195, 185, 0.65);
+}
+
+.footer-redes {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.footer-redes a {
+  display: inline-block;
+}
+
+.icono-footer {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--gris);
+  padding: 10px;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.icono-footer:hover {
+  background-color: var(--marron);
+  transform: scale(1.1);
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1024px) {
+  .grid-servicios {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .amenities-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stat-item {
+    padding: 24px 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Header */
+  .qh-header { padding: 0 20px; }
+  .qh-nav    { display: none; }
+  .btn-back  { display: none; }
+  .btn-nav   { padding: 9px 18px; font-size: 0.7rem; }
+
+  /* Hero */
+  .hero-content { padding: 0 24px 80px; }
+  .hero-title   { font-size: 3rem; }
+
+  /* Stats */
+  .stats-bar    { flex-wrap: wrap; }
+  .stat-item    { max-width: 50%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .stat-item:nth-child(odd)  { border-right: 1px solid rgba(255,255,255,0.06); }
+  .stat-item:nth-child(3),
+  .stat-item:nth-child(4)    { border-bottom: none; }
+
+  /* Galería */
+  .galeria-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px;
+  }
+  .galeria-grid .foto-grande { grid-row: auto; }
+
+  /* Huéspedes */
+  .seccion-huespedes { padding: 80px 24px; }
+  .seccion-huespedes .inner { grid-template-columns: 1fr; gap: 50px; }
+  .imagen-stack { height: 320px; order: -1; }
+  .imagen-stack .foto-flotante { display: none; }
+
+  /* Servicios */
+  .seccion-servicios { padding: 80px 24px; }
+  .grid-servicios    { grid-template-columns: 1fr; }
+
+  /* Recepción */
+  .recepcion-grid { grid-template-columns: 1fr; }
+  .recepcion-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .recepcion-item:last-child { border-bottom: none; }
+
+  /* Sistema */
+  .seccion-sistema { padding: 80px 24px; }
+  .seccion-sistema .inner { grid-template-columns: 1fr; gap: 40px; }
+  .sistema-imagen-wrap { height: 300px; }
+
+  /* Amenities */
+  .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+  .seccion-amenities { padding: 80px 24px; }
+
+  /* CTA */
+  .seccion-cta { padding: 80px 24px; }
+
+  /* Footer */
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+}
