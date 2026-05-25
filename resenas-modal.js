@@ -350,6 +350,23 @@
     var n     = reviews.length;
     var label = n === 1 ? '1 estadía' : n + ' estadías';
 
+    // Inyectar AggregateRating en JSON-LD para SEO (Googlebot renderiza JS)
+    try {
+      document.querySelectorAll('script[type="application/ld+json"]').forEach(function (s) {
+        var data = JSON.parse(s.textContent);
+        if (data['@type'] === 'VacationRental') {
+          data.aggregateRating = {
+            '@type': 'AggregateRating',
+            'ratingValue': promedioGlobal,
+            'reviewCount': String(n),
+            'bestRating': '5',
+            'worstRating': '1'
+          };
+          s.textContent = JSON.stringify(data);
+        }
+      });
+    } catch (e) {}
+
     // Hasta 3 mas recientes con texto (el API ya las devuelve ordenadas)
     var conTexto = reviews.filter(function (r) {
       return r.resenaPublica && r.resenaPublica.trim().length > 0;

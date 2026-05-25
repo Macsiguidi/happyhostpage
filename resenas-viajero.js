@@ -30,6 +30,28 @@
     .then(function (reviews) {
       if (!reviews || reviews.length === 0) return;
 
+      // Inyectar AggregateRating global en el schema LodgingBusiness del homepage
+      try {
+        var totalProm = reviews.reduce(function (acc, r) {
+          return acc + (r.comunicacionStars + r.limpiezaStars + r.lugarStars) / 3;
+        }, 0);
+        var avgGlobal = (totalProm / reviews.length).toFixed(1);
+        document.querySelectorAll('script[type="application/ld+json"]').forEach(function (s) {
+          var data = JSON.parse(s.textContent);
+          var types = Array.isArray(data['@type']) ? data['@type'] : [data['@type']];
+          if (types.includes('LodgingBusiness') || types.includes('LocalBusiness')) {
+            data.aggregateRating = {
+              '@type': 'AggregateRating',
+              'ratingValue': avgGlobal,
+              'reviewCount': String(reviews.length),
+              'bestRating': '5',
+              'worstRating': '1'
+            };
+            s.textContent = JSON.stringify(data);
+          }
+        });
+      } catch (e) {}
+
       var carrusel = document.querySelector('.carrusel-comentarios');
       if (!carrusel) return;
 
