@@ -113,7 +113,8 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
           <li><a href="alojamientos.html">Alojamientos</a></li>
           <li><a href="https://wa.me/5492944700773">Contacto</a></li>
           <li><a href="#reseñas">Reseñas</a></li>
-          <li><a href="propietarios.html"> Propietarios</a></li>
+          <li><a href="actividades/index.html">Actividades</a></li>
+          <li><a href="propietarios.html">Propietarios</a></li>
         </ul>
       </nav>
     </div>
@@ -274,7 +275,201 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
   </div>
 </section>
 
+<!-- ══════════════════════════════════════════
+     GUÍAS DE ACTIVIDADES — 2 cards + modals
+     ══════════════════════════════════════════ -->
+<div class="guias-actividades-wrap">
+<section class="guias-actividades">
+  <div class="guias-header">
+    <span class="guias-eyebrow">Planificá tu visita</span>
+    <h2 class="guias-title">Guías de actividades</h2>
+    <p class="guias-sub">Todo lo que necesitás saber, en un solo lugar.</p>
+  </div>
 
+  <div class="guias-grid">
+
+    <!-- Card Invierno -->
+    <button class="guia-card" onclick="hhModal.open('modal-invierno')" aria-haspopup="dialog">
+      <div class="guia-card__bg"
+           style="background-image:url('https://www.cerrobayo.com.ar/imagenes/Galeria/2025/12.jpg')"></div>
+      <div class="guia-card__overlay"></div>
+      <div class="guia-card__badge">⛷️ Temporada 2026</div>
+      <div class="guia-card__body">
+        <span class="guia-card__tag">❄️ Invierno · Nieve</span>
+        <h3 class="guia-card__title">Cerro Bayo</h3>
+        <p class="guia-card__desc">Precios, pistas y todo lo que necesitás para la temporada de ski.</p>
+        <span class="guia-card__cta">Ver información <span class="guia-arrow">→</span></span>
+      </div>
+    </button>
+
+    <!-- Card Todo el año -->
+    <button class="guia-card" onclick="hhModal.open('modal-quehacer')" aria-haspopup="dialog">
+      <div class="guia-card__bg"
+           style="background-image:url('imagenes/Verano.jpg')"></div>
+      <div class="guia-card__overlay"></div>
+      <div class="guia-card__body">
+        <span class="guia-card__tag">🌲 Todo el año</span>
+        <h3 class="guia-card__title">Qué hacer en<br>Villa La Angostura</h3>
+        <p class="guia-card__desc">Arrayanes, trekking, pesca, kayak, cabalgatas y más.</p>
+        <span class="guia-card__cta">Explorar actividades <span class="guia-arrow">→</span></span>
+      </div>
+    </button>
+
+    <!-- Card Clima -->
+    <div class="clima-card" id="clima-card">
+      <div class="clima-anim-bg" id="clima-bg"></div>
+      <div class="clima-anim-overlay"></div>
+      <span class="clima-badge-top">🌡️ Villa La Angostura · En tiempo real</span>
+      <div class="clima-body">
+        <div class="clima-main">
+          <span class="clima-icon" id="clima-icon">⛅</span>
+          <div class="clima-temp-wrap">
+            <span class="clima-temp" id="clima-temp">--°</span>
+            <span class="clima-desc" id="clima-desc">Cargando...</span>
+          </div>
+        </div>
+        <div class="clima-meta">
+          <span id="clima-viento">💨 --</span>
+          <span class="clima-sep">·</span>
+          <span class="clima-live">● En tiempo real</span>
+        </div>
+      </div>
+      <div class="clima-divider"></div>
+      <div class="clima-forecast" id="clima-forecast">
+        <div class="clima-day"><span class="clima-day-name">--</span><span class="clima-day-icon">⛅</span><span class="clima-day-temp">--</span></div>
+        <div class="clima-day"><span class="clima-day-name">--</span><span class="clima-day-icon">⛅</span><span class="clima-day-temp">--</span></div>
+        <div class="clima-day"><span class="clima-day-name">--</span><span class="clima-day-icon">⛅</span><span class="clima-day-temp">--</span></div>
+        <div class="clima-day"><span class="clima-day-name">--</span><span class="clima-day-icon">⛅</span><span class="clima-day-temp">--</span></div>
+        <div class="clima-day"><span class="clima-day-name">--</span><span class="clima-day-icon">⛅</span><span class="clima-day-temp">--</span></div>
+        <div class="clima-day"><span class="clima-day-name">--</span><span class="clima-day-icon">⛅</span><span class="clima-day-temp">--</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     MODAL — INVIERNO / CERRO BAYO
+     ══════════════════════════════════════════ -->
+<div class="hh-modal-overlay" id="modal-invierno" role="dialog" aria-modal="true" aria-label="Cerro Bayo guía de ski">
+  <div class="hh-modal">
+    <button class="hh-modal__close" onclick="hhModal.close('modal-invierno')" aria-label="Cerrar">×</button>
+    <div class="hh-modal__hero"
+         style="background-image:url('https://www.cerrobayo.com.ar/imagenes/Galeria/2025/01.jpg')">
+      <div class="hh-modal__hero-overlay"></div>
+      <div class="hh-modal__hero-body">
+        <span class="hh-modal__hero-tag">❄️ Invierno 2026</span>
+        <h3 class="hh-modal__hero-title">Cerro Bayo Ski Boutique</h3>
+        <p class="hh-modal__hero-sub">Villa La Angostura · 9 km del centro</p>
+      </div>
+    </div>
+    <div class="hh-modal__content">
+
+      <div class="hh-modal__stats">
+        <div class="hh-modal__stat">
+          <span class="hh-modal__stat-icon">📅</span>
+          <span class="hh-modal__stat-val">20 jun → sep</span>
+          <span class="hh-modal__stat-label">Temporada</span>
+        </div>
+        <div class="hh-modal__stat">
+          <span class="hh-modal__stat-icon">🎿</span>
+          <span class="hh-modal__stat-val">25 pistas</span>
+          <span class="hh-modal__stat-label">700 m desnivel</span>
+        </div>
+        <div class="hh-modal__stat">
+          <span class="hh-modal__stat-icon">🚗</span>
+          <span class="hh-modal__stat-val">15 min</span>
+          <span class="hh-modal__stat-label">desde el pueblo</span>
+        </div>
+      </div>
+
+      <div class="hh-modal__highlights">
+        <div class="hh-modal__hl">
+          <span class="hh-modal__hl-icon">💰</span>
+          <div><strong>Precios 2026</strong><br>Desde $111.400/día · Temporada alta $136.500/día</div>
+        </div>
+        <div class="hh-modal__hl">
+          <span class="hh-modal__hl-icon">🎓</span>
+          <div><strong>Escuela de ski</strong><br>Instructores AADIDES certificados · Clases desde 3 años</div>
+        </div>
+        <div class="hh-modal__hl">
+          <span class="hh-modal__hl-icon">🎿</span>
+          <div><strong>Alquiler de equipo</strong><br>Pro Shop Aventura · Av. Arrayanes 173 · 9 a 21 hs</div>
+        </div>
+        <div class="hh-modal__hl">
+          <span class="hh-modal__hl-icon">🎫</span>
+          <div><strong>Compra online</strong><br><a href="https://compra.cerrobayo.com.ar/" target="_blank" rel="noopener">compra.cerrobayo.com.ar</a> — sin filas</div>
+        </div>
+      </div>
+
+      <a href="actividades/cerro-bayo-esqui.html" class="hh-modal__cta">
+        Ver guía completa de esquí →
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL — QUÉ HACER EN VLA
+     ══════════════════════════════════════════ -->
+<div class="hh-modal-overlay" id="modal-quehacer" role="dialog" aria-modal="true" aria-label="Qué hacer en Villa La Angostura">
+  <div class="hh-modal">
+    <button class="hh-modal__close" onclick="hhModal.close('modal-quehacer')" aria-label="Cerrar">×</button>
+    <div class="hh-modal__hero"
+         style="background-image:url('imagenes/Verano.jpg')">
+      <div class="hh-modal__hero-overlay"></div>
+      <div class="hh-modal__hero-body">
+        <span class="hh-modal__hero-tag">🌲 Todo el año</span>
+        <h3 class="hh-modal__hero-title">Qué hacer en<br>Villa La Angostura</h3>
+        <p class="hh-modal__hero-sub">Patagonia andina · Neuquén · Argentina</p>
+      </div>
+    </div>
+    <div class="hh-modal__content">
+
+      <div class="hh-modal__act-grid">
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">🌳</span>
+          <span>Arrayanes</span>
+        </div>
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">🥾</span>
+          <span>Trekking</span>
+        </div>
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">🌊</span>
+          <span>Lagos</span>
+        </div>
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">🎣</span>
+          <span>Pesca</span>
+        </div>
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">⛵</span>
+          <span>Náutica</span>
+        </div>
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">🐎</span>
+          <span>Cabalgatas</span>
+        </div>
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">🍽️</span>
+          <span>Gastronomía</span>
+        </div>
+        <div class="hh-modal__act">
+          <span class="hh-modal__act-icon">⛷️</span>
+          <span>Cerro Bayo</span>
+        </div>
+      </div>
+
+      <p class="hh-modal__text">Un destino con actividades para todo el año: el único Bosque de Arrayanes del mundo, trekking con vistas al lago, pesca con mosca, paseos en catamarán y mucho más. Guía con operadores, temporadas y precios.</p>
+
+      <a href="actividades/que-hacer-villa-la-angostura.html" class="hh-modal__cta">
+        Ver guía completa de actividades →
+      </a>
+    </div>
+  </div>
+</div>
+</div><!-- /guias-actividades-wrap -->
 
 <section class="comentarios-section" id="reseñas">
   <div class="contenedor-comentarios">
@@ -425,6 +620,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
     <a href="viajero.html#resenas">Reseñas</a>
     <a href="viajero.html#contacto">Contacto</a>
     <a href="propietarios.html">Propietarios</a>
+    <a href="actividades/index.html">Actividades</a>
   </nav>
 
   <div class="footer-bottom">
@@ -455,6 +651,713 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
 </script>
 <script src="badges.js"></script>
 <script src="resenas-viajero.js"></script>
+
+<style>
+/* ─── Guías section ─── */
+.guias-actividades {
+  padding: 72px 24px 80px;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+.guias-actividades-wrap {
+  background: #F5F3EF;
+}
+.guias-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.guias-eyebrow {
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #6B7D5C;
+  margin-bottom: 10px;
+}
+.guias-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #2F3E2F;
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+.guias-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: .95rem;
+  color: #777;
+  margin: 0;
+}
+.guias-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 680px) {
+  .guias-actividades { padding: 48px 16px 56px; }
+  .guias-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* ─── Grid: 3 columnas ─── */
+.guias-grid { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 900px) { .guias-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 580px) { .guias-grid { grid-template-columns: 1fr; } }
+
+/* ─── Clima card (misma forma que las otras) ─── */
+.clima-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 6px 32px rgba(47,62,47,.18);
+  cursor: default;
+}
+@media (max-width: 580px) { .clima-card { min-height: 300px; border-radius: 16px; } }
+
+/* Fondo animado */
+.clima-anim-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #1a3a5c 0%, #2c6aa0 100%);
+  transition: background 1.2s ease;
+}
+/* Overlay oscuro abajo */
+.clima-anim-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.25) 50%, transparent 100%);
+  z-index: 1;
+}
+
+/* ── Fondos por clima ── */
+.wx-clear    .clima-anim-bg { background: linear-gradient(160deg,#0055a4 0%,#0088cc 45%,#44bbee 100%); }
+.wx-partly   .clima-anim-bg { background: linear-gradient(160deg,#1a4a7a 0%,#4d88b4 60%,#a0c8e0 100%); }
+.wx-cloudy   .clima-anim-bg { background: linear-gradient(160deg,#3a4a5a 0%,#5a6a7a 60%,#8a9aaa 100%); }
+.wx-fog      .clima-anim-bg { background: linear-gradient(160deg,#5a6068 0%,#8a9098 60%,#c0c8d0 100%); }
+.wx-rain     .clima-anim-bg { background: linear-gradient(160deg,#0d1f2d 0%,#1a3a54 55%,#254a6a 100%); }
+.wx-snow     .clima-anim-bg { background: linear-gradient(160deg,#8ab8d8 0%,#c8dff0 55%,#e8f4fc 100%); }
+.wx-storm    .clima-anim-bg { background: linear-gradient(160deg,#080810 0%,#14142a 55%,#1e1e3a 100%); }
+
+/* ── Animación: sol ── */
+.wx-clear .clima-anim-bg::before {
+  content:'';
+  position:absolute;
+  width:90px; height:90px;
+  top:28px; right:28px;
+  border-radius:50%;
+  background: radial-gradient(circle, #ffe566 35%, #ffb700 65%, transparent 78%);
+  box-shadow: 0 0 40px 20px rgba(255,210,50,.45);
+  animation: sunPulse 2.5s ease-in-out infinite;
+}
+@keyframes sunPulse {
+  0%,100% { box-shadow:0 0 40px 20px rgba(255,210,50,.45); transform:scale(1); }
+  50%      { box-shadow:0 0 65px 35px rgba(255,200,50,.65); transform:scale(1.07); }
+}
+
+/* ── Animación: nubes parciales ── */
+.wx-partly .clima-anim-bg::before {
+  content:'☁';
+  position:absolute;
+  font-size:3.5rem;
+  top:18px; left:-40px;
+  opacity:.55;
+  animation: cloudDrift 9s linear infinite;
+}
+.wx-partly .clima-anim-bg::after {
+  content:'☁';
+  position:absolute;
+  font-size:2.2rem;
+  top:50px; left:-30px;
+  opacity:.35;
+  animation: cloudDrift 13s linear infinite 4s;
+}
+@keyframes cloudDrift {
+  0%   { transform:translateX(0); }
+  100% { transform:translateX(420px); }
+}
+
+/* ── Animación: nublado ── */
+.wx-cloudy .clima-anim-bg::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 40px,
+    rgba(255,255,255,.01) 40px, rgba(255,255,255,.01) 80px
+  );
+  animation: cloudLayer 6s ease-in-out infinite alternate;
+}
+@keyframes cloudLayer {
+  from { transform:translateX(0); }
+  to   { transform:translateX(18px); }
+}
+
+/* ── Animación: lluvia ── */
+.wx-rain .clima-anim-bg::after {
+  content:'';
+  position:absolute;
+  inset:-20px;
+  background: repeating-linear-gradient(
+    105deg,
+    transparent 0px, transparent 5px,
+    rgba(160,210,240,.11) 5px, rgba(160,210,240,.11) 6px
+  );
+  animation: rainFall .4s linear infinite;
+}
+@keyframes rainFall {
+  0%   { transform:translateY(0) skewX(-8deg); }
+  100% { transform:translateY(22px) skewX(-8deg); }
+}
+
+/* ── Animación: nieve ── */
+.wx-snow .clima-anim-bg::before {
+  content:'❄  ❅  ❆  ❄  ❅  ❆  ❄  ❅  ❆';
+  position:absolute;
+  top:-24px; left:0; right:0;
+  font-size:1rem;
+  color:rgba(255,255,255,.55);
+  letter-spacing:6px;
+  animation: snowFall1 3.8s linear infinite;
+  white-space:nowrap;
+}
+.wx-snow .clima-anim-bg::after {
+  content:'❅  ❆  ❄  ❅  ❄  ❆  ❅  ❆';
+  position:absolute;
+  top:-24px; left:0; right:0;
+  font-size:.75rem;
+  color:rgba(255,255,255,.35);
+  letter-spacing:14px;
+  animation: snowFall1 5.5s linear infinite 1.8s;
+  white-space:nowrap;
+}
+@keyframes snowFall1 {
+  0%   { transform:translateY(0);     opacity:.7; }
+  100% { transform:translateY(420px); opacity:.2; }
+}
+
+/* ── Animación: tormenta ── */
+.wx-storm .clima-anim-bg::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  animation: lightning 5s ease-in-out infinite;
+}
+@keyframes lightning {
+  0%,88%,100% { background:transparent; }
+  90%          { background:rgba(255,255,255,.06); }
+  92%          { background:transparent; }
+  94%          { background:rgba(255,255,255,.1); }
+}
+
+/* Badge top */
+.clima-badge-top {
+  position:relative;
+  z-index:2;
+  display:inline-block;
+  font-family:'Inter',sans-serif;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);
+  padding:4px 11px;
+  border-radius:20px;
+  margin:0 0 0 20px;
+  align-self:flex-start;
+  margin-top:18px;
+}
+
+/* Cuerpo */
+.clima-body {
+  position:relative;
+  z-index:2;
+  padding:0 20px 4px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.clima-main {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.clima-icon { font-size:2.4rem; line-height:1; }
+.clima-temp-wrap { display:flex; flex-direction:column; gap:1px; }
+.clima-temp {
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:2.6rem;
+  font-weight:800;
+  color:#fff;
+  line-height:1;
+}
+.clima-desc {
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.88rem;
+  font-weight:600;
+  color:rgba(255,255,255,.85);
+}
+.clima-meta {
+  font-family:'Inter',sans-serif;
+  font-size:.74rem;
+  color:rgba(255,255,255,.55);
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.clima-sep { opacity:.3; }
+.clima-live { color:#8fbb8f; font-weight:600; }
+
+/* Separador */
+.clima-divider {
+  position: relative;
+  z-index: 2;
+  height: 1px;
+  background: rgba(255,255,255,.12);
+  margin: 10px 14px 0;
+}
+
+/* Pronóstico — grilla 3×2 */
+.clima-forecast {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 0 14px 16px;
+  margin-top: 6px;
+}
+.clima-day {
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  padding: 9px 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(4px);
+}
+.clima-day-name {
+  font-family: 'Inter', sans-serif;
+  font-size: .65rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.75);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.clima-day-icon { font-size: 1.35rem; }
+.clima-day-temp {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .74rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ─── Guía card ─── */
+.guia-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 6px 32px rgba(47,62,47,.15);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.guia-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 52px rgba(47,62,47,.26);
+}
+@media (max-width: 680px) {
+  .guia-card { min-height: 300px; border-radius: 16px; }
+}
+.guia-card__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform .5s ease;
+}
+.guia-card:hover .guia-card__bg { transform: scale(1.04); }
+.guia-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20,30,20,.86) 0%, rgba(20,30,20,.38) 50%, rgba(20,30,20,.06) 100%);
+}
+.guia-card__badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  background: #C97A5A;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+.guia-card__body {
+  position: relative;
+  z-index: 1;
+  padding: 28px;
+  color: #fff;
+}
+.guia-card__tag {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.28);
+  padding: 4px 11px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.guia-card__title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 8px;
+  color: #fff;
+}
+.guia-card__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: .88rem;
+  color: rgba(255,255,255,.8);
+  margin: 0 0 18px;
+  line-height: 1.55;
+}
+.guia-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: .84rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.38);
+  padding: 9px 18px;
+  border-radius: 50px;
+  transition: background .2s;
+}
+.guia-card:hover .guia-card__cta { background: rgba(255,255,255,.28); }
+.guia-arrow { transition: transform .2s; }
+.guia-card:hover .guia-arrow { transform: translateX(4px); }
+
+/* ─── Modal overlay ─── */
+.hh-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.72);
+  z-index: 9000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: hhFadeIn .2s ease;
+}
+.hh-modal-overlay.open { display: flex; }
+@keyframes hhFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ─── Modal panel ─── */
+.hh-modal {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 540px;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,.4);
+  animation: hhSlideUp .25s ease;
+}
+@keyframes hhSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+.hh-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 10;
+  background: rgba(0,0,0,.4);
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.hh-modal__close:hover { background: rgba(0,0,0,.65); }
+
+/* Modal hero image */
+.hh-modal__hero {
+  position: relative;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+.hh-modal__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20,30,20,.82) 0%, rgba(20,30,20,.2) 70%);
+}
+.hh-modal__hero-body {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  right: 24px;
+  color: #fff;
+}
+.hh-modal__hero-tag {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+.hh-modal__hero-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.hh-modal__hero-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: .8rem;
+  color: rgba(255,255,255,.75);
+  margin: 0;
+}
+
+/* Modal content body */
+.hh-modal__content {
+  padding: 24px 24px 28px;
+}
+
+/* Stats row */
+.hh-modal__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.hh-modal__stat {
+  background: #F5F3EF;
+  border-radius: 12px;
+  padding: 12px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.hh-modal__stat-icon { font-size: 1.1rem; }
+.hh-modal__stat-val {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #2F3E2F;
+}
+.hh-modal__stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: .68rem;
+  color: #999;
+}
+
+/* Highlights list */
+.hh-modal__highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.hh-modal__hl {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: 'Inter', sans-serif;
+  font-size: .86rem;
+  color: #444;
+  line-height: 1.5;
+}
+.hh-modal__hl-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.hh-modal__hl a { color: #6B7D5C; font-weight: 600; }
+
+/* Activities grid */
+.hh-modal__act-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.hh-modal__act {
+  background: #F5F3EF;
+  border-radius: 12px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: .75rem;
+  font-weight: 600;
+  color: #2F3E2F;
+  text-align: center;
+}
+.hh-modal__act-icon { font-size: 1.4rem; }
+.hh-modal__text {
+  font-family: 'Inter', sans-serif;
+  font-size: .88rem;
+  color: #555;
+  line-height: 1.65;
+  margin: 0 0 20px;
+}
+
+/* Modal CTA */
+.hh-modal__cta {
+  display: block;
+  text-align: center;
+  background: #6B7D5C;
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .9rem;
+  font-weight: 700;
+  padding: 14px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background .2s;
+}
+.hh-modal__cta:hover { background: #5a6b4d; }
+
+@media (max-width: 480px) {
+  .hh-modal__stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .hh-modal__act-grid { grid-template-columns: repeat(4, 1fr); }
+  .hh-modal__hero { height: 170px; }
+  .hh-modal { border-radius: 16px; }
+}
+</style>
+
+<script>
+/* ── Clima en tiempo real (Open-Meteo, sin API key) ── */
+(function () {
+  var WMO = {
+    0:{i:'☀️',d:'Despejado'}, 1:{i:'🌤️',d:'Mayormente despejado'}, 2:{i:'⛅',d:'Parcialmente nublado'},
+    3:{i:'☁️',d:'Nublado'}, 45:{i:'🌫️',d:'Neblina'}, 48:{i:'🌫️',d:'Neblina helada'},
+    51:{i:'🌦️',d:'Llovizna leve'}, 53:{i:'🌦️',d:'Llovizna'}, 55:{i:'🌦️',d:'Llovizna intensa'},
+    61:{i:'🌧️',d:'Lluvia leve'}, 63:{i:'🌧️',d:'Lluvia'}, 65:{i:'🌧️',d:'Lluvia intensa'},
+    71:{i:'❄️',d:'Nieve leve'}, 73:{i:'❄️',d:'Nieve'}, 75:{i:'❄️',d:'Nieve intensa'},
+    77:{i:'🌨️',d:'Granizo'}, 80:{i:'🌦️',d:'Chaparrones'}, 81:{i:'🌧️',d:'Lluvias'}, 82:{i:'⛈️',d:'Lluvias fuertes'},
+    85:{i:'🌨️',d:'Nieve con viento'}, 86:{i:'❄️',d:'Nevada intensa'}, 95:{i:'⛈️',d:'Tormenta'},
+    96:{i:'⛈️',d:'Tormenta con granizo'}, 99:{i:'⛈️',d:'Tormenta severa'}
+  };
+  var DAYS = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+  function wmo(code) { return WMO[code] || {i:'🌡️', d:'Variable'}; }
+
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=-40.7548&longitude=-71.6474' +
+    '&current=temperature_2m,weathercode,windspeed_10m' +
+    '&daily=weathercode,temperature_2m_max,temperature_2m_min' +
+    '&timezone=America%2FArgentina%2FSalta&forecast_days=6')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      var c = data.current;
+      var w = wmo(c.weathercode);
+      document.getElementById('clima-icon').textContent = w.i;
+      document.getElementById('clima-temp').textContent = Math.round(c.temperature_2m) + '°';
+      document.getElementById('clima-desc').textContent = w.d;
+      document.getElementById('clima-viento').textContent = '💨 ' + Math.round(c.windspeed_10m) + ' km/h';
+
+      // Clase de fondo animado según condición
+      var code = c.weathercode;
+      var card = document.getElementById('clima-card');
+      var wxClass = code === 0 ? 'wx-clear'
+                  : code <= 2 ? 'wx-partly'
+                  : code === 3 ? 'wx-cloudy'
+                  : code <= 48 ? 'wx-fog'
+                  : code <= 67 || (code >= 80 && code <= 82) ? 'wx-rain'
+                  : code <= 77 || code <= 86 ? 'wx-snow'
+                  : 'wx-storm';
+      card.classList.add(wxClass);
+
+      var fc = document.getElementById('clima-forecast');
+      var days = fc.querySelectorAll('.clima-day');
+      var d = data.daily;
+      for (var i = 0; i < 6; i++) {
+        var dayName = i === 0 ? 'Hoy' : i === 1 ? 'Mañana' : DAYS[new Date(d.time[i]).getDay()];
+        var fw = wmo(d.weathercode[i]);
+        days[i].querySelector('.clima-day-name').textContent = dayName;
+        days[i].querySelector('.clima-day-icon').textContent = fw.i;
+        days[i].querySelector('.clima-day-temp').textContent =
+          Math.round(d.temperature_2m_max[i]) + '° / ' + Math.round(d.temperature_2m_min[i]) + '°';
+      }
+    })
+    .catch(function() {
+      document.getElementById('clima-desc').textContent = 'Sin conexión al servicio';
+    });
+})();
+
+/* ── Modal controller ── */
+var hhModal = {
+  open: function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    el.addEventListener('click', hhModal._backdropClose);
+    document.addEventListener('keydown', hhModal._escClose);
+  },
+  close: function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('open');
+    document.body.style.overflow = '';
+    el.removeEventListener('click', hhModal._backdropClose);
+    document.removeEventListener('keydown', hhModal._escClose);
+  },
+  _backdropClose: function(e) {
+    if (e.target === e.currentTarget) hhModal.close(e.currentTarget.id);
+  },
+  _escClose: function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.hh-modal-overlay.open').forEach(function(m) {
+        hhModal.close(m.id);
+      });
+    }
+  }
+};
+</script>
 </body>
 </html>
 

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades en Villa La Angostura | Guías de viaje — Happy Host</title>
+  <meta name="description" content="Guías de actividades para Villa La Angostura: esquí en Cerro Bayo, trekking, lagos, pesca y todo lo que podés hacer en la Patagonia argentina.">
+  <link rel="canonical" href="https://www.happyhostpatagonia.com.ar/actividades/">
+  <link rel="icon" type="image/png" href="../logos/logo1.png" sizes="128x128">
+
+  <meta property="og:title" content="Actividades en Villa La Angostura | Happy Host">
+  <meta property="og:description" content="Esquí en Cerro Bayo, trekking, lagos, pesca y todo lo que podés hacer en Villa La Angostura.">
+  <meta property="og:image" content="https://www.cerrobayo.com.ar/imagenes/Galeria/2025/01.jpg">
+  <meta property="og:url" content="https://www.happyhostpatagonia.com.ar/actividades/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_AR">
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="blog.css">
+
+  <style>
+    /* ── Actividades landing ── */
+    .act-hero {
+      text-align: center;
+      padding: 56px 24px 36px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .act-hero__eyebrow {
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--color-olive);
+      margin: 0 0 14px;
+    }
+    .act-hero__title {
+      font-family: var(--font-title);
+      font-size: clamp(1.9rem, 5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--color-dark);
+      line-height: 1.15;
+      margin: 0 0 14px;
+    }
+    .act-hero__title em { font-style: normal; color: var(--color-olive); }
+    .act-hero__sub {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: #666;
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    /* ── Cards split ── */
+    .act-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px 72px;
+    }
+    @media (max-width: 700px) {
+      .act-grid { grid-template-columns: 1fr; padding: 0 16px 56px; gap: 16px; }
+    }
+
+    .act-card {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      text-decoration: none;
+      color: #fff;
+      box-shadow: 0 8px 40px rgba(47,62,47,.18);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .act-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(47,62,47,.28);
+    }
+    @media (max-width: 700px) {
+      .act-card { min-height: 360px; border-radius: 18px; }
+    }
+
+    .act-card__bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform .5s ease;
+    }
+    .act-card:hover .act-card__bg { transform: scale(1.04); }
+
+    .act-card__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(20,30,20,.88) 0%,
+        rgba(20,30,20,.45) 45%,
+        rgba(20,30,20,.08) 100%
+      );
+    }
+
+    .act-card__body {
+      position: relative;
+      z-index: 1;
+      padding: 36px 32px;
+    }
+    @media (max-width: 700px) {
+      .act-card__body { padding: 28px 24px; }
+    }
+
+    .act-card__tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.18);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.25);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .act-card__title {
+      font-family: var(--font-title);
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0 0 12px;
+      color: #fff;
+    }
+
+    .act-card__desc {
+      font-family: var(--font-body);
+      font-size: .92rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,.82);
+      margin: 0 0 24px;
+    }
+
+    .act-card__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-body);
+      font-size: .88rem;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(6px);
+      border: 1.5px solid rgba(255,255,255,.4);
+      padding: 11px 22px;
+      border-radius: 50px;
+      transition: background .2s, border-color .2s;
+      text-decoration: none;
+    }
+    .act-card:hover .act-card__btn {
+      background: rgba(255,255,255,.28);
+      border-color: rgba(255,255,255,.7);
+    }
+    .act-card__btn-arrow {
+      font-size: 1rem;
+      transition: transform .2s;
+    }
+    .act-card:hover .act-card__btn-arrow { transform: translateX(4px); }
+
+    /* Badge de temporada */
+    .act-card__badge {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      z-index: 2;
+      background: var(--color-olive);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.25);
+    }
+    .act-card__badge--hot { background: #C97A5A; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="blog-header">
+    <div class="blog-header__inner">
+      <a href="../index.html" class="blog-header__logo">
+        <img src="../logos/logo-horizontal.png" alt="Happy Host Patagonia">
+      </a>
+      <ul class="blog-header__nav">
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../alojamientos.html">Alojamientos</a></li>
+        <li><a href="../propietarios.html">Propietarios</a></li>
+        <li><a href="index.html" class="activo">Actividades</a></li>
+        <li><a href="https://wa.me/5492944700773" class="btn-reservar" target="_blank" rel="noopener">Reservar</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <div class="act-hero">
+    <p class="act-hero__eyebrow">Villa La Angostura · Patagonia Argentina</p>
+    <h1 class="act-hero__title">Todo lo que podés hacer<br>en <em>Villa La Angostura</em></h1>
+    <p class="act-hero__sub">Guías pensadas por quienes vivimos acá. Desde la nieve de julio hasta los lagos del verano.</p>
+  </div>
+
+  <!-- CARDS -->
+  <div class="act-grid">
+
+    <!-- Card: Cerro Bayo / Invierno -->
+    <a href="cerro-bayo-esqui.html" class="act-card">
+      <div class="act-card__bg"
+           style="background-image: url('https://www.cerrobayo.com.ar/imagenes/Galeria/2025/12.jpg')"></div>
+      <div class="act-card__overlay"></div>
+      <span class="act-card__badge act-card__badge--hot">⛷️ Temporada 2026</span>
+      <div class="act-card__body">
+        <span class="act-card__tag">❄️ Invierno · Nieve</span>
+        <h2 class="act-card__title">Cerro Bayo:<br>guía completa de esquí</h2>
+        <p class="act-card__desc">Precios 2026, pistas por nivel, alquiler de equipo, escuela de ski y los mejores consejos para disfrutar la nieve.</p>
+        <span class="act-card__btn">
+          Ver guía de esquí
+          <span class="act-card__btn-arrow">→</span>
+        </span>
+      </div>
+    </a>
+
+    <!-- Card: Qué hacer en VLA -->
+    <a href="que-hacer-villa-la-angostura.html" class="act-card">
+      <div class="act-card__bg"
+           style="background-image: url('../imagenes/Verano.jpg')"></div>
+      <div class="act-card__overlay"></div>
+      <div class="act-card__body">
+        <span class="act-card__tag">🌲 Todo el año</span>
+        <h2 class="act-card__title">Qué hacer en<br>Villa La Angostura</h2>
+        <p class="act-card__desc">Arrayanes, trekking, pesca, navegación, cabalgatas y gastronomía. La guía completa del destino.</p>
+        <span class="act-card__btn">
+          Explorar actividades
+          <span class="act-card__btn-arrow">→</span>
+        </span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- CTA FINAL -->
+  <section class="blog-cta">
+    <div class="blog-cta__text">
+      <h2 class="blog-cta__title">¿Ya sabés cuándo venís?</h2>
+      <p class="blog-cta__desc">14 propiedades en el corazón de Villa La Angostura para todos los presupuestos.</p>
+    </div>
+    <a href="../alojamientos.html" class="blog-cta__btn">Ver alojamientos →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="blog-footer">
+    <div class="blog-footer__inner">
+      <a href="../index.html" class="blog-footer__logo">
+        <img src="../logos/logo-horizontal.png" alt="Happy Host Patagonia">
+      </a>
+      <nav class="blog-footer__nav">
+        <a href="../index.html">Inicio</a>
+        <a href="../alojamientos.html">Alojamientos</a>
+        <a href="../viajero.html#resenas">Reseñas</a>
+        <a href="../viajero.html#contacto">Contacto</a>
+        <a href="../propietarios.html">Propietarios</a>
+        <a href="index.html">Actividades</a>
+      </nav>
+      <div class="blog-footer__right">
+        <div class="blog-footer__social">
+          <a href="https://www.instagram.com/hhpatagonia" target="_blank" rel="noopener">
+            <img src="../logos/instagram.png" alt="Instagram Happy Host">
+          </a>
+          <a href="https://wa.me/5492944700773" target="_blank" rel="noopener">
+            <img src="../logos/whatsapp.png" alt="WhatsApp Happy Host">
+          </a>
+        </div>
+        <p class="blog-footer__copy">© 2026 Happy Host Patagonia</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
