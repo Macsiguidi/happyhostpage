@@ -492,18 +492,6 @@ app.post('/api/crear-reserva', async (req, res) => {
 
     console.log('✅ Crear reserva OK. status:', createRes.status, 'ID:', bookingId, 'keys:', body ? Object.keys(body) : []);
 
-    // Si igualmente no hay ID, devolvemos lo recibido para inspección, pero sin romper.
-    if (!bookingId) {
-      return res.status(200).json({
-        ok: true,
-        warning: 'No se detectó ID; revisar headers Location/Content-Location',
-        headers: {
-          location: headers.location || headers.Location || headers['content-location'] || null
-        },
-        body: body ?? null
-      });
-    }
-
     // ===== Texto para notas/mensajes (con HUÉSPEDES y TELÉFONO) =====
     const totalUI = b._total_ui || '';
     const seniaUI = b._senia_ui || '';
@@ -576,29 +564,47 @@ Comentarios: ${comm || '—'}`;
       }
     }
 
-    // === Pushover: avisar nueva reserva (no bloquea la respuesta)
+    // === Pushover: avisar nueva reserva — se envía SIEMPRE (con o sin bookingId)
     try {
-      const propertyName = nombrePropiedades[b.property_id] || b.property_name || b.property_id;
+      const propertyName = nombrePropiedades[b.property_id] || b.property_name || String(b.property_id);
       const totalGuests = (Array.isArray(b.rooms) ? b.rooms : [])
         .reduce((acc, r) => acc + Number(r?.adults || 0) + Number(r?.children || 0), 0);
+
+      // Fix: el payload usa first_name/last_name (snake_case), no camelCase
+      const guestName = b?.guest?.name
+        || `${b?.guest?.first_name || ''} ${b?.guest?.last_name || ''}`.trim()
+        || '—';
 
       const msg =
 `🟢 Nueva reserva
 🏡 ${propertyName}
 📅 ${b.arrival} → ${b.departure}
-👥 Huéspedes: ${totalGuests || '—'}
-👤 ${b?.guest?.firstName || ''} ${b?.guest?.lastName || ''}
+👥 ${totalGuests || '—'} huéspedes
+👤 ${guestName}
 📧 ${b?.guest?.email || '—'}
-📱 ${b?.guest?.phone || b?.guest?.phone_number || '—'}
+📱 ${b?.guest?.phone || '—'}
 💲 Total: ${b._total_ui || '—'}
 💲 Seña: ${b._senia_ui || '—'}
-🎟️ Cupón: ${b._cupon || '—'}
-💬 ${b._comments || '—'}`;
+🎟️ Cupón: ${b._cupon || 'Sin cupón'}
+💬 ${b._comments || '—'}
+🔑 ID Lodgify: ${bookingId || 'sin ID'}`;
 
-      // const urlToBooking = bookingId ? `https://app.lodgify.com/reservations/${bookingId}` : undefined;
-      enviarPushover(msg, '🟢 Nueva reserva' /*, { url: urlToBooking, url_title: 'Abrir en Lodgify' }*/);
+      const urlToBooking = bookingId ? `https://app.lodgify.com/reservations/${bookingId}` : undefined;
+      await enviarPushover(msg, '🟢 Nueva reserva', { url: urlToBooking, url_title: 'Abrir en Lodgify' });
     } catch (npErr) {
       console.log('⚠️ Pushover (post-reserva) no enviado:', npErr?.message || npErr);
+    }
+
+    // Si no hay ID devolvemos igualmente OK (reserva ya creada en Lodgify)
+    if (!bookingId) {
+      return res.status(200).json({
+        ok: true,
+        warning: 'Reserva creada pero no se detectó ID; revisar headers Location/Content-Location',
+        headers: {
+          location: (createRes.headers?.location || createRes.headers?.['content-location']) ?? null
+        },
+        body: body ?? null
+      });
     }
 
     return res.json({
