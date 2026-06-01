@@ -174,22 +174,85 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const checkinParaCupon = new Date(checkInDate || '');
 
+  // Aplicar descuento al resumen
+  function aplicarDescuento(codigo, porcentaje) {
+    const descuento = (totalOriginal * porcentaje) / 100;
+    const totalConDescuento = Math.round(totalOriginal - descuento);
+    const seniaConDescuento = calcularSeniaInteligente(totalConDescuento, diffDays).seniaFinal;
+    mostrarTotalConDescuento(totalOriginal, totalConDescuento);
+    if (labelCupon) { labelCupon.textContent = `Cupon aplicado: ${codigo} (-${porcentaje}%)`; labelCupon.style.color = "green"; }
+    if (seniaSpan)  seniaSpan.textContent = fmtMoney(seniaConDescuento);
+    setVal('discountRate', (porcentaje / 100).toString());
+    cuponInfo = codigo;
+  }
+
+  function quitarDescuento(mensaje) {
+    if (labelCupon) { labelCupon.textContent = mensaje || "Cupon invalido o fuera de fecha."; labelCupon.style.color = "red"; }
+    mostrarTotalSinDescuento(totalOriginal);
+    if (seniaSpan) seniaSpan.textContent = fmtMoney(seniaOriginalNumber);
+    setVal('discountRate', '0');
+    cuponInfo = '';
+  }
+
   if (botonCupon) {
-    botonCupon.addEventListener('click', () => {
+    botonCupon.addEventListener('click', async () => {
       const codigo = (inputCupon?.value || '').trim().toUpperCase();
+      if (!codigo) return;
+
+      // Estado de carga
+      botonCupon.disabled = true;
+      botonCupon.textContent = '...';
+      if (labelCupon) { labelCupon.textContent = 'Verificando...'; labelCupon.style.color = '#888'; }
+
+      // 1. Cupón especial GANASTE (local)
+      if (codigo === "GANASTE") {
+        const resultado = aplicarCuponGanaste(codigo, checkInDate);
+        botonCupon.disabled = false; botonCupon.textContent = 'Aplicar';
+        if (resultado.valido) {
+          if (labelCupon) { labelCupon.textContent = resultado.mensaje; labelCupon.style.color = "green"; }
+          aplicarDescuento(codigo, resultado.porcentaje);
+        } else {
+          quitarDescuento("Cupon GANASTE no valido.");
+        }
+        return;
+      }
+
+      // 2. Intentar validar contra la API del sistema admin
+      try {
+        const apiUrl = new URL('https://propietarios-happy-host.onrender.com/api/properties/cupon/validar');
+        apiUrl.searchParams.set('code', codigo);
+        if (propertyId)   apiUrl.searchParams.set('propertyId', propertyId);
+        if (checkInDate)  apiUrl.searchParams.set('checkIn',    checkInDate);
+        if (checkOutDate) apiUrl.searchParams.set('checkOut',   checkOutDate);
+
+        const resp = await fetch(apiUrl.toString());
+        const data = await resp.json();
+        console.log('[HH Cupon] API response:', data);
+
+        botonCupon.disabled = false; botonCupon.textContent = 'Aplicar';
+
+        if (data.valid) {
+          aplicarDescuento(data.code || codigo, data.percentage);
+          return;
+        }
+        // La API dijo no válido — mostrar el mensaje de la API si hay
+        if (data.message && !data.valid) {
+          quitarDescuento(data.message);
+          return;
+        }
+      } catch (e) {
+        // API no disponible → usar cupones locales
+        console.warn('[HH Cupon] API no disponible, usando locales:', e);
+      }
+
+      botonCupon.disabled = false; botonCupon.textContent = 'Aplicar';
+
+      // 3. Fallback: cupones hardcodeados locales
       let cupon = cupones[codigo];
       let valido = false;
       let porcentaje = 0;
 
-      if (codigo === "GANASTE") {
-        const resultado = aplicarCuponGanaste(codigo, checkInDate);
-        if (resultado.valido) {
-          valido = true;
-          porcentaje = resultado.porcentaje;
-          if (labelCupon) { labelCupon.textContent = resultado.mensaje; labelCupon.style.color = "green"; }
-          cuponInfo = codigo;
-        }
-      } else if (codigo === "PRIMAVERA2025" && cupon) {
+      if (codigo === "PRIMAVERA2025" && cupon) {
         const alojOk = cupon.alojamientos.includes(nombreClave);
         const fechaOk = (checkinParaCupon instanceof Date) && !isNaN(checkinParaCupon)
             && checkinParaCupon >= PRIMAVERA_CHECKIN_INICIO
@@ -207,24 +270,9 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       if (valido) {
-        const descuento = (totalOriginal * porcentaje) / 100;
-        const totalConDescuento = Math.round(totalOriginal - descuento);
-
-        const seniaConDescuento = calcularSeniaInteligente(totalConDescuento, diffDays).seniaFinal;
-
-        mostrarTotalConDescuento(totalOriginal, totalConDescuento);
-        if (labelCupon) { labelCupon.textContent = `Cupón aplicado: ${codigo} (-${porcentaje}%)`; labelCupon.style.color = "green"; }
-        if (seniaSpan)  seniaSpan.textContent = fmtMoney(seniaConDescuento);
-
-        setVal('discountRate', (porcentaje/100).toString());
-        cuponInfo = codigo;
+        aplicarDescuento(codigo, porcentaje);
       } else {
-        if (labelCupon) { labelCupon.textContent = "Cupón inválido o fuera de fecha."; labelCupon.style.color = "red"; }
-        mostrarTotalSinDescuento(totalOriginal);
-        if (seniaSpan) seniaSpan.textContent = fmtMoney(seniaOriginalNumber);
-
-        setVal('discountRate', '0');
-        cuponInfo = '';
+        quitarDescuento("Cupon invalido o fuera de fecha.");
       }
     });
   }
