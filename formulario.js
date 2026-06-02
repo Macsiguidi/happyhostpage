@@ -95,7 +95,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const nombreProp = nombreMap[propertyId] || nombreParam || 'Alojamiento';
   setText('nombrePropiedad', nombreProp);
   const img = $('imagenPropiedad');
-  if (img) img.src = imagenMap[propertyId] || '';
+  if (img) {
+    if (imagenMap[propertyId]) {
+      // Propiedad Lodgify: imagen local hardcodeada
+      img.src = imagenMap[propertyId];
+    } else if (slug) {
+      // Propiedad sistema propio: buscar imagen en la API
+      fetch(`https://propietarios-happy-host.onrender.com/api/properties/${encodeURIComponent(slug)}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(p => {
+          if (!p) return;
+          const imgs = Array.isArray(p.images) ? p.images : [];
+          if (imgs.length > 0) img.src = imgs[0];
+        })
+        .catch(() => {}); // fallo silencioso, no rompe el formulario
+    }
+  }
 
   const headerTitulo = document.querySelector('.titulo-header');
   if (headerTitulo) headerTitulo.textContent = nombreProp;
