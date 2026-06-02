@@ -777,6 +777,72 @@ function familyInt(name) {
   return map[name] || 0;
 }
 
+/* ===========================
+   /p/:slug  — Página de share con og:image para WhatsApp/redes
+   Sirve HTML con meta tags OG completos y redirige a unidad.html?slug=X
+   =========================== */
+app.get('/p/:slug', async (req, res) => {
+  const slug = (req.params.slug || '').toLowerCase().trim();
+  if (!slug) return res.redirect('https://www.happyhostpatagonia.com.ar');
+
+  const SITE = 'https://www.happyhostpatagonia.com.ar';
+  const destino = `${SITE}/unidad.html?slug=${slug}`;
+
+  let nombre   = slug;
+  let imagen   = `${SITE}/logos/logo1.png`;
+  let desc     = 'Alojamiento en Villa La Angostura, Patagonia Argentina. Reservá con Happy Host.';
+
+  // Intentar obtener datos reales de la API de propietarios
+  try {
+    const r = await axios.get(`${PROMO_API_BASE}/api/properties/${encodeURIComponent(slug)}`, {
+      timeout: 6000
+    });
+    const p = r.data || {};
+
+    if (p.name)   nombre = p.name;
+    if (p.description) desc = p.description.slice(0, 200);
+
+    const imgs = Array.isArray(p.images) ? p.images : [];
+    if (imgs.length > 0) imagen = imgs[0];
+  } catch (e) {
+    console.warn(`/p/${slug}: no se pudo obtener datos de la propiedad:`, e.message);
+  }
+
+  const title    = `${nombre} · Villa La Angostura | Happy Host`;
+  const ogDesc   = desc || `${nombre} en Villa La Angostura, Patagonia Argentina.`;
+
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(`<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title>
+<meta name="description" content="${ogDesc}">
+<meta property="og:type"        content="website">
+<meta property="og:locale"      content="es_AR">
+<meta property="og:url"         content="${SITE}/unidad.html?slug=${slug}">
+<meta property="og:title"       content="${title}">
+<meta property="og:description" content="${ogDesc}">
+<meta property="og:image"       content="${imagen}">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="800">
+<meta property="og:image:alt"    content="${nombre}, alojamiento en Villa La Angostura">
+<meta property="og:site_name"   content="Happy Host Patagonia">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="${title}">
+<meta name="twitter:description" content="${ogDesc}">
+<meta name="twitter:image"       content="${imagen}">
+<script>window.location.replace(${JSON.stringify(destino)});</script>
+<noscript><meta http-equiv="refresh" content="0;url=${destino}"></noscript>
+</head>
+<body style="font-family:sans-serif;text-align:center;padding:40px">
+<p>Redirigiendo a <strong>${nombre}</strong>…</p>
+<p><a href="${destino}">Hacé clic aquí si no sos redirigido</a></p>
+</body>
+</html>`);
+});
+
 // Iniciar servidor
 app.listen(PORT, () =>
   console.log(`⚡ Server corriendo en http://localhost:${PORT}`)
