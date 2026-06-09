@@ -1315,7 +1315,7 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
       var days = fc.querySelectorAll('.clima-day');
       var d = data.daily;
       for (var i = 0; i < 6; i++) {
-        var dayName = i === 0 ? 'Hoy' : i === 1 ? 'Mañana' : DAYS[new Date(d.time[i]).getDay()];
+        var dayName = i === 0 ? 'Hoy' : i === 1 ? 'Mañana' : DAYS[new Date(d.time[i] + 'T12:00:00').getDay()];
         var fw = wmo(d.weathercode[i]);
         days[i].querySelector('.clima-day-name').textContent = dayName;
         days[i].querySelector('.clima-day-icon').textContent = fw.i;
