@@ -1,8 +1,9 @@
 // destacados.js
-console.log("Destacados JS v1.1.1");
+console.log("Destacados JS v1.2.0");
 
 // Forzar refresco del set si cambiamos lógica
-const DESTACADOS_VERSION = "1.1.1";
+// 1.2.0: Mi Tiempo fuera, Nueva Esperanza adentro
+const DESTACADOS_VERSION = "1.2.0";
 
 if (localStorage.getItem("destacados_ver") !== DESTACADOS_VERSION) {
   localStorage.removeItem("destacados_set");
