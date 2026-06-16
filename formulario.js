@@ -84,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const imagenMap = {
     '601552': 'unidades/casa1/casa1_img1.jpg', '601707': 'unidades/casa2/casa2_img3.jpg',
     '601708': 'unidades/casa3/casa3_img1.jpg', '601710': 'unidades/casa4/casa4_img2.jpg',
-    '601711': 'unidades/casa5/casa5_img3.jpg', '601712': 'unidades/casa6/casa6_img1.jpg',
+    '601711': 'unidades/casa5/casa5_img3.jpg', '601712': 'unidades/casa6/casa6_img10.jpg',
     '601713': 'unidades/casa7/casa7_img1.jpg', '601717': 'unidades/cds4/cds4_1.jpg',
     '601714': 'unidades/cds5/cds5_2.jpg', '601719': 'unidades/nilidas/nilidas1.jpg',
     '648950': 'unidades/gurisa/gurisa2.jpg', '601720': 'unidades/paisajismo/paisajismo1.jpg', 

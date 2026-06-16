@@ -15,8 +15,8 @@
   const MAX_GUESTS = parseInt(card.dataset.personas, 10) || 10;
   const USA_LODGIFY = HOUSE_ID > 0 && ROOM_ID > 0;
 
-  // Slug desde URL
-  const PROP_KEY = new URLSearchParams(window.location.search).get('slug') || '';
+  // Slug desde URL (?slug=) o, en páginas estáticas, desde data-slug de la tarjeta
+  const PROP_KEY = new URLSearchParams(window.location.search).get('slug') || card.dataset.slug || '';
   if (!PROP_KEY) return;
 
   // URLs según fuente de datos

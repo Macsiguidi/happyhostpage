@@ -40,7 +40,7 @@ const propiedades = [
     imgs:[
       "unidades/casa1/casa1_img1.jpg",
       "unidades/casa1/casa1_img2.jpg",
-      "unidades/casa1/casa1_img3.jpg"
+      "unidades/casa1/casa1_img14.jpg"
     ],
     capacidad:"4/6",
     desc:"Casa con parrilla, cochera y jardín. Equipada para disfrutar en familia a pasos del centro."
@@ -113,7 +113,7 @@ const propiedades = [
     precio:"110.000",
     href:"calafate6.html",
     imgs:[
-      "unidades/casa6/casa6_img1.jpg",
+      "unidades/casa6/casa6_img10.jpg",
       "unidades/casa6/casa6_img2.jpg",
       "unidades/casa6/casa5_img3.jpg"
     ],
@@ -130,7 +130,7 @@ const propiedades = [
     imgs:[
       "unidades/casa7/casa7_img1.jpg",
       "unidades/casa7/casa7_img7.jpg",
-      "unidades/casa7/casa7_img5.jpg"
+      "unidades/casa7/casa7_img11.jpg"
     ],
     capacidad:"2/4",
     desc:"Cabaña íntima con rincones cálidos y mucho encanto. Ideal para escapadas románticas en la montaña."
@@ -227,18 +227,18 @@ const propiedades = [
   },
 
   {
-    slug:"mitiempo",
-    titulo:"Mi Tiempo",
-    categoria:"Mi Tiempo",
-    precio:"95.000",
-    href:"mitiempo.html",
+    slug:"puertomargarita",
+    titulo:"Nueva Esperanza",
+    categoria:"Nueva Esperanza",
+    precio:"184.000",
+    href:"nueva-esperanza.html",
     imgs:[
-      "unidades/mitiempo/tiempo3.jpg",
-      "unidades/tiempo/mitiempo6.jpg",
-      "unidades/tiempo/mitiempo12.jpg"
+      "https://res.cloudinary.com/dpvanrrla/image/upload/q_auto/f_auto/v1777644943/margarita3_seznld.png",
+      "https://res.cloudinary.com/dpvanrrla/image/upload/q_auto/f_auto/v1777645030/margarita2_caysol.png",
+      "https://res.cloudinary.com/dpvanrrla/image/upload/v1777650709/margarita7_eny2km.png"
     ],
-    capacidad:"3",
-    desc:"Pequeño paraíso para desconectarse con toda la comodidad. Ideal para disfrutar en pareja."
+    capacidad:"5",
+    desc:"Casa estilo nórdico con hogar, quincho, parrilla y parque. A pasos del puerto y del centro."
   }
 
 ];
@@ -351,7 +351,7 @@ function renderDestacados() {
         <p class="card-desc">${p.desc || ''}</p>
         <div class="card-footer">
           <div class="card-precio">
-            <span class="precio-desde">desde ARS ${p.precio || '—'}</span>
+            <span class="precio-desde">desde ${p.moneda || 'ARS'} ${p.precio || '—'}</span>
             <span class="precio-label"> /noche</span>
           </div>
           <span class="card-capacidad">

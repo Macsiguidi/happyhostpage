@@ -7,11 +7,14 @@
  */
 (function () {
   var API  = 'https://propietarios-happy-host.onrender.com/api/reviews/approved';
-  var slug = window.location.pathname.split('/').pop().replace('.html', '').toLowerCase();
+  // El slug de reseñas puede diferir del nombre del archivo
+  // (ej. nueva-esperanza.html → puertomargarita) vía window.HH_RESENAS_SLUG.
+  var slug = (window.HH_RESENAS_SLUG ||
+    window.location.pathname.split('/').pop().replace('.html', '')).toLowerCase();
 
   var validSlugs = [
     'calafate1','calafate2','calafate3','calafate4','calafate5','calafate6','calafate7',
-    'cruz4','cruz5','nilidas','gurisa','paisajismo','refugiopatagonico','mitiempo','koi','oasis'
+    'cruz4','cruz5','nilidas','gurisa','paisajismo','refugiopatagonico','koi','oasis','puertomargarita'
   ];
   if (!validSlugs.includes(slug)) return;
 

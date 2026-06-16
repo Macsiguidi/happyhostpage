@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview — Qué hacer en Villa La Angostura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --olive:  #6B7D5C;
+      --dark:   #2F3E2F;
+      --warm:   #D8D5CD;
+      --cream:  #F5F3EF;
+      --terra:  #C97A5A;
+      --white:  #ffffff;
+      --font-title: 'Plus Jakarta Sans', sans-serif;
+      --font-body:  'Inter', sans-serif;
+      --max-w: 780px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── HEADER ── */
+    .blog-header {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--cream);
+      border-bottom: 1px solid var(--warm);
+      padding: 0 24px;
+    }
+    .blog-header__inner {
+      max-width: 1160px; margin: 0 auto;
+      height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .blog-header__logo {
+      font-family: var(--font-title);
+      font-weight: 800; font-size: 1rem;
+      color: var(--dark); display: flex; align-items: center; gap: 8px;
+    }
+    .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--olive); }
+    .blog-header__nav {
+      display: flex; align-items: center; gap: 24px; list-style: none;
+    }
+    .blog-header__nav a {
+      font-size: .85rem; font-weight: 500;
+      color: var(--dark); opacity: .7; transition: opacity .2s;
+    }
+    .blog-header__nav a:hover { opacity: 1; }
+    .btn-reservar {
+      opacity: 1 !important;
+      background: var(--olive); color: #fff !important;
+      padding: 7px 18px; border-radius: 50px;
+      font-weight: 600 !important; font-size: .82rem !important;
+    }
+
+    /* ── HERO ── */
+    .article-hero {
+      background: var(--dark);
+      padding: 52px 24px 44px; color: #fff;
+    }
+    .article-hero__inner { max-width: var(--max-w); margin: 0 auto; }
+    .article-hero__breadcrumb {
+      font-size: .75rem; color: rgba(255,255,255,.5);
+      display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+    }
+    .article-hero__tag {
+      display: inline-block;
+      background: var(--terra); color: #fff;
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 3px 12px; border-radius: 50px; margin-bottom: 16px;
+    }
+    .article-hero__title {
+      font-family: var(--font-title);
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2; margin-bottom: 14px;
+    }
+    .article-hero__meta {
+      font-size: .8rem; color: rgba(255,255,255,.5);
+      display: flex; flex-wrap: wrap; gap: 6px 14px;
+    }
+
+    /* ── TAB STRIP ── */
+    .tab-strip-wrapper {
+      position: sticky;
+      top: 58px; /* height del header */
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 2px solid var(--warm);
+      box-shadow: 0 2px 12px rgba(47,62,47,.06);
+    }
+    .tab-strip {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 16px;
+    }
+    .tab-strip::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex-shrink: 0;
+      font-family: var(--font-body);
+      font-size: .82rem; font-weight: 500;
+      color: #888;
+      padding: 13px 14px;
+      border: none; background: none; cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color .2s, border-color .2s;
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .tab-btn:hover { color: var(--dark); }
+    .tab-btn.active {
+      color: var(--olive);
+      border-bottom-color: var(--olive);
+      font-weight: 700;
+    }
+    .tab-btn .tab-icon { font-size: 1rem; }
+
+    /* ── TAB PANELS ── */
+    .tab-panels { max-width: var(--max-w); margin: 0 auto; padding: 0 24px 80px; }
+
+    .tab-panel { display: none; animation: fadeIn .22s ease; padding-top: 40px; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* ── TIPOGRAFÍA ── */
+    .tab-panel h2 {
+      font-family: var(--font-title);
+      font-size: 1.35rem; font-weight: 700;
+      color: var(--dark); margin: 40px 0 14px;
+      padding-top: 6px; border-top: 2px solid var(--warm);
+    }
+    .tab-panel h2:first-child { margin-top: 0; border-top: none; padding-top: 0; }
+    .tab-panel h3 {
+      font-family: var(--font-title);
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--dark); margin: 24px 0 8px;
+    }
+    .tab-panel p {
+      font-size: .97rem; line-height: 1.8;
+      color: #3d4d3d; margin-bottom: 16px;
+    }
+    .tab-panel ul { margin: 0 0 16px 20px; }
+    .tab-panel li {
+      font-size: .95rem; line-height: 1.75;
+      color: #3d4d3d; margin-bottom: 5px;
+    }
+    .tab-panel strong { color: var(--dark); font-weight: 700; }
+
+    /* ── HIGHLIGHT / TIP ── */
+    .highlight {
+      background: var(--white);
+      border-left: 4px solid var(--olive);
+      border-radius: 0 12px 12px 0;
+      padding: 18px 22px; margin: 24px 0;
+    }
+    .highlight p { margin: 0; font-size: .93rem; }
+    .tip {
+      background: var(--white);
+      border: 1px solid var(--warm);
+      border-radius: 12px;
+      padding: 16px 20px; margin: 20px 0;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .tip-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .tip p { margin: 0; font-size: .88rem; }
+
+    /* ── TABLA ── */
+    .data-table {
+      width: 100%; border-collapse: collapse;
+      margin: 20px 0 28px; font-size: .87rem;
+      border-radius: 12px; overflow: hidden;
+    }
+    .data-table th {
+      background: var(--dark); color: #fff;
+      font-family: var(--font-title); font-weight: 600;
+      padding: 9px 13px; text-align: left; font-size: .82rem;
+    }
+    .data-table td {
+      padding: 9px 13px;
+      border-bottom: 1px solid var(--warm);
+      color: #3d4d3d;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: var(--white); }
+
+    /* Badges dificultad */
+    .badge {
+      display: inline-block; font-size: .72rem; font-weight: 700;
+      padding: 2px 9px; border-radius: 50px;
+    }
+    .badge-easy  { background: #e8f5e9; color: #2e7d32; }
+    .badge-mid   { background: #fff8e1; color: #e65100; }
+    .badge-hard  { background: #fce4ec; color: #c62828; }
+
+    /* ── OPERATOR CARDS ── */
+    .operator-label {
+      font-size: .72rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--olive); margin: 24px 0 12px;
+    }
+    .operator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px; margin-bottom: 24px;
+    }
+    .operator-card {
+      background: var(--white);
+      border: 1px solid var(--warm);
+      border-radius: 14px; padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 5px;
+      transition: box-shadow .2s;
+    }
+    .operator-card:hover { box-shadow: 0 4px 18px rgba(47,62,47,.1); }
+    .op-icon { font-size: 1.4rem; margin-bottom: 3px; }
+    .op-name {
+      font-family: var(--font-title); font-weight: 700;
+      font-size: .9rem; color: var(--dark); line-height: 1.3;
+    }
+    .op-detail { font-size: .78rem; color: #6a7a6a; line-height: 1.5; }
+    .op-link {
+      display: inline-block; margin-top: 3px;
+      font-size: .8rem; font-weight: 600; color: var(--olive);
+    }
+    .op-link:hover { color: var(--terra); }
+
+    /* ── CTA INLINE ── */
+    .inline-cta {
+      background: var(--dark); color: #fff;
+      border-radius: 16px; padding: 28px 24px;
+      margin: 36px 0; text-align: center;
+    }
+    .inline-cta h3 {
+      font-family: var(--font-title); font-size: 1.15rem;
+      font-weight: 800; color: #fff; margin: 0 0 8px; border: none !important;
+    }
+    .inline-cta p { color: rgba(255,255,255,.65); font-size: .88rem; margin-bottom: 18px; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--olive); color: #fff;
+      font-weight: 700; font-size: .9rem;
+      padding: 11px 26px; border-radius: 50px;
+      transition: background .2s;
+    }
+    .cta-btn:hover { background: var(--terra); color: #fff; }
+
+    /* ── FOOTER ── */
+    .blog-footer {
+      background: var(--dark); color: var(--warm);
+      padding: 40px 24px 28px;
+    }
+    .blog-footer__inner {
+      max-width: 1160px; margin: 0 auto 28px;
+      display: flex; flex-wrap: wrap;
+      gap: 32px; align-items: start;
+    }
+    .footer-logo {
+      font-family: var(--font-title);
+      font-weight: 800; font-size: 1.1rem; color: #fff;
+    }
+    .footer-info p { font-size: .82rem; line-height: 1.9; }
+    .footer-info a { color: var(--warm); }
+    .footer-bottom {
+      max-width: 1160px; margin: 0 auto;
+      padding-top: 20px; border-top: 1px solid rgba(255,255,255,.1);
+      font-size: .75rem; opacity: .45; text-align: center;
+    }
+
+    /* ── PREVIEW BANNER ── */
+    .preview-banner {
+      background: linear-gradient(90deg, var(--terra), #d4855f);
+      color: #fff; text-align: center;
+      padding: 10px 20px;
+      font-size: .8rem; font-weight: 600;
+      letter-spacing: .02em;
+    }
+    .preview-banner span { opacity: .8; font-weight: 400; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .blog-header__nav { display: none; }
+      .tab-btn { font-size: .78rem; padding: 11px 10px; gap: 4px; }
+      .tab-panels { padding: 0 16px 60px; }
+      .article-hero { padding: 36px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BANNER PREVIEW -->
+  <div class="preview-banner">
+    👁️ Modo preview — <span>así quedaría el artículo con los tabs implementados</span>
+  </div>
+
+  <!-- HEADER -->
+  <header class="blog-header">
+    <div class="blog-header__inner">
+      <div class="blog-header__logo">
+        <div class="logo-dot"></div>
+        Happy Host Patagonia
+      </div>
+      <ul class="blog-header__nav">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Alojamientos</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#" class="btn-reservar">Reservar</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="article-hero">
+    <div class="article-hero__inner">
+      <nav class="article-hero__breadcrumb">
+        <span>Inicio</span><span>›</span><span>Blog</span><span>›</span><span>Qué hacer en Villa La Angostura</span>
+      </nav>
+      <span class="article-hero__tag">Guía de viaje</span>
+      <h1 class="article-hero__title">Qué hacer en Villa La Angostura:<br>la guía completa 2026</h1>
+      <div class="article-hero__meta">
+        <span>Por Happy Host Patagonia</span>
+        <span>·</span>
+        <span>Mayo 2026</span>
+        <span>·</span>
+        <span>14 min de lectura</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB STRIP -->
+  <div class="tab-strip-wrapper">
+    <div class="tab-strip" role="tablist">
+      <button class="tab-btn active" data-tab="arrayanes" role="tab"><span class="tab-icon">🌳</span>Arrayanes</button>
+      <button class="tab-btn" data-tab="trekking"   role="tab"><span class="tab-icon">🥾</span>Trekking</button>
+      <button class="tab-btn" data-tab="cerrobayo"  role="tab"><span class="tab-icon">⛷️</span>Cerro Bayo</button>
+      <button class="tab-btn" data-tab="lagos"      role="tab"><span class="tab-icon">🌊</span>Lagos</button>
+      <button class="tab-btn" data-tab="pesca"      role="tab"><span class="tab-icon">🎣</span>Pesca</button>
+      <button class="tab-btn" data-tab="nautica"    role="tab"><span class="tab-icon">⛵</span>Náutica</button>
+      <button class="tab-btn" data-tab="cabalgatas" role="tab"><span class="tab-icon">🐎</span>Cabalgatas</button>
+      <button class="tab-btn" data-tab="gastro"     role="tab"><span class="tab-icon">🍽️</span>Gastronomía</button>
+      <button class="tab-btn" data-tab="practica"   role="tab"><span class="tab-icon">ℹ️</span>Práctica</button>
+    </div>
+  </div>
+
+  <!-- TAB PANELS -->
+  <div class="tab-panels">
+
+    <!-- ══ ARRAYANES ══ -->
+    <div class="tab-panel active" id="panel-arrayanes" role="tabpanel">
+      <h2>El Bosque de Arrayanes</h2>
+      <p>El Parque Nacional Los Arrayanes protege uno de los bosques de arrayán más grandes y densos del mundo. Los ejemplares de la Península de Quetrihué tienen más de 300 años — troncos color canela que se sienten fríos al tacto y una arquitectura de ramas que filtra la luz de una manera imposible de describir con palabras.</p>
+      <p>Caminar por ese bosque en silencio es una experiencia que no se olvida. Existe la leyenda de que Walt Disney se inspiró en él para crear el Bosque Encantado de Bambi.</p>
+      <div class="tip">
+        <span class="tip-icon">🥾</span>
+        <p><strong>Cómo llegar:</strong> caminando los <strong>12 km</strong> desde el ingreso a la Península de Quetrihué (5–6 horas ida y vuelta), o en <strong>catamarán</strong> desde Puerto La Angostura. La combinación ideal: ir en catamarán y volver caminando.</p>
+      </div>
+      <div class="tip">
+        <span class="tip-icon">💡</span>
+        <p><strong>Consejo:</strong> salí antes de las 10 hs. Los grupos del catamarán llegan todos juntos y el silencio desaparece.</p>
+      </div>
+      <div class="inline-cta">
+        <h3>Alojamiento en el centro del pueblo</h3>
+        <p>Del alojamiento al puerto en 5 minutos caminando.</p>
+        <a href="../alojamientos.html" class="cta-btn">Ver propiedades</a>
+      </div>
+    </div>
+
+    <!-- ══ TREKKING ══ -->
+    <div class="tab-panel" id="panel-trekking" role="tabpanel">
+      <h2>Trekking en el Parque Nacional</h2>
+      <div class="highlight">
+        <p>📋 <strong>Registro obligatorio</strong> en la Oficina de Parques Nacionales antes de salir. Llevá agua, abrigo extra y avisá a alguien el recorrido que planeás hacer.</p>
+      </div>
+
+      <h3>Senderos fáciles — para todos</h3>
+      <table class="data-table">
+        <thead><tr><th>Sendero</th><th>Distancia / Duración</th><th>Destacado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Brazo Última Esperanza</strong></td><td>1,9 km · 30–45 min</td><td>Playa tranquila, ideal familias</td></tr>
+          <tr><td><strong>Lago Correntoso</strong></td><td>3 km · 1–1,5 h</td><td>Bosque andino + playa de arena oscura</td></tr>
+          <tr><td><strong>Cascada Inacayal</strong></td><td>4,4 km · 1 hora</td><td>Cascada de 50 m entre el bosque</td></tr>
+          <tr><td><strong>Mirador Belvedere + Inacayal</strong></td><td>4,4 km · 2 horas</td><td>Vista al lago + cascada en un recorrido</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Senderos intermedios</h3>
+      <table class="data-table">
+        <thead><tr><th>Sendero</th><th>Distancia / Duración</th><th>Destacado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cerro Centinela</strong></td><td>7 km · 3–4 horas</td><td>Panorama completo del Nahuel Huapi</td></tr>
+          <tr><td><strong>Cerro Dormillón</strong></td><td>3 horas</td><td>Bosques de lenga, muy poca gente (Nov–Abr)</td></tr>
+          <tr><td><strong>Bosque de Arrayanes</strong></td><td>12 km · 5–6 horas</td><td>El bosque de arrayanes más grande del mundo</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Senderos avanzados</h3>
+      <table class="data-table">
+        <thead><tr><th>Sendero</th><th>Duración</th><th>Destacado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cerro O'Connor</strong></td><td>10,9 km · 6–8 horas</td><td>Cerro solitario, vistas excepcionales (Nov–May)</td></tr>
+          <tr><td><strong>Cerro Falkner</strong></td><td>7–8 horas ida y vuelta</td><td>Cima 2.350 m — panorama monumental</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══ CERRO BAYO ══ -->
+    <div class="tab-panel" id="panel-cerrobayo" role="tabpanel">
+      <h2>Cerro Bayo</h2>
+      <p>En invierno es el corazón de la temporada blanca. En verano se transforma en parque de aventura con bike park, canopy, parapente y restaurante gourmet a 1.500 m de altura.</p>
+
+      <h3>⛷️ Esquí — Temporada 2026</h3>
+      <p>25 pistas para todos los niveles, más de 90 instructores certificados. La temporada arranca el <strong>20 de junio</strong>.</p>
+      <table class="data-table">
+        <thead><tr><th>Temporada</th><th>Fechas</th><th>Adulto / día</th><th>Menor 6–11 / día</th></tr></thead>
+        <tbody>
+          <tr><td>Baja</td><td>20–27 jun · 30 ago–27 sep</td><td>$111.400</td><td>$87.100</td></tr>
+          <tr><td>Media</td><td>28 jun–7 jul · 2–13 ago</td><td>$117.200</td><td>$91.600</td></tr>
+          <tr><td>Especial</td><td>14–20 ago</td><td>$123.300</td><td>$96.400</td></tr>
+          <tr><td><strong>Alta</strong></td><td><strong>8 jul–1 ago</strong></td><td><strong>$136.500</strong></td><td><strong>$106.800</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="tip">
+        <span class="tip-icon">🎫</span>
+        <p><strong>Comprá online:</strong> <a href="https://compra.cerrobayo.com.ar/" target="_blank" style="color:var(--olive);font-weight:600;">compra.cerrobayo.com.ar</a> — sin filas en boletería.</p>
+      </div>
+      <div class="tip">
+        <span class="tip-icon">🎿</span>
+        <p><strong>Alquiler equipo:</strong> <a href="https://proshopaventura.com/" target="_blank" style="color:var(--olive);font-weight:600;">Pro Shop Aventura</a> — Av. Arrayanes 173, abierto 9–21 hs.</p>
+      </div>
+
+      <h3>🚵 Verano — Bike Park y aventura (Ene–Abr)</h3>
+      <ul>
+        <li><strong>Bike Park Kamikaze:</strong> 2 km doble diamante negro, uno de los mejores de Sudamérica.</li>
+        <li><strong>Bike Park El Raizal:</strong> circuito avanzado entre el bosque.</li>
+        <li><strong>Canopy:</strong> 8 segmentos, 1.200 m totales a 40 m de altura. $80.000. Jue–Mar 12–17 hs.</li>
+        <li><strong>Parapente:</strong> vuelos en tándem desde 1.500 m. Requiere reserva.</li>
+        <li><strong>Parador Milquinientos:</strong> almuerzo con vista al lago desde la cumbre.</li>
+      </ul>
+    </div>
+
+    <!-- ══ LAGOS ══ -->
+    <div class="tab-panel" id="panel-lagos" role="tabpanel">
+      <h2>Los lagos</h2>
+      <h3>Lago Nahuel Huapi</h3>
+      <p>557 km², hasta 450 metros de profundidad, origen glaciar. Aguas azul transparente intenso. La <strong>Bahía Las Balsas</strong> es uno de los accesos más lindos al lago, con arena volcánica negra y aguas más tranquilas.</p>
+
+      <h3>Lago Correntoso y el Río Correntoso</h3>
+      <p>El Río Correntoso tiene apenas 300 metros — uno de los más cortos del mundo. Sus aguas son de un verde esmeralda intenso. El lago tiene playa municipal con arena oscura, ideal para el verano.</p>
+      <p>Frente a la seccional del Guardaparque parte el <strong>Sendero Lago Espejo-Correntoso</strong>: 45 minutos por el bosque hasta una playa escondida.</p>
+
+      <h3>Lago Espejo</h3>
+      <p>A 20 km al norte por la Ruta 231. Cuando no hay viento, la superficie refleja los cerros nevados con exactitud perfecta. Forma parte del Camino de los Siete Lagos — merece una parada aunque sea breve.</p>
+
+      <div class="inline-cta">
+        <h3>Alojamiento junto al lago</h3>
+        <p>Algunas de nuestras propiedades están a metros de la Bahía Las Balsas.</p>
+        <a href="../alojamientos.html" class="cta-btn">Ver propiedades</a>
+      </div>
+    </div>
+
+    <!-- ══ PESCA ══ -->
+    <div class="tab-panel" id="panel-pesca" role="tabpanel">
+      <h2>Pesca con mosca</h2>
+      <p>La boca del Río Correntoso es uno de los spots más reconocidos de pesca con mosca en Argentina. <strong>Truchas arco iris y marrón</strong> en grandes cantidades, especialmente al amanecer y al atardecer.</p>
+
+      <div class="highlight">
+        <p>📅 <strong>Temporada:</strong> 1° de noviembre al 30 de abril. Fuera de esa fecha la pesca está prohibida para proteger los períodos de desove.</p>
+      </div>
+
+      <h3>Permiso de pesca — obligatorio</h3>
+      <div class="tip">
+        <span class="tip-icon">🎣</span>
+        <p><strong>Comprá tu permiso online:</strong> <a href="https://cazaypesca.neuquen.gob.ar/permisos/" target="_blank" style="color:var(--olive);font-weight:600;">cazaypesca.neuquen.gob.ar/permisos/</a> — WhatsApp oficial: +54 9 2994 543767</p>
+      </div>
+
+      <table class="data-table">
+        <thead><tr><th>Categoría</th><th>Diario</th><th>10 días</th><th>Temporada</th></tr></thead>
+        <tbody>
+          <tr><td>Turista (no residente)</td><td>$50.000</td><td>$140.000</td><td>$280.000</td></tr>
+          <tr><td>Residente Neuquén</td><td>$10.000</td><td>$20.000</td><td>$40.000</td></tr>
+          <tr><td>Jóvenes 13–17 años</td><td>—</td><td>—</td><td>$20.000</td></tr>
+          <tr><td>+65 años / jubilados / -12 años</td><td colspan="3" style="text-align:center;color:#888;">Gratuito</td></tr>
+        </tbody>
+      </table>
+
+      <p class="operator-label">Guías de pesca recomendados</p>
+      <div class="operator-grid">
+        <div class="operator-card">
+          <span class="op-icon">🎣</span>
+          <p class="op-name">Cordillera Fly</p>
+          <p class="op-detail">Martín Chambo. Mosca en Correntoso y Nahuel Huapi.</p>
+          <a href="tel:+5492944517198" class="op-link">📞 +54 9 2944 517198</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">🎣</span>
+          <p class="op-name">Correntoso Fly Fishing</p>
+          <p class="op-detail">Facundo Pomponio. Especialista en el Río Correntoso.</p>
+          <a href="https://www.instagram.com/correntoso_fly_fishing" target="_blank" class="op-link">📲 @correntoso_fly_fishing</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">🎣</span>
+          <p class="op-name">Pescando la Patagonia</p>
+          <p class="op-detail">Quique Quiroga. Toda la zona de Villa La Angostura.</p>
+          <a href="tel:+5492944817404" class="op-link">📞 +54 9 2944 817404</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">🎣</span>
+          <p class="op-name">Nahuel Fishing & Tours</p>
+          <p class="op-detail">Pesca y excursiones en el Lago Nahuel Huapi.</p>
+          <a href="tel:+541155846525" class="op-link">📞 +54 11 5584 6525</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ NÁUTICA ══ -->
+    <div class="tab-panel" id="panel-nautica" role="tabpanel">
+      <h2>Navegación y kayak</h2>
+      <p>Estar a orillas del Nahuel Huapi y no salir al agua sería desperdiciar la mitad del destino. Las opciones van desde paseos tranquilos en catamarán hasta travesías de kayak de varios días.</p>
+
+      <h3>Paseos en catamarán y lancha</h3>
+      <p>Recorren los brazos del Nahuel Huapi, la costa de la Península de Quetrihué y algunos incluyen la <strong>excursión al Bosque de Arrayanes</strong>. De 2 horas a jornada completa, con catering a bordo en algunos casos.</p>
+
+      <p class="operator-label">Operadores de navegación</p>
+      <div class="operator-grid">
+        <div class="operator-card">
+          <span class="op-icon">⛵</span>
+          <p class="op-name">Catamarán Bandurria</p>
+          <p class="op-detail">Nahuel Huapi y Bosque de Arrayanes.</p>
+          <a href="tel:+5492944315414" class="op-link">📞 +54 9 2944 315414</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">⛵</span>
+          <p class="op-name">Catamarán Futaleufu</p>
+          <p class="op-detail">Navegación en el Lago Nahuel Huapi.</p>
+          <a href="tel:+5492944494405" class="op-link">📞 +54 9 2944 494405</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">⛵</span>
+          <p class="op-name">Patagonia Sailing</p>
+          <p class="op-detail">Velero. Navegación a vela en el lago.</p>
+          <a href="tel:+549294154619781" class="op-link">📞 +54 9 2941 546197</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">⛵</span>
+          <p class="op-name">Bahía 1</p>
+          <p class="op-detail">Paseos en lancha desde Villa La Angostura.</p>
+          <a href="tel:+542944690200" class="op-link">📞 +54 2944 690200</a>
+        </div>
+      </div>
+
+      <h3>Kayak</h3>
+      <p>La forma más íntima de recorrer la costa. No se necesita experiencia previa — los operadores salen con grupos pequeños y proveen todo el equipo.</p>
+
+      <p class="operator-label">Operadores de kayak</p>
+      <div class="operator-grid">
+        <div class="operator-card">
+          <span class="op-icon">🛶</span>
+          <p class="op-name">Dalca Adventures</p>
+          <p class="op-detail">Medio día (3,5 h) o día completo (6 h). Grupos ≤10 personas.</p>
+          <a href="tel:+5492944899419" class="op-link">📞 +54 9 2944 899419</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">🛶</span>
+          <p class="op-name">Kayak 7 Lagos</p>
+          <p class="op-detail">Circuitos por los lagos de la región.</p>
+          <a href="https://www.instagram.com/kayak7lagos" target="_blank" class="op-link">📲 @kayak7lagos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CABALGATAS ══ -->
+    <div class="tab-panel" id="panel-cabalgatas" role="tabpanel">
+      <h2>Cabalgatas</h2>
+      <p>Recorrer el bosque andino-patagónico a caballo es una experiencia completamente diferente al trekking. Ritmo más lento, perspectiva diferente, y acceso a rincones que a pie tomarían horas.</p>
+
+      <p>El circuito más clásico lleva al <strong>Mirador Belvedere</strong> atravesando el bosque nativo. También hay recorridos por el bosque bordeando el Río Bonito y, en verano, <strong>paseos nocturnos con cena a la luz de velas</strong> junto al lago.</p>
+
+      <div class="tip">
+        <span class="tip-icon">🐎</span>
+        <p><strong>Sin experiencia previa:</strong> los caballos son dóciles y los guías adaptan el ritmo al grupo. Reservá con anticipación en temporada alta.</p>
+      </div>
+
+      <p class="operator-label">Operadores de cabalgatas</p>
+      <div class="operator-grid">
+        <div class="operator-card">
+          <span class="op-icon">🐎</span>
+          <p class="op-name">Cabalgatas Montahue</p>
+          <p class="op-detail">Av. Siete Lagos 402. Abierto 10–19 hs. Circuitos por el bosque.</p>
+          <a href="tel:+549294154511345" class="op-link">📞 +54 9 2941 545-1134</a>
+        </div>
+        <div class="operator-card">
+          <span class="op-icon">🐎</span>
+          <p class="op-name">Cabalgatas Belvedere</p>
+          <p class="op-detail">Cabalgata al Mirador Belvedere por el bosque andino.</p>
+          <a href="tel:+542944707010" class="op-link">📞 +54 2944 707010</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GASTRONOMÍA ══ -->
+    <div class="tab-panel" id="panel-gastro" role="tabpanel">
+      <h2>Gastronomía y vida local</h2>
+      <p>La Avenida Arrayanes concentra la vida del pueblo: chocolaterías, restaurantes con vista al lago, cervecerías artesanales y tiendas de productos regionales. No es un centro turístico artificial — es un pueblo de verdad donde la gente vive todo el año.</p>
+      <ul>
+        <li><strong>Chocolates artesanales:</strong> con cacao fino, variedades de calafate y rosa mosqueta. El mejor souvenir de la Patagonia.</li>
+        <li><strong>Cordero patagónico:</strong> al asador o al horno de barro. Varios restaurantes lo sirven al mediodía los fines de semana.</li>
+        <li><strong>Cerveza artesanal:</strong> producción local con agua de montaña. Predominan la stout y la american pale ale.</li>
+        <li><strong>Mermeladas y conservas:</strong> calafate, maqui, rosa mosqueta y mora del bosque.</li>
+      </ul>
+    </div>
+
+    <!-- ══ PRÁCTICA ══ -->
+    <div class="tab-panel" id="panel-practica" role="tabpanel">
+
+      <h2>¿Cuándo ir?</h2>
+      <table class="data-table">
+        <thead><tr><th>Época</th><th>Clima</th><th>Lo mejor</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Verano</strong> Dic–Feb</td><td>15–25°C</td><td>Lagos, trekking, kayak, bike park, pesca</td></tr>
+          <tr><td><strong>Otoño ⭐</strong> Mar–May</td><td>5–18°C</td><td>Colores del bosque, silencio, precios bajos</td></tr>
+          <tr><td><strong>Invierno</strong> Jun–Sep</td><td>−2–10°C</td><td>Nieve, Cerro Bayo, paisaje invernal</td></tr>
+          <tr><td><strong>Primavera</strong> Oct–Nov</td><td>8–20°C</td><td>Flores, ríos crecidos, inicio de pesca</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Cómo llegar</h2>
+      <p>Aeropuertos más cercanos: <strong>Bariloche</strong> (80 km) y <strong>Chapelco</strong> en San Martín de los Andes (110 km). Desde Buenos Aires hay vuelos directos a Bariloche con frecuencia diaria en temporada.</p>
+      <p>Desde Bariloche: Ruta Nacional 231, bordea el Lago Nahuel Huapi. En bus (Ko Ko / Albus): 1h30. En auto: misma duración, con libertad de parar en miradores.</p>
+      <div class="tip">
+        <span class="tip-icon">🚗</span>
+        <p><strong>Recomendación:</strong> alquilá un auto en el aeropuerto de Bariloche. El Lago Espejo, el Correntoso y los accesos a los senderos son difíciles de cubrir sin vehículo.</p>
+      </div>
+
+      <h2>Dónde alojarse</h2>
+      <p>Para aprovechar todo, lo mejor es alojarse <strong>dentro del pueblo</strong>. En Happy Host gestionamos 14 propiedades: desde estudios para parejas hasta casas para 9 personas, todas con calefacción y atención 24/7. Superhost de Airbnb por más de 4 años consecutivos.</p>
+      <div class="inline-cta">
+        <h3>Encontrá tu lugar en la Patagonia</h3>
+        <p>14 propiedades para todos los gustos y todas las temporadas.</p>
+        <a href="../alojamientos.html" class="cta-btn">Ver todas las propiedades</a>
+      </div>
+    </div>
+
+  </div><!-- /tab-panels -->
+
+  <!-- FOOTER -->
+  <footer class="blog-footer">
+    <div class="blog-footer__inner">
+      <div class="footer-logo">Happy Host Patagonia</div>
+      <div class="footer-info">
+        <p>Villa La Angostura, Neuquén, Argentina</p>
+        <p><a href="tel:+5492944700773">+54 9 2944 700773</a></p>
+        <p><a href="mailto:happyhostpatagonia@gmail.com">happyhostpatagonia@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Happy Host Patagonia · Tu alquiler en la Patagonia</div>
+  </footer>
+
+  <script>
+    const tabs   = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(tabId) {
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
+      panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + tabId));
+
+      // En mobile: scroll the active tab into view dentro del strip
+      const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      // Scroll suave al top del contenido
+      document.querySelector('.tab-panels').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Actualizar hash en URL
+      history.replaceState(null, '', '#' + tabId);
+    }
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+    });
+
+    // Si viene con hash, activar el tab correspondiente
+    const hash = location.hash.replace('#', '');
+    if (hash && document.getElementById('panel-' + hash)) {
+      activateTab(hash);
+    }
+  </script>
+
+</body>
+</html>

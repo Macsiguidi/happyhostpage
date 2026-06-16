@@ -4,8 +4,12 @@
 'use strict';
 
 const API = 'https://disponibilidad-happy-host-patagonia.onrender.com';
+// Panel de propietarios — fuente para propiedades SIN Lodgify (sistema: true)
+const API_SISTEMA = 'https://propietarios-happy-host.onrender.com';
 
 // ── Datos de propiedades (houseId, roomId, capacidad máx) ─────────────
+// Propiedades con `sistema: true` no usan Lodgify: su disponibilidad y precio
+// salen del panel (/api/properties/{slug}/ocupados y /precio). El slug es data-nombre.
 const PROPS = {
   calafate1:        { houseId: 601552, roomId: 668343, pax: 6 },
   calafate2:        { houseId: 601707, roomId: 668498, pax: 4 },
@@ -19,8 +23,8 @@ const PROPS = {
   nilidas:          { houseId: 601719, roomId: 668510, pax: 4 },
   gurisa:           { houseId: 648950, roomId: 715936,  pax: 7 },
   paisajismo:       { houseId: 601720, roomId: 668511, pax: 3 },
-  mitiempo:         { houseId: 677286, roomId: 744262, pax: 3 },
   refugiopatagonico:{ houseId: 677289, roomId: 744265, pax: 8 },
+  puertomargarita:  { sistema: true,  pax: 5 },   // Nueva Esperanza — sin Lodgify
 };
 
 // ── Helpers de fecha ──────────────────────────────────────────────────
@@ -189,12 +193,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // ── Disponibilidad de propiedades del sistema propio (sin Lodgify) ──
+  // Lodgify responde por houseId; estas se consultan una a una contra el panel.
+  const sistemaSlugs = Object.keys(PROPS).filter(s =>
+    PROPS[s].sistema && document.querySelector(`.card[data-nombre="${s}"]`));
+  const sistemaDispo = new Set();
+  await Promise.allSettled(sistemaSlugs.map(async slug => {
+    try {
+      const r = await fetch(`${API_SISTEMA}/api/properties/${slug}/ocupados`);
+      if (!r.ok) return;
+      const rangos = await r.json();
+      const ci = parseYMD(checkin), co = parseYMD(checkout);
+      // En /ocupados, "to" es la ÚLTIMA NOCHE (checkout - 1).
+      // La estadía [checkin, checkout) cruza si ci <= to && checkout > from.
+      const cruza = (rangos || []).some(({ from, to }) => {
+        const f = parseYMD(from), t = parseYMD(to);
+        if (!f || !t) return false;
+        return ci <= t && co > f;
+      });
+      if (!cruza) sistemaDispo.add(slug);
+    } catch {}
+  }));
+
   // Aplicar visibilidad por disponibilidad + capacidad (usando clase para evitar conflicto con CSS !important)
   let visibles = 0;
   cards.forEach(card => {
     const p      = PROPS[card.dataset.nombre];
     const capOk  = !huespedes || (p && p.pax >= huespedes);
-    const dispOk = p && disponiblesIds.includes(p.houseId);
+    const dispOk = p && (p.sistema
+      ? sistemaDispo.has(card.dataset.nombre)
+      : disponiblesIds.includes(p.houseId));
     const minStayOk = !(window.hhHotSaleMinStay?.blocksStay(card.dataset.nombre, noches));
     const mostrar = capOk && dispOk && minStayOk;
     card.classList.toggle('pax-hidden', !mostrar);
@@ -247,7 +275,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!p) return;
 
     try {
-      const url = `${API}/api/precios-diarios?start=${checkin}&end=${mañana}&houseId=${p.houseId}&roomId=${p.roomId}`;
+      const url = p.sistema
+        ? `${API_SISTEMA}/api/properties/${slug}/precio?checkin=${checkin}&checkout=${mañana}&huespedes=1`
+        : `${API}/api/precios-diarios?start=${checkin}&end=${mañana}&houseId=${p.houseId}&roomId=${p.roomId}`;
       const r   = await fetch(url);
       if (!r.ok) return;
       const { dias = [] } = await r.json();

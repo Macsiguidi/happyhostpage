@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opciones UX — Happy Host Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --olive: #6B7D5C;
+    --dark: #2F3E2F;
+    --warm: #D8D5CD;
+    --cream: #F5F3EF;
+    --terra: #C97A5A;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #1a1a1a; color: #fff; padding: 32px 16px; }
+
+  .page-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.4rem; font-weight: 800;
+    text-align: center; margin-bottom: 8px;
+    color: #fff;
+  }
+  .page-subtitle {
+    text-align: center; color: #aaa; font-size: .9rem;
+    margin-bottom: 40px;
+  }
+
+  /* GRID DE OPCIONES */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto 60px;
+  }
+
+  .option-card {
+    background: #2a2a2a;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color .25s, transform .2s;
+  }
+  .option-card:hover { border-color: var(--olive); transform: translateY(-3px); }
+  .option-card.selected { border-color: var(--terra); }
+  .option-card.recommended { border-color: var(--olive); }
+
+  .option-badge {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px 0;
+  }
+  .option-letter {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--olive); color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800; font-size: .95rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .recommended-tag {
+    background: var(--terra); color: #fff;
+    font-size: .68rem; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 50px;
+  }
+
+  .option-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    padding: 12px 20px 4px; color: #fff;
+  }
+  .option-desc {
+    font-size: .82rem; color: #999; padding: 0 20px 16px;
+    line-height: 1.6;
+  }
+
+  /* MOCKUP PHONE FRAME */
+  .phone-frame {
+    margin: 0 20px 20px;
+    background: #111;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid #333;
+    position: relative;
+  }
+  .phone-notch {
+    height: 28px; background: #111;
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid #222;
+  }
+  .phone-notch-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #333;
+  }
+  .phone-content {
+    background: var(--cream);
+    min-height: 460px;
+    overflow: hidden;
+  }
+
+  /* ── OPCIÓN A: TABS ─────────────────────────────────── */
+  .mock-header-a {
+    background: var(--dark);
+    padding: 14px 16px 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mock-logo-a {
+    width: 70px; height: 14px; background: rgba(255,255,255,.2); border-radius: 3px;
+  }
+  .mock-header-tag-a {
+    font-size: .62rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: #fff; opacity: .5;
+  }
+  .mock-hero-a {
+    background: var(--dark);
+    padding: 12px 16px 16px;
+  }
+  .mock-title-a {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem; font-weight: 800; color: #fff;
+    line-height: 1.25; margin-bottom: 6px;
+  }
+  .mock-meta-a { font-size: .62rem; color: #aaa; }
+
+  .tabs-strip {
+    background: var(--white);
+    border-bottom: 1px solid var(--warm);
+    padding: 0 8px;
+    display: flex; gap: 4px; overflow: hidden;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .tab-pill {
+    flex-shrink: 0;
+    font-size: .65rem; font-weight: 600;
+    padding: 8px 10px;
+    border-bottom: 2px solid transparent;
+    color: #888; cursor: pointer; white-space: nowrap;
+    transition: all .2s;
+  }
+  .tab-pill.active {
+    color: var(--olive);
+    border-bottom-color: var(--olive);
+    font-weight: 700;
+  }
+
+  .mock-section-a {
+    padding: 16px 16px 8px;
+  }
+  .mock-section-title-a {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .88rem; font-weight: 700;
+    color: var(--dark); margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--warm);
+  }
+
+  .trail-list { display: flex; flex-direction: column; gap: 8px; }
+  .trail-item {
+    background: var(--white);
+    border: 1px solid var(--warm);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .trail-name { font-size: .72rem; font-weight: 600; color: var(--dark); }
+  .trail-meta { font-size: .62rem; color: #888; }
+  .trail-badge {
+    font-size: .6rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 50px;
+    flex-shrink: 0;
+  }
+  .badge-easy { background: #e8f5e9; color: #2e7d32; }
+  .badge-mid { background: #fff8e1; color: #f57f17; }
+  .badge-hard { background: #fce4ec; color: #c62828; }
+
+  .fade-bottom {
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--cream));
+    margin-top: -60px; position: relative;
+  }
+
+  /* ── OPCIÓN B: ACORDEONES ─────────────────────────────── */
+  .mock-hero-b {
+    background: var(--dark);
+    padding: 14px 16px 18px;
+  }
+  .mock-tag-b {
+    display: inline-block;
+    background: var(--terra); color: #fff;
+    font-size: .6rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 50px;
+    margin-bottom: 8px;
+  }
+  .mock-title-b {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .95rem; font-weight: 800; color: #fff;
+    line-height: 1.25; margin-bottom: 5px;
+  }
+  .mock-meta-b { font-size: .6rem; color: #aaa; }
+
+  .accord-list { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .accord-item {
+    background: var(--white);
+    border: 1px solid var(--warm);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .accord-header {
+    padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer;
+  }
+  .accord-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .accord-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .78rem; font-weight: 700;
+    color: var(--dark); flex: 1;
+  }
+  .accord-arrow { font-size: .7rem; color: #aaa; transition: transform .2s; }
+  .accord-item.open .accord-arrow { transform: rotate(90deg); }
+
+  .accord-body {
+    padding: 0 14px 14px;
+    font-size: .72rem; color: #555; line-height: 1.7;
+    border-top: 1px solid var(--warm);
+    padding-top: 12px;
+    display: none;
+  }
+  .accord-item.open .accord-body { display: block; }
+
+  .mini-tip {
+    background: #f0f4ee; border-left: 3px solid var(--olive);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px; font-size: .68rem; margin-top: 8px;
+  }
+
+  /* ── OPCIÓN C: BOTÓN FLOTANTE ─────────────────────────── */
+  .mock-hero-c {
+    background: var(--dark);
+    padding: 14px 16px 18px;
+  }
+  .mock-title-c {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .95rem; font-weight: 800; color: #fff;
+    line-height: 1.25; margin-bottom: 5px;
+  }
+  .mock-meta-c { font-size: .6rem; color: #aaa; }
+
+  .mock-article-c {
+    padding: 14px 16px; position: relative;
+  }
+  .mock-paragraph {
+    height: 9px; background: var(--warm); border-radius: 4px;
+    margin-bottom: 6px; opacity: .7;
+  }
+  .mock-paragraph.short { width: 65%; }
+  .mock-paragraph.medium { width: 82%; }
+
+  .mock-h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .82rem; font-weight: 700; color: var(--dark);
+    margin: 14px 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--warm);
+  }
+
+  .fab {
+    position: absolute;
+    bottom: 16px; right: 16px;
+    background: var(--dark);
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px 16px;
+    font-size: .7rem; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    cursor: pointer;
+  }
+  .fab-icon { font-size: .9rem; }
+
+  .fab-panel {
+    position: absolute;
+    bottom: 54px; right: 16px; left: 16px;
+    background: var(--white);
+    border: 1px solid var(--warm);
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  }
+  .fab-panel-title {
+    font-size: .65rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #888; margin-bottom: 10px;
+  }
+  .fab-links { display: flex; flex-direction: column; gap: 6px; }
+  .fab-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    background: var(--cream);
+    border-radius: 8px; font-size: .72rem; font-weight: 600;
+    color: var(--dark); cursor: pointer;
+    transition: background .15s;
+  }
+  .fab-link:hover { background: var(--warm); }
+  .fab-link-icon { font-size: .9rem; }
+
+  /* PROS/CONS */
+  .pros-cons-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; padding: 16px 20px;
+    background: #222; border-top: 1px solid #333;
+  }
+  .pros-list, .cons-list { display: flex; flex-direction: column; gap: 4px; }
+  .pros-title { font-size: .65rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #6fcf97; margin-bottom: 6px; }
+  .cons-title { font-size: .65rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #eb5757; margin-bottom: 6px; }
+  .pro-item, .con-item {
+    font-size: .72rem; color: #ccc; padding-left: 10px;
+    position: relative; line-height: 1.5;
+  }
+  .pro-item::before { content: "✓"; position: absolute; left: 0; color: #6fcf97; font-size: .65rem; }
+  .con-item::before { content: "✗"; position: absolute; left: 0; color: #eb5757; font-size: .65rem; }
+
+  /* SELECTED STATE */
+  .option-card.selected { border-color: var(--terra); background: #2f2020; }
+  .option-card.selected .option-letter { background: var(--terra); }
+
+  /* FOOTER */
+  .footer-note {
+    text-align: center; color: #555; font-size: .8rem;
+    max-width: 600px; margin: 0 auto;
+  }
+
+  /* ANIMATION: tabs demo */
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .5 } }
+  .anim { animation: pulse 2s infinite; }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">¿Cómo reorganizamos el artículo?</h1>
+<p class="page-subtitle">3 enfoques para que la gente encuentre lo que busca sin scrollear. Abrí en el celular también para verlos mejor.</p>
+
+<div class="options-grid">
+
+  <!-- ══════════ OPCIÓN A: TABS ══════════ -->
+  <div class="option-card recommended" onclick="selectCard(this, 'A')">
+    <div class="option-badge">
+      <div class="option-letter">A</div>
+      <span class="recommended-tag">⭐ Recomendada</span>
+    </div>
+    <p class="option-label">Tabs de actividades</p>
+    <p class="option-desc">El artículo se divide en categorías (Trekking, Cerro Bayo, Lagos, Pesca…). El lector toca la pestaña de lo que le interesa y salta directo. Siempre visible mientras scrolleás.</p>
+
+    <div class="phone-frame">
+      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
+      <div class="phone-content">
+        <div class="mock-hero-a">
+          <div style="font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:6px;">GUÍA DE VIAJE</div>
+          <div class="mock-title-a">Qué hacer en Villa La Angostura</div>
+          <div class="mock-meta-a">Happy Host · Mayo 2026 · 14 min</div>
+        </div>
+
+        <div class="tabs-strip">
+          <div class="tab-pill active">🥾 Trekking</div>
+          <div class="tab-pill">⛷️ Ski</div>
+          <div class="tab-pill">🌊 Lagos</div>
+          <div class="tab-pill">🎣 Pesca</div>
+          <div class="tab-pill">⛵ Náutica</div>
+          <div class="tab-pill">🐎 Cabalg.</div>
+          <div class="tab-pill">📅 Cuándo</div>
+        </div>
+
+        <div class="mock-section-a">
+          <div class="mock-section-title-a">🥾 Trekking en el Parque Nacional</div>
+          <div class="trail-list">
+            <div class="trail-item">
+              <div>
+                <div class="trail-name">Cascada Inacayal</div>
+                <div class="trail-meta">4,4 km · 1 hora · salida: calle Cacique Antriao</div>
+              </div>
+              <span class="trail-badge badge-easy">Fácil</span>
+            </div>
+            <div class="trail-item">
+              <div>
+                <div class="trail-name">Mirador Belvedere</div>
+                <div class="trail-meta">4,4 km · 2 horas · vistas al Nahuel Huapi</div>
+              </div>
+              <span class="trail-badge badge-easy">Fácil</span>
+            </div>
+            <div class="trail-item">
+              <div>
+                <div class="trail-name">Cerro Centinela</div>
+                <div class="trail-meta">7 km · 3–4 horas · panorama completo</div>
+              </div>
+              <span class="trail-badge badge-mid">Medio</span>
+            </div>
+            <div class="trail-item">
+              <div>
+                <div class="trail-name">Cerro Falkner</div>
+                <div class="trail-meta">7–8 horas · cima 2.350 m</div>
+              </div>
+              <span class="trail-badge badge-hard">Avanzado</span>
+            </div>
+          </div>
+        </div>
+        <div class="fade-bottom"></div>
+      </div>
+    </div>
+
+    <div class="pros-cons-grid">
+      <div class="pros-list">
+        <div class="pros-title">A favor</div>
+        <div class="pro-item">Acceso inmediato a cualquier tema</div>
+        <div class="pro-item">Tabs siempre visibles al scrollear</div>
+        <div class="pro-item">Muy natural en celular</div>
+        <div class="pro-item">Fácil de agregar más secciones</div>
+      </div>
+      <div class="cons-list">
+        <div class="cons-title">En contra</div>
+        <div class="con-item">Requiere JS para cambiar tabs</div>
+        <div class="con-item">El contenido de cada tab sigue siendo largo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ OPCIÓN B: ACORDEONES ══════════ -->
+  <div class="option-card" onclick="selectCard(this, 'B')">
+    <div class="option-badge">
+      <div class="option-letter">B</div>
+    </div>
+    <p class="option-label">Secciones colapsables</p>
+    <p class="option-desc">Todas las secciones están cerradas al entrar. El lector abre solo lo que le interesa. La página se ve corta y ordenada, se expande a medida que explorás.</p>
+
+    <div class="phone-frame">
+      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
+      <div class="phone-content">
+        <div class="mock-hero-b">
+          <span class="mock-tag-b">Guía de viaje</span>
+          <div class="mock-title-b">Qué hacer en Villa La Angostura</div>
+          <div class="mock-meta-b">Happy Host · Mayo 2026 · 14 min</div>
+        </div>
+
+        <div class="accord-list">
+          <div class="accord-item open">
+            <div class="accord-header">
+              <span class="accord-icon">🥾</span>
+              <span class="accord-title">Trekking y senderismo</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body">
+              Desde paseos de 30 min hasta cumbres de 8 horas. El Parque Nacional tiene senderos para todos los niveles, saliendo directamente del centro del pueblo.
+              <div class="mini-tip">📋 Registro obligatorio en Parques Nacionales antes de salir.</div>
+            </div>
+          </div>
+          <div class="accord-item">
+            <div class="accord-header">
+              <span class="accord-icon">⛷️</span>
+              <span class="accord-title">Cerro Bayo — esquí y aventura</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body" style="display:none"></div>
+          </div>
+          <div class="accord-item">
+            <div class="accord-header">
+              <span class="accord-icon">🌊</span>
+              <span class="accord-title">Los lagos</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body" style="display:none"></div>
+          </div>
+          <div class="accord-item">
+            <div class="accord-header">
+              <span class="accord-icon">🎣</span>
+              <span class="accord-title">Pesca con mosca</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body" style="display:none"></div>
+          </div>
+          <div class="accord-item">
+            <div class="accord-header">
+              <span class="accord-icon">⛵</span>
+              <span class="accord-title">Navegación y kayak</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body" style="display:none"></div>
+          </div>
+          <div class="accord-item">
+            <div class="accord-header">
+              <span class="accord-icon">🐎</span>
+              <span class="accord-title">Cabalgatas</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body" style="display:none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pros-cons-grid">
+      <div class="pros-list">
+        <div class="pros-title">A favor</div>
+        <div class="pro-item">Página se ve muy corta al entrar</div>
+        <div class="pro-item">El usuario elige qué leer</div>
+        <div class="pro-item">Funciona perfecto en celular</div>
+        <div class="pro-item">Fácil de implementar</div>
+      </div>
+      <div class="cons-list">
+        <div class="cons-title">En contra</div>
+        <div class="con-item">Contenido oculto = menos SEO (potencial)</div>
+        <div class="con-item">La gente puede perderse secciones</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ OPCIÓN C: COMBO ══════════ -->
+  <div class="option-card" onclick="selectCard(this, 'C')">
+    <div class="option-badge">
+      <div class="option-letter">C</div>
+    </div>
+    <p class="option-label">Tabs + acordeones combinados</p>
+    <p class="option-desc">Los tabs organizan las grandes categorías. Dentro de cada tab, el contenido largo usa acordeones. Lo mejor de los dos mundos: navegación rápida y cero scroll innecesario.</p>
+
+    <div class="phone-frame">
+      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
+      <div class="phone-content">
+        <div class="mock-hero-b">
+          <span class="mock-tag-b">Guía de viaje</span>
+          <div class="mock-title-b">Qué hacer en Villa La Angostura</div>
+          <div class="mock-meta-b">Happy Host · Mayo 2026 · 14 min</div>
+        </div>
+
+        <div class="tabs-strip">
+          <div class="tab-pill active">🥾 Trekking</div>
+          <div class="tab-pill">⛷️ Ski</div>
+          <div class="tab-pill">🌊 Lagos</div>
+          <div class="tab-pill">🎣 Pesca</div>
+          <div class="tab-pill">⛵ Náutica</div>
+          <div class="tab-pill">🐎 Cabalg.</div>
+        </div>
+
+        <div style="padding:12px;">
+          <div class="accord-item open" style="margin-bottom:8px;">
+            <div class="accord-header">
+              <span class="accord-icon">🗺️</span>
+              <span class="accord-title">Senderos fáciles</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body">
+              <div class="trail-list">
+                <div class="trail-item">
+                  <div>
+                    <div class="trail-name">Brazo Última Esperanza</div>
+                    <div class="trail-meta">1,9 km · 45 min · playa familiar</div>
+                  </div>
+                  <span class="trail-badge badge-easy">Fácil</span>
+                </div>
+                <div class="trail-item">
+                  <div>
+                    <div class="trail-name">Cascada Inacayal</div>
+                    <div class="trail-meta">4,4 km · 1 hora</div>
+                  </div>
+                  <span class="trail-badge badge-easy">Fácil</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accord-item" style="margin-bottom:8px;">
+            <div class="accord-header">
+              <span class="accord-icon">🏔️</span>
+              <span class="accord-title">Senderos intermedios</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body" style="display:none"></div>
+          </div>
+          <div class="accord-item">
+            <div class="accord-header">
+              <span class="accord-icon">🧗</span>
+              <span class="accord-title">Senderos avanzados</span>
+              <span class="accord-arrow">▶</span>
+            </div>
+            <div class="accord-body" style="display:none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pros-cons-grid">
+      <div class="pros-list">
+        <div class="pros-title">A favor</div>
+        <div class="pro-item">Navegación ultra-rápida</div>
+        <div class="pro-item">Scroll casi eliminado</div>
+        <div class="pro-item">Se siente como una app</div>
+        <div class="pro-item">Fácil de agregar contenido</div>
+      </div>
+      <div class="cons-list">
+        <div class="cons-title">En contra</div>
+        <div class="con-item">Más complejo de implementar</div>
+        <div class="con-item">Requiere más JS</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="footer-note">💡 Todas las opciones mantienen el SEO intacto y son 100% compatibles con el CSS actual del blog. Ninguna requiere cambiar la estructura del servidor ni agregar librerías externas.</p>
+
+<script>
+function selectCard(el, choice) {
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  // remove recommended styling temporarily to show selection clearly
+}
+</script>
+</body>
+</html>

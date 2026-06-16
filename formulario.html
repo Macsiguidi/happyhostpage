@@ -309,7 +309,7 @@ window.addEventListener('load', () => {
   // Detectar de dónde viniste
   const ref = document.referrer || '';
   const fromAlojamientos = ref.includes('alojamientos.html');
-  const fromUnidad = /(calafate|cruz|nilidas|paisajismo|gurisa|koi|mitiempo|refugio)\d*\.html/i.test(ref);
+  const fromUnidad = /(calafate|cruz|nilidas|paisajismo|gurisa|koi|refugio|nueva-esperanza)\d*\.html/i.test(ref);
 
   // Mapeo propertyId → unidad
   const UNIT_BY_PROPERTY = {
