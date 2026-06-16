@@ -84,7 +84,7 @@ const promoMeta = {
   koiquetrihue:      { propName: 'Koi Quetrihue',       family: 'KoiQuetrihue'      },
   mitiempo:          { propName: 'Mi Tiempo',           family: 'MiTiempo'          },
   refugiopatagonico: { propName: 'Refugio Patagónico',  family: 'RefugioPatagonico' },
-  puertomargarita:   { propName: 'Margarita',           family: 'PuertoMargarita'   },
+  puertomargarita:   { propName: 'Puerto Margarita',    family: 'PuertoMargarita'   },
   casitamirador:     { propName: 'Casita Mirador',      family: 'CasitaMirador'     },
   picuen1:           { propName: 'Picuén 1',            family: 'Picuen'            },
   picuen2:           { propName: 'Picuén 2',            family: 'Picuen'            },
