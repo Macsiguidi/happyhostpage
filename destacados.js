@@ -1,9 +1,16 @@
 // destacados.js
-console.log("Destacados JS v1.2.0");
+console.log("Destacados JS v1.2.1");
 
 // Forzar refresco del set si cambiamos lógica
 // 1.2.0: Mi Tiempo fuera, Nueva Esperanza adentro
-const DESTACADOS_VERSION = "1.2.0";
+// 1.2.1: Nueva Esperanza fija en destacados por una semana (recién publicada)
+const DESTACADOS_VERSION = "1.2.1";
+
+// ── Destacado fijo temporal ───────────────────────────────────────────────
+// Nueva Esperanza aparece SIEMPRE en destacados hasta esta fecha; después
+// vuelve sola a la rotación normal (no hay que tocar nada).
+const PIN_SLUG  = "puertomargarita";
+const PIN_HASTA = new Date("2026-06-24T23:59:59");
 
 if (localStorage.getItem("destacados_ver") !== DESTACADOS_VERSION) {
   localStorage.removeItem("destacados_set");
@@ -277,9 +284,9 @@ function getDestacados() {
   const now = Date.now();
   const dosDias = 2 * 24 * 60 * 60 * 1000;
 
-  if (!saved || now - savedAt > dosDias) {
+  let result;
 
-    let nuevos;
+  if (!saved || now - savedAt > dosDias) {
 
     if (saved && saved.length) {
 
@@ -289,21 +296,34 @@ function getDestacados() {
         p => !fijo.some(f => f.slug === p.slug)
       );
 
-      nuevos = [...fijo, ...randomPick(resto, 2)];
+      result = [...fijo, ...randomPick(resto, 2)];
 
     } else {
 
-      nuevos = randomPick(propiedades, 3);
+      result = randomPick(propiedades, 3);
 
     }
 
-    localStorage.setItem("destacados_set", JSON.stringify(nuevos));
+    localStorage.setItem("destacados_set", JSON.stringify(result));
     localStorage.setItem("destacados_at", now.toString());
 
-    return nuevos;
+  } else {
+
+    result = saved;
+
   }
 
-  return saved;
+  // Pin temporal: garantizar Nueva Esperanza mientras esté vigente.
+  // Se inyecta al devolver (no se persiste), así al vencer la fecha
+  // la rotación normal vuelve sola sin caché pegada.
+  if (now <= PIN_HASTA.getTime()) {
+    const pin = propiedades.find(p => p.slug === PIN_SLUG);
+    if (pin && !result.some(p => p.slug === PIN_SLUG)) {
+      result = [pin, ...result.filter(p => p.slug !== PIN_SLUG)].slice(0, 3);
+    }
+  }
+
+  return result;
 }
 
 // =======================
