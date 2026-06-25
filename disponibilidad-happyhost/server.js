@@ -595,6 +595,31 @@ Comentarios: ${comm || '—'}`;
       console.log('⚠️ Pushover (post-reserva) no enviado:', npErr?.message || npErr);
     }
 
+    // === Avisar al sistema HappyHost los datos que Lodgify no trae (total/seña/huéspedes)
+    // para que complete la reserva y mande la confirmación automática.
+    try {
+      const HH_TOKEN = process.env.HH_TOKEN || '';
+      if (bookingId && HH_TOKEN) {
+        const parseMonto  = (s) => parseInt(String(s || '').replace(/[^\d]/g, '') || '0', 10);
+        const parseMoneda = (s) => /usd/i.test(String(s || '')) ? 'USD' : 'ARS';
+        const rooms2  = Array.isArray(b.rooms) ? b.rooms : [];
+        const adultos = rooms2.reduce((a, r) => a + Number(r?.adults || 0), 0);
+        const ninos   = rooms2.reduce((a, r) => a + Number(r?.children || 0), 0);
+
+        await axios.post('https://propietarios-happy-host.onrender.com/api/web-reserva', {
+          booking_id: Number(bookingId),
+          total:  parseMonto(b._total_ui),
+          sena:   parseMonto(b._senia_ui),
+          moneda: parseMoneda(b._total_ui),
+          adultos, ninos,
+          token: HH_TOKEN
+        }, { timeout: 15000 });
+        console.log('✅ Datos enviados al sistema HappyHost');
+      }
+    } catch (hhErr) {
+      console.log('⚠️ No se pudo avisar al sistema HappyHost:', hhErr?.response?.status || hhErr?.message || hhErr);
+    }
+
     // Si no hay ID devolvemos igualmente OK (reserva ya creada en Lodgify)
     if (!bookingId) {
       return res.status(200).json({
