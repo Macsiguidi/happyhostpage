@@ -149,6 +149,17 @@
     this._trigEl.classList.remove('hh-hu__trigger--open');
   };
 
+  // ── cambiar el máximo en caliente (capacidad que viene del sistema) ──
+  HuespedesSelector.prototype.setMax = function (n) {
+    n = parseInt(n, 10);
+    if (!n || n < 1) return;
+    this._max = n;
+    // Si lo nuevo es menor que lo elegido, recortar (niños primero, luego adultos)
+    while (this.total > this._max && this._n > 0) this._n--;
+    while (this.total > this._max && this._a > 1) this._a--;
+    if (this._panel) this._refresh();
+  };
+
   // ── events ─────────────────────────────────────────────────────────
   HuespedesSelector.prototype._bindEvents = function () {
     var self = this;

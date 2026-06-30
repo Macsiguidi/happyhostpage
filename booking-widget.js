@@ -113,6 +113,22 @@
     });
   }
 
+  // ── capacidad dinámica: el sistema es la fuente de verdad ────────────────
+  // Pedimos la ficha de la propiedad y, si la capacidad cargada en el sistema
+  // difiere del data-personas de la página, actualizamos el máximo del selector.
+  // No bloquea el render (el data-personas sirve de respaldo instantáneo); si la
+  // API está dormida o falla, queda el valor de la página.
+  fetch(`${API_SISTEMA}/api/properties/${PROP_KEY}`)
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (p) {
+      if (!p) return;
+      var cap = parseInt(p.personas, 10);
+      if (cap && cap > 0 && cap !== MAX_GUESTS && huSelector && huSelector.setMax) {
+        huSelector.setMax(cap);
+      }
+    })
+    .catch(function () { /* sin conexión → queda el data-personas */ });
+
   // ── flatpickr ────────────────────────────────────────────────────────────
   const startPicker = flatpickr(startInput, {
     altInput: true, altFormat: 'd/m/Y', dateFormat: 'Y-m-d',
