@@ -156,6 +156,7 @@
 
   // ── disponibilidad ────────────────────────────────────────────────────────
   let fechasOcupadas = [];
+  let dispCargada    = false;   // true cuando ya cargó la disponibilidad (evita reservar en el "race" de carga)
   async function loadDisabledDates(picker) {
     try {
       const url = USA_LODGIFY
@@ -166,6 +167,8 @@
       if (!resp.ok) return;
       const rangos = await resp.json();
       fechasOcupadas = rangos;
+      dispCargada = true;
+      calculate();   // re-evaluar por si el huésped ya había elegido fechas mientras cargaba
       picker.set('disable', [
         ...rangos.map(r => {
           const from = parseYMDLocal(r.from);
@@ -200,6 +203,25 @@
     calculate();
   }
 
+  // ── popup "fechas ya reservadas" ──────────────────────────────────────────
+  function mostrarPopupOcupado() {
+    let ov = document.getElementById('hh-ocupado-modal');
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'hh-ocupado-modal';
+      ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(15,30,40,.55);display:flex;align-items:center;justify-content:center;padding:20px';
+      ov.innerHTML =
+        '<div style="background:#fff;border-radius:16px;max-width:360px;width:100%;padding:26px 24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35);font-family:inherit">' +
+          '<div style="font-size:2.4rem;margin-bottom:6px">📅</div>' +
+          '<div style="font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:700;font-size:1.15rem;color:#1E3F4E;margin-bottom:8px">Esas fechas ya están reservadas</div>' +
+          '<div style="font-size:.9rem;color:#555;line-height:1.5;margin-bottom:18px">Por favor elegí otras fechas disponibles en el calendario.</div>' +
+          '<button type="button" style="background:#E25843;color:#fff;border:none;border-radius:10px;padding:11px 24px;font-weight:600;font-size:.95rem;cursor:pointer">Elegir otras fechas</button>' +
+        '</div>';
+      ov.addEventListener('click', e => { if (e.target === ov || e.target.tagName === 'BUTTON') ov.remove(); });
+      document.body.appendChild(ov);
+    } else { ov.style.display = 'flex'; }
+  }
+
   // ── cruce con ocupadas ────────────────────────────────────────────────────
   function hayCruceConFechasOcupadas(ci, co) {
     const ci0 = ymdLocal(ci instanceof Date ? ci : parseYMDLocal(ci));
@@ -228,6 +250,7 @@
     const ed = parseYMDLocal(endValue);
     if (!sd || !ed) { if (resDiv) resDiv.textContent = 'Fechas inválidas.'; reservarBtn.disabled = true; return; }
     if (ed <= sd)   { if (resDiv) resDiv.textContent = 'La fecha de salida debe ser posterior a la de llegada.'; reservarBtn.disabled = true; return; }
+    if (!dispCargada) { if (resDiv) resDiv.textContent = 'Verificando disponibilidad…'; reservarBtn.disabled = true; setTimeout(calculate, 400); return; }
     if (hayCruceConFechasOcupadas(sd, ed)) { if (resDiv) resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
 
     const noches = Math.round((ed - sd) / (1000 * 60 * 60 * 24));
@@ -336,6 +359,8 @@
 
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
+        // Guard final anti-overbooking: re-validar contra la disponibilidad ya cargada
+        if (!dispCargada || hayCruceConFechasOcupadas(startValue, endValue)) { mostrarPopupOcupado(); return; }
         const nombreProp = card.dataset.nombre
           || document.querySelector('.unidad-h1')?.textContent?.trim()
           || '';
