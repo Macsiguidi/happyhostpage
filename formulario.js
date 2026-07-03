@@ -419,6 +419,9 @@ window.addEventListener('DOMContentLoaded', () => {
               adultos:   adultos,
               ninos:     ninos,
               bebes:     bebes,
+              total:     isNaN(totalOriginal) ? 0 : totalOriginal,
+              senia:     isNaN(seniaOriginalNumber) ? 0 : seniaOriginalNumber,
+              moneda:    currencyParam || 'USD',
             })
           });
 
