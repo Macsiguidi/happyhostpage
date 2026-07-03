@@ -19,13 +19,14 @@
   'use strict';
 
   function HuespedesSelector(opts) {
-    this._max   = opts.maxGuests || 10;
-    this._a     = Math.max(1, opts.adultos || 1);
-    this._n     = opts.ninos  || 0;
-    this._b     = opts.bebes  || 0;
-    this._cb    = opts.onChange || function () {};
-    this._dark  = !!opts.dark;
-    this._modal = !!opts.modal;
+    this._max     = opts.maxGuests || 10;
+    this._noNinos = !!opts.sinNinos;               // esta propiedad no admite niños
+    this._a       = Math.max(1, opts.adultos || 1);
+    this._n       = this._noNinos ? 0 : (opts.ninos || 0);
+    this._b       = opts.bebes  || 0;
+    this._cb      = opts.onChange || function () {};
+    this._dark    = !!opts.dark;
+    this._modal   = !!opts.modal;
     this._init(opts.container);
   }
 
@@ -54,8 +55,9 @@
       '<div class="hh-hu__panel" role="listbox" hidden>' +
         (this._modal ? '<div class="hh-hu__modal-header"><span class="hh-hu__modal-title">Huéspedes</span></div>' : '') +
         this._rowHTML('adultos', 'Adultos',  '15 años en adelante') +
-        this._rowHTML('ninos',   'Niños',    'De 2 a 15 años') +
+        (this._noNinos ? '' : this._rowHTML('ninos', 'Niños', 'De 2 a 15 años')) +
         this._rowHTML('bebes',   'Bebés',    'Menores de 2 años · sin cargo') +
+        (this._noNinos ? '<div class="hh-hu__aviso" style="padding:8px 14px;font-size:.78rem;color:#b3461e;line-height:1.35">🚫 Esta propiedad no admite niños de 2 a 14 años.</div>' : '') +
         '<div class="hh-hu__footer">' +
           '<button type="button" class="hh-hu__done">Listo ✓</button>' +
         '</div>' +

@@ -13,6 +13,7 @@
   const HOUSE_ID   = parseInt(card.dataset.houseId,  10) || 0;
   const ROOM_ID    = parseInt(card.dataset.roomId,   10) || 0;
   const MAX_GUESTS = parseInt(card.dataset.personas, 10) || 10;
+  const SIN_NINOS  = card.dataset.sinNinos === 'true';   // propiedad que no admite niños (2-14)
   const USA_LODGIFY = HOUSE_ID > 0 && ROOM_ID > 0;
 
   // Slug desde URL (?slug=) o, en páginas estáticas, desde data-slug de la tarjeta
@@ -82,7 +83,7 @@
   // Si viene adultos explícito lo usamos; si no hay desglose, arrancamos con 1 adulto
   // (NO usar el total de huespedes como adultos — evita que "2 adultos + 1 niño" = 3 adultos)
   const initAdultos = Math.min(parseInt(params.get('adultos')) || 1, MAX_GUESTS);
-  const initNinos   = Math.min(parseInt(params.get('ninos'))   || 0, Math.max(0, MAX_GUESTS - initAdultos));
+  const initNinos   = SIN_NINOS ? 0 : Math.min(parseInt(params.get('ninos')) || 0, Math.max(0, MAX_GUESTS - initAdultos));
   const initBebes   = parseInt(params.get('bebes')) || 0;
 
   // Pre-cargar fechas ANTES de montar el selector, para que el primer
@@ -101,6 +102,7 @@
     huSelector = new window.HH.HuespedesSelector({
       container: huContainer,
       maxGuests: MAX_GUESTS,
+      sinNinos:  SIN_NINOS,
       adultos:   initAdultos,
       ninos:     initNinos,
       bebes:     initBebes,
