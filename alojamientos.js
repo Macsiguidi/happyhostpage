@@ -24,7 +24,7 @@ const PROPS = {
   gurisa:           { houseId: 648950, roomId: 715936,  pax: 7 },
   paisajismo:       { houseId: 601720, roomId: 668511, pax: 3 },
   refugiopatagonico:{ houseId: 677289, roomId: 744265, pax: 8 },
-  puertomargarita:  { sistema: true,  pax: 5 },   // Nueva Esperanza — sin Lodgify
+  puertomargarita:  { sistema: true,  pax: 5, sinNinos: true },   // Nueva Esperanza — sin Lodgify, no admite niños 2-14
 };
 
 // ── Helpers de fecha ──────────────────────────────────────────────────
@@ -147,7 +147,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     cards.forEach(card => {
       const p = PROPS[card.dataset.nombre];
       const capOk = !huespedes || (p && p.pax >= huespedes);
-      card.classList.toggle('pax-hidden', !capOk);
+      const ninosOk = !(ninos > 0 && p && p.sinNinos);   // sin niños si la casa no los admite
+      card.classList.toggle('pax-hidden', !(capOk && ninosOk));
     });
     // Ordenar por capacidad ascendente cuando se indicaron huéspedes
     if (huespedes > 0 && grid) {
@@ -220,11 +221,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   cards.forEach(card => {
     const p      = PROPS[card.dataset.nombre];
     const capOk  = !huespedes || (p && p.pax >= huespedes);
+    const ninosOk = !(ninos > 0 && p && p.sinNinos);   // sin niños si la casa no los admite
     const dispOk = p && (p.sistema
       ? sistemaDispo.has(card.dataset.nombre)
       : disponiblesIds.includes(p.houseId));
     const minStayOk = !(window.hhHotSaleMinStay?.blocksStay(card.dataset.nombre, noches));
-    const mostrar = capOk && dispOk && minStayOk;
+    const mostrar = capOk && dispOk && minStayOk && ninosOk;
     card.classList.toggle('pax-hidden', !mostrar);
     if (mostrar) visibles++;
   });
