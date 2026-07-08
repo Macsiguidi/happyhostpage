@@ -405,7 +405,7 @@
     await loadScript('promos.js').catch(e => console.warn('promos.js no cargó:', e));
     await loadScript('huespedes.js').catch(e => console.warn('huespedes.js no cargó:', e));
     try {
-      await loadScript('booking-widget.js');
+      await loadScript('booking-widget.js?v=2');
     } catch (e) { console.warn('booking-widget.js no cargó:', e); }
 
   })();

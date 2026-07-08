@@ -186,9 +186,14 @@
     }
   }
   [startPicker, endPicker].forEach(picker => {
-    picker.config.onReady.push(() => loadDisabledDates(picker));
     picker.config.onMonthChange.push(() => loadDisabledDates(picker));
     picker.config.onOpen.push(() => loadDisabledDates(picker));
+    // OJO: el onReady de flatpickr ya disparó cuando se creó el picker,
+    // así que engancharse acá llegaba tarde y la disponibilidad nunca se
+    // cargaba hasta abrir el calendario a mano. Con fechas por URL eso
+    // dejaba el widget clavado en "Verificando disponibilidad…".
+    // Se carga directamente:
+    loadDisabledDates(picker);
   });
 
   if (checkin) setCurrencyAndCalculate(checkin); else calculate();
