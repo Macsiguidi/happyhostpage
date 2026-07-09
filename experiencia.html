@@ -384,6 +384,27 @@
   const btn    = document.getElementById('btnSubmit');
   const toast  = document.getElementById('toast');
 
+  // ── Pre-selección por URL ─────────────────────────────────────────────
+  // Permite mandar el link ya configurado en el mensaje de despedida:
+  //   experiencia.html?casa=nilidas            → alojamiento preseleccionado
+  //   experiencia.html?casa=nilidas&via=Airbnb → también el portal
+  (function preseleccionar() {
+    const params = new URLSearchParams(location.search);
+    const casa = (params.get('casa') || params.get('slug') || params.get('propiedad') || '').toLowerCase();
+    if (casa) {
+      const sel = document.getElementById('propiedad');
+      if (sel && [...sel.options].some(o => o.value === casa)) sel.value = casa;
+    }
+    const via = params.get('via');
+    if (via) {
+      const selVia = document.getElementById('via');
+      if (selVia) {
+        const match = [...selVia.options].find(o => o.value.toLowerCase() === via.toLowerCase());
+        if (match) selVia.value = match.value;
+      }
+    }
+  })();
+
   function showToast(msg, type) {
     toast.textContent = msg;
     toast.className   = 'toast ' + type;
