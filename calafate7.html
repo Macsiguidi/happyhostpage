@@ -484,6 +484,7 @@
   fetch('https://propietarios-happy-host.onrender.com/api/properties/' + PROP_KEY)
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(d){
+      if (d) { window._panelAdicional = d.adicionalHuesped; window._panelFreeGuests = d.huespedesIncluidos; }
       if (d && d.reservableHasta) {
         fechaLimite = new Date(d.reservableHasta + 'T00:00:00');
         startPicker.set('maxDate', fechaLimite);
@@ -575,7 +576,7 @@
     if (!sd || !ed) { resDiv.textContent = 'Fechas inválidas.'; reservarBtn.disabled = true; return; }
     if (ed <= sd)   { resDiv.textContent = 'La fecha de fin debe ser posterior a la de inicio.'; reservarBtn.disabled = true; return; }
 
-    const MAX_GUESTS = 4, FREE_GUESTS = 3;
+    const MAX_GUESTS = 4, FREE_GUESTS = (window._panelFreeGuests != null ? window._panelFreeGuests : 3);
     if (guests > MAX_GUESTS) { resDiv.textContent = `La capacidad máxima es de ${MAX_GUESTS} huéspedes.`; reservarBtn.disabled = true; return; }
     if (hayCruceConFechasOcupadas(sd, ed)) { resDiv.textContent = 'El rango incluye fechas ya ocupadas.'; reservarBtn.disabled = true; return; }
 
@@ -615,7 +616,7 @@
         breakdownNoches.push({ fecha: new Date(fechaNoche), montoMoneda });
       }
 
-      const extraUnit = extras[0]?.price_per_day || 12;
+      const extraUnit = (window._panelAdicional > 0 ? window._panelAdicional : (extras[0]?.price_per_day || 12));
       const extraQty  = Math.max(0, guests - FREE_GUESTS);
       const extraUSD  = extraQty * extraUnit * noches;
       const totalUSD  = baseUSD + extraUSD;
