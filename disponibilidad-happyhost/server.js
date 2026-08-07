@@ -399,8 +399,13 @@ app.get('/api/ocupados/:unidad', async (req, res) => {
     return res.status(400).json({ error: `Propiedad '${unidad}' no encontrada.` });
   }
 
-  const periodStart = new Date().toISOString().split('T')[0];
-  const periodEnd   = '2026-10-31';
+  // Ventana móvil: desde hoy y 18 meses hacia adelante (antes estaba fija en
+  // 2026-10-31, por eso las reservas de noviembre en adelante no se bloqueaban).
+  const hoy = new Date();
+  const periodStart = hoy.toISOString().split('T')[0];
+  const finVentana = new Date(hoy);
+  finVentana.setMonth(finVentana.getMonth() + 18);
+  const periodEnd = finVentana.toISOString().split('T')[0];
 
   try {
     const response = await axios.get(`${BASE_URL}/v1/availability/${propertyId}`, {
