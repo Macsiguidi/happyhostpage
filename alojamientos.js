@@ -138,6 +138,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   const banner  = document.getElementById('banner-busqueda');
   const cards   = Array.from(document.querySelectorAll('.card[data-nombre]'));
 
+  // ── Propiedades ocultadas desde el sistema ─────────────────────────
+  // Panel → Alojamientos → interruptor "Visible en web". Aunque la tarjeta
+  // esté fija en el HTML, si el panel la marcó como NO visible la escondemos
+  // en TODOS los estados (listado sin fechas y búsqueda por fechas).
+  let ocultasSlugs = new Set(), ocultasHouseIds = new Set();
+  try {
+    const ro = await fetch(`${API_SISTEMA}/api/properties/ocultas`);
+    if (ro.ok) {
+      const o = await ro.json();
+      ocultasSlugs    = new Set((o.slugs || []).map(s => String(s).toLowerCase()));
+      ocultasHouseIds = new Set(o.houseIds || []);
+    }
+  } catch { /* si el panel no responde, no ocultamos nada extra */ }
+
+  const estaOculta = (card) => {
+    const slug = card.dataset.nombre;
+    const p    = PROPS[slug];
+    return ocultasSlugs.has(slug) || (p && p.houseId && ocultasHouseIds.has(p.houseId));
+  };
+
   // Mezclar tarjetas aleatoriamente (preserva el orden visual fresco en cada visita)
   const grid = document.querySelector('.grid-alojamientos');
   if (grid) cards.sort(() => Math.random() - 0.5).forEach(c => grid.appendChild(c));
@@ -148,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const p = PROPS[card.dataset.nombre];
       const capOk = !huespedes || (p && p.pax >= huespedes);
       const ninosOk = !(ninos > 0 && p && p.sinNinos);   // sin niños si la casa no los admite
-      card.classList.toggle('pax-hidden', !(capOk && ninosOk));
+      card.classList.toggle('pax-hidden', !(capOk && ninosOk) || estaOculta(card));
     });
     // Ordenar por capacidad ascendente cuando se indicaron huéspedes
     if (huespedes > 0 && grid) {
@@ -226,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       ? sistemaDispo.has(card.dataset.nombre)
       : disponiblesIds.includes(p.houseId));
     const minStayOk = !(window.hhHotSaleMinStay?.blocksStay(card.dataset.nombre, noches));
-    const mostrar = capOk && dispOk && minStayOk && ninosOk;
+    const mostrar = capOk && dispOk && minStayOk && ninosOk && !estaOculta(card);
     card.classList.toggle('pax-hidden', !mostrar);
     if (mostrar) visibles++;
   });

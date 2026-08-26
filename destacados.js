@@ -330,13 +330,34 @@ function getDestacados() {
 // RENDER
 // =======================
 
-function renderDestacados() {
+// Slugs ocultados desde el sistema (Panel → Alojamientos → Visible en web).
+// La portada tampoco debe sortear una propiedad que el panel escondió.
+async function obtenerOcultas() {
+  try {
+    const r = await fetch("https://propietarios-happy-host.onrender.com/api/properties/ocultas");
+    if (!r.ok) return new Set();
+    const o = await r.json();
+    return new Set((o.slugs || []).map(s => String(s).toLowerCase()));
+  } catch { return new Set(); }
+}
+
+async function renderDestacados() {
 
   const cont = document.querySelector("#destacados .destacados-grid");
 
   if (!cont) return;
 
-  const destacados = getDestacados();
+  const ocultas = await obtenerOcultas();
+
+  // Sacar las ocultas del catálogo antes de sortear y rellenar los huecos
+  // con propiedades visibles, así siempre quedan 3 tarjetas.
+  let destacados = getDestacados().filter(p => !ocultas.has(p.slug));
+  if (destacados.length < 3) {
+    const relleno = propiedades.filter(
+      p => !ocultas.has(p.slug) && !destacados.some(d => d.slug === p.slug)
+    );
+    destacados = [...destacados, ...randomPick(relleno, 3 - destacados.length)];
+  }
 
   cont.innerHTML = destacados.map(p => `
 
