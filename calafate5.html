@@ -682,7 +682,7 @@
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
         const qs = new URLSearchParams({
-          propertyId: HOUSE_ID, roomTypeId: ROOM_ID,
+          slug: PROP_KEY, propertyId: HOUSE_ID, roomTypeId: ROOM_ID,
           checkInDate: startValue, checkOutDate: endValue,
           numberOfGuests: guests, adultos: _adultos, ninos: _ninos, bebes: _bebes, totalPrice: totalParaCobrar,
           currency: moneda, descuentoUSD
