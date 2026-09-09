@@ -526,7 +526,7 @@
   let fechasOcupadas = [];
   async function loadDisabledDates(picker) {
     try {
-      const resp = await fetch('https://disponibilidad-happy-host-patagonia.onrender.com/api/ocupados/gurisa');
+      const resp = await fetch('https://propietarios-happy-host.onrender.com/api/properties/' + PROP_KEY + '/ocupados');
       if (!resp.ok) throw new Error(await resp.text());
       const rangos = await resp.json();
       fechasOcupadas = rangos;
@@ -607,7 +607,7 @@
     reservarBtn.disabled = true;
 
     try {
-      const url  = `https://disponibilidad-happy-host-patagonia.onrender.com/api/precios-diarios?start=${startValue}&end=${endValue}&houseId=${HOUSE_ID}&roomId=${ROOM_ID}`;
+      const url  = `https://propietarios-happy-host.onrender.com/api/properties/${PROP_KEY}/precio?checkin=${startValue}&checkout=${endValue}&huespedes=${guests}`;
       const resp = await fetch(url);
       if (!resp.ok) throw new Error(await resp.text());
       const { dias = [], extras = [] } = await resp.json();
