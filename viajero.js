@@ -9,10 +9,7 @@ localStorage.removeItem("disponibles");
 localStorage.removeItem("disponibles_expira");
 
 document.addEventListener("DOMContentLoaded", async function () {
-  // 🚀 WAKE-UP CALL PARA RENDER
-  fetch("https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=2025-01-01&checkout=2025-01-02")
-    .then(() => console.log("✅ Render activado"))
-    .catch(() => console.warn("⚠️ Wake-up fallido"));
+  // (Se quitó el wake-up a Lodgify: la disponibilidad ahora sale del sistema.)
 
   // ==========================
   // FLATPICKR
@@ -122,18 +119,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       localStorage.setItem("bebes",     String(_bebes));
       localStorage.setItem("busqueda_desde_buscador", "true");
 
-      try {
-        const response = await fetch(`https://disponibilidad-happy-host-patagonia.onrender.com/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
-        const data = await response.json();
-
-        localStorage.setItem("disponibles",        JSON.stringify(data.disponibles));
-        localStorage.setItem("disponibles_expira", Date.now() + 1000 * 60 * 3);
-
-        await new Promise(resolve => setTimeout(resolve, 200));
-      } catch (error) {
-        console.warn("⚠️ No se pudo prefetch disponibilidad", error);
-      }
-
+      // La disponibilidad la calcula alojamientos.js contra el sistema (Pxsol);
+      // acá solo redirigimos con las fechas elegidas.
       window.location.href = `alojamientos.html?checkin=${checkin}&checkout=${checkout}&huespedes=${huespedes}&adultos=${_adultos}&ninos=${_ninos}&bebes=${_bebes}`;
     });
   }

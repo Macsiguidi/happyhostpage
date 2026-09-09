@@ -11,19 +11,19 @@ const API_SISTEMA = 'https://propietarios-happy-host.onrender.com';
 // Propiedades con `sistema: true` no usan Lodgify: su disponibilidad y precio
 // salen del panel (/api/properties/{slug}/ocupados y /precio). El slug es data-nombre.
 const PROPS = {
-  calafate1:        { houseId: 601552, roomId: 668343, pax: 6 },
-  calafate2:        { houseId: 601707, roomId: 668498, pax: 4 },
-  calafate3:        { houseId: 601708, roomId: 668499, pax: 6 },
-  calafate4:        { houseId: 601710, roomId: 668501, pax: 6 },
-  calafate5:        { houseId: 601711, roomId: 668502, pax: 4 },
-  calafate6:        { houseId: 601712, roomId: 668503, pax: 6 },
-  calafate7:        { houseId: 601713, roomId: 668504, pax: 4 },
-  cruz4:            { houseId: 601717, roomId: 668508, pax: 2 },
-  cruz5:            { houseId: 601714, roomId: 668505, pax: 2 },
-  nilidas:          { houseId: 601719, roomId: 668510, pax: 4 },
-  gurisa:           { houseId: 648950, roomId: 715936,  pax: 7 },
-  paisajismo:       { houseId: 601720, roomId: 668511, pax: 3 },
-  refugiopatagonico:{ houseId: 677289, roomId: 744265, pax: 8 },
+  calafate1:        { sistema: true, houseId: 601552, roomId: 668343, pax: 6 },
+  calafate2:        { sistema: true, houseId: 601707, roomId: 668498, pax: 4 },
+  calafate3:        { sistema: true, houseId: 601708, roomId: 668499, pax: 6 },
+  calafate4:        { sistema: true, houseId: 601710, roomId: 668501, pax: 6 },
+  calafate5:        { sistema: true, houseId: 601711, roomId: 668502, pax: 4 },
+  calafate6:        { sistema: true, houseId: 601712, roomId: 668503, pax: 6 },
+  calafate7:        { sistema: true, houseId: 601713, roomId: 668504, pax: 4 },
+  cruz4:            { sistema: true, houseId: 601717, roomId: 668508, pax: 2 },
+  cruz5:            { sistema: true, houseId: 601714, roomId: 668505, pax: 2 },
+  nilidas:          { sistema: true, houseId: 601719, roomId: 668510, pax: 4 },
+  gurisa:           { sistema: true, houseId: 648950, roomId: 715936,  pax: 7 },
+  paisajismo:       { sistema: true, houseId: 601720, roomId: 668511, pax: 3 },
+  refugiopatagonico:{ sistema: true, houseId: 677289, roomId: 744265, pax: 8 },
   puertomargarita:  { sistema: true,  pax: 5, sinNinos: true },   // Nueva Esperanza — sin Lodgify, no admite niños 2-14
 };
 
@@ -193,15 +193,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Intentar caché (válido 3 min)
   let disponiblesIds = null;
+  // Solo consultamos el servicio viejo de Lodgify si queda alguna casa que lo use.
+  // Hoy todas son del sistema (sistema:true) → se saltea (evita colgarse con el
+  // servicio de Lodgify caído/dormido).
+  const hayLodgify = Object.values(PROPS).some(p => !p.sistema);
   const expira = parseInt(localStorage.getItem('disponibles_expira') || '0', 10);
-  if (expira > Date.now()) {
+  if (hayLodgify && expira > Date.now()) {
     try {
       const cached = localStorage.getItem('disponibles');
       if (cached) disponiblesIds = JSON.parse(cached).map(p => p.id);
     } catch {}
   }
 
-  if (!disponiblesIds) {
+  if (!disponiblesIds && hayLodgify) {
     try {
       const r    = await fetch(`${API}/api/disponibles?checkin=${checkin}&checkout=${checkout}`);
       const data = await r.json();
@@ -213,6 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       disponiblesIds = [];
     }
   }
+  if (!disponiblesIds) disponiblesIds = [];
 
   // ── Disponibilidad de propiedades del sistema propio (sin Lodgify) ──
   // Lodgify responde por houseId; estas se consultan una a una contra el panel.
@@ -353,7 +358,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (document.querySelector(`.card[data-nombre="${p.slug}"]`)) continue;
 
       // Agregar al objeto PROPS para disponibilidad y precio
-      PROPS[p.slug] = { houseId: p.lodgifyHouseId, roomId: p.lodgifyRoomId, pax: p.personas };
+      PROPS[p.slug] = { sistema: true, houseId: p.lodgifyHouseId, roomId: p.lodgifyRoomId, pax: p.personas };
 
       // Armar imágenes del carrusel
       let imagenes = [];
