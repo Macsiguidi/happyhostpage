@@ -79,7 +79,7 @@ window.addEventListener('DOMContentLoaded', () => {
     '601710': 'Calafate 4', '601711': 'Calafate 5', '601712': 'Calafate 6',
     '601713': 'Calafate 7', '601717': 'Cruz del Sur 4', '601714': 'Cruz del Sur 5',
     '601719': 'Las Nilidas', '648950': 'Gurisa', '601720': 'Paisajismo',
-    '677269': 'Koi Quetrihue', '677286': 'Mi Tiempo', '677289': 'Refugio Patagónico'
+    '677269': 'Koi Quetrihue', '677289': 'Refugio Patagónico'
   };
   const imagenMap = {
     '601552': 'unidades/casa1/casa1_img1.jpg', '601707': 'unidades/casa2/casa2_img3.jpg',
@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
     '601713': 'unidades/casa7/casa7_img1.jpg', '601717': 'unidades/cds4/cds4_1.jpg',
     '601714': 'unidades/cds5/cds5_2.jpg', '601719': 'unidades/nilidas/nilidas1.jpg',
     '648950': 'unidades/gurisa/gurisa2.jpg', '601720': 'unidades/paisajismo/paisajismo1.jpg', 
-    '677269': 'unidades/koi/koi1.jpg', '677286': 'unidades/mitiempo/tiempo3.jpg',
+    '677269': 'unidades/koi/koi1.jpg',
     '677289': 'unidades/refugio/refugio2.jpg'
   };
 
@@ -475,7 +475,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let seniaMinNoches = 1;
     if (diffDays >= 5 && diffDays <= 9) seniaMinNoches = 2;
-    else if (diffDays >= 10 && diffDays <= 15) seniaMinNoches = 4;
+    else if (diffDays >= 10) seniaMinNoches = 4; // 10 noches o más: siempre 4 noches de seña base
 
     const precioNoche = diffDays ? (total / diffDays) : 0;
     const seniaMinima = precioNoche * seniaMinNoches;
