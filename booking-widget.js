@@ -14,7 +14,10 @@
   const ROOM_ID    = parseInt(card.dataset.roomId,   10) || 0;
   const MAX_GUESTS = parseInt(card.dataset.personas, 10) || 10;
   const SIN_NINOS  = card.dataset.sinNinos === 'true';   // propiedad que no admite niños (2-14)
-  const USA_LODGIFY = HOUSE_ID > 0 && ROOM_ID > 0;
+  // Lodgify está retirado: la página genérica (unidad.html) y Nueva Esperanza
+  // usan SIEMPRE el sistema/Pxsol por slug para disponibilidad, precio y reserva.
+  // (Antes: HOUSE_ID > 0 && ROOM_ID > 0 mandaba a Lodgify, que ya no responde.)
+  const USA_LODGIFY = false;
 
   // Slug desde URL (?slug=) o, en páginas estáticas, desde data-slug de la tarjeta
   const PROP_KEY = new URLSearchParams(window.location.search).get('slug') || card.dataset.slug || '';
