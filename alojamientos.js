@@ -135,6 +135,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (bebes   > 0)   localStorage.setItem('bebes',      String(bebes));
 
   const loading = document.getElementById('loading-disponibilidad');
+  if (loading) loading.style.display = 'flex';
+
+  // ── Cargar PRIMERO las propiedades dinámicas del panel (KOI, Oasis…) ──
+  // Antes se agregaban al final, por fuera de la lógica de búsqueda: nunca se
+  // les controlaba disponibilidad (aparecían siempre, aun ocupadas) ni precio.
+  // Ahora entran acá para ser una tarjeta más en TODO el flujo.
+  await loadApiProperties();
+
   const banner  = document.getElementById('banner-busqueda');
   const cards   = Array.from(document.querySelectorAll('.card[data-nombre]'));
 
@@ -181,6 +189,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
         .forEach(c => grid.appendChild(c));
     }
+    // Precio "desde $X" para las tarjetas dinámicas visibles (KOI, Oasis…)
+    mostrarPrecioDesde(cards.filter(c => c.dataset.dyn && !c.classList.contains('pax-hidden')));
     if (loading) loading.style.display = 'none';
     return;
   }
@@ -329,9 +339,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ── Propiedades dinámicas desde la API ───────────────────────────────────────
 // Carga las propiedades creadas en el panel de admin (VisibleEnWeb + LodgifyHouseId > 0)
 // y las suma al grid sin tocar las propiedades hardcodeadas existentes.
-(async function loadApiProperties() {
+async function loadApiProperties() {
   try {
-    const res = await fetch('https://propietarios-happy-host.onrender.com/api/properties');
+    // Timeout defensivo: si el panel está frío/caído no colgamos toda la página
+    const ctrl = new AbortController();
+    const to   = setTimeout(() => ctrl.abort(), 12000);
+    const res  = await fetch('https://propietarios-happy-host.onrender.com/api/properties', { signal: ctrl.signal });
+    clearTimeout(to);
     if (!res.ok) return;
     const props = await res.json();
     if (!props || !props.length) return;
@@ -358,7 +372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (document.querySelector(`.card[data-nombre="${p.slug}"]`)) continue;
 
       // Agregar al objeto PROPS para disponibilidad y precio
-      PROPS[p.slug] = { sistema: true, houseId: p.lodgifyHouseId, roomId: p.lodgifyRoomId, pax: p.personas };
+      PROPS[p.slug] = { sistema: true, houseId: p.lodgifyHouseId, roomId: p.lodgifyRoomId, pax: p.personas, precioBase: p.precioBase };
 
       // Armar imágenes del carrusel
       let imagenes = [];
@@ -383,6 +397,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       card.className = 'card';
       card.dataset.nombre = p.slug;
       card.dataset.cat = 'otros';
+      card.dataset.dyn = '1';   // tarjeta dinámica (sin precio fijo en el HTML)
       card.setAttribute('onmouseover', 'iniciarSlideshow(this)');
       card.setAttribute('onmouseout', 'detenerSlideshow(this)');
       card.setAttribute('onclick', `redirigirConParametros('unidad.html?slug=${p.slug}'); return false;`);
@@ -410,4 +425,42 @@ document.addEventListener('DOMContentLoaded', async () => {
       grid.appendChild(card);
     }
   } catch { /* fallo silencioso */ }
-})();
+}
+
+// ── Precio "desde $X" para las tarjetas dinámicas (sin precio fijo en HTML) ──
+// Muestra el PrecioBase del panel cuando NO hay búsqueda por fechas. Al buscar
+// fechas, la lógica principal lo reemplaza por el precio real de esas noches.
+async function mostrarPrecioDesde(cardsDyn) {
+  if (!cardsDyn.length) return;
+  const hoy    = new Date();
+  const ymd    = d => [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+  // Fecha de referencia (~14 días): decide precio Y moneda, así el "desde"
+  // queda coherente con lo que verá alguien que busque fechas próximas.
+  const ref    = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 14);
+  const refStr = ymd(ref), refMas1 = addDay(refStr);
+  const { moneda, factorARS } = await detectarMoneda(refStr);
+
+  const pintar = (card, usd) => {
+    if (!usd || usd <= 0) return;
+    const el = card.querySelector('.card-precio-label');
+    if (!el) return;
+    const precioFmt = moneda === 'USD'
+      ? `USD ${fmt(Math.round(usd))}`
+      : `ARS ${fmt(Math.round(usd * factorARS))}`;
+    el.innerHTML = `desde ${precioFmt} <span class="card-noche">/noche</span>`;
+  };
+
+  await Promise.allSettled(cardsDyn.map(async card => {
+    const p = PROPS[card.dataset.nombre];
+    if (!p) return;
+    // 1) Precio Base cargado en el panel → "desde" exacto
+    if (Number(p.precioBase) > 0) { pintar(card, Number(p.precioBase)); return; }
+    // 2) Fallback: precio de una fecha de referencia (por si solo usan temporadas)
+    try {
+      const r = await fetch(`${API_SISTEMA}/api/properties/${card.dataset.nombre}/precio?checkin=${refStr}&checkout=${refMas1}&huespedes=1`);
+      if (!r.ok) return;
+      const { dias = [] } = await r.json();
+      pintar(card, dias[0]?.prices?.[0]?.price_per_day);
+    } catch { /* sin precio → queda "Consultá disponibilidad" */ }
+  }));
+}
