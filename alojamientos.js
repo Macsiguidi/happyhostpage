@@ -434,11 +434,12 @@ async function mostrarPrecioDesde(cardsDyn) {
   if (!cardsDyn.length) return;
   const hoy    = new Date();
   const ymd    = d => [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
-  // Fecha de referencia (~14 días): decide precio Y moneda, así el "desde"
-  // queda coherente con lo que verá alguien que busque fechas próximas.
-  const ref    = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 14);
-  const refStr = ymd(ref), refMas1 = addDay(refStr);
-  const { moneda, factorARS } = await detectarMoneda(refStr);
+  const hoyStr = ymd(hoy);
+  // Ventana de ~90 días para buscar el precio MÍNIMO (el verdadero "desde").
+  const fin    = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 90);
+  const finStr = ymd(fin);
+  // Moneda según la REGLA DE VENTA DE HOY (ej.: en septiembre se vende en pesos a $1650).
+  const { moneda, factorARS } = await detectarMoneda(hoyStr);
 
   const pintar = (card, usd) => {
     if (!usd || usd <= 0) return;
@@ -453,14 +454,16 @@ async function mostrarPrecioDesde(cardsDyn) {
   await Promise.allSettled(cardsDyn.map(async card => {
     const p = PROPS[card.dataset.nombre];
     if (!p) return;
-    // 1) Precio Base cargado en el panel → "desde" exacto
-    if (Number(p.precioBase) > 0) { pintar(card, Number(p.precioBase)); return; }
-    // 2) Fallback: precio de una fecha de referencia (por si solo usan temporadas)
+    // Precio mínimo de las próximas ~90 noches = "desde" real (más barato)
     try {
-      const r = await fetch(`${API_SISTEMA}/api/properties/${card.dataset.nombre}/precio?checkin=${refStr}&checkout=${refMas1}&huespedes=1`);
-      if (!r.ok) return;
-      const { dias = [] } = await r.json();
-      pintar(card, dias[0]?.prices?.[0]?.price_per_day);
-    } catch { /* sin precio → queda "Consultá disponibilidad" */ }
+      const r = await fetch(`${API_SISTEMA}/api/properties/${card.dataset.nombre}/precio?checkin=${hoyStr}&checkout=${finStr}&huespedes=1`);
+      if (r.ok) {
+        const { dias = [] } = await r.json();
+        const precios = dias.map(d => d.prices?.[0]?.price_per_day).filter(v => v > 0);
+        if (precios.length) { pintar(card, Math.min(...precios)); return; }
+      }
+    } catch { /* sigue al fallback */ }
+    // Fallback: Precio Base del panel
+    if (Number(p.precioBase) > 0) pintar(card, Number(p.precioBase));
   }));
 }
