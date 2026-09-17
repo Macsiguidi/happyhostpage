@@ -133,6 +133,14 @@
       const res = await fetch(`${API_PROP}/${encodeURIComponent(slug)}`);
       if (!res.ok) { showError('No encontramos esa propiedad.'); return; }
       p = await res.json();
+      // Normalizar el mapa: aceptar tanto el link solo como el código <iframe> completo
+      if (p.mapaUrl) {
+        const m = String(p.mapaUrl).match(/src\s*=\s*["']([^"']+)["']/i);
+        if (m) p.mapaUrl = m[1];        // pegaron el <iframe ...> entero → sacamos solo el src
+        p.mapaUrl = p.mapaUrl.trim();
+        // Solo dejamos pasar mapas de Google (embed); si no, lo ignoramos para no romper la página
+        if (!/^https:\/\/(www\.)?google\.[^/]+\/maps\/embed/i.test(p.mapaUrl)) p.mapaUrl = '';
+      }
     } catch {
       showError('Error de conexión. Intentá de nuevo más tarde.');
       return;
