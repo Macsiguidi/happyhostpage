@@ -153,6 +153,28 @@
 
     const imgs = p.images && p.images.length ? p.images : ['logos/logo1.png'];
 
+    // ── "Qué tenés cerca" por casa (tiempos medidos por ruta) — sumar acá las casas nuevas ──
+    const CERCA = {
+      koiquetrihue: { barrio: 'zona El Mercado', items: [
+        ['🛍️', 'Centro (El Cruce)', '1,2 km · 15 min a pie'],
+        ['⛵', 'Puerto y catamarán al Bosque de Arrayanes', '8 min'],
+        ['⛷️', 'Cerro Bayo', '15 min'],
+        ['🌊', 'Río y Lago Correntoso', '10 min'],
+        ['🏔️', 'Mirador Belvedere y Cascada Inacayal', '15 min'],
+        ['💧', 'Lago Espejo (Ruta de los 7 Lagos)', '25 min'],
+        ['✈️', 'Bariloche y su aeropuerto', '1 h 20 – 1 h 30']
+      ]}
+    };
+    const cerca = CERCA[slug];
+    const cercaHtml = cerca ? `
+            <div class="unidad-cerca">
+              <h3>Qué tenés cerca · ${cerca.barrio}</h3>
+              <ul class="cerca-lista">
+                ${cerca.items.map(([i, l, v]) => `<li><span class="cerca-ico">${i}</span><span class="cerca-lugar">${l}</span><span class="cerca-dist">${v}</span></li>`).join('')}
+              </ul>
+              <p class="cerca-nota">Tiempos aproximados en auto, salvo que diga a pie. <a href="actividades/que-hacer-villa-la-angostura.html">Ver la guía de Villa La Angostura →</a></p>
+            </div>` : '';
+
     // ── SEO: canonical + datos estructurados (para que Google entienda la casa) ──
     const urlCanonica = `https://www.happyhostpatagonia.com.ar/unidad.html?slug=${encodeURIComponent(slug)}`;
     const canon = document.createElement('link');
@@ -281,6 +303,7 @@
               allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
             </iframe>` : ''}
             <p class="mapa-nota">📍 Villa La Angostura · Check in ${p.checkinHora || '14:00'} / Check out ${p.checkoutHora || '10:00'}</p>
+            ${cercaHtml}
           </div>
         </div>
 

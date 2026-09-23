@@ -338,6 +338,37 @@ body {
   gap: 6px;
 }
 
+/* ── QUÉ TENÉS CERCA ─────────────────────────────────── */
+.unidad-cerca {
+  margin-top: 20px;
+  padding: 18px 20px;
+  background: var(--cream);
+  border-radius: 12px;
+}
+.unidad-cerca h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+.cerca-lista { list-style: none; margin: 0; padding: 0; }
+.cerca-lista li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  font-size: .88rem;
+  color: #444;
+}
+.cerca-lista li:last-child { border-bottom: none; }
+.cerca-ico { flex: 0 0 22px; text-align: center; }
+.cerca-lugar { flex: 1; }
+.cerca-dist { color: var(--olive); font-weight: 600; white-space: nowrap; }
+.cerca-nota { font-size: .78rem; color: #888; margin: 10px 0 0; }
+.cerca-nota a { color: var(--olive); font-weight: 600; }
+
 /* ── BOOKING CARD ────────────────────────────────────── */
 .booking-card {
   background: #fff;
