@@ -153,6 +153,35 @@
 
     const imgs = p.images && p.images.length ? p.images : ['logos/logo1.png'];
 
+    // ── SEO: canonical + datos estructurados (para que Google entienda la casa) ──
+    const urlCanonica = `https://www.happyhostpatagonia.com.ar/unidad.html?slug=${encodeURIComponent(slug)}`;
+    const canon = document.createElement('link');
+    canon.rel = 'canonical'; canon.href = urlCanonica;
+    document.head.appendChild(canon);
+    const imgAbs = src => /^https?:/i.test(src) ? src : `https://www.happyhostpatagonia.com.ar/${src}`;
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify([{
+      '@context': 'https://schema.org',
+      '@type': 'VacationRental',
+      name: p.nombre,
+      description: p.descripcionCorta || `${p.nombre} en Villa La Angostura`,
+      url: urlCanonica,
+      image: imgs.slice(0, 5).map(imgAbs),
+      ...(p.personas ? { occupancy: { '@type': 'QuantitativeValue', maxValue: Number(p.personas) } } : {}),
+      address: { '@type': 'PostalAddress', addressLocality: 'Villa La Angostura', addressRegion: 'Neuquén', postalCode: '8407', addressCountry: 'AR' },
+      amenityFeature: (p.amenidades || []).map(a => ({ '@type': 'LocationFeatureSpecification', name: a.label, value: true }))
+    }, {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://www.happyhostpatagonia.com.ar/' },
+        { '@type': 'ListItem', position: 2, name: 'Alojamientos', item: 'https://www.happyhostpatagonia.com.ar/alojamientos.html' },
+        { '@type': 'ListItem', position: 3, name: p.nombre, item: urlCanonica }
+      ]
+    }]);
+    document.head.appendChild(ld);
+
     // ── Galería HTML ─────────────────────────────────────────────────────────
     const mainImg   = imgs[0];
     const thumb1    = imgs[1] || imgs[0];
