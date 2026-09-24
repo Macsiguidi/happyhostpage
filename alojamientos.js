@@ -251,6 +251,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch {}
   }));
 
+  // ── Mínimo de noches (casas del sistema libres) ──────────────────
+  // Misma regla que el booking-widget: el mínimo de la estadía es el menor min_stay
+  // de sus noches (así un hueco con mínimo 2 noches aparece al buscar 2 noches).
+  // De paso guardamos la tarifa de la primera noche para la tarjeta.
+  const sistemaMinStay = new Map();
+  const sistemaTarifa  = new Map();
+  await Promise.allSettled([...sistemaDispo].map(async slug => {
+    try {
+      const r = await fetch(`${API_SISTEMA}/api/properties/${slug}/precio?checkin=${checkin}&checkout=${checkout}&huespedes=1`);
+      if (!r.ok) return;
+      const { dias = [] } = await r.json();
+      if (!dias.length) return;
+      const minStay = dias
+        .map(d => Math.min(...(d.prices || []).map(p => p.min_stay || 1)))
+        .reduce((a, b) => Math.min(a, b), Infinity);
+      if (isFinite(minStay)) sistemaMinStay.set(slug, minStay);
+      const t = dias[0].prices?.[0]?.price_per_day;
+      if (t) sistemaTarifa.set(slug, t);
+    } catch {}
+  }));
+
   // Aplicar visibilidad por disponibilidad + capacidad (usando clase para evitar conflicto con CSS !important)
   let visibles = 0;
   cards.forEach(card => {
@@ -261,7 +282,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       ? sistemaDispo.has(card.dataset.nombre)
       : disponiblesIds.includes(p.houseId));
     const minStayOk = !(window.hhHotSaleMinStay?.blocksStay(card.dataset.nombre, noches));
-    const mostrar = capOk && dispOk && minStayOk && ninosOk && !estaOculta(card);
+    // Oculta las casas que para estas fechas piden más noches de las buscadas
+    const minNochesOk = !(p && p.sistema && sistemaMinStay.has(card.dataset.nombre)
+      && noches < sistemaMinStay.get(card.dataset.nombre));
+    const mostrar = capOk && dispOk && minStayOk && minNochesOk && ninosOk && !estaOculta(card);
     card.classList.toggle('pax-hidden', !mostrar);
     if (mostrar) visibles++;
   });
@@ -312,15 +336,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!p) return;
 
     try {
-      const url = p.sistema
-        ? `${API_SISTEMA}/api/properties/${slug}/precio?checkin=${checkin}&checkout=${mañana}&huespedes=1`
-        : `${API}/api/precios-diarios?start=${checkin}&end=${mañana}&houseId=${p.houseId}&roomId=${p.roomId}`;
-      const r   = await fetch(url);
-      if (!r.ok) return;
-      const { dias = [] } = await r.json();
-      if (!dias.length || !dias[0].prices?.length) return;
-
-      const tarifa = dias[0].prices[0].price_per_day;
+      let tarifa = p.sistema ? sistemaTarifa.get(slug) : null;   // ya la trajimos arriba
+      if (!tarifa) {
+        const url = p.sistema
+          ? `${API_SISTEMA}/api/properties/${slug}/precio?checkin=${checkin}&checkout=${mañana}&huespedes=1`
+          : `${API}/api/precios-diarios?start=${checkin}&end=${mañana}&houseId=${p.houseId}&roomId=${p.roomId}`;
+        const r   = await fetch(url);
+        if (!r.ok) return;
+        const { dias = [] } = await r.json();
+        if (!dias.length || !dias[0].prices?.length) return;
+        tarifa = dias[0].prices[0].price_per_day;
+      }
       if (!tarifa) return;
 
       const precioFmt = moneda === 'USD'
