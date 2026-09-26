@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" fill="none" stroke="#34482A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="75" cy="75" r="68"/>
+  <!-- escalera -->
+  <path d="M58 38 V84"/>
+  <path d="M84 38 V84"/>
+  <path d="M58 50 H84"/>
+  <path d="M58 66 H84"/>
+  <path d="M58 38 C58 31 50 31 50 38"/>
+  <path d="M84 38 C84 31 76 31 76 38"/>
+  <!-- agua -->
+  <path d="M34 94 C42 88 50 88 58 94 S74 100 82 94 S100 88 116 94"/>
+  <path d="M34 110 C42 104 50 104 58 110 S74 116 82 110 S100 104 116 110"/>
+</svg>

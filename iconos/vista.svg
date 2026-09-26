@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" fill="none" stroke="#34482A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="75" cy="75" r="68"/>
+  <!-- cordillera -->
+  <path d="M30 88 L58 52 L72 70 L86 50 L120 88"/>
+  <!-- lago -->
+  <path d="M30 88 H120"/>
+  <path d="M44 100 H74"/>
+  <path d="M82 100 H106"/>
+  <path d="M56 111 H94"/>
+</svg>

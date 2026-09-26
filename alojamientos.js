@@ -412,6 +412,8 @@ async function loadApiProperties() {
       lavarropas:       'iconos/lavarropas.png',
       lavavajillas:     'iconos/lavavajilla.png',
       salamandra:       'iconos/salamandra.png',
+      vista:            'iconos/vista.svg',
+      piscina:          'iconos/piscina.svg',
     };
 
     for (const p of props) {
