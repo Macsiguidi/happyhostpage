@@ -365,6 +365,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ── Propiedades dinámicas desde la API ───────────────────────────────────────
 // Carga las propiedades creadas en el panel de admin (VisibleEnWeb + LodgifyHouseId > 0)
 // y las suma al grid sin tocar las propiedades hardcodeadas existentes.
+// Pone como primera foto de una tarjeta la portada elegida en el panel (Editar propiedad → ★).
+function aplicarPortada(card, url) {
+  if (!url) return;
+  const carousel = card.querySelector('.carousel');
+  if (!carousel) return;
+  const slides = [...carousel.querySelectorAll('img.slide')];
+  let img = slides.find(s => s.src === url || s.getAttribute('src') === url);
+  if (!img) {
+    img = document.createElement('img');
+    img.src = url;
+    img.className = 'slide';
+    img.alt = card.dataset.nombre || '';
+  }
+  slides.forEach(s => s.classList.remove('active'));
+  img.classList.add('active');
+  img.setAttribute('fetchpriority', 'high');
+  img.removeAttribute('loading');
+  const primera = carousel.querySelector('img.slide');
+  if (primera !== img) carousel.insertBefore(img, primera || carousel.firstChild);
+}
+
 async function loadApiProperties() {
   try {
     // Timeout defensivo: si el panel está frío/caído no colgamos toda la página
@@ -394,8 +415,9 @@ async function loadApiProperties() {
     };
 
     for (const p of props) {
-      // Saltar si ya existe un card hardcodeado con ese slug
-      if (document.querySelector(`.card[data-nombre="${p.slug}"]`)) continue;
+      // Card hardcodeado con ese slug: no se rearma, solo se le pone la portada elegida en el panel
+      const cardFija = document.querySelector(`.card[data-nombre="${p.slug}"]`);
+      if (cardFija) { aplicarPortada(cardFija, p.portadaWeb); continue; }
 
       // Agregar al objeto PROPS para disponibilidad y precio
       PROPS[p.slug] = { sistema: true, houseId: p.lodgifyHouseId, roomId: p.lodgifyRoomId, pax: p.personas, precioBase: p.precioBase };
@@ -403,6 +425,8 @@ async function loadApiProperties() {
       // Armar imágenes del carrusel
       let imagenes = [];
       try { imagenes = JSON.parse(p.imagenesJson || '[]'); } catch {}
+      // La portada elegida en el panel va primero
+      if (p.portadaWeb) imagenes = [p.portadaWeb, ...imagenes.filter(u => u !== p.portadaWeb)];
       if (!imagenes.length) imagenes = ['logos/happyhost.png'];
 
       const slidesHtml = imagenes
