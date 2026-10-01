@@ -833,8 +833,11 @@ app.get('/p/:slug', async (req, res) => {
     });
     const p = r.data || {};
 
-    if (p.name)   nombre = p.name;
-    if (p.description) desc = p.description.slice(0, 200);
+    // La API devuelve "nombre"/"descripcionCorta" (en español); se aceptan ambos.
+    const nom = p.nombre || p.name;
+    const des = p.descripcionCorta || p.description;
+    if (nom) nombre = nom;
+    if (des) desc = String(des).replace(/<[^>]*>/g, '').slice(0, 200);
 
     const imgs = Array.isArray(p.images) ? p.images : [];
     if (imgs.length > 0) imagen = imgs[0];
