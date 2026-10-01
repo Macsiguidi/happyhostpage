@@ -189,8 +189,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
         .forEach(c => grid.appendChild(c));
     }
-    // Precio "desde $X" para las tarjetas dinámicas visibles (KOI, Oasis…)
-    mostrarPrecioDesde(cards.filter(c => c.dataset.dyn && !c.classList.contains('pax-hidden')));
+    // Precio "desde $X" en vivo para todas las casas del sistema visibles (las fijas traían
+    // un precio viejo escrito a mano en el HTML, siempre en pesos).
+    mostrarPrecioDesde(cards.filter(c => PROPS[c.dataset.nombre]?.sistema && !c.classList.contains('pax-hidden')));
     if (loading) loading.style.display = 'none';
     return;
   }
@@ -515,7 +516,9 @@ async function mostrarPrecioDesde(cardsDyn) {
         if (precios.length) { pintar(card, Math.min(...precios)); return; }
       }
     } catch { /* sigue al fallback */ }
-    // Fallback: Precio Base del panel
-    if (Number(p.precioBase) > 0) pintar(card, Number(p.precioBase));
+    // Fallback: Precio Base del panel; si no hay, no mostrar un precio viejo
+    if (Number(p.precioBase) > 0) { pintar(card, Number(p.precioBase)); return; }
+    const el = card.querySelector('.card-precio-label');
+    if (el) el.textContent = 'Consultá disponibilidad';
   }));
 }

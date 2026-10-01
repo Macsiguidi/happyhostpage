@@ -393,7 +393,7 @@ async function renderDestacados() {
         <p class="card-desc">${p.desc || ''}</p>
         <div class="card-footer">
           <div class="card-precio">
-            <span class="precio-desde">desde ${p.moneda || 'ARS'} ${p.precio || '—'}</span>
+            <span class="precio-desde">desde …</span>
             <span class="precio-label"> /noche</span>
           </div>
           <span class="card-capacidad">
@@ -408,4 +408,50 @@ async function renderDestacados() {
   `).join("");
 }
 
-window.addEventListener("DOMContentLoaded", renderDestacados);
+// =======================
+// PRECIO "DESDE" EN VIVO
+// =======================
+// Mínimo de las próximas ~90 noches desde el sistema, en la moneda de la regla de venta de HOY
+// (Panel → Config. Moneda). Antes era un texto fijo en pesos.
+
+const API_SISTEMA_DEST = 'https://propietarios-happy-host.onrender.com';
+// slug de la tarjeta → slug del sistema, cuando difieren
+const SLUG_SISTEMA = { refugio: 'refugiopatagonico' };
+
+async function actualizarPreciosDestacados() {
+  const ymd = d => [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+  const hoy = new Date();
+  const hoyStr = ymd(hoy);
+  const finStr = ymd(new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 90));
+
+  let moneda = 'USD', factorARS = 1;
+  try {
+    if (window.hhMoneda) ({ moneda, factorARS } = await window.hhMoneda.detectar(hoyStr, null));
+  } catch {}
+
+  const cards = [...document.querySelectorAll('#destacados .card[data-nombre]')];
+  await Promise.allSettled(cards.map(async card => {
+    const el = card.querySelector('.precio-desde');
+    if (!el) return;
+    const slug = SLUG_SISTEMA[card.dataset.nombre] || card.dataset.nombre;
+    try {
+      const r = await fetch(`${API_SISTEMA_DEST}/api/properties/${slug}/precio?checkin=${hoyStr}&checkout=${finStr}&huespedes=1`);
+      if (r.ok) {
+        const { dias = [] } = await r.json();
+        const precios = dias.map(d => d.prices?.[0]?.price_per_day).filter(v => v > 0);
+        if (precios.length) {
+          const usd = Math.min(...precios);
+          const n = moneda === 'USD' ? Math.round(usd) : Math.round(usd * factorARS);
+          el.textContent = `desde ${moneda} ${n.toLocaleString('es-AR', { maximumFractionDigits: 0 })}`;
+          return;
+        }
+      }
+    } catch {}
+    el.textContent = 'Consultá disponibilidad';
+  }));
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  await renderDestacados();
+  actualizarPreciosDestacados();
+});
