@@ -273,8 +273,26 @@ body {
   font-size: .92rem;
   line-height: 1.75;
   color: #444;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
 }
+
+/* Subtítulos dentro de la descripción (un párrafo que es solo <strong>, ej. "Planta baja"):
+   aire arriba para separarlo del bloque anterior y pegado a su lista. */
+.unidad-desc p:has(> strong:only-child) {
+  margin: 22px 0 6px;
+  color: var(--ink);
+}
+
+/* Listas de la descripción (distribución, servicios): sangría y aire abajo. */
+.unidad-desc ul,
+.unidad-desc ol {
+  font-size: .92rem;
+  line-height: 1.75;
+  color: #444;
+  margin: 0 0 12px;
+  padding-left: 22px;
+}
+.unidad-desc li { margin: 0; }
 
 /* ── AMENITIES ───────────────────────────────────────── */
 .unidad-amenities { margin-bottom: 36px; }
