@@ -113,6 +113,12 @@
     const root     = document.getElementById('unidad-root');
 
     // ── Leer slug del parámetro ?slug= ───────────────────────────────────────
+    // Links viejos/compartidos pueden traer un segundo "?" (ej. ?slug=ara?checkin=...):
+    // se corrige a "&" para que el slug y las fechas se lean bien.
+    if (window.location.search.indexOf('?', 1) !== -1) {
+      const fixed = '?' + window.location.search.slice(1).replace(/\?/g, '&');
+      history.replaceState(null, '', window.location.pathname + fixed + window.location.hash);
+    }
     const params = new URLSearchParams(window.location.search);
     const slug   = (params.get('slug') || '').toLowerCase().trim();
 

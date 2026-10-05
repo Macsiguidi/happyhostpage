@@ -102,7 +102,9 @@ function redirigirConParametros(pagina) {
   if (b)  p.append('bebes',     b);
   // Indica a la propiedad que venimos del buscador → botón Volver reconstruye la búsqueda
   if (ci && co) localStorage.setItem('busqueda_desde_buscador', 'true');
-  window.location.href = pagina + (p.toString() ? '?' + p.toString() : '');
+  // Si la página ya trae parámetros (unidad.html?slug=x), se suman con "&", no con otro "?".
+  const sep = pagina.includes('?') ? '&' : '?';
+  window.location.href = pagina + (p.toString() ? sep + p.toString() : '');
 }
 
 // ── Limpiar búsqueda (botón en banner) ────────────────────────────────
