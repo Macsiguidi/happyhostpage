@@ -23,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <link rel="stylesheet" href="unidades-nuevo.css?v=2" />
+  <link rel="stylesheet" href="unidades-nuevo.css?v=3" />
   <link rel="stylesheet" href="huespedes.css" />
   <style>
     /* ── Loading state ── */
@@ -217,6 +217,7 @@
         <div class="galeria-grid${imgs.length === 1 ? ' galeria-dynamic-single' : ''}">
           <div class="galeria-main">
             <img src="${mainImg}" alt="${p.nombre} — Vista principal" loading="eager" fetchpriority="high">
+            ${imgs.length > 1 ? `<span class="galeria-count" id="galeriaCount">1 / ${totalFotos}</span>` : ''}
           </div>
           ${imgs.length > 1 ? `
           <div class="galeria-thumbs">
@@ -406,16 +407,58 @@
     if (lbNext)  lbNext.addEventListener('click', () => lbOpen(lbIdx + 1));
     lb?.addEventListener('click', e => { if (e.target === lb) lbClose2(); });
     document.addEventListener('keydown', e => {
-      if (!lb?.classList.contains('active')) return;
+      if (!lb?.classList.contains('is-open')) return;
       if (e.key === 'ArrowLeft')  lbOpen(lbIdx - 1);
       if (e.key === 'ArrowRight') lbOpen(lbIdx + 1);
       if (e.key === 'Escape')     lbClose2();
     });
 
+    // ── Deslizar con el dedo (celular) ─────────────────────────────────────
+    // Llama a onSwipe(+1 | -1) si el gesto fue horizontal; devuelve una función
+    // que dice si el último toque fue un deslizamiento (para no abrir el lightbox).
+    function swipeable(el, onSwipe) {
+      let x0 = null, y0 = null, swiped = false;
+      el.addEventListener('touchstart', e => {
+        x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; swiped = false;
+      }, { passive: true });
+      el.addEventListener('touchend', e => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        const dy = e.changedTouches[0].clientY - y0;
+        x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+          swiped = true;
+          onSwipe(dx < 0 ? 1 : -1);
+        }
+      }, { passive: true });
+      return () => swiped;
+    }
+    const precargar = i => { const im = new Image(); im.src = FOTOS[((i % FOTOS.length) + FOTOS.length) % FOTOS.length]; };
+
+    // Foto principal: en el celular se desliza para pasar de foto.
+    const mainEl  = document.querySelector('.galeria-main img');
+    const countEl = document.getElementById('galeriaCount');
+    let mainIdx = 0;
+    function setMain(i) {
+      mainIdx = ((i % FOTOS.length) + FOTOS.length) % FOTOS.length;
+      mainEl.src = FOTOS[mainIdx];
+      if (countEl) countEl.textContent = `${mainIdx + 1} / ${FOTOS.length}`;
+      precargar(mainIdx + 1);
+    }
+    let mainFueSwipe = () => false;
+    if (mainEl && FOTOS.length > 1) {
+      mainFueSwipe = swipeable(mainEl.parentElement, d => setMain(mainIdx + d));
+      precargar(1);
+    }
+    if (lb && FOTOS.length > 1) swipeable(lb, d => lbOpen(lbIdx + d));
+
     // Abrir lightbox al hacer click en cualquier imagen de la galería
     document.querySelectorAll('.galeria-main img, .galeria-thumbs img, .galeria-ver-mas img').forEach((img, idx) => {
       img.style.cursor = 'pointer';
-      img.addEventListener('click', () => lbOpen(idx));
+      img.addEventListener('click', () => {
+        if (img === mainEl) { if (!mainFueSwipe()) lbOpen(mainIdx); return; }
+        lbOpen(idx);
+      });
     });
 
     // Botón "Ver todas las fotos"
