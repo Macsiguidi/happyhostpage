@@ -94,10 +94,16 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
 
  <section class="hero">
   <div class="video-contenedor">
-    <video autoplay muted loop playsinline>
-      <source src="videos/videoweb.mp4" type="video/mp4">
-      Tu navegador no soporta el video.
-    </video>
+    <video id="hero-video" autoplay muted loop playsinline preload="auto"></video>
+    <script>
+      // Video vertical en celular (pantalla parada), horizontal en compu
+      (function () {
+        var v = document.getElementById('hero-video');
+        var vertical = window.matchMedia('(max-aspect-ratio: 1/1)').matches;
+        v.poster = vertical ? 'videos/hero-vertical.jpg' : 'videos/hero-horizontal.jpg';
+        v.src = vertical ? 'videos/hero-vertical.mp4' : 'videos/hero-horizontal.mp4';
+      })();
+    </script>
     <div class="filtro-oscuro"></div>
   </div>
 
