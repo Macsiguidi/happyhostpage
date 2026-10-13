@@ -187,6 +187,11 @@ body {
   overflow: hidden;
 }
 
+/* En compu el video ocupa el alto de la pantalla (como mucho 16:9) para no verse tan ampliado */
+@media (min-width: 1024px) {
+  .hero { height: clamp(680px, calc(100vh - 60px), 56.25vw); }
+}
+
 .video-contenedor {
   position: absolute;
   top: 0; left: 0;

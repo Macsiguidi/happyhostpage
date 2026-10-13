@@ -97,11 +97,21 @@ src="https://www.facebook.com/tr?id=1812973002649828&ev=PageView&noscript=1"/></
     <video id="hero-video" autoplay muted loop playsinline preload="auto"></video>
     <script>
       // Video vertical en celular (pantalla parada), horizontal en compu
+      // (si la ventana cambia de forma, cambia de video)
       (function () {
         var v = document.getElementById('hero-video');
-        var vertical = window.matchMedia('(max-aspect-ratio: 1/1)').matches;
-        v.poster = vertical ? 'videos/hero-vertical.jpg?v=4' : 'videos/hero-horizontal.jpg?v=4';
-        v.src = vertical ? 'videos/hero-vertical.mp4?v=4' : 'videos/hero-horizontal.mp4?v=4';
+        var mq = window.matchMedia('(max-aspect-ratio: 1/1)');
+        function elegir() {
+          var tipo = mq.matches ? 'vertical' : 'horizontal';
+          if (v.dataset.tipo === tipo) return;
+          v.dataset.tipo = tipo;
+          v.poster = 'videos/hero-' + tipo + '.jpg?v=5';
+          v.src = 'videos/hero-' + tipo + '.mp4?v=5';
+          v.play().catch(function () {});
+        }
+        elegir();
+        if (mq.addEventListener) mq.addEventListener('change', elegir);
+        else if (mq.addListener) mq.addListener(elegir);
       })();
     </script>
     <div class="filtro-oscuro"></div>
