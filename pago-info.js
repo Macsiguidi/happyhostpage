@@ -6,7 +6,7 @@
    Expone window.hhPago:
      .calcularSenia(total, noches, moneda) → { senia, saldo }
      .chip(total, noches, moneda)          → HTML de la etiqueta "Seña X" (al lado del total)
-     .montar(resDiv, total, noches, moneda) → agrega el botón + panel dentro del resultado
+     .montar(resDiv, total, noches, moneda) → botón bajo "Reservar ahora" que abre un modal
 
    El dólar blue venta (Ámbito Financiero; si falla, dolarapi.com) se vuelve a
    pedir cada 5 minutos y al volver a la pestaña, y los montos en pesos se
@@ -92,37 +92,73 @@
     return `<span class="booking-sena">Seña ${moneda} ${fmt(senia)}</span>`;
   }
 
+  // ── Modal (uno solo por página; el contenido se actualiza en cada cálculo) ──
+  let modal = null;
+  function asegurarModal() {
+    if (modal) return modal;
+    modal = document.createElement('div');
+    modal.className = 'pago-modal';
+    modal.hidden = true;
+    modal.innerHTML = `
+      <div class="pago-modal-caja" role="dialog" aria-modal="true" aria-labelledby="pago-modal-tit">
+        <button class="pago-modal-cerrar" type="button" aria-label="Cerrar">×</button>
+        <h3 id="pago-modal-tit">¿Cómo se paga?</h3>
+        <div class="pago-modal-cuerpo"></div>
+      </div>`;
+    document.body.appendChild(modal);
+    const cerrar = () => { modal.hidden = true; document.body.classList.remove('pago-modal-abierto'); };
+    modal.querySelector('.pago-modal-cerrar').addEventListener('click', cerrar);
+    modal.addEventListener('click', e => { if (e.target === modal) cerrar(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) cerrar(); });
+    return modal;
+  }
+
+  function contenido(senia, saldo, moneda) {
+    return `
+      <ul class="pago-lista">
+        <li><span>Seña para confirmar</span><strong>${moneda} ${fmt(senia)}</strong></li>
+        <li><span>Saldo al ingresar</span><strong>${moneda} ${fmt(saldo)}</strong></li>
+      </ul>
+      <p class="pago-txt">La <b>seña</b> se abona por <b>transferencia</b> para confirmar la reserva. El <b>saldo</b> se abona <b>al ingresar</b>.</p>
+      ${moneda === 'USD' ? `
+      <div class="pago-pesos">
+        <p class="pago-sub">¿Pagás en pesos?</p>
+        <p class="pago-txt">Se usa el <b>dólar blue venta</b> de <b>Ámbito Financiero</b>.</p>
+        <div class="pago-cotiz" data-cotiz data-senia="${senia}" data-saldo="${saldo}">Buscando la cotización de hoy…</div>
+      </div>
+      <p class="pago-txt pago-chico">Si pagás en dólares, los billetes tienen que estar en perfecto estado (sin roturas, manchas ni marcas).</p>` : ''}`;
+  }
+
+  // Pone el botón "¿Cómo se paga?" justo debajo de "Reservar ahora" y lo conecta al modal.
+  // Se oculta solo cuando el resultado deja de mostrar un precio (fechas inválidas, cargando…).
   function montar(resDiv, total, noches, moneda) {
     if (!resDiv) return;
     const { senia, saldo } = calcularSenia(total, noches, moneda);
-    const wrap = document.createElement('div');
-    wrap.innerHTML = `
-      <button class="pago-toggle" type="button" aria-expanded="false" aria-controls="pago-info">¿Cómo se paga?</button>
-      <div id="pago-info" class="pago-info" hidden>
-        <ul class="pago-lista">
-          <li><span>Seña para confirmar</span><strong>${moneda} ${fmt(senia)}</strong></li>
-          <li><span>Saldo al ingresar</span><strong>${moneda} ${fmt(saldo)}</strong></li>
-        </ul>
-        <p class="pago-txt">La <b>seña</b> se abona por <b>transferencia</b> para confirmar la reserva. El <b>saldo</b> se abona <b>al ingresar</b>.</p>
-        ${moneda === 'USD' ? `
-        <div class="pago-pesos">
-          <p class="pago-sub">¿Pagás en pesos?</p>
-          <p class="pago-txt">Se usa el <b>dólar blue venta</b> de <b>Ámbito Financiero</b>.</p>
-          <div class="pago-cotiz" data-cotiz data-senia="${senia}" data-saldo="${saldo}">Buscando la cotización de hoy…</div>
-        </div>
-        <p class="pago-txt pago-chico">Si pagás en dólares, los billetes tienen que estar en perfecto estado (sin roturas, manchas ni marcas).</p>` : ''}
-      </div>`;
-    resDiv.append(...wrap.childNodes);
+    const reservar = document.getElementById('btnReservar') || resDiv;
 
-    const btn  = resDiv.querySelector('.pago-toggle');
-    const info = resDiv.querySelector('#pago-info');
-    btn.addEventListener('click', () => {
-      const abrir = info.hidden;
-      info.hidden = !abrir;
-      btn.setAttribute('aria-expanded', String(abrir));
-    });
+    let btn = document.querySelector('.pago-toggle');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pago-toggle';
+      btn.textContent = '¿Cómo se paga?';
+      btn.setAttribute('aria-haspopup', 'dialog');
+      reservar.insertAdjacentElement('afterend', btn);
+      btn.addEventListener('click', () => {
+        const m = asegurarModal();
+        m.hidden = false;
+        document.body.classList.add('pago-modal-abierto');
+        m.querySelector('.pago-modal-cerrar').focus();
+      });
+      new MutationObserver(() => {
+        btn.hidden = !resDiv.querySelector('.booking-summary');
+      }).observe(resDiv, { childList: true, characterData: true, subtree: true });
+    }
+    btn.hidden = false;
 
-    const box = resDiv.querySelector('[data-cotiz]');
+    const cuerpo = asegurarModal().querySelector('.pago-modal-cuerpo');
+    cuerpo.innerHTML = contenido(senia, saldo, moneda);
+    const box = cuerpo.querySelector('[data-cotiz]');
     if (box) {
       if (blueActual) pintarCotiz(box);
       asegurarCotizacion();

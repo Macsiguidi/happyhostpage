@@ -23,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <link rel="stylesheet" href="unidades-nuevo.css?v=5" />
+  <link rel="stylesheet" href="unidades-nuevo.css?v=6" />
   <link rel="stylesheet" href="huespedes.css" />
   <style>
     /* ── Loading state ── */
@@ -514,7 +514,7 @@
     await loadScript('promos.js').catch(e => console.warn('promos.js no cargó:', e));
     await loadScript('huespedes.js').catch(e => console.warn('huespedes.js no cargó:', e));
     try {
-      await loadScript('pago-info.js?v=1').catch(e => console.warn('pago-info.js no cargó:', e));
+      await loadScript('pago-info.js?v=2').catch(e => console.warn('pago-info.js no cargó:', e));
       await loadScript('booking-widget.js?v=5');
     } catch (e) { console.warn('booking-widget.js no cargó:', e); }
 
