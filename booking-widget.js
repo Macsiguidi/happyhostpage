@@ -362,8 +362,10 @@
         else     { list.hidden = false; toggle.textContent = 'Ocultar detalle'; }
       });
 
+      window.hhPago?.montar(resDiv, totalFinal, noches, moneda);
+
       if (precioBox) {
-        precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalFinal)}</span><span class="booking-noche"> total</span>`;
+        precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalFinal)}</span><span class="booking-noche"> total</span>${window.hhPago ? hhPago.chip(totalFinal, noches, moneda) : ''}`;
         precioBox.classList.remove('precio-oculto');
       }
 

@@ -1116,3 +1116,53 @@ body {
   }
 }
 
+
+/* Seña junto al total + "¿Cómo se paga?" */
+.booking-precio { flex-wrap: wrap; }
+.booking-sena {
+  margin-left: auto;
+  font-family: 'Inter', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--olive);
+  background: #eef1ea;
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+.pago-toggle {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 12px;
+  font: 600 .82rem 'Inter', sans-serif;
+  color: var(--olive);
+  background: #fff;
+  border: 1px solid #d9ddd2;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.pago-toggle:hover, .pago-toggle[aria-expanded="true"] { background: #eef1ea; border-color: var(--olive); }
+.pago-info {
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid #e0ddd6;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: .8rem;
+  color: #555;
+}
+.pago-lista { list-style: none; margin: 0 0 8px; padding: 0; }
+.pago-lista li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; }
+.pago-lista strong { color: var(--ink); white-space: nowrap; }
+.pago-txt { margin: 6px 0; line-height: 1.45; }
+.pago-chico { font-size: .74rem; color: #888; }
+.pago-sub { margin: 10px 0 2px; font-weight: 700; color: var(--ink); }
+.pago-pesos { border-top: 1px solid #e0ddd6; margin-top: 8px; padding-top: 4px; }
+.pago-cotiz { margin-top: 6px; padding: 8px 10px; background: var(--cream); border-radius: 8px; }
+.pago-cotiz-hoy { margin-bottom: 4px; }
+.pago-paso + .pago-paso { border-top: 1px dashed #d9ddd2; margin-top: 6px; padding-top: 6px; }
+.pago-paso-tit { display: flex; justify-content: space-between; gap: 10px; font-weight: 600; color: var(--ink); }
+.pago-paso .pago-txt { margin: 2px 0 0; }

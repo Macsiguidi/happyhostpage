@@ -30,7 +30,7 @@
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-  <link rel="stylesheet" href="unidades-nuevo.css" />
+  <link rel="stylesheet" href="unidades-nuevo.css?v=5" />
   <link rel="stylesheet" href="huespedes.css" />
 
   <meta name="geo.region" content="AR-Q" />
@@ -216,7 +216,7 @@
         <div class="unidad-cerca">
           <h3>Qué tenés cerca · Barrio El Once</h3>
           <ul class="cerca-lista">
-          <li><span class="cerca-ico">🛍️</span><span class="cerca-lugar">Centro (El Cruce)</span><span class="cerca-dist">1,1 km · 15 min a pie</span></li>
+          <li><span class="cerca-ico">🛍️</span><span class="cerca-lugar">Centro (Av. Arrayanes)</span><span class="cerca-dist">500 m · 6 min a pie</span></li>
           <li><span class="cerca-ico">⛵</span><span class="cerca-lugar">Puerto y catamarán al Bosque de Arrayanes</span><span class="cerca-dist">5 min</span></li>
           <li><span class="cerca-ico">⛷️</span><span class="cerca-lugar">Cerro Bayo</span><span class="cerca-dist">20 min</span></li>
           <li><span class="cerca-ico">🌊</span><span class="cerca-lugar">Río y Lago Correntoso</span><span class="cerca-dist">10 min</span></li>
@@ -398,6 +398,7 @@
   <!-- 4) Motor de moneda -->
   <script src="huespedes.js"></script>
   <script src="moneda.js"></script>
+  <script src="pago-info.js?v=1"></script>
 
   <!-- 5) Motor de reservas -->
   <script>
@@ -690,7 +691,8 @@
       });
 
       const totalParaCobrar = (descuento > 0) ? totalConDesc : totalSinDesc;
-      if (precioBox) { precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalParaCobrar)}</span><span class="booking-noche"> total</span>`; precioBox.classList.remove('precio-oculto'); }
+      window.hhPago?.montar(resDiv, totalParaCobrar, noches, moneda);
+      if (precioBox) { precioBox.innerHTML = `<span class="booking-monto">${moneda} ${fmt(totalParaCobrar)}</span><span class="booking-noche"> total</span>${window.hhPago ? hhPago.chip(totalParaCobrar, noches, moneda) : ''}`; precioBox.classList.remove('precio-oculto'); }
       reservarBtn.disabled = false;
       reservarBtn.onclick = () => {
         const qs = new URLSearchParams({
