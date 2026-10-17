@@ -475,7 +475,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let seniaMinNoches = 1;
     if (diffDays >= 5 && diffDays <= 9) seniaMinNoches = 2;
-    else if (diffDays >= 10) seniaMinNoches = 4; // 10 noches o más: siempre 4 noches de seña base
+    else if (diffDays >= 10) seniaMinNoches = 3; // 10 noches o más: 3 noches de seña base
 
     const precioNoche = diffDays ? (total / diffDays) : 0;
     const seniaMinima = precioNoche * seniaMinNoches;

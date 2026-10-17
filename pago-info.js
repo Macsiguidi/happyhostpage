@@ -20,14 +20,14 @@
   const REFRESCO_MS = 5 * 60 * 1000;
 
   // Seña: MISMA regla que formulario.js (calcularSeniaInteligente) para que coincida.
-  // 1 noche de seña (hasta 4 noches), 2 noches (5 a 9), 4 noches (10+),
+  // 1 noche de seña (hasta 4 noches), 2 noches (5 a 9), 3 noches (10+),
   // y el saldo se redondea hacia abajo (USD 100 / $50.000) — la seña absorbe el resto.
   // TOPE: la seña nunca supera la mitad del total; si la pasa, el saldo sube al
   // siguiente redondo (ej. 825 → saldo 500, seña 325 en vez de saldo 400, seña 425).
   function calcularSenia(total, noches, moneda) {
     let nochesSenia = 1;
     if (noches >= 5 && noches <= 9) nochesSenia = 2;
-    else if (noches >= 10) nochesSenia = 4;
+    else if (noches >= 10) nochesSenia = 3;
     const seniaMinima = noches ? (total / noches) * nochesSenia : 0;
     const redondeo = moneda === 'ARS' ? 50000 : 100;
     let saldo = Math.floor((total - seniaMinima) / redondeo) * redondeo;
