@@ -19,23 +19,22 @@
   const fmtARS = n => '$' + fmt(n);
   const REFRESCO_MS = 5 * 60 * 1000;
 
-  // Seña: MISMA regla que formulario.js (calcularSeniaInteligente) para que coincida.
-  // 1 noche de seña (hasta 4 noches), 2 noches (5 a 9), 3 noches (10+),
-  // y el saldo se redondea hacia abajo (USD 100 / $50.000) — la seña absorbe el resto.
-  // TOPE: la seña nunca supera la mitad del total; si la pasa, el saldo sube al
-  // siguiente redondo (ej. 825 → saldo 500, seña 325 en vez de saldo 400, seña 425).
+  // Seña: MISMA regla que formulario.js (calcularSeniaInteligente) y Presupuestos del SISTEMA.
+  // La seña queda entre el 30% y el 40% del total, y lo que se paga al ingresar es el
+  // número MÁS REDONDO posible dentro de ese rango (miles → 500 → 100 → 50…); si hay
+  // varios igual de redondos, la seña más baja. Ej: 385 → 135/250 · 2.400 → 900/1.500.
   function calcularSenia(total, noches, moneda) {
-    let nochesSenia = 1;
-    if (noches >= 5 && noches <= 9) nochesSenia = 2;
-    else if (noches >= 10) nochesSenia = 3;
-    const seniaMinima = noches ? (total / noches) * nochesSenia : 0;
-    const redondeo = moneda === 'ARS' ? 50000 : 100;
-    let saldo = Math.floor((total - seniaMinima) / redondeo) * redondeo;
-    let senia = total - saldo;
-    if (senia < seniaMinima) { saldo -= redondeo; senia = total - saldo; }
-    if (saldo < 0) { saldo = 0; senia = total; }
-    if (senia > total / 2) { saldo = Math.ceil((total / 2) / redondeo) * redondeo; senia = total - saldo; }
-    return { senia: Math.round(senia), saldo: Math.round(saldo) };
+    if (!total || total <= 0) return { senia: 0, saldo: 0 };
+    const pasos = moneda === 'ARS'
+      ? [1000000, 500000, 100000, 50000, 10000, 5000, 1000]
+      : [1000, 500, 100, 50, 10, 5, 1];
+    const saldoMin = total * 0.60, saldoMax = total * 0.70;
+    for (const paso of pasos) {
+      const saldo = Math.floor(saldoMax / paso) * paso;
+      if (saldo > 0 && saldo >= saldoMin) return { senia: Math.round(total - saldo), saldo };
+    }
+    const saldo = Math.round(total * 0.65);
+    return { senia: Math.round(total - saldo), saldo };
   }
 
   // ── Dólar blue venta ────────────────────────────────────────────────────

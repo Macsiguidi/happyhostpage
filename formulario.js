@@ -473,27 +473,19 @@ window.addEventListener('DOMContentLoaded', () => {
       };
     }
 
-    let seniaMinNoches = 1;
-    if (diffDays >= 5 && diffDays <= 9) seniaMinNoches = 2;
-    else if (diffDays >= 10) seniaMinNoches = 3; // 10 noches o más: 3 noches de seña base
-
-    const precioNoche = diffDays ? (total / diffDays) : 0;
-    const seniaMinima = precioNoche * seniaMinNoches;
-    const redondeoSaldo = displayCurrency === 'ARS' ? 50000 : 100;
-
-    let saldoRedondo = Math.floor((total - seniaMinima) / redondeoSaldo) * redondeoSaldo;
-    let seniaFinal = total - saldoRedondo;
-
-    if (seniaFinal < seniaMinima) {
-      saldoRedondo -= redondeoSaldo;
-      seniaFinal = total - saldoRedondo;
+    // Seña entre 30% y 40% del total; el saldo (al ingresar) es el número más redondo
+    // posible en ese rango (miles → 500 → 100 → 50…). Misma regla que pago-info.js.
+    const seniaMinNoches = 0;
+    const pasos = displayCurrency === 'ARS'
+      ? [1000000, 500000, 100000, 50000, 10000, 5000, 1000]
+      : [1000, 500, 100, 50, 10, 5, 1];
+    const saldoMin = (total || 0) * 0.60, saldoMax = (total || 0) * 0.70;
+    let saldoRedondo = Math.round((total || 0) * 0.65);
+    for (const paso of pasos) {
+      const sal = Math.floor(saldoMax / paso) * paso;
+      if (sal > 0 && sal >= saldoMin) { saldoRedondo = sal; break; }
     }
-
-    // TOPE: la seña nunca supera la mitad; el saldo sube al siguiente redondo (igual que pago-info.js).
-    if (seniaFinal > total / 2) {
-      saldoRedondo = Math.ceil((total / 2) / redondeoSaldo) * redondeoSaldo;
-      seniaFinal = total - saldoRedondo;
-    }
+    const seniaFinal = (total || 0) - saldoRedondo;
 
     return {
       seniaFinal: Math.round(seniaFinal || 0),
