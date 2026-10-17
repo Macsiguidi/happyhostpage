@@ -523,7 +523,7 @@
     await loadScript('promos.js').catch(e => console.warn('promos.js no cargó:', e));
     await loadScript('huespedes.js').catch(e => console.warn('huespedes.js no cargó:', e));
     try {
-      await loadScript('pago-info.js?v=2').catch(e => console.warn('pago-info.js no cargó:', e));
+      await loadScript('pago-info.js?v=3').catch(e => console.warn('pago-info.js no cargó:', e));
       await loadScript('booking-widget.js?v=5');
     } catch (e) { console.warn('booking-widget.js no cargó:', e); }
 

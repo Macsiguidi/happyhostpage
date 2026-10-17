@@ -489,6 +489,12 @@ window.addEventListener('DOMContentLoaded', () => {
       seniaFinal = total - saldoRedondo;
     }
 
+    // TOPE: la seña nunca supera la mitad; el saldo sube al siguiente redondo (igual que pago-info.js).
+    if (seniaFinal > total / 2) {
+      saldoRedondo = Math.ceil((total / 2) / redondeoSaldo) * redondeoSaldo;
+      seniaFinal = total - saldoRedondo;
+    }
+
     return {
       seniaFinal: Math.round(seniaFinal || 0),
       seniaNoches: seniaMinNoches,
