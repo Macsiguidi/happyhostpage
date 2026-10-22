@@ -28,11 +28,35 @@
     })
     .catch(() => {});
 
+  // Mensaje armado para que se note que la consulta viene de la web (y de qué casa).
+  let casaNombreCache = "";
+  function nombreCasa() {
+    if (casaNombreCache) return casaNombreCache;
+    for (const l of document.querySelectorAll('a[href*="wa.me/"][href*="text="]')) {
+      const m = decodeURIComponent(l.href.split("text=")[1] || "").match(/Me interesa (.+?)\. ¿/);
+      if (m) return (casaNombreCache = m[1]);
+    }
+    return "";
+  }
+  function mensajeWeb(original, destino) {
+    const casaNombre = nombreCasa();
+    if (casaNombre) return "Hola! Vi *" + casaNombre + "* en la web de Happy Host. ¿Tienen disponibilidad?";
+    if (original.indexOf("(vi la web") !== -1) return original;
+    if (/^Hola Maxi/.test(original)) // botones de la página de propietarios
+      return original.replace(/^Hola Maxi/, destino === "juan" ? "Hola Juan" : "Hola Maxi") + " (vi la web de Happy Host)";
+    if (location.pathname.indexOf("/actividades") !== -1)
+      return "Hola! Vi la web de Happy Host y quiero consultar por actividades en Villa La Angostura.";
+    return "Hola! Vi la web de Happy Host y quiero consultar por un alojamiento.";
+  }
+
   document.addEventListener("click", function (ev) {
     const a = ev.target.closest && ev.target.closest('a[href*="wa.me/' + NUMERO_WEB + '"]');
-    if (!a || !turno) return;
+    if (!a) return;
 
-    a.href = a.href.replace(NUMERO_WEB, turno.numero);
+    const original = decodeURIComponent((a.href.split("text=")[1] || "").replace(/\+/g, " "));
+    const numero = turno ? turno.numero : NUMERO_WEB;
+    a.href = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensajeWeb(original, turno ? turno.destino : "maxi"));
+    if (!turno) return;
 
     if (registrado || turno === asignado) return; // ya se registró su consulta
     registrado = true;
